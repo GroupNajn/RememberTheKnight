@@ -34,7 +34,6 @@ Action Sets include...
 > Block heavy
 > Block stun
 > Block break
-> Parry
 
 *************************************
 Locomotion Sets include...
@@ -52,8 +51,9 @@ Locomotion Sets include...
 Package Includes
 *************************************
 
-254 Unique Animations
+244 Unique Animations
 Low Poly Man Model
+Spear Model
 Shield Model
 
 *************************************
