@@ -1,5 +1,4 @@
 {
-    "version": 1,
     "name": "PlayerControls",
     "maps": [
         {
@@ -34,27 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
+                    "name": "Dodge",
                     "type": "Button",
                     "id": "d5776ba5-3d05-42a1-87be-079b40e07be1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleWalk",
-                    "type": "Button",
-                    "id": "9860aac1-4769-40e0-a3b0-cdf19f96bb78",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "030666ee-ebec-4266-ad2f-f2712a395009",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -201,29 +182,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "16f772a4-2cae-4c33-92df-35119815c8b2",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleWalk",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "abb4b8e6-c994-4f93-ac5d-7998ad2c4173",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Crouch",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -262,10 +221,10 @@
             "id": "e757dc11-d0c6-4741-abac-4eed7052bd1f",
             "actions": [
                 {
-                    "name": "Gathering",
+                    "name": "PickUp",
                     "type": "Button",
                     "id": "d9ba9315-bc1d-4791-ad3e-9601169f85de",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -288,7 +247,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Gathering",
+                    "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
