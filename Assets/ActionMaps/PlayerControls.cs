@@ -113,7 +113,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""ToggleSprint"",
                     ""type"": ""Button"",
                     ""id"": ""2d62136a-c146-4b49-b506-7d903b95e54a"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
