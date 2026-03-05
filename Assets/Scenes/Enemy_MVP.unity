@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 661060190}
   - component: {fileID: 661060189}
   - component: {fileID: 661060188}
-  - component: {fileID: 661060187}
+  - component: {fileID: 661060191}
   m_Layer: 0
   m_Name: Enemy_MVP
   m_TagString: Untagged
@@ -201,18 +201,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &661060187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661060186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d7b177dcb6d8848804fc02bdd13bac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &661060188
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -273,6 +261,20 @@ Transform:
   - {fileID: 489136101}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &661060191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661060186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcee978cca447994aa45848b213c46eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1463816405}
+  speed: 5
 --- !u!1 &1368318359
 GameObject:
   m_ObjectHideFlags: 0
