@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleLateralMovement()
+    private void HandleLateralMovement() //(Horizontal)
     {
         bool isGrounded = IsGrounded();
 
@@ -82,13 +82,13 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayerToTarget()
     {
-        Vector2 movementDir = _playerLocomotionInput.MovementInput;
+        Vector2 inputDir = _playerLocomotionInput.MovementInput;
 
-        if (movementDir != Vector2.zero)
+        if (inputDir != Vector2.zero) // calculates rotation for player depending input (8D movement)
         {
             float cameraY = _playerCamera.transform.eulerAngles.y;
 
-            float movementAngle = Mathf.Atan2(movementDir.x, movementDir.y) * Mathf.Rad2Deg;
+            float movementAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
 
             Quaternion targetRotation = Quaternion.Euler(0f, cameraY + movementAngle, 0f);
 
