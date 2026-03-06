@@ -40,6 +40,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Attacking",
+                    "type": "Button",
+                    "id": "058c5a5d-6787-4a55-9e3f-2c9418bbf7aa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PickUp",
+                    "type": "Button",
+                    "id": "c4319887-905a-4776-b155-b71d62f2d8b3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScrollCamera",
+                    "type": "Value",
+                    "id": "dd076d10-da87-4426-8dca-0db105400590",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -185,27 +212,32 @@
                     "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "ThirdPersonMap",
-            "id": "9265275f-811a-4e98-b05f-0fb619bfb4bc",
-            "actions": [
-                {
-                    "name": "ScrollCamera",
-                    "type": "Value",
-                    "id": "a138cf60-637d-492c-b399-7039e94b7550",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "f27d8ef5-6fe8-4349-a419-7f4e32607aea",
+                    "id": "4f399693-88a8-4634-9a7b-1fc82e156faf",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attacking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "295d7925-8113-4b79-b5a6-b96efc2e4b59",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5214438-92bd-449d-b48d-374b66e88d7e",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
@@ -217,52 +249,16 @@
             ]
         },
         {
+            "name": "ThirdPersonMap",
+            "id": "9265275f-811a-4e98-b05f-0fb619bfb4bc",
+            "actions": [],
+            "bindings": []
+        },
+        {
             "name": "PlayerActionsMap",
             "id": "e757dc11-d0c6-4741-abac-4eed7052bd1f",
-            "actions": [
-                {
-                    "name": "PickUp",
-                    "type": "Button",
-                    "id": "d9ba9315-bc1d-4791-ad3e-9601169f85de",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Attacking",
-                    "type": "Button",
-                    "id": "42c2e099-ae12-4034-aaba-bb528b4d1e46",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "015ef00d-d639-408a-aa1b-0ce979b7da0a",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PickUp",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e6f26d82-02fe-4ade-9b05-d4f8c0a271d2",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attacking",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []
