@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    [SerializeField] GameObject RightWeaponSlot;
+    [SerializeField] GameObject currentRightHandWeapon;
 
     bool Hidden = true;
 
@@ -15,11 +15,27 @@ public class WeaponManager : MonoBehaviour
 
         if (Hidden)
         {
-            RightWeaponSlot.SetActive(false);
+            currentRightHandWeapon.SetActive(false);
         }
         else
         {
-            RightWeaponSlot.SetActive(true);
+            currentRightHandWeapon.SetActive(true);
+        }
+    }
+
+    public void ActivateDamageCollider()
+    {
+        if (currentRightHandWeapon != null )
+        {
+            currentRightHandWeapon.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    public void DeactivateDamageCollider()
+    {
+        if (currentRightHandWeapon != null)
+        {
+            currentRightHandWeapon.GetComponent<Collider>().enabled = false;
         }
     }
 }
