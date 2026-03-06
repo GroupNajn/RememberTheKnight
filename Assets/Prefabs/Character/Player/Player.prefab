@@ -110,9 +110,9 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.000001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &1529693946768076600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e71f922817a4b64b9a1c484b46e7768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerControls: {fileID: 0}
   holdToSprint: 1
 --- !u!114 &7333838977578531082
 MonoBehaviour:
@@ -140,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 7239316587428880690}
-  _playerCamera: {fileID: 5019471532073210498, guid: c703b8fea88d77147816882b123944a0, type: 3}
+  _playerCamera: {fileID: 0}
   runAcceleration: 0.5
   runSpeed: 4
   sprintAcceleration: 0.5
@@ -149,7 +148,10 @@ MonoBehaviour:
   gravity: 25
   playerModelRotationSpeed: 14
   movingThreshold: 0.01
-  PlayerAnimator: {fileID: 0}
+  dodgeDuration: 0.2
+  dodgeSpeed: 8
+  dodgeAcceleration: 1
+  dodgeCoolDown: 1
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
