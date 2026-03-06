@@ -1,6 +1,9 @@
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
+
+    // Made by Jonathan Blixt
+
     #region Class Variables
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
@@ -19,21 +22,36 @@ public class PlayerController : MonoBehaviour
 
     public float movingThreshold = 0.01f;
 
+    [Header("Dodge")]
+    public float dodgeDuration = 0.2f;
+    public float dodgeSpeed = 8f;
+    public float dodgeAcceleration = 1f;
+    private float dodgeDurationRemaining;
+    public float dodgeCoolDown = 1f;
+    private float dodgeCoolDownRemaining;
+    private Vector2 dodgeDirection;
+
+
     private float _verticalVelocity = 0f;
 
-    public Animator PlayerAnimator;
+    private Animator PlayerAnimator;
     private PlayerLocomotion _playerLocomotionInput;
+
+    private bool isDodging = false;
     #endregion
 
     private void Awake()
     {
         _playerLocomotionInput = GetComponent<PlayerLocomotion>();
+        PlayerAnimator = GetComponent<Animator>();
     }
 
     private void Update()
     { 
         HandleVerticalMovement();
-        HandleLateralMovement();
+
+        if(!isDodging)
+            HandleLateralMovement();
 
         // player rotation
         bool isIdling = _playerLocomotionInput.MovementInput.magnitude < movingThreshold;
@@ -42,7 +60,55 @@ public class PlayerController : MonoBehaviour
         {
             RotatePlayerToTarget();
             PlayerAnimator.SetFloat("Y", 1);
+
+            //Dodgeing
+            if (_playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <=0)
+            {
+                //play dodge anim TBI
+                isDodging = true;
+                dodgeDurationRemaining = dodgeDuration;
+                dodgeCoolDownRemaining = dodgeCoolDown;
+                Dodge();
+            }
         }
+
+        if(dodgeCoolDownRemaining > 0)
+        {
+            dodgeCoolDownRemaining -= Time.deltaTime;
+        }
+
+
+        if (isDodging)
+        {
+            Dodge();
+        }
+    }
+
+    private void Dodge()
+    {
+        if (dodgeDurationRemaining == dodgeDuration)
+        {
+            Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
+            Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
+            dodgeDirection = cameraForwardXZ * _playerLocomotionInput.MovementInput.y + cameraRightXZ * _playerLocomotionInput.MovementInput.x;
+        }
+        dodgeDurationRemaining -= Time.deltaTime;
+
+
+       
+
+        Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
+        Vector3 newVelocity = _characterController.velocity + movementDelta;
+
+        newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeed);
+        newVelocity.y = _verticalVelocity;
+
+        _characterController.Move(newVelocity * Time.deltaTime);
+
+        _characterController.Move(newVelocity * Time.deltaTime);
+
+        if (dodgeDurationRemaining <= 0)
+        isDodging = false;
     }
 
     private void HandleLateralMovement() //(Horizontal)
@@ -84,7 +150,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 inputDir = _playerLocomotionInput.MovementInput;
 
-        if (inputDir != Vector2.zero) // calculates rotation for player depending input (8D movement)
+        if (inputDir != Vector2.zero && !isDodging) // calculates rotation for player depending input (8D movement)
         {
             float cameraY = _playerCamera.transform.eulerAngles.y;
 
