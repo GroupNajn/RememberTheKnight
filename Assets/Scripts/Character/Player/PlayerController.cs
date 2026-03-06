@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _playerCamera;
 
     [Header("Movement Settings")]
-    public float runAcceleration = 0.25f;
-    public float runSpeed = 6f;
+    public float walkAcceleration = 0.25f;
+    public float walkSpeed = 6f;
 
     public float sprintAcceleration = 0.5f;
     public float sprintSpeed = 9f;
@@ -29,7 +30,8 @@ public class PlayerController : MonoBehaviour
     private float dodgeDurationRemaining;
     public float dodgeCoolDown = 1f;
     private float dodgeCoolDownRemaining;
-    private Vector2 dodgeDirection;
+    private Vector3 dodgeDirection;
+    public float dodgeDelay = 0.1f;
 
 
     private float _verticalVelocity = 0f;
@@ -47,24 +49,25 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update()
-    { 
+    {
         HandleVerticalMovement();
 
-        if(!isDodging)
+        if (!isDodging)
             HandleLateralMovement();
 
         // player rotation
         bool isIdling = _playerLocomotionInput.MovementInput.magnitude < movingThreshold;
         PlayerAnimator.SetFloat("Y", 0);
+
         if (!isIdling)
         {
             RotatePlayerToTarget();
             PlayerAnimator.SetFloat("Y", 1);
 
             //Dodgeing
-            if (_playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <=0)
+            if (_playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0)
             {
-                //play dodge anim TBI
+                PlayerAnimator.SetTrigger("Dodge");
                 isDodging = true;
                 dodgeDurationRemaining = dodgeDuration;
                 dodgeCoolDownRemaining = dodgeCoolDown;
@@ -72,51 +75,66 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(dodgeCoolDownRemaining > 0)
+        if (dodgeCoolDownRemaining > 0)
         {
             dodgeCoolDownRemaining -= Time.deltaTime;
         }
-
 
         if (isDodging)
         {
             Dodge();
         }
+
+        if (_playerLocomotionInput.AttackPressed)
+        {
+            PlayerAnimator.SetTrigger("LightAttack");
+        }
     }
+
+    private void LateUpdate()
+    {
+        PlayerAnimator.ResetTrigger("Dodge");
+        PlayerAnimator.ResetTrigger("LightAttack");
+    }
+
 
     private void Dodge()
     {
+
         if (dodgeDurationRemaining == dodgeDuration)
         {
-            Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
-            Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
-            dodgeDirection = cameraForwardXZ * _playerLocomotionInput.MovementInput.y + cameraRightXZ * _playerLocomotionInput.MovementInput.x;
+            Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
+            dodgeDirection = playerRotation * transform.forward;
         }
         dodgeDurationRemaining -= Time.deltaTime;
 
 
-       
+        if (dodgeDurationRemaining <= dodgeDuration - dodgeDelay)
+        {
+            Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
+            Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-        Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
-        Vector3 newVelocity = _characterController.velocity + movementDelta;
+            newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeed);
+            newVelocity.y = _verticalVelocity;
 
-        newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeed);
-        newVelocity.y = _verticalVelocity;
-
-        _characterController.Move(newVelocity * Time.deltaTime);
-
-        _characterController.Move(newVelocity * Time.deltaTime);
-
+            // un comment for frontflip MLG XD _characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeed * Time.deltaTime);
+            _characterController.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+        }
         if (dodgeDurationRemaining <= 0)
-        isDodging = false;
+        {
+            isDodging = false;
+            PlayerAnimator.ResetTrigger("Dodge");
+
+        }
+
     }
 
     private void HandleLateralMovement() //(Horizontal)
     {
         bool isGrounded = IsGrounded();
 
-        float lateralAcceleration = _playerLocomotionInput.SprintToggledOn ? runAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = _playerLocomotionInput.SprintToggledOn ? runSpeed : sprintSpeed;
+        float lateralAcceleration = _playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
+        float clampedLateralMagnitude = _playerLocomotionInput.SprintToggledOn ? walkSpeed : sprintSpeed;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;

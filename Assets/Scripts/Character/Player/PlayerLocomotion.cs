@@ -39,6 +39,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         //movment
         DodgePressed = false;
+        AttackPressed = false;
 
         //camera
         //ScrollInput = Vector2.zero;
@@ -60,7 +61,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void OnMovement(InputValue context)
     {
-        Debug.Log("Movement input received: " + context.Get<Vector2>());
+
         MovementInput = context.Get<Vector2>();
     }
 
@@ -93,5 +94,6 @@ public class PlayerLocomotion : MonoBehaviour
         //    return;
 
         AttackPressed = true;
+        Debug.Log("input kom");
     }
 }

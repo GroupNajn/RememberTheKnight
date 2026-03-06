@@ -126,6 +126,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attacking"",
+                    ""type"": ""Button"",
+                    ""id"": ""058c5a5d-6787-4a55-9e3f-2c9418bbf7aa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4319887-905a-4776-b155-b71d62f2d8b3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""dd076d10-da87-4426-8dca-0db105400590"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -271,27 +298,32 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""ThirdPersonMap"",
-            ""id"": ""9265275f-811a-4e98-b05f-0fb619bfb4bc"",
-            ""actions"": [
-                {
-                    ""name"": ""ScrollCamera"",
-                    ""type"": ""Value"",
-                    ""id"": ""a138cf60-637d-492c-b399-7039e94b7550"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""f27d8ef5-6fe8-4349-a419-7f4e32607aea"",
+                    ""id"": ""4f399693-88a8-4634-9a7b-1fc82e156faf"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attacking"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""295d7925-8113-4b79-b5a6-b96efc2e4b59"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5214438-92bd-449d-b48d-374b66e88d7e"",
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -303,52 +335,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""ThirdPersonMap"",
+            ""id"": ""9265275f-811a-4e98-b05f-0fb619bfb4bc"",
+            ""actions"": [],
+            ""bindings"": []
+        },
+        {
             ""name"": ""PlayerActionsMap"",
             ""id"": ""e757dc11-d0c6-4741-abac-4eed7052bd1f"",
-            ""actions"": [
-                {
-                    ""name"": ""PickUp"",
-                    ""type"": ""Button"",
-                    ""id"": ""d9ba9315-bc1d-4791-ad3e-9601169f85de"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attacking"",
-                    ""type"": ""Button"",
-                    ""id"": ""42c2e099-ae12-4034-aaba-bb528b4d1e46"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""015ef00d-d639-408a-aa1b-0ce979b7da0a"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PickUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e6f26d82-02fe-4ade-9b05-d4f8c0a271d2"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attacking"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -359,13 +355,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_Look = m_PlayerLocomotionMap.FindAction("Look", throwIfNotFound: true);
         m_PlayerLocomotionMap_ToggleSprint = m_PlayerLocomotionMap.FindAction("ToggleSprint", throwIfNotFound: true);
         m_PlayerLocomotionMap_Dodge = m_PlayerLocomotionMap.FindAction("Dodge", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Attacking = m_PlayerLocomotionMap.FindAction("Attacking", throwIfNotFound: true);
+        m_PlayerLocomotionMap_PickUp = m_PlayerLocomotionMap.FindAction("PickUp", throwIfNotFound: true);
+        m_PlayerLocomotionMap_ScrollCamera = m_PlayerLocomotionMap.FindAction("ScrollCamera", throwIfNotFound: true);
         // ThirdPersonMap
         m_ThirdPersonMap = asset.FindActionMap("ThirdPersonMap", throwIfNotFound: true);
-        m_ThirdPersonMap_ScrollCamera = m_ThirdPersonMap.FindAction("ScrollCamera", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
-        m_PlayerActionsMap_PickUp = m_PlayerActionsMap.FindAction("PickUp", throwIfNotFound: true);
-        m_PlayerActionsMap_Attacking = m_PlayerActionsMap.FindAction("Attacking", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -452,6 +448,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Look;
     private readonly InputAction m_PlayerLocomotionMap_ToggleSprint;
     private readonly InputAction m_PlayerLocomotionMap_Dodge;
+    private readonly InputAction m_PlayerLocomotionMap_Attacking;
+    private readonly InputAction m_PlayerLocomotionMap_PickUp;
+    private readonly InputAction m_PlayerLocomotionMap_ScrollCamera;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
     /// </summary>
@@ -479,6 +478,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerLocomotionMap/Dodge".
         /// </summary>
         public InputAction @Dodge => m_Wrapper.m_PlayerLocomotionMap_Dodge;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/Attacking".
+        /// </summary>
+        public InputAction @Attacking => m_Wrapper.m_PlayerLocomotionMap_Attacking;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/PickUp".
+        /// </summary>
+        public InputAction @PickUp => m_Wrapper.m_PlayerLocomotionMap_PickUp;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/ScrollCamera".
+        /// </summary>
+        public InputAction @ScrollCamera => m_Wrapper.m_PlayerLocomotionMap_ScrollCamera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -517,6 +528,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @Attacking.started += instance.OnAttacking;
+            @Attacking.performed += instance.OnAttacking;
+            @Attacking.canceled += instance.OnAttacking;
+            @PickUp.started += instance.OnPickUp;
+            @PickUp.performed += instance.OnPickUp;
+            @PickUp.canceled += instance.OnPickUp;
+            @ScrollCamera.started += instance.OnScrollCamera;
+            @ScrollCamera.performed += instance.OnScrollCamera;
+            @ScrollCamera.canceled += instance.OnScrollCamera;
         }
 
         /// <summary>
@@ -540,6 +560,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @Attacking.started -= instance.OnAttacking;
+            @Attacking.performed -= instance.OnAttacking;
+            @Attacking.canceled -= instance.OnAttacking;
+            @PickUp.started -= instance.OnPickUp;
+            @PickUp.performed -= instance.OnPickUp;
+            @PickUp.canceled -= instance.OnPickUp;
+            @ScrollCamera.started -= instance.OnScrollCamera;
+            @ScrollCamera.performed -= instance.OnScrollCamera;
+            @ScrollCamera.canceled -= instance.OnScrollCamera;
         }
 
         /// <summary>
@@ -577,7 +606,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // ThirdPersonMap
     private readonly InputActionMap m_ThirdPersonMap;
     private List<IThirdPersonMapActions> m_ThirdPersonMapActionsCallbackInterfaces = new List<IThirdPersonMapActions>();
-    private readonly InputAction m_ThirdPersonMap_ScrollCamera;
     /// <summary>
     /// Provides access to input actions defined in input action map "ThirdPersonMap".
     /// </summary>
@@ -589,10 +617,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public ThirdPersonMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "ThirdPersonMap/ScrollCamera".
-        /// </summary>
-        public InputAction @ScrollCamera => m_Wrapper.m_ThirdPersonMap_ScrollCamera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -619,9 +643,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Add(instance);
-            @ScrollCamera.started += instance.OnScrollCamera;
-            @ScrollCamera.performed += instance.OnScrollCamera;
-            @ScrollCamera.canceled += instance.OnScrollCamera;
         }
 
         /// <summary>
@@ -633,9 +654,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="ThirdPersonMapActions" />
         private void UnregisterCallbacks(IThirdPersonMapActions instance)
         {
-            @ScrollCamera.started -= instance.OnScrollCamera;
-            @ScrollCamera.performed -= instance.OnScrollCamera;
-            @ScrollCamera.canceled -= instance.OnScrollCamera;
         }
 
         /// <summary>
@@ -673,8 +691,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // PlayerActionsMap
     private readonly InputActionMap m_PlayerActionsMap;
     private List<IPlayerActionsMapActions> m_PlayerActionsMapActionsCallbackInterfaces = new List<IPlayerActionsMapActions>();
-    private readonly InputAction m_PlayerActionsMap_PickUp;
-    private readonly InputAction m_PlayerActionsMap_Attacking;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerActionsMap".
     /// </summary>
@@ -686,14 +702,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerActionsMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerActionsMap/PickUp".
-        /// </summary>
-        public InputAction @PickUp => m_Wrapper.m_PlayerActionsMap_PickUp;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerActionsMap/Attacking".
-        /// </summary>
-        public InputAction @Attacking => m_Wrapper.m_PlayerActionsMap_Attacking;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -720,12 +728,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Add(instance);
-            @PickUp.started += instance.OnPickUp;
-            @PickUp.performed += instance.OnPickUp;
-            @PickUp.canceled += instance.OnPickUp;
-            @Attacking.started += instance.OnAttacking;
-            @Attacking.performed += instance.OnAttacking;
-            @Attacking.canceled += instance.OnAttacking;
         }
 
         /// <summary>
@@ -737,12 +739,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="PlayerActionsMapActions" />
         private void UnregisterCallbacks(IPlayerActionsMapActions instance)
         {
-            @PickUp.started -= instance.OnPickUp;
-            @PickUp.performed -= instance.OnPickUp;
-            @PickUp.canceled -= instance.OnPickUp;
-            @Attacking.started -= instance.OnAttacking;
-            @Attacking.performed -= instance.OnAttacking;
-            @Attacking.canceled -= instance.OnAttacking;
         }
 
         /// <summary>
@@ -811,14 +807,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDodge(InputAction.CallbackContext context);
-    }
-    /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ThirdPersonMap" which allows adding and removing callbacks.
-    /// </summary>
-    /// <seealso cref="ThirdPersonMapActions.AddCallbacks(IThirdPersonMapActions)" />
-    /// <seealso cref="ThirdPersonMapActions.RemoveCallbacks(IThirdPersonMapActions)" />
-    public interface IThirdPersonMapActions
-    {
+        /// <summary>
+        /// Method invoked when associated input action "Attacking" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAttacking(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PickUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPickUp(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "ScrollCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -828,25 +830,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnScrollCamera(InputAction.CallbackContext context);
     }
     /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ThirdPersonMap" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="ThirdPersonMapActions.AddCallbacks(IThirdPersonMapActions)" />
+    /// <seealso cref="ThirdPersonMapActions.RemoveCallbacks(IThirdPersonMapActions)" />
+    public interface IThirdPersonMapActions
+    {
+    }
+    /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerActionsMap" which allows adding and removing callbacks.
     /// </summary>
     /// <seealso cref="PlayerActionsMapActions.AddCallbacks(IPlayerActionsMapActions)" />
     /// <seealso cref="PlayerActionsMapActions.RemoveCallbacks(IPlayerActionsMapActions)" />
     public interface IPlayerActionsMapActions
     {
-        /// <summary>
-        /// Method invoked when associated input action "PickUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPickUp(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Attacking" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAttacking(InputAction.CallbackContext context);
     }
 }
