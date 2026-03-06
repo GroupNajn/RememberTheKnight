@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8592466172617996342}
   - component: {fileID: 4894055357811716595}
   - component: {fileID: 745459617856998375}
+  - component: {fileID: 9091259141831614016}
+  - component: {fileID: -1836162788550439553}
   m_Layer: 0
   m_Name: Enemy_MVP
   m_TagString: Untagged
@@ -86,7 +88,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4420329560665956918}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcee978cca447994aa45848b213c46eb, type: 3}
   m_Name: 
@@ -101,6 +103,79 @@ MonoBehaviour:
   distanceToChangeTarget: 1
   detectionRange: 5
   loseTargetRange: 10
+--- !u!114 &9091259141831614016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420329560665956918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Graph: {fileID: -5218129002392837742, guid: 7ce38708773451a33a5a5c6e64822caf, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 8685798958950252801
+  - rid: 8685798958950252802
+  - rid: 8685798958950253241
+  m_OriginalGraph: {fileID: 0}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8685798958950252801
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 4420329560665956918}
+    - rid: 8685798958950252802
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 10219184355861921284
+          m_Value1: 16839340874882708969
+        Name: PatrolPoints
+        m_Value:
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+    - rid: 8685798958950253241
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2534959093329557265
+          m_Value1: 15138962049129608699
+        Name: Target
+        m_Value: {fileID: 0}
+--- !u!135 &-1836162788550439553
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420329560665956918}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &230441749777829080
 PrefabInstance:
   m_ObjectHideFlags: 0
