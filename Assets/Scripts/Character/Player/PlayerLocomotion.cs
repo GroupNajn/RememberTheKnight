@@ -4,10 +4,13 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-2)]
 public class PlayerLocomotion : MonoBehaviour
 {
+
+    //Made by Jonathan Blixt
+
     #region Class Variables
     //============= movement ==================
     [Header("Movement")]
-    public PlayerInput PlayerControls;
+    private PlayerInput PlayerControls;
 
     [SerializeField] private bool holdToSprint = true;
     public Vector2 MovementInput { get; private set; }
@@ -27,6 +30,11 @@ public class PlayerLocomotion : MonoBehaviour
     //[SerializeField] private float _cameraMinZoom = 1f;
     //[SerializeField] private float _cameraMaxZoom = 5f;
     #endregion
+
+    private void Awake()
+    {
+        PlayerControls = GetComponent<PlayerInput>();
+    }
     private void LateUpdate()
     {
         //movment
