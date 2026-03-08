@@ -7,6 +7,8 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
     [HideInInspector] public int Health { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
 
+    [SerializeField] GameObject skeletonPilePrefab;
+
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
@@ -29,6 +31,7 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
     public void Death()
     {
         // Implement death behavior, such as playing an animation, dropping loot, etc.
+        Instantiate(skeletonPilePrefab, transform.position, Quaternion.identity);
         Destroy(gameObject); // Example: destroy the enemy game object
     }
 
