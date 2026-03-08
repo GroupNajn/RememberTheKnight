@@ -85,21 +85,25 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
 
     private void EnableRagdoll()
     {
-        characterRigidbody.useGravity = false;
         foreach (var characterLimb in characterLimbs)
         {
             characterLimb.isKinematic = false;
             characterLimb.detectCollisions = true;
         }
+
+        characterRigidbody.useGravity = true;
+        characterRigidbody.isKinematic = true;
     }
 
     private void DisableRagdoll()
     {
-        characterRigidbody.useGravity = true;
         foreach (var characterLimb in characterLimbs)
         {
             characterLimb.isKinematic = true;
             characterLimb.detectCollisions = false;
         }
+
+        characterRigidbody.useGravity = true;
+        characterRigidbody.isKinematic = true;
     }
 }
