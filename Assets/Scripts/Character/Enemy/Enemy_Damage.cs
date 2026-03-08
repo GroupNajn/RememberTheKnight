@@ -17,6 +17,8 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
+            Debug.Log($"Health {Health}/{MaxHealth}");
+            CanTakeDamage = false;
             if (Health <= 0)
             {
                 Death();
