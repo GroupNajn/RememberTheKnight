@@ -44,6 +44,7 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
         if (skeletonPilePrefab != null)
         {
             Instantiate(skeletonPilePrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
         else
         {
