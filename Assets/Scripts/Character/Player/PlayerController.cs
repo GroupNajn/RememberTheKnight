@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Playables;
 public class PlayerController : MonoBehaviour
 {
 
@@ -37,27 +38,38 @@ public class PlayerController : MonoBehaviour
     private float _verticalVelocity = 0f;
 
     private Animator PlayerAnimator;
-    private PlayerLocomotion _playerLocomotionInput;
+    private PlayerLocomotion playerLocomotionInput;
+    private PlayerStates playerState;
 
-    private bool isDodging = false;
+
+    //private bool isDodging = false;
     #endregion
 
     private void Awake()
     {
-        _playerLocomotionInput = GetComponent<PlayerLocomotion>();
+        playerLocomotionInput = GetComponent<PlayerLocomotion>();
         PlayerAnimator = GetComponent<Animator>();
+        playerState = GetComponent<PlayerStates>();
     }
 
     private void Update()
     {
+        //Grounded?
+        GroundedCheck();
+
         HandleVerticalMovement();
 
-        if (!isDodging)
+        if (playerState.CurrentMoveState != MoveState.Dodging) // if not dodging, allow normal movement
             HandleLateralMovement();
 
-        // player rotation
-        bool isIdling = _playerLocomotionInput.MovementInput.magnitude < movingThreshold;
+        //Idling?
+        if(playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
+        { playerState.SetMoveState(MoveState.Idling);}
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
         PlayerAnimator.SetFloat("Y", 0);
+
+        //dodging?
+        bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
 
         if (!isIdling)
         {
@@ -65,10 +77,10 @@ public class PlayerController : MonoBehaviour
             PlayerAnimator.SetFloat("Y", 1);
 
             //Dodgeing
-            if (_playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0)
+            if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState() )
             {
                 PlayerAnimator.SetTrigger("Dodge");
-                isDodging = true;
+                playerState.SetMoveState(MoveState.Dodging);
                 dodgeDurationRemaining = dodgeDuration;
                 dodgeCoolDownRemaining = dodgeCoolDown;
                 Dodge();
@@ -85,8 +97,21 @@ public class PlayerController : MonoBehaviour
             Dodge();
         }
 
-        if (_playerLocomotionInput.AttackPressed)
+       
+       
+        int AttackHash = Animator.StringToHash("Attacking");
+
+        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
+
+        if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0)  && stateInfo.tagHash != AttackHash)
         {
+            Debug.Log("Attack animation finished, returning to idling");
+            playerState.SetMoveState(MoveState.Idling);
+        }
+
+        if (playerLocomotionInput.AttackPressed && !playerState.InActionState())
+        {
+            playerState.SetMoveState(MoveState.Attacking);
             PlayerAnimator.SetTrigger("LightAttack");
         }
     }
@@ -95,12 +120,13 @@ public class PlayerController : MonoBehaviour
     {
         PlayerAnimator.ResetTrigger("Dodge");
         PlayerAnimator.ResetTrigger("LightAttack");
+
+        
     }
 
 
     private void Dodge()
     {
-
         if (dodgeDurationRemaining == dodgeDuration)
         {
             Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
@@ -117,28 +143,26 @@ public class PlayerController : MonoBehaviour
             newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeed);
             newVelocity.y = _verticalVelocity;
 
-            // un comment for frontflip MLG XD _characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeed * Time.deltaTime);
+            // un comment for frontflip MLG XD
+            //_characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeed * Time.deltaTime);
             _characterController.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
         }
         if (dodgeDurationRemaining <= 0)
         {
-            isDodging = false;
+            playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
-
         }
 
     }
 
     private void HandleLateralMovement() //(Horizontal)
     {
-        bool isGrounded = IsGrounded();
-
-        float lateralAcceleration = _playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = _playerLocomotionInput.SprintToggledOn ? walkSpeed : sprintSpeed;
+        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
+        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? walkSpeed : sprintSpeed;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
-        Vector3 movementDirection = cameraForwardXZ * _playerLocomotionInput.MovementInput.y + cameraRightXZ * _playerLocomotionInput.MovementInput.x;
+        Vector3 movementDirection = cameraForwardXZ * playerLocomotionInput.MovementInput.y + cameraRightXZ * playerLocomotionInput.MovementInput.x;
 
         Vector3 movementDelta = movementDirection * lateralAcceleration;
         Vector3 newVelocity = _characterController.velocity + movementDelta;
@@ -150,13 +174,15 @@ public class PlayerController : MonoBehaviour
         newVelocity.y = _verticalVelocity;
 
         _characterController.Move(newVelocity * Time.deltaTime);
+
+        if(!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
+            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
     }
 
     private void HandleVerticalMovement()
     {
-        bool isGrounded = IsGrounded();
 
-        if (isGrounded && _verticalVelocity < 0f)
+        if (playerState.IsGrounded && _verticalVelocity < 0f)
         {
             _verticalVelocity = 0f;
         }
@@ -166,9 +192,9 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayerToTarget()
     {
-        Vector2 inputDir = _playerLocomotionInput.MovementInput;
+        Vector2 inputDir = playerLocomotionInput.MovementInput;
 
-        if (inputDir != Vector2.zero && !isDodging) // calculates rotation for player depending input (8D movement)
+        if (inputDir != Vector2.zero && playerState.CurrentMoveState != MoveState.Dodging) // calculates rotation for player depending input (8D movement)
         {
             float cameraY = _playerCamera.transform.eulerAngles.y;
 
@@ -180,8 +206,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsGrounded()
+    private void GroundedCheck()
     {
-        return _characterController.isGrounded;
+        playerState.IsGrounded = _characterController.isGrounded;
+      //  return _characterController.isGrounded;
     }
 }
