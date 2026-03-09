@@ -1,11 +1,24 @@
+using Unity.Behavior;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(BehaviorGraphAgent))]
 public class Enemy_Damage : MonoBehaviour, IDamageable
 {
     // Made by Lukas and Anton A 2026-03-06
     [field: SerializeField] public int MaxHealth { get; set; }
     [HideInInspector] public int Health { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
+    private Animator animator;
+    private BehaviorGraphAgent behaviorGraphAgent;
+
+    private Rigidbody characterRigidbody;
+    private Rigidbody[] characterLimbs;
+    private CharacterJoint[] characterJoints;
+    private CharacterController characterController;
+
+    [SerializeField] GameObject skeletonPilePrefab = null;
 
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
@@ -17,6 +30,8 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
+            Debug.Log($"Health {Health}/{MaxHealth}");
+            CanTakeDamage = false;
             if (Health <= 0)
             {
                 Death();
@@ -26,8 +41,17 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        // Implement death behavior, such as playing an animation, dropping loot, etc.
-        Destroy(gameObject); // Example: destroy the enemy game object
+        if (skeletonPilePrefab != null)
+        {
+            Instantiate(skeletonPilePrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            animator.enabled = false;
+            behaviorGraphAgent.enabled = false;
+            EnableRagdoll();
+
+        }
     }
 
     // TO BE REMOVED OR CHANGED
@@ -47,5 +71,49 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
     private void Start()
     {
         Health = MaxHealth;
+        animator = GetComponent<Animator>();
+        behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        characterController = GetComponent<CharacterController>();
+        characterRigidbody = GetComponent<Rigidbody>();
+        characterLimbs = GetComponentsInChildren<Rigidbody>();
+        characterJoints = GetComponentsInChildren<CharacterJoint>();
+
+        DisableRagdoll();
+        // foreach (var joint in characterJoints)
+        // {
+        //     joint.breakForce = 0;
+        //     joint.breakTorque = 0;
+        // }
+
+
     }
+
+    private void EnableRagdoll()
+    {
+        foreach (var characterLimb in characterLimbs)
+        {
+            characterLimb.isKinematic = false;
+            characterLimb.detectCollisions = true;
+        }
+
+        characterRigidbody.useGravity = true;
+        characterRigidbody.isKinematic = true;
+        characterController.enabled = false;
+
+    }
+
+    private void DisableRagdoll()
+    {
+        foreach (var characterLimb in characterLimbs)
+        {
+            characterLimb.isKinematic = true;
+            characterLimb.detectCollisions = false;
+        }
+
+        characterRigidbody.useGravity = true;
+        characterRigidbody.isKinematic = true;
+        characterController.enabled = true;
+    }
+
+
 }
