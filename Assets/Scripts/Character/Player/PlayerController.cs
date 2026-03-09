@@ -13,10 +13,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
-    public float walkSpeed = 6f;
+    public float walkSpeedMultiplier = 0f;
 
     public float sprintAcceleration = 0.5f;
-    public float sprintSpeed = 9f;
+    public float sprintSpeedMultiplier = 0f;
 
     public float drag = 0.1f;
     public float gravity = 25f;
@@ -24,15 +24,20 @@ public class PlayerController : MonoBehaviour
 
     public float movingThreshold = 0.01f;
 
+    public float AnimatorSmoothing = 5f;
+
+
     [Header("Dodge")]
     public float dodgeDuration = 0.2f;
-    public float dodgeSpeed = 8f;
+    public float dodgeSpeedMultiplier = 0f;
     public float dodgeAcceleration = 1f;
     private float dodgeDurationRemaining;
     public float dodgeCoolDown = 1f;
     private float dodgeCoolDownRemaining;
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
+
+    private float currentInputMagnitude = 0;
 
 
     private float _verticalVelocity = 0f;
@@ -59,22 +64,25 @@ public class PlayerController : MonoBehaviour
 
         HandleVerticalMovement();
 
+        if(!playerState.InActionState())
+        CalculateInputMagnitude();
+
         if (playerState.CurrentMoveState != MoveState.Dodging) // if not dodging, allow normal movement
             HandleLateralMovement();
 
         //Idling?
         if(playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
         { playerState.SetMoveState(MoveState.Idling);}
+
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
-        PlayerAnimator.SetFloat("Y", 0);
 
         //dodging?
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
+        PlayerAnimator.SetFloat("Y", currentInputMagnitude);
 
         if (!isIdling)
         {
             RotatePlayerToTarget();
-            PlayerAnimator.SetFloat("Y", 1);
 
             //Dodgeing
             if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState() )
@@ -96,8 +104,6 @@ public class PlayerController : MonoBehaviour
         {
             Dodge();
         }
-
-       
        
         int AttackHash = Animator.StringToHash("Attacking");
 
@@ -120,10 +126,18 @@ public class PlayerController : MonoBehaviour
     {
         PlayerAnimator.ResetTrigger("Dodge");
         PlayerAnimator.ResetTrigger("LightAttack");
-
-        
     }
 
+    private void CalculateInputMagnitude()
+    {
+        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
+
+        if(playerState.CurrentMoveState == MoveState.Idling)
+        {
+            targetMagnitude = 0f;
+        }
+        currentInputMagnitude = Mathf.MoveTowards(currentInputMagnitude, targetMagnitude, Time.deltaTime * AnimatorSmoothing);
+    }
 
     private void Dodge()
     {
@@ -140,12 +154,12 @@ public class PlayerController : MonoBehaviour
             Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
             Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-            newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeed);
+            newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeedMultiplier);
             newVelocity.y = _verticalVelocity;
 
             // un comment for frontflip MLG XD
-            //_characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeed * Time.deltaTime);
-            _characterController.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+            _characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(dodgeDirection * dodgeSpeedMultiplier * Time.deltaTime);
         }
         if (dodgeDurationRemaining <= 0)
         {
@@ -158,7 +172,7 @@ public class PlayerController : MonoBehaviour
     private void HandleLateralMovement() //(Horizontal)
     {
         float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? walkSpeed : sprintSpeed;
+        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? walkSpeedMultiplier : sprintSpeedMultiplier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -176,7 +190,7 @@ public class PlayerController : MonoBehaviour
         _characterController.Move(newVelocity * Time.deltaTime);
 
         if(!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
-            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
+            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Walking : MoveState.Sprinting) : MoveState.Idling);
     }
 
     private void HandleVerticalMovement()

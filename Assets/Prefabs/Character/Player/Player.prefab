@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1529693946768076600}
   - component: {fileID: 7333838977578531082}
   - component: {fileID: 7272143101240945305}
+  - component: {fileID: 7168635014415890073}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -51,7 +52,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 61a151ca6370c97408b8d761ea09e825, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -142,15 +143,16 @@ MonoBehaviour:
   _characterController: {fileID: 7239316587428880690}
   _playerCamera: {fileID: 0}
   walkAcceleration: 0.25
-  walkSpeed: 3
+  walkSpeedMultiplier: 0
   sprintAcceleration: 0.5
-  sprintSpeed: 6
+  sprintSpeedMultiplier: 0
   drag: 20
-  gravity: 25
+  gravity: 15
   playerModelRotationSpeed: 14
   movingThreshold: 0.01
-  dodgeDuration: 0.4
-  dodgeSpeed: 8
+  AnimatorSmoothing: 5
+  dodgeDuration: 0.6
+  dodgeSpeedMultiplier: 0
   dodgeAcceleration: 1
   dodgeCoolDown: 1.15
   dodgeDelay: 0.1
@@ -167,6 +169,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 6208793167867802212}
+--- !u!114 &7168635014415890073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22076c2d3857ef4789f887d2d2788d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentMoveState>k__BackingField: 0
+  IsGrounded: 0
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
