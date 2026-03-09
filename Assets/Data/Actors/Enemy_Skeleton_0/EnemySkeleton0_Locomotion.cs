@@ -7,14 +7,15 @@ using UnityEngine.AI;
 [RequireComponent(typeof(BehaviorGraphAgent))]
 public class EnemyLocomotion : MonoBehaviour
 {
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         behaviorAgent = GetComponent<BehaviorGraphAgent>();
         if (behaviorAgent.BlackboardReference.GetVariable("attackRadius", out BlackboardVariable<float> attackRadius))
-            attackRadius.SetValueWithoutNotify(navAgent.stoppingDistance);
-
+        {
+            attackRadius.Value = navAgent.stoppingDistance;
+        }
 
     }
 
