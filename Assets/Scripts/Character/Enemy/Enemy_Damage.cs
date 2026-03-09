@@ -16,6 +16,7 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
     private Rigidbody characterRigidbody;
     private Rigidbody[] characterLimbs;
     private CharacterJoint[] characterJoints;
+    private CharacterController characterController;
 
     [SerializeField] GameObject skeletonPilePrefab = null;
 
@@ -49,6 +50,7 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
             animator.enabled = false;
             behaviorGraphAgent.enabled = false;
             EnableRagdoll();
+
         }
     }
 
@@ -71,13 +73,16 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
         Health = MaxHealth;
         animator = GetComponent<Animator>();
         behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        characterController = GetComponent<CharacterController>();
         characterRigidbody = GetComponent<Rigidbody>();
         characterLimbs = GetComponentsInChildren<Rigidbody>();
         characterJoints = GetComponentsInChildren<CharacterJoint>();
+
         DisableRagdoll();
         // foreach (var joint in characterJoints)
         // {
         //     joint.breakForce = 0;
+        //     joint.breakTorque = 0;
         // }
 
 
@@ -93,6 +98,8 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
 
         characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
+        characterController.enabled = false;
+
     }
 
     private void DisableRagdoll()
@@ -105,5 +112,8 @@ public class Enemy_Damage : MonoBehaviour, IDamageable
 
         characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
+        characterController.enabled = true;
     }
+
+
 }
