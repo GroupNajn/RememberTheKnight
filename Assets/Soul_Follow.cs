@@ -6,18 +6,20 @@ using UnityEngine;
 public class Soul_Follow : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // Script by Henric 2026-03-14
     [Header("Target")]
     [SerializeField] GameObject Player;
-    [Header("Follow_Distance")]
+
     [SerializeField] float followRange;
-    [Header("Follow_Speed")]
+
     [SerializeField] float followSpeed;
-    [Header("Hover_Speed")]
+
     [SerializeField] float hoverSpeed;
-    [Header("Hover_Height")]
+
     [SerializeField] float hoverHeight;
-    [Header("Drag")]
-    [SerializeField] float drag;
+
+    [SerializeField] float drag; // DeAcceleration drag
     private float hoverOffset;
     private Vector3 dirVector;
     private Vector3 distanceVector;
@@ -44,7 +46,7 @@ public class Soul_Follow : MonoBehaviour
         }
         else
         {
-            velocity *= Mathf.Exp(-drag * Time.deltaTime);
+            velocity *= Mathf.Exp(-drag * Time.deltaTime); // A smooth exponential curve in decrease of acceleration
         }
 
         transform.position += velocity * Time.deltaTime;
@@ -59,10 +61,9 @@ public class Soul_Follow : MonoBehaviour
     }
 
     private void HoverSinWave()
-    {
-        float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * hoverHeight;
+    {                                                               // Hoverheight * 0.01f to decrease the scale of the sinus wave
+        float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.001f);
         transform.position += new Vector3(0, y, 0);
-       
     }
 
 
