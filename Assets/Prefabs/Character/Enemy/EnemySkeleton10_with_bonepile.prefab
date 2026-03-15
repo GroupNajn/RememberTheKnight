@@ -2280,6 +2280,7 @@ GameObject:
   - component: {fileID: 9153973387023451552}
   - component: {fileID: 2132188571033206394}
   - component: {fileID: 1098981082459674052}
+  - component: {fileID: 2939820079067831552}
   m_Layer: 8
   m_Name: EnemySkeleton10_with_bonepile
   m_TagString: Untagged
@@ -2380,11 +2381,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Graph: {fileID: -8159058737499799650, guid: 7ce38708773451a33a5a5c6e64822caf, type: 2}
+  m_Graph: {fileID: -8159058737499799650, guid: 8ced71e2183b39466a059aa59d1500f7, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 8685798969299173851
   - rid: 8685798969299173858
   - rid: 7708414523334197248
+  - rid: 8685799151979987008
   m_OriginalGraph: {fileID: -8159058737499799650, guid: 7ce38708773451a33a5a5c6e64822caf, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -2416,6 +2418,14 @@ MonoBehaviour:
           m_Value1: 8035434306340229786
         Name: chaseRadius
         m_Value: 10
+    - rid: 8685799151979987008
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5146480717081897350
+          m_Value1: 13461439846945536860
+        Name: threatRadius
+        m_Value: 20
 --- !u!114 &442899528434524018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2441,7 +2451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
-  skeletonPilePrefab: {fileID: 8077119868138552059, guid: 899a043753bdddb42b04f658dae783f3, type: 3}
+  onDeath: {fileID: 2939820079067831552}
   damageCooldown: 2
 --- !u!143 &2132188571033206394
 CharacterController:
@@ -2495,6 +2505,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2939820079067831552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762209123120097936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cf575b33e850de1a3660cb0f1b6d8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8077119868138552059, guid: 899a043753bdddb42b04f658dae783f3, type: 3}
 --- !u!1 &5851470598922369256
 GameObject:
   m_ObjectHideFlags: 0
