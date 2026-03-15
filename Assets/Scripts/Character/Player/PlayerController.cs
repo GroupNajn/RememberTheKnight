@@ -1,7 +1,13 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Playables;
-public class PlayerController : MonoBehaviour
+
+public interface IKnockbackable
+{
+    void ApplyKnockback(float force, float radius, Vector3 pos);
+}
+
+public class PlayerController : MonoBehaviour, IKnockbackable
 {
 
     // Made by Jonathan Blixt
@@ -46,8 +52,11 @@ public class PlayerController : MonoBehaviour
     private PlayerLocomotion playerLocomotionInput;
     private PlayerStates playerState;
 
-
-    //private bool isDodging = false;
+    [Header("Knockback")]
+    public Transform knockbackCalculationPos;
+    private bool isKnockedback = false;
+    public float knockbackResistance = 5f;
+    public Vector3 knockbackForce = Vector3.zero;
     #endregion
 
     private void Awake()
@@ -59,20 +68,39 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        if (knockbackForce.magnitude > 0.1)
+        {
+            if (playerState.CurrentMoveState != MoveState.Knockedback)
+            {
+                playerState.SetMoveState(MoveState.Knockedback);
+                isKnockedback = true;
+            }
+
+            _characterController.Move(knockbackForce * Time.deltaTime);
+            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * knockbackResistance);
+        }
+        else if (knockbackForce.magnitude <= 0.1 && isKnockedback)
+        {
+            isKnockedback = false;
+            knockbackForce = Vector3.zero;
+            playerState.SetMoveState(MoveState.Idling);
+        }
+
         //Grounded?
         GroundedCheck();
 
         HandleVerticalMovement();
 
-        if(!playerState.InActionState())
-        CalculateInputMagnitude();
+        if (!playerState.InActionState())
+            CalculateInputMagnitude();
 
-        if (playerState.CurrentMoveState != MoveState.Dodging) // if not dodging, allow normal movement
+        if (playerState.CurrentMoveState != MoveState.Dodging && playerState.CurrentMoveState != MoveState.Knockedback) // if not dodging and not knockedBack, allow normal movement
             HandleLateralMovement();
 
         //Idling?
-        if(playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
-        { playerState.SetMoveState(MoveState.Idling);}
+        if (playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
+        { playerState.SetMoveState(MoveState.Idling); }
 
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
 
@@ -85,7 +113,7 @@ public class PlayerController : MonoBehaviour
             RotatePlayerToTarget();
 
             //Dodgeing
-            if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState() )
+            if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState())
             {
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
@@ -104,12 +132,12 @@ public class PlayerController : MonoBehaviour
         {
             Dodge();
         }
-       
+
         int AttackHash = Animator.StringToHash("Attacking");
 
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0)  && stateInfo.tagHash != AttackHash)
+        if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != AttackHash)
         {
             Debug.Log("Attack animation finished, returning to idling");
             playerState.SetMoveState(MoveState.Idling);
@@ -132,7 +160,7 @@ public class PlayerController : MonoBehaviour
     {
         float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
 
-        if(playerState.CurrentMoveState == MoveState.Idling)
+        if (playerState.CurrentMoveState == MoveState.Idling)
         {
             targetMagnitude = 0f;
         }
@@ -189,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
         _characterController.Move(newVelocity * Time.deltaTime);
 
-        if(!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
+        if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
             playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Walking : MoveState.Sprinting) : MoveState.Idling);
     }
 
@@ -220,9 +248,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ApplyKnockback(float force, float radius, Vector3 pos)
+    {
+        
+        float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
+        Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
+        knockbackForce = knockbackDirection * calculatedForce;
+        Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
+    }
+
+
     private void GroundedCheck()
     {
         playerState.IsGrounded = _characterController.isGrounded;
-      //  return _characterController.isGrounded;
     }
 }
