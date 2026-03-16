@@ -3,6 +3,7 @@ using UnityEngine;
 using Unity.Cinemachine;
 using System;
 using System.Linq;
+using Unity.Behavior;
 
 public class TargetLockHandler : MonoBehaviour
 {
@@ -41,9 +42,10 @@ public class TargetLockHandler : MonoBehaviour
             }
         }
 
-        if (isLockedOn && currentTarget == null)
+        if (isLockedOn)
         {
-            Unlock();
+            if (currentTarget == null) { Unlock(); return; }
+            if (!currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled) { Unlock(); }
         }
 
     }
@@ -63,13 +65,21 @@ public class TargetLockHandler : MonoBehaviour
 
     void FindTarget()
     {
-        Collider[] enemies = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
+        List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
+        List<Collider> enemies = new();
 
-        Debug.Log("Enemies found: " + enemies.Length);
+        enemiesUnfiltered.ForEach(enemy =>
+        {
+            var agent = enemy.gameObject.GetComponent<BehaviorGraphAgent>();
+            if (agent != null && agent.enabled)
+                enemies.Add(enemy);
+        });
+
+        Debug.Log("Enemies found: " + enemies.Count);
         float closestDistance = Mathf.Infinity;
         Transform bestTarget = null;
 
-        foreach(Collider enemy in enemies)
+        foreach (Collider enemy in enemies)
         {
             float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
 
