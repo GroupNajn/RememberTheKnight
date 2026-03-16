@@ -11,8 +11,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
     private Animator playerAnimator;
 
 
-    [field: SerializeField] public int MaxHealth { get; private set; }
-    [field: SerializeField] public int Health { get; set; }
+    [field: SerializeField] public float MaxHealth { get; private set; }
+    [field: SerializeField] public float Health { get; set; }
 
     [Header("Stats")]
     public float walkSpeedMultiplier = 0f;
@@ -57,7 +57,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         playerAnimator.SetBool("IsDead", isDead);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (CanTakeDamage && !isDead)
         {
