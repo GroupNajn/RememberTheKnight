@@ -16,26 +16,25 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private GameObject _playerCamera;
+    PlayerStats playerStats;
     PlayerCombatManager playerCombatManager;
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
-    public float walkSpeedMultiplier = 0f;
+   // public float walkSpeedMultiplier = 0f;
 
     public float sprintAcceleration = 0.5f;
-    public float sprintSpeedMultiplier = 0f;
+    //public float sprintSpeedMultiplier = 0f;
 
     public float drag = 0.1f;
-    public float gravity = 25f;
+    //public float gravity = 25f;
     private float currentRotationSpeed
     {
-        get { return playerCombatManager.isAttackRotationSpeed ? attackRotationSpeed : normalRotationSpeed; }
-        set { playerCombatManager.isAttackRotationSpeed = value == attackRotationSpeed; }
+        get { return playerCombatManager.isAttackRotationSpeed ? playerStats.attackRotationSpeed : playerStats.normalRotationSpeed; }
+        set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
     }
-    public float normalRotationSpeed = 10f;
-    public float attackRotationSpeed = 5f;
-
-
+    //public float normalRotationSpeed = 10f;
+    //public float attackRotationSpeed = 5f;
 
     public float movingThreshold = 0.01f;
 
@@ -43,11 +42,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
 
     [Header("Dodge")]
-    public float dodgeDuration = 0.2f;
-    public float dodgeSpeedMultiplier = 0f;
+    //public float dodgeDuration = 0.2f;
+    //public float dodgeSpeedMultiplier = 0f;
     public float dodgeAcceleration = 1f;
     private float dodgeDurationRemaining;
-    public float dodgeCoolDown = 1f;
+    //public float dodgeCoolDown = 1f;
     private float dodgeCoolDownRemaining;
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
@@ -64,7 +63,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     private bool isKnockedback = false;
-    public float knockbackResistance = 5f;
+   // public float knockbackResistance = 5f;
     public Vector3 knockbackForce = Vector3.zero;
     #endregion
 
@@ -74,6 +73,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         PlayerAnimator = GetComponent<Animator>();
         playerState = GetComponent<PlayerStates>();
         playerCombatManager = PlayerCombatManager.Instance;
+        playerStats = GetComponent<PlayerStats>();
     }
 
 
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
 
             _characterController.Move(knockbackForce * Time.deltaTime);
-            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * knockbackResistance);
+            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.knockbackResistance);
         }
         else if (knockbackForce.magnitude <= 0.1 && isKnockedback)
         {
@@ -128,8 +128,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             {
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
-                dodgeDurationRemaining = dodgeDuration;
-                dodgeCoolDownRemaining = dodgeCoolDown;
+                dodgeDurationRemaining = playerStats.dodgeDuration;
+                dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
                 Dodge();
             }
         }
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void Dodge()
     {
-        if (dodgeDurationRemaining == dodgeDuration)
+        if (dodgeDurationRemaining == playerStats.dodgeDuration)
         {
             Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
             dodgeDirection = playerRotation * transform.forward;
@@ -193,17 +193,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         dodgeDurationRemaining -= Time.deltaTime;
 
 
-        if (dodgeDurationRemaining <= dodgeDuration - dodgeDelay)
+        if (dodgeDurationRemaining <= playerStats.dodgeDuration - dodgeDelay)
         {
             Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
             Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-            newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeedMultiplier);
+            newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
             newVelocity.y = _verticalVelocity;
 
             // un comment for frontflip MLG XD
-            _characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeedMultiplier * Time.deltaTime);
-            _characterController.Move(dodgeDirection * dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
         }
         if (dodgeDurationRemaining <= 0)
         {
@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void HandleLateralMovement() //(Horizontal)
     {
         float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? walkSpeedMultiplier : sprintSpeedMultiplier;
+        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.walkSpeedMultiplier : playerStats.sprintSpeedMultiplier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -244,7 +244,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             _verticalVelocity = 0f;
         }
-        _verticalVelocity -= gravity * Time.deltaTime;
+        _verticalVelocity -= playerStats.gravity * Time.deltaTime;
     }
 
 

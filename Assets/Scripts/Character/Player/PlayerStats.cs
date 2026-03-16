@@ -1,14 +1,26 @@
 using UnityEngine;
 
-public class PlayerDamage : MonoBehaviour, IDamageable
+public class PlayerStats : MonoBehaviour, IDamageable
 {
     // Made by Lukas 2026-03-14
-    // Updated by Lukas and Jonatan 2026-03-16
+    // Updated by Lukas and Jonatan and Wilmer 2026-03-16
 
     [field: SerializeField] public int MaxHealth { get; private set; }
 
     private PlayerCombatManager playerCombatManager;
     private Animator playerAnimator;
+    [Header("Stats")]
+    public float walkSpeedMultiplier = 0f;
+    public float sprintSpeedMultiplier = 0f;
+    public float gravity = 25f;
+    public float normalRotationSpeed = 10f;
+    public float attackRotationSpeed = 5f;
+    public float dodgeSpeedMultiplier = 0f;
+    public float dodgeCoolDown = 1f;
+    public float dodgeDuration = 0.2f;
+
+    public float knockbackResistance = 5f;
+
     // [HideInInspector]
     [field: SerializeField] public int Health { get; set; }
     [HideInInspector]
@@ -29,7 +41,6 @@ public class PlayerDamage : MonoBehaviour, IDamageable
 
     private void Update()
     {
-
         if (Health <= 0)
         {
             isDead = true;
