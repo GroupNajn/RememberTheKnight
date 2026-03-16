@@ -10,7 +10,8 @@ public enum MoveState
     Falling = 4,
     Dieing = 5,
     Attacking = 6,
-    BackStepping = 7
+    BackStepping = 7,
+    Knockedback = 8
 }
 
 public class PlayerStates : MonoBehaviour
@@ -22,32 +23,17 @@ public class PlayerStates : MonoBehaviour
     {
         CurrentMoveState = playerMovementState;
     }
-
-    //public bool InGroundedState()
-    //{
-    //    return IsStateGroundedState(CurrentMoveState);
-    //}
-
-    //public bool IsStateGroundedState(MoveState movementState) // retutrue if the movement state is one of the grounded states, otherwise return false
-    //{
-    //    return movementState == MoveState.Idling ||
-    //           movementState == MoveState.Walking ||
-    //           movementState == MoveState.Sprinting ||
-    //           movementState == MoveState.Dodging ||
-    //           movementState == MoveState.Dieing ||
-    //           movementState == MoveState.Attacking ||
-    //           movementState == MoveState.BackStepping;
-    //}
     public bool InActionState()
     {
         return IsStateActionState(CurrentMoveState);
     }
-    public bool IsStateActionState(MoveState movementState) // retutrue if the movement state is one of the grounded states, otherwise return false
+    public bool IsStateActionState(MoveState movementState) // retun true if the movement state is one of the grounded states, otherwise return false
     {
         return
                movementState == MoveState.Dodging ||
                movementState == MoveState.Dieing ||
                movementState == MoveState.Attacking ||
-               movementState == MoveState.BackStepping;
+               movementState == MoveState.BackStepping ||
+               movementState == MoveState.Knockedback;
     }
 }
