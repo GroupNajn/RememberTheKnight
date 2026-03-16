@@ -17,21 +17,22 @@ public class ExplotionTest : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-
-        if (time > explotionInterval && Vector3.Distance(transform.position, player.transform.position) < explotionRadius)
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        if (time >= explotionInterval && distanceToPlayer <= explotionRadius)
         {
+            Debug.Log(distanceToPlayer);
             time = 0;
             bool playerHit = false;
+
             for (int i = 0; i < hitchecks.Length; i++)
             {
                 Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
 
-                if (Physics.Raycast(ray, out RaycastHit hit, explotionRadius))
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     CharacterController cc = hit.collider.GetComponent<CharacterController>();
 
-
-                    if (cc != null)
+                    if (cc != null || distanceToPlayer <= 1f)
                     {
                         playerHit = true;
                         Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.green, explotionInterval);

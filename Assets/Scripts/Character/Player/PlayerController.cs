@@ -109,7 +109,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         //IDLING?
         if (playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
-        { playerState.SetMoveState(MoveState.Idling); }
+        { playerState.SetMoveState(MoveState.Idling);
+          playerLocomotionInput.SprintToggledOn = false; // untoggle sprint if player stops moving
+        }
 
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
 
@@ -214,8 +216,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void HandleLateralMovement() //(Horizontal)
     {
 
-        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.walkSpeedMultiplier : playerStats.sprintSpeedMultiplier;
+        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration: walkAcceleration  ;
+        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -233,7 +235,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         _characterController.Move(newVelocity * Time.deltaTime);
 
         if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
-            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Walking : MoveState.Sprinting) : MoveState.Idling);
+            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
     }
 
     private void HandleVerticalMovement()
@@ -268,7 +270,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         knockbackForce = knockbackDirection * calculatedForce;
-        Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
+     //   Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
     }
 
 
