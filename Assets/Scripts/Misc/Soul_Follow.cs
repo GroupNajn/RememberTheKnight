@@ -19,18 +19,20 @@ public class Soul_Follow : MonoBehaviour
 
     [SerializeField] float hoverHeight;
 
+    [SerializeField] private Event_System EventSystem;
     [SerializeField] float drag; // DeAcceleration drag
     private float hoverOffset;
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
     private Transform transform;
-
     void Start()
     {
         transform = GetComponent<Transform>();
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
     }
+
+   
 
     // Update is called once per frame
     void Update()
