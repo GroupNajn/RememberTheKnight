@@ -4,7 +4,7 @@ public class PlayerCombatManager : MonoBehaviour
 {
     public static PlayerCombatManager Instance { get; private set; }
 
-    [SerializeField] Animator animator;
+    Animator animator;
 
     [SerializeField] public bool isInvulnerable = false;
     [SerializeField] public bool canCombo = false;
@@ -12,7 +12,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -21,22 +21,20 @@ public class PlayerCombatManager : MonoBehaviour
             Instance = this;
         }
 
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
+        animator = GetComponent<Animator>();
+
     }
     public void EnableInvulnerable()
     {
         isInvulnerable = true;
 
-       // Debug.Log("Player is now invulnerable.");
+        // Debug.Log("Player is now invulnerable.");
     }
 
     public void DisableInvulnerable()
     {
         isInvulnerable = false;
-      //  Debug.Log("Player is no longer invulnerable.");
+        //  Debug.Log("Player is no longer invulnerable.");
     }
 
     public void EnableCanCombo()

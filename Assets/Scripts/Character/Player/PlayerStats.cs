@@ -5,10 +5,15 @@ public class PlayerStats : MonoBehaviour, IDamageable
     // Made by Lukas 2026-03-14
     // Updated by Lukas and Jonatan and Wilmer 2026-03-16
 
-    [field: SerializeField] public int MaxHealth { get; private set; }
+
 
     private PlayerCombatManager playerCombatManager;
     private Animator playerAnimator;
+
+
+    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField] public int Health { get; set; }
+
     [Header("Stats")]
     public float walkSpeedMultiplier = 0f;
     public float sprintSpeedMultiplier = 0f;
@@ -22,7 +27,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float knockbackResistance = 5f;
 
     // [HideInInspector]
-    [field: SerializeField] public int Health { get; set; }
+
     [HideInInspector]
     public bool CanTakeDamage
     {
