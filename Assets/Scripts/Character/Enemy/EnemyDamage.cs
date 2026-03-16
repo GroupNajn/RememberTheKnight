@@ -11,8 +11,8 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     [HideInInspector] public int Health { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
-    public Vector3 Position => position;
-    Vector3 position;
+    public Vector3 Position => sendPosition;
+    Vector3 sendPosition;
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
@@ -35,10 +35,11 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     public void Death()
     {
         Transform transform = GetComponent<Transform>();
-        position = transform.position;
-        EventSystem.OnEnemyKilled?.Invoke(this);
-        onDeath?.Trigger();
+        sendPosition = transform.position;
        
+        onDeath?.Trigger();
+        EventSystem.OnEnemyKilled?.Invoke(this);
+
     }
 
     // TO BE REMOVED OR CHANGED
