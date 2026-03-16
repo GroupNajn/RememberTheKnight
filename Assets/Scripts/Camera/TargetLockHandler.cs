@@ -44,8 +44,15 @@ public class TargetLockHandler : MonoBehaviour
 
         if (isLockedOn)
         {
-            if (currentTarget == null) { Unlock(); return; }
-            if (!currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled) { Unlock(); }
+            if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
+            {
+                FindTarget();
+            }
+            if (currentTarget == null)
+            {
+                FindTarget();
+            }
+            if (currentTarget == null) { Unlock(); }
         }
 
     }
@@ -90,13 +97,10 @@ public class TargetLockHandler : MonoBehaviour
             }
         }
 
-        if (bestTarget != null)
-        {
-            //Transform enemyLockOn = bestTarget.gameObject.GetComponentInChildren<Transform>().Find("EnemyLockOn");
 
-            currentTarget = bestTarget;
-            AddTargets();
-        }
+        currentTarget = bestTarget;
+        AddTargets();
+
     }
 
     void AddTargets()
