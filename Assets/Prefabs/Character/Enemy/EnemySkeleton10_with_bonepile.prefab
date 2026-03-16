@@ -2339,10 +2339,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Eyes'\n\tTransform 'Eyes'\n\tFrom animation
-    clip 'core_main_idle_01'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2356,12 +2353,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 5762209123120097936}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.25
-  m_Speed: 0.75
-  m_Acceleration: 6
+  m_Radius: 0.5
+  m_Speed: 4
+  m_Acceleration: 2
   avoidancePriority: 50
-  m_AngularSpeed: 90
-  m_StoppingDistance: 2.5
+  m_AngularSpeed: 180
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2387,7 +2384,7 @@ MonoBehaviour:
   - rid: 8685798969299173858
   - rid: 7708414523334197248
   - rid: 8685799151979987008
-  m_OriginalGraph: {fileID: -8159058737499799650, guid: 7ce38708773451a33a5a5c6e64822caf, type: 2}
+  m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -2401,7 +2398,7 @@ MonoBehaviour:
           m_Value1: 11117902613194406041
         Name: Target
         m_Value: {fileID: 0}
-        m_SharedVariablesRuntimeAsset: {fileID: -3115509411679040593, guid: 7ce38708773451a33a5a5c6e64822caf, type: 2}
+        m_SharedVariablesRuntimeAsset: {fileID: 0}
     - rid: 8685798969299173851
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2451,7 +2448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
-  onDeath: {fileID: 2939820079067831552}
   damageCooldown: 2
 --- !u!143 &2132188571033206394
 CharacterController:
