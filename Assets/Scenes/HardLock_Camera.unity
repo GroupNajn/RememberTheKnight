@@ -324,6 +324,25 @@ MonoBehaviour:
     Weight: 1
     Radius: 1
   m_LegacyTargets: []
+--- !u!1 &1128628746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6590469975317091890, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+  m_PrefabInstance: {fileID: 1342443994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1128628754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128628746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89c6e2ffa88b0847baa079584a23259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockHandler: {fileID: 398393094}
+  rotationSpeed: 10
 --- !u!1 &1160664421
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +556,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6590469975317091890, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1128628754}
   m_SourcePrefab: {fileID: 100100000, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
 --- !u!1 &1512563522
 GameObject:
@@ -685,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FramingMode: 2
-  FramingSize: 0.8
+  FramingSize: 1
   CenterOffset: {x: 0, y: 0}
   Damping: 2
   SizeAdjustment: 2
