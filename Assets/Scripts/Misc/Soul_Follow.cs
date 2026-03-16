@@ -30,6 +30,9 @@ public class Soul_Follow : MonoBehaviour
     {
         transform = GetComponent<Transform>();
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
+
+        if (Player == null) return;
+            Player = GameObject.FindGameObjectWithTag("Player");
     }
 
    
@@ -52,6 +55,11 @@ public class Soul_Follow : MonoBehaviour
         }
 
         transform.position += velocity * Time.deltaTime;
+    }
+
+    public void Initialize(GameObject player)
+    {
+        Player = player;
     }
 
     private bool CanFollow()
