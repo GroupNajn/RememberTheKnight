@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private GameObject _playerCamera;
+    PlayerCombatManager playerCombatManager;
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
@@ -26,7 +27,15 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     public float drag = 0.1f;
     public float gravity = 25f;
-    public float playerModelRotationSpeed = 10f;
+    private float currentRotationSpeed
+    {
+        get { return playerCombatManager.isAttackRotationSpeed ? attackRotationSpeed : normalRotationSpeed; }
+        set { playerCombatManager.isAttackRotationSpeed = value == attackRotationSpeed; }
+    }
+    public float normalRotationSpeed = 10f;
+    public float attackRotationSpeed = 5f;
+
+
 
     public float movingThreshold = 0.01f;
 
@@ -59,12 +68,14 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     public Vector3 knockbackForce = Vector3.zero;
     #endregion
 
-    private void Awake()
+    private void Start()
     {
         playerLocomotionInput = GetComponent<PlayerLocomotion>();
         PlayerAnimator = GetComponent<Animator>();
         playerState = GetComponent<PlayerStates>();
+        playerCombatManager = PlayerCombatManager.Instance;
     }
+
 
     private void Update()
     {
@@ -92,7 +103,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         HandleVerticalMovement();
 
-        if (!playerState.InActionState())
+      //  if (!playerState.InActionState())
             CalculateInputMagnitude();
 
         if (playerState.CurrentMoveState != MoveState.Dodging && playerState.CurrentMoveState != MoveState.Knockedback) // if not dodging and not knockedBack, allow normal movement
@@ -147,6 +158,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             playerState.SetMoveState(MoveState.Attacking);
             PlayerAnimator.SetTrigger("LightAttack");
+        }
+        else if (playerLocomotionInput.AttackPressed && playerState.CurrentMoveState == MoveState.Attacking && playerCombatManager.canCombo == true)
+        {
+            PlayerAnimator.SetTrigger("IsCombo");
+            playerCombatManager.canCombo = false;
         }
     }
 
@@ -244,13 +260,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
             Quaternion targetRotation = Quaternion.Euler(0f, cameraY + movementAngle, 0f);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, playerModelRotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
         }
     }
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
-        
+
         float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         knockbackForce = knockbackDirection * calculatedForce;
