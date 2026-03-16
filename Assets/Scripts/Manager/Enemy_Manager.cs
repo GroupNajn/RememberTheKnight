@@ -1,14 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Managers/Enemy Manager")]
 
-public class Enemy_Manager : ScriptableObject 
+public class Enemy_Manager : MonoBehaviour 
 {
+    public static Enemy_Manager instace;
     [SerializeField] Event_System EventSystem;
     private HashSet<EnemyDamage> Enemies = new HashSet<EnemyDamage>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-   
+
+
+    public void Start()
+    {
+        
+    }
+
+    public void Update()
+    {
+        
+    }
 
     private void OnEnable()
     {
@@ -18,7 +28,8 @@ public class Enemy_Manager : ScriptableObject
 
     private void OnDisable()
     {
-        
+        EventSystem.OnEnemySpawn -= RegisterEnemy;
+        EventSystem.OnEnemyKilled -= RemoveEnemy;
     }
 
 

@@ -2,10 +2,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-[CreateAssetMenu(menuName = "Managers/Loot Manager")]
 
-public class LootManager : ScriptableObject
+
+public  class LootManager : MonoBehaviour
 {
+    public static LootManager instance;
     [SerializeField] Event_System EventSystem;
     // Script by Henric 2026-03-15
     [Header("Loot_Table")]
@@ -20,15 +21,20 @@ public class LootManager : ScriptableObject
     /* These Variables are going to be used in similar method to calculate the odds of 
        Multipule items being dropped. 
     */
-    //void Start()
-    //{
-    //    oneItemDropChance = 80.0f;
-    //    twoItemDropChance = 15.0f;
-    //    threeItemDropChance = 5.0f;
+    void Start()
+    {
+        oneItemDropChance = 80.0f;
+        twoItemDropChance = 15.0f;
+        threeItemDropChance = 5.0f;
+        droppedLoot = new HashSet<Droppable>();
 
+        //PrintPercentOnSelectedItem();
+    }
 
-    //    //PrintPercentOnSelectedItem();
-    //}
+    public void Update()
+    {
+        
+    }
 
     public void RegisterLoot(Droppable loot)
     {
@@ -41,12 +47,16 @@ public class LootManager : ScriptableObject
     }
     private void OnEnable()
     {
+        Debug.Log("LootManager enabled");
+        Debug.Log(EventSystem);
         EventSystem.OnEnemyKilled += GetOneRandomItemLoot;
     }
     private void OnDisable()
     {
-        
+        EventSystem.OnEnemyKilled -= GetOneRandomItemLoot;
     }
+
+    
 
 
     /*
@@ -75,8 +85,9 @@ public class LootManager : ScriptableObject
             {
 
                 PrintPercentOnSelectedItem(current, totalWeight);
-
+                Debug.Log(item);
               DropLoot(item, enemy);
+                return;
             }
         }
         return;
@@ -84,10 +95,8 @@ public class LootManager : ScriptableObject
 
     public void DropLoot(Droppable item, EnemyDamage enemy)
     {
-        Vector3 pos = enemy.Position;
-        item.position = pos;
+        Vector3 pos = enemy.transform.position;
         Droppable droppedItem = Instantiate(item, pos, Quaternion.identity);
-       
     }
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
