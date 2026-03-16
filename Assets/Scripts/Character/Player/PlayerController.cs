@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         knockbackForce = knockbackDirection * calculatedForce;
-        Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
+     //   Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
     }
 
 
