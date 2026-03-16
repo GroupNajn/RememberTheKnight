@@ -21,20 +21,15 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
-   // public float walkSpeedMultiplier = 0f;
-
     public float sprintAcceleration = 0.5f;
-    //public float sprintSpeedMultiplier = 0f;
-
     public float drag = 0.1f;
-    //public float gravity = 25f;
     private float currentRotationSpeed
     {
+
         get { return playerCombatManager.isAttackRotationSpeed ? playerStats.attackRotationSpeed : playerStats.normalRotationSpeed; }
         set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
     }
-    //public float normalRotationSpeed = 10f;
-    //public float attackRotationSpeed = 5f;
+
 
     public float movingThreshold = 0.01f;
 
@@ -63,7 +58,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     private bool isKnockedback = false;
-   // public float knockbackResistance = 5f;
+    // public float knockbackResistance = 5f;
     public Vector3 knockbackForce = Vector3.zero;
     #endregion
 
@@ -79,6 +74,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void Update()
     {
+
+        if (playerStats.isDead)
+            return;
 
         if (knockbackForce.magnitude > 0.1)
         {
@@ -103,19 +101,19 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         HandleVerticalMovement();
 
-      //  if (!playerState.InActionState())
-            CalculateInputMagnitude();
+        //  if (!playerState.InActionState())
+        CalculateInputMagnitude();
 
         if (playerState.CurrentMoveState != MoveState.Dodging && playerState.CurrentMoveState != MoveState.Knockedback) // if not dodging and not knockedBack, allow normal movement
             HandleLateralMovement();
 
-        //Idling?
+        //IDLING?
         if (playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
         { playerState.SetMoveState(MoveState.Idling); }
 
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
 
-        //dodging?
+        //DODGING?
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
         PlayerAnimator.SetFloat("Y", currentInputMagnitude);
 
@@ -123,7 +121,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             RotatePlayerToTarget();
 
-            //Dodgeing
+            //DODGING
             if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState())
             {
                 PlayerAnimator.SetTrigger("Dodge");
@@ -215,6 +213,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleLateralMovement() //(Horizontal)
     {
+
         float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
         float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.walkSpeedMultiplier : playerStats.sprintSpeedMultiplier;
 
@@ -239,7 +238,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleVerticalMovement()
     {
-
         if (playerState.IsGrounded && _verticalVelocity < 0f)
         {
             _verticalVelocity = 0f;

@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         private set { }
     }
 
-    [SerializeField] private bool isDead = false;
+    [SerializeField] public bool isDead = false;
 
     private void Start()
     {
