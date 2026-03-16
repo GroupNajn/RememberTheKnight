@@ -1,16 +1,11 @@
 fileFormatVersion: 2
-guid: 7b5a4980ec67fcc45ba152bbebfc11a5
-AssetOrigin:
-  serializedVersion: 1
-  productId: 220752
-  packageName: Straight Sword Animation Set
-  packageVersion: 3.1
-  assetPath: Assets/Nephilite Studios/Straight Sword Animation Set/Animations/Straight
-    Sword Animations/Nephilim Animations (Remastered)/Straight Sword Main Hand/straight_sword_main_light_attack_02.fbx
-  uploadId: 753941
+guid: dbf8b5a249ebd6a4e95fec63fce7948c
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 221409413640339461
+    second: enemy_light_attack_01
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -22,7 +17,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -39,11 +34,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: light_attack_02
-      takeName: straight_sword_main_light_attack_02
-      internalID: -2746501166638713497
+      name: enemy_light_attack_01
+      takeName: zombie_light_attack_01
+      internalID: 0
       firstFrame: 0
-      lastFrame: 45
+      lastFrame: 75
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -63,43 +58,29 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.12133072
-        functionName: SetAttackRotationSpeed
+      - time: 0.19803198
+        functionName: ActivateLeftDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.1436127
+      - time: 0.26404858
+        functionName: DeactivateLeftDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.50204057
         functionName: ActivateRightDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.34294114
+      - time: 0.5891476
         functionName: DeactivateRightDamageCollider
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.50341296
-        functionName: EnableCanCombo
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6433447
-        functionName: DisableCanCombo
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.76161134
-        functionName: ResetAttackRotationSpeed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -803,7 +784,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 1
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
