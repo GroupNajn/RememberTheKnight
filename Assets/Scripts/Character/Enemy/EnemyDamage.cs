@@ -8,14 +8,14 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 {
     [SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton A 2026-03-06
-    [field: SerializeField] public int MaxHealth { get; set; }
-    [HideInInspector] public int Health { get; set; }
+    [field: SerializeField] public float MaxHealth { get; set; }
+    [HideInInspector] public float Health { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (CanTakeDamage && Health > 0)
         {

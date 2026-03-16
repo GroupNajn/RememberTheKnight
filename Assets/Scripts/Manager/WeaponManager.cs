@@ -3,6 +3,7 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [SerializeField] GameObject currentRightHandWeapon;
+    [SerializeField] GameObject currentLeftHandWeapon;
 
     bool Hidden = true;
 
@@ -23,7 +24,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void ActivateDamageCollider()
+    public void ActivateRightDamageCollider()
     {
         if (currentRightHandWeapon != null )
         {
@@ -31,11 +32,27 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    public void DeactivateDamageCollider()
+    public void DeactivateRightDamageCollider()
     {
         if (currentRightHandWeapon != null)
         {
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    public void ActivateLeftDamageCollider()
+    {
+        if (currentRightHandWeapon != null )
+        {
+            currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
+        }
+    }
+
+    public void DeactivateLeftDamageCollider()
+    {
+        if (currentRightHandWeapon != null)
+        {
+            currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
         }
     }
 }

@@ -16,17 +16,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private GameObject _playerCamera;
+    PlayerStats playerStats;
+    PlayerCombatManager playerCombatManager;
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
-    public float walkSpeedMultiplier = 0f;
-
     public float sprintAcceleration = 0.5f;
-    public float sprintSpeedMultiplier = 0f;
-
     public float drag = 0.1f;
-    public float gravity = 25f;
-    public float playerModelRotationSpeed = 10f;
+    private float currentRotationSpeed
+    {
+
+        get { return playerCombatManager.isAttackRotationSpeed ? playerStats.attackRotationSpeed : playerStats.normalRotationSpeed; }
+        set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
+    }
+
 
     public float movingThreshold = 0.01f;
 
@@ -34,11 +37,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
 
     [Header("Dodge")]
-    public float dodgeDuration = 0.2f;
-    public float dodgeSpeedMultiplier = 0f;
+    //public float dodgeDuration = 0.2f;
+    //public float dodgeSpeedMultiplier = 0f;
     public float dodgeAcceleration = 1f;
     private float dodgeDurationRemaining;
-    public float dodgeCoolDown = 1f;
+    //public float dodgeCoolDown = 1f;
     private float dodgeCoolDownRemaining;
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
@@ -55,19 +58,25 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     private bool isKnockedback = false;
-    public float knockbackResistance = 5f;
+    // public float knockbackResistance = 5f;
     public Vector3 knockbackForce = Vector3.zero;
     #endregion
 
-    private void Awake()
+    private void Start()
     {
         playerLocomotionInput = GetComponent<PlayerLocomotion>();
         PlayerAnimator = GetComponent<Animator>();
         playerState = GetComponent<PlayerStates>();
+        playerCombatManager = PlayerCombatManager.Instance;
+        playerStats = GetComponent<PlayerStats>();
     }
+
 
     private void Update()
     {
+
+        if (playerStats.isDead)
+            return;
 
         if (knockbackForce.magnitude > 0.1)
         {
@@ -78,7 +87,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
 
             _characterController.Move(knockbackForce * Time.deltaTime);
-            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * knockbackResistance);
+            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.knockbackResistance);
         }
         else if (knockbackForce.magnitude <= 0.1 && isKnockedback)
         {
@@ -92,19 +101,21 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         HandleVerticalMovement();
 
-        if (!playerState.InActionState())
-            CalculateInputMagnitude();
+        //  if (!playerState.InActionState())
+        CalculateInputMagnitude();
 
         if (playerState.CurrentMoveState != MoveState.Dodging && playerState.CurrentMoveState != MoveState.Knockedback) // if not dodging and not knockedBack, allow normal movement
             HandleLateralMovement();
 
-        //Idling?
+        //IDLING?
         if (playerLocomotionInput.MovementInput.magnitude < movingThreshold && !playerState.InActionState())
-        { playerState.SetMoveState(MoveState.Idling); }
+        { playerState.SetMoveState(MoveState.Idling);
+          playerLocomotionInput.SprintToggledOn = false; // untoggle sprint if player stops moving
+        }
 
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
 
-        //dodging?
+        //DODGING?
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
         PlayerAnimator.SetFloat("Y", currentInputMagnitude);
 
@@ -112,13 +123,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             RotatePlayerToTarget();
 
-            //Dodgeing
+            //DODGING
             if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState())
             {
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
-                dodgeDurationRemaining = dodgeDuration;
-                dodgeCoolDownRemaining = dodgeCoolDown;
+                dodgeDurationRemaining = playerStats.dodgeDuration;
+                dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
                 Dodge();
             }
         }
@@ -148,6 +159,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerState.SetMoveState(MoveState.Attacking);
             PlayerAnimator.SetTrigger("LightAttack");
         }
+        else if (playerLocomotionInput.AttackPressed && playerState.CurrentMoveState == MoveState.Attacking && playerCombatManager.canCombo == true)
+        {
+            PlayerAnimator.SetTrigger("IsCombo");
+            playerCombatManager.canCombo = false;
+        }
     }
 
     private void LateUpdate()
@@ -169,7 +185,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void Dodge()
     {
-        if (dodgeDurationRemaining == dodgeDuration)
+        if (dodgeDurationRemaining == playerStats.dodgeDuration)
         {
             Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
             dodgeDirection = playerRotation * transform.forward;
@@ -177,17 +193,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         dodgeDurationRemaining -= Time.deltaTime;
 
 
-        if (dodgeDurationRemaining <= dodgeDuration - dodgeDelay)
+        if (dodgeDurationRemaining <= playerStats.dodgeDuration - dodgeDelay)
         {
             Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
             Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-            newVelocity = Vector3.ClampMagnitude(newVelocity, dodgeSpeedMultiplier);
+            newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
             newVelocity.y = _verticalVelocity;
 
             // un comment for frontflip MLG XD
-            _characterController.Move(transform.rotation.eulerAngles.normalized * dodgeSpeedMultiplier * Time.deltaTime);
-            _characterController.Move(dodgeDirection * dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
         }
         if (dodgeDurationRemaining <= 0)
         {
@@ -199,8 +215,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleLateralMovement() //(Horizontal)
     {
-        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? walkAcceleration : sprintAcceleration;
-        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? walkSpeedMultiplier : sprintSpeedMultiplier;
+
+        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration: walkAcceleration  ;
+        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -218,17 +235,16 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         _characterController.Move(newVelocity * Time.deltaTime);
 
         if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
-            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Walking : MoveState.Sprinting) : MoveState.Idling);
+            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > movingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
     }
 
     private void HandleVerticalMovement()
     {
-
         if (playerState.IsGrounded && _verticalVelocity < 0f)
         {
             _verticalVelocity = 0f;
         }
-        _verticalVelocity -= gravity * Time.deltaTime;
+        _verticalVelocity -= playerStats.gravity * Time.deltaTime;
     }
 
 
@@ -244,17 +260,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
             Quaternion targetRotation = Quaternion.Euler(0f, cameraY + movementAngle, 0f);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, playerModelRotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
         }
     }
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
-        
+
         float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         knockbackForce = knockbackDirection * calculatedForce;
-        Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
+     //   Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
     }
 
 

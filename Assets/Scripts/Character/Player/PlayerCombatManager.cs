@@ -2,39 +2,45 @@ using UnityEngine;
 
 public class PlayerCombatManager : MonoBehaviour
 {
-    [SerializeField] Animator animator;
+    public static PlayerCombatManager Instance { get; private set; }
 
-    [SerializeField] bool isInvulnerable = false;
-    [SerializeField] bool canCombo = false;
+    Animator animator;
+
+    [SerializeField] public bool isInvulnerable = false;
+    [SerializeField] public bool canCombo = false;
+    [SerializeField] public bool isAttackRotationSpeed = false;
 
     private void Awake()
     {
-        if (animator == null)
+        if (Instance != null && Instance != this)
         {
-            animator = GetComponent<Animator>();
+            Destroy(gameObject);
         }
-    }
+        else
+        {
+            Instance = this;
+        }
 
-    private void Update()
-    {
-        PerformCombo();
+        animator = GetComponent<Animator>();
+
     }
     public void EnableInvulnerable()
     {
         isInvulnerable = true;
 
-        Debug.Log("Player is now invulnerable.");
+        // Debug.Log("Player is now invulnerable.");
     }
 
     public void DisableInvulnerable()
     {
         isInvulnerable = false;
-        Debug.Log("Player is no longer invulnerable.");
+        //  Debug.Log("Player is no longer invulnerable.");
     }
 
     public void EnableCanCombo()
     {
         canCombo = true;
+
     }
 
     public void DisableCanCombo()
@@ -42,21 +48,13 @@ public class PlayerCombatManager : MonoBehaviour
         canCombo = false;
     }
 
-    private void PerformCombo()
+    public void SetAttackRotationSpeed()
     {
-        if (canCombo)
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                animator.SetBool("IsCombo", true);
-                canCombo = false;
-            }
-        }
-        else
-        {
-            animator.SetBool("IsCombo", false);
-        }
+        isAttackRotationSpeed = true;
     }
 
-
+    public void ResetAttackRotationSpeed()
+    {
+        isAttackRotationSpeed = false;
+    }
 }

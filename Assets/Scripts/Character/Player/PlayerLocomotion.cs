@@ -1,3 +1,4 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,15 +13,16 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Movement")]
     private PlayerInput PlayerControls;
 
-    [SerializeField] private bool holdToSprint = true;
     public Vector2 MovementInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool DodgePressed { get; private set; }
-    public bool SprintToggledOn { get; private set; }
+    public bool SprintToggledOn = true;
 
     //============= action =============
     public bool PickUpPressed { get; private set; }
     public bool AttackPressed { get; private set; }
+
+
 
     //============= camera =============
     //public Vector2 ScrollInput { get; private set; }
@@ -65,20 +67,21 @@ public class PlayerLocomotion : MonoBehaviour
         MovementInput = context.Get<Vector2>();
     }
 
-    public void OnToggleSprint(InputValue context)
-    {
-         SprintToggledOn = !SprintToggledOn;
+
+    public void OnToggleSprint(InputValue action)
+    { 
+            SprintToggledOn = !SprintToggledOn;
     }
 
     //================ Camera ================
     //public void OnScrollCamera(InputValue context)
     //{
-        //if (!context.performed)
-        //    return;
-       // return;
-        //Vector2 scrollInput = context.ReadValue<Vector2>();
-        //ScrollInput = -1f * scrollInput.normalized * _cameraZoomSpeed;
-   // }
+    //if (!context.performed)
+    //    return;
+    // return;
+    //Vector2 scrollInput = context.ReadValue<Vector2>();
+    //ScrollInput = -1f * scrollInput.normalized * _cameraZoomSpeed;
+    // }
 
     //================ Actions ================
     public void OnPickUp(InputValue context)

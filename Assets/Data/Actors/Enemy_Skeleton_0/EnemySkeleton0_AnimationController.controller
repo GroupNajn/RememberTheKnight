@@ -239,25 +239,33 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 6992793450619409858, guid: 3fee6f4c3ad414742a6e990b9b337b77, type: 3}
     m_Threshold: 0.00000008792001
-    m_Position: {x: 0, y: 0}
+    m_Position: {x: 0, y: 1}
     m_TimeScale: 1
-    m_CycleOffset: 0.5
-    m_DirectBlendParameter: ThreatLevel
-    m_Mirror: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MovementSpeed
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 6807084127475010460, guid: 955deb5f8362aeb429bb32a32e48fb7d, type: 3}
+    m_Threshold: 1.7420104
+    m_Position: {x: 1, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MovementSpeed
+    m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 6610929218996927397, guid: 7f482112533370546a60fccf8ce02a21, type: 3}
-    m_Threshold: 3.233944
-    m_Position: {x: 0, y: 0}
+    m_Threshold: 3.4840205
+    m_Position: {x: 2, y: 1}
     m_TimeScale: 1
-    m_CycleOffset: 0.5
-    m_DirectBlendParameter: ThreatLevel
-    m_Mirror: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: MovementSpeed
+    m_Mirror: 0
   m_BlendParameter: MovementSpeed
-  m_BlendParameterY: ThreatLevel
+  m_BlendParameterY: Threat
   m_MinThreshold: 0.00000008792001
-  m_MaxThreshold: 3.233944
+  m_MaxThreshold: 3.4840205
   m_UseAutomaticThresholds: 1
-  m_NormalizedBlendValues: 0
+  m_NormalizedBlendValues: 1
   m_BlendType: 0
 --- !u!91 &9100000
 AnimatorController:
@@ -636,7 +644,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 221409413640339461, guid: 7c2afb86ab4486048aaeecd492a0f49a, type: 3}
+  m_Motion: {fileID: 221409413640339461, guid: dbf8b5a249ebd6a4e95fec63fce7948c, type: 3}
   m_Tag: 
   m_SpeedParameter: SpeedMagnitude
   m_MirrorParameter: 
