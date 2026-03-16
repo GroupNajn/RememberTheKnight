@@ -370,6 +370,64 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c703b8fea88d77147816882b123944a0, type: 3}
+--- !u!1 &824842097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824842098}
+  m_Layer: 8
+  m_Name: Fire point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &824842098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824842097}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.24, y: 0.78, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 839473779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &839473771 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7493179197623156213, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+  m_PrefabInstance: {fileID: 2134670103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &839473779 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5169933235807951693, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+  m_PrefabInstance: {fileID: 2134670103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &839473780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839473771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac6a152cad43f44f8793aaddf486916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shooter: {fileID: 839473779}
+  target: {fileID: 110345234}
+  projectile: {fileID: 3129132563675642798, guid: 2fce6c8cbf354804185618127357b989, type: 3}
+  firePoint: {fileID: 824842098}
+  projectileSpeed: 30
 --- !u!1 &1332125453
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,8 +995,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5169933235807951693, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 824842098}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7493179197623156213, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 839473780}
   m_SourcePrefab: {fileID: 100100000, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
 --- !u!1 &2138115355
 GameObject:
