@@ -18,12 +18,14 @@ public class DamageTrigger : MonoBehaviour
         }
         else
         {
-            Debug.Break();
+            //Debug.Break();
+            damageAmount = 10;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Hello IS DAMAGE");
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {

@@ -54,9 +54,5 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
-
     }
-
-
-
 }

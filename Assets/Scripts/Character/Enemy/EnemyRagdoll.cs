@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyRagdoll : MonoBehaviour, ITriggerable
 
@@ -13,7 +13,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
     {
         animator = GetComponent<Animator>();
         behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
-        characterController = GetComponent<CharacterController>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         characterRigidbody = GetComponent<Rigidbody>();
         characterLimbs = GetComponentsInChildren<Rigidbody>();
         characterJoints = GetComponentsInChildren<CharacterJoint>();
@@ -25,8 +25,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
     // Update is called once per frame
     public void Trigger()
     {
-        if (isRagdolled) { DisableRagdoll(); }
-        else { EnableRagdoll(); }
+        EnableRagdoll();
     }
 
     private void EnableRagdoll()
@@ -42,7 +41,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
 
         characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
-        characterController.enabled = false;
+        capsuleCollider.enabled = false;
 
         isRagdolled = true;
     }
@@ -57,9 +56,10 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.detectCollisions = false;
         }
 
-        characterRigidbody.useGravity = true;
+        //characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
-        characterController.enabled = true;
+        characterRigidbody.detectCollisions = true;
+        capsuleCollider.enabled = true;
 
         isRagdolled = false;
     }
@@ -70,7 +70,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
     private Rigidbody characterRigidbody;
     private Rigidbody[] characterLimbs;
     private CharacterJoint[] characterJoints;
-    private CharacterController characterController;
+    private CapsuleCollider capsuleCollider;
 
     private bool isRagdolled = false;
 }
