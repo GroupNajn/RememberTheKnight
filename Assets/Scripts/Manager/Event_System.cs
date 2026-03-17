@@ -11,14 +11,20 @@ public class Event_System : MonoBehaviour
     public Action<int> OnPlayerDamaged;
     public Action<Droppable> OnGetLoot;
 
-    public void Start()
+    /*
+     * Managers need to be initialized via Awake to get priority,
+     * before all other GameObjects call and Subscribe to their Actions/Events, 
+     */
+
+
+    private void Awake()
     {
-        
+        instance = this;
     }
 
     public void Update()
     {
-        
+
     }
 
 

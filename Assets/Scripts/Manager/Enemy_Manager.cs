@@ -2,36 +2,42 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Enemy_Manager : MonoBehaviour 
+public class Enemy_Manager : MonoBehaviour
 {
     public static Enemy_Manager instace;
-    [SerializeField] Event_System EventSystem;
     private HashSet<EnemyDamage> Enemies = new HashSet<EnemyDamage>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-
-    public void Start()
+    /*
+     * Managers need to be initialized via Awake to get priority,
+     * before all other GameObjects call and Subscribe to their Actions/Events, 
+     */
+    private void Awake()
     {
-        
+        instace = this;
     }
 
-    public void Update()
+   
+
+    private void Start()
     {
-        
+        if (Event_System.instance == null)
+        {
+            Debug.LogError("Event_System.instance is null in Enemy_Manager.Start()");
+            return;
+        }
+
+        Event_System.instance.OnEnemySpawn += RegisterEnemy;
+        Event_System.instance.OnEnemyKilled += RemoveEnemy;
     }
 
-    private void OnEnable()
+    private void OnDestroy()
     {
-        EventSystem.OnEnemySpawn += RegisterEnemy;
-        EventSystem.OnEnemyKilled += RemoveEnemy;
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnEnemySpawn -= RegisterEnemy;
+            Event_System.instance.OnEnemyKilled -= RemoveEnemy;
+        }
     }
-
-    private void OnDisable()
-    {
-        EventSystem.OnEnemySpawn -= RegisterEnemy;
-        EventSystem.OnEnemyKilled -= RemoveEnemy;
-    }
-
 
     public void RegisterEnemy(EnemyDamage enemy)
     {
@@ -47,6 +53,4 @@ public class Enemy_Manager : MonoBehaviour
     {
         return Enemies;
     }
-
-   
 }

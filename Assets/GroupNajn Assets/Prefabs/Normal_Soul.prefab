@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 2827711613727501810}
   - component: {fileID: 2596782702831970450}
   m_Layer: 0
-  m_Name: Regular_Soul
+  m_Name: Normal_Soul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,12 +160,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ae5608c09af90346a4efc46c2b41468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 6590469975317091890, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+  player: {fileID: 0}
   followRange: 8
   followSpeed: 1
   hoverSpeed: 1
   hoverHeight: 1
-  EventSystem: {fileID: 11400000, guid: 95d6be0b3363c1f49bcf3f70dc74f857, type: 2}
+  growthRate: 1.15
   drag: 2
 --- !u!114 &2596782702831970450
 MonoBehaviour:
@@ -180,6 +180,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 5
-  Name: Default
-  LootManager: {fileID: 11400000, guid: 27e48c6f3de28e34a825fa0df947919d, type: 2}
+  Name: Normal Soul
   position: {x: 0, y: 0, z: 0}
