@@ -1,5 +1,6 @@
 
 
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 
@@ -11,6 +12,7 @@ public class Soul_Follow : MonoBehaviour
     [Header("Target")]
     [SerializeField] Transform player;
 
+
     [SerializeField] float followRange;
 
     [SerializeField] float followSpeed;
@@ -19,20 +21,23 @@ public class Soul_Follow : MonoBehaviour
 
     [SerializeField] float hoverHeight;
 
-    [SerializeField] private Event_System EventSystem;
+    [SerializeField] float growthRate;
     [SerializeField] float drag; // DeAcceleration drag
+    [SerializeField] private Event_System EventSystem;
+    private float maxFollowSpeed = 10.0f;
     private float hoverOffset;
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
     private Transform transform;
+    private Transform mouth;
     void Start()
     {
         transform = GetComponent<Transform>();
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
-
+        mouth = GameObject.Find("Jaw").transform;
         //if (Player == null) return;
-        player = FindAnyObjectByType<PlayerStats>().transform;
+        player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         //Initialize(Player);
     }
 
@@ -47,12 +52,16 @@ public class Soul_Follow : MonoBehaviour
 
         if (CanFollow())
         {
+            
+            if(followSpeed < maxFollowSpeed)
+            followSpeed *= Mathf.Exp((growthRate * 0.1f) * Time.deltaTime);
             dirVector = distanceVector.normalized;
             velocity = dirVector * followSpeed;   
         }
         else
         {
             velocity *= Mathf.Exp(-drag * Time.deltaTime); // A smooth exponential curve in decrease of acceleration
+            followSpeed = 1.0f;
         }
 
         transform.position += velocity * Time.deltaTime;

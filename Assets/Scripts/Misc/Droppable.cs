@@ -6,8 +6,7 @@ public class Droppable : MonoBehaviour
     [SerializeField] public float Weight = 5.0f;
      
     [SerializeField] string Name = "Default";
-    
-    [SerializeField] LootManager LootManager;
+   
     public Vector3 position;
     Transform transform;
 
@@ -24,11 +23,11 @@ public class Droppable : MonoBehaviour
     }
     private void OnEnable()
     {
-        LootManager.RegisterLoot(this);
+        LootManager.instance.RegisterLoot(this);
     }
 
     private void OnDisable()
     {
-        LootManager.UnregisterLoot(this);
+        LootManager.instance.UnregisterLoot(this);
     }
 }

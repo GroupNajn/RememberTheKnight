@@ -4,36 +4,52 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 
-public  class LootManager : MonoBehaviour
+public class LootManager : MonoBehaviour
 {
     public static LootManager instance;
-    [SerializeField] Event_System EventSystem;
-    // Script by Henric 2026-03-15
+
     [Header("Loot_Table")]
     [SerializeField] List<Droppable> lootTable;
     private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    //private HashSet<IDroppable> lootTable = new HashSet<IDroppable>();
+
     private float oneItemDropChance;
     private float twoItemDropChance;
     private float threeItemDropChance;
-    /* These Variables are going to be used in similar method to calculate the odds of 
-       Multipule items being dropped. 
-    */
-    void Start()
+
+
+
+    /*
+     * Managers need to be initialized via Awake to get priority,
+     * before all other GameObjects call and Subscribe to their Actions/Events, 
+     */
+
+    private void Awake()
+    {
+        instance = this;
+        droppedLoot = new HashSet<Droppable>();
+    }
+
+    private void Start()
     {
         oneItemDropChance = 80.0f;
         twoItemDropChance = 15.0f;
         threeItemDropChance = 5.0f;
-        droppedLoot = new HashSet<Droppable>();
 
-        //PrintPercentOnSelectedItem();
+        if (Event_System.instance == null)
+        {
+            Debug.LogError("Event_System.instance is null in LootManager.Start()");
+            return;
+        }
+
+        Debug.Log("LootManager subscribed");
+        Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
     }
 
-    public void Update()
+    private void OnDestroy()
     {
-        
+        if (Event_System.instance != null)
+            Event_System.instance.OnEnemyKilled -= GetOneRandomItemLoot;
     }
 
     public void RegisterLoot(Droppable loot)
@@ -47,31 +63,9 @@ public  class LootManager : MonoBehaviour
         if (loot != null)
             droppedLoot.Remove(loot);
     }
-    private void OnEnable()
+
+    public void GetOneRandomItemLoot(EnemyDamage enemy)
     {
-        Debug.Log("LootManager enabled");
-        Debug.Log(EventSystem);
-        EventSystem.OnEnemyKilled += GetOneRandomItemLoot;
-    }
-    private void OnDisable()
-    {
-        EventSystem.OnEnemyKilled -= GetOneRandomItemLoot;
-    }
-
-    
-
-
-    /*
-    SUMMARY: IF there are 3 Items with the following weight: Item:1 = 5, Item:2 = 10, Item:3 = 20.
-            The sum of those weights will be 35.
-            Then if the roll is 18. Item:3 will be chosen. 
-            Because the two previous Items will have a combined weight of 15. Since we know that Item:3 has a weight of 20. 
-            Only 20 units will be left on the Number Axis, and once we add Item:3's weight to the "current" variable, roll will be < current
-            in the second for each loop. The output will be Item:3
-    */
-    public void GetOneRandomItemLoot(EnemyDamage enemy) // The higher the Weight on the items the higher probability of being chosen
-    {
-
         float totalWeight = 0;
 
         foreach (Droppable item in lootTable)
@@ -83,27 +77,24 @@ public  class LootManager : MonoBehaviour
         foreach (Droppable item in lootTable)
         {
             current += item.Weight;
-            if (roll < current) 
+            if (roll < current)
             {
-
                 PrintPercentOnSelectedItem(current, totalWeight);
                 Debug.Log(item);
-              DropLoot(item, enemy);
+                DropLoot(item, enemy);
                 return;
             }
         }
-        return;
     }
 
     public void DropLoot(Droppable item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
-        Droppable droppedItem = Instantiate(item, pos, Quaternion.identity);
+        Instantiate(item, pos, Quaternion.identity);
     }
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {
-
         float percent = (itemW / SumOfW) * 100;
         Debug.Log(percent);
     }

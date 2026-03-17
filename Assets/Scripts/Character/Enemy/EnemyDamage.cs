@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(ITriggerable))]
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Event_System EventSystem;
+    //[SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton A 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
@@ -36,7 +36,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         Debug.Log("Enemy died");
         onDeath?.Trigger();
         Debug.Log("Invoking OnEnemyKilled");
-        EventSystem.OnEnemyKilled?.Invoke(this);
+        Event_System.instance.OnEnemyKilled?.Invoke(this);
 
     }
 
@@ -58,7 +58,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
-        EventSystem.OnEnemySpawn?.Invoke(this);
-
+        if (Event_System.instance != null)
+            Event_System.instance.OnEnemySpawn?.Invoke(this);
+        else
+            Debug.LogError("Event_System.instance is null in EnemyDamage.Start()");
     }
 }
