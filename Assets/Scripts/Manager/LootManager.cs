@@ -1,15 +1,20 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
-public class LootManager : MonoBehaviour
+
+public  class LootManager : MonoBehaviour
 {
-
-    // Script by Henric 2026-03-15
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static LootManager instance;
-    public List<Loot_Item> lootTable = new List<Loot_Item>();
+    [SerializeField] Event_System EventSystem;
+    // Script by Henric 2026-03-15
+    [Header("Loot_Table")]
+    [SerializeField] List<Droppable> lootTable;
+    private HashSet<Droppable> droppedLoot;
+    [SerializeField] Droppable soulPrefab;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //private HashSet<IDroppable> lootTable = new HashSet<IDroppable>();
     private float oneItemDropChance;
     private float twoItemDropChance;
     private float threeItemDropChance;
@@ -21,14 +26,38 @@ public class LootManager : MonoBehaviour
         oneItemDropChance = 80.0f;
         twoItemDropChance = 15.0f;
         threeItemDropChance = 5.0f;
+        droppedLoot = new HashSet<Droppable>();
+
         //PrintPercentOnSelectedItem();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
-
+        
     }
+
+    public void RegisterLoot(Droppable loot)
+    {
+        droppedLoot.Add(loot);
+    }
+
+    public void UnregisterLoot(Droppable loot)
+    {
+        droppedLoot.Remove(loot);
+    }
+    private void OnEnable()
+    {
+        Debug.Log("LootManager enabled");
+        Debug.Log(EventSystem);
+        EventSystem.OnEnemyKilled += GetOneRandomItemLoot;
+    }
+    private void OnDisable()
+    {
+        EventSystem.OnEnemyKilled -= GetOneRandomItemLoot;
+    }
+
+    
+
 
     /*
     SUMMARY: IF there are 3 Items with the following weight: Item:1 = 5, Item:2 = 10, Item:3 = 20.
@@ -38,32 +67,37 @@ public class LootManager : MonoBehaviour
             Only 20 units will be left on the Number Axis, and once we add Item:3's weight to the "current" variable, roll will be < current
             in the second for each loop. The output will be Item:3
     */
-    public Loot_Item GetOneRandomItemLoot() // The higher the Weight on the items the higher probability of being chosen
+    public void GetOneRandomItemLoot(EnemyDamage enemy) // The higher the Weight on the items the higher probability of being chosen
     {
+
         float totalWeight = 0;
 
-        foreach (Loot_Item item in lootTable)
-            totalWeight += item.weight;
+        foreach (Droppable item in lootTable)
+            totalWeight += item.Weight;
 
         float roll = Random.Range(0, totalWeight);
         float current = 0;
 
-        foreach (Loot_Item item in lootTable)
+        foreach (Droppable item in lootTable)
         {
-            current += item.weight;
-            if (roll < current)
+            current += item.Weight;
+            if (roll < current) 
+            {
+
                 PrintPercentOnSelectedItem(current, totalWeight);
-            return item;
+                Debug.Log(item);
+              DropLoot(item, enemy);
+                return;
+            }
         }
-        return null;
+        return;
     }
 
-    //public LootItem GetDifferentAmountOfLoot()
-    //{
-
-
-
-    //}
+    public void DropLoot(Droppable item, EnemyDamage enemy)
+    {
+        Vector3 pos = enemy.transform.position;
+        Droppable droppedItem = Instantiate(item, pos, Quaternion.identity);
+    }
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2767275520034622841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.157, z: 2.967}
+  m_LocalPosition: {x: 0, y: 2.157, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -123,6 +123,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8318615278074776259}
+  - component: {fileID: 5683300193081050257}
+  - component: {fileID: 4251097540268861949}
   m_Layer: 0
   m_Name: Boss_Soul
   m_TagString: Untagged
@@ -139,10 +141,45 @@ Transform:
   m_GameObject: {fileID: 2801271075908865460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.31, z: 3.005}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 74300141542030244}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5683300193081050257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801271075908865460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae5608c09af90346a4efc46c2b41468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  followRange: 8
+  followSpeed: 1
+  hoverSpeed: 1
+  hoverHeight: 1
+  EventSystem: {fileID: 11400000, guid: 95d6be0b3363c1f49bcf3f70dc74f857, type: 2}
+  drag: 2
+--- !u!114 &4251097540268861949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801271075908865460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0686ce12bace34db7e2981246f0c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Weight: 5
+  Name: Default
+  LootManager: {fileID: 11400000, guid: 27e48c6f3de28e34a825fa0df947919d, type: 2}
+  position: {x: 0, y: 0, z: 0}

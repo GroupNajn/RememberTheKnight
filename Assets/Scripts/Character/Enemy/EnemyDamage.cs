@@ -1,17 +1,17 @@
 using Unity.Behavior;
 using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(ITriggerable))]
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
+    [SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton A 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
-
-
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
@@ -33,7 +33,11 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public void Death()
     {
+        Debug.Log("Enemy died");
         onDeath?.Trigger();
+        Debug.Log("Invoking OnEnemyKilled");
+        EventSystem.OnEnemyKilled?.Invoke(this);
+
     }
 
     // TO BE REMOVED OR CHANGED
@@ -54,5 +58,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
+        EventSystem.OnEnemySpawn?.Invoke(this);
+
     }
 }

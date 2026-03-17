@@ -9,7 +9,7 @@ public class Soul_Follow : MonoBehaviour
 
     // Script by Henric 2026-03-14
     [Header("Target")]
-    [SerializeField] GameObject Player;
+    [SerializeField] Transform player;
 
     [SerializeField] float followRange;
 
@@ -19,23 +19,29 @@ public class Soul_Follow : MonoBehaviour
 
     [SerializeField] float hoverHeight;
 
+    [SerializeField] private Event_System EventSystem;
     [SerializeField] float drag; // DeAcceleration drag
     private float hoverOffset;
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
     private Transform transform;
-
     void Start()
     {
         transform = GetComponent<Transform>();
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
+
+        //if (Player == null) return;
+        player = FindAnyObjectByType<PlayerStats>().transform;
+        //Initialize(Player);
     }
+
+   
 
     // Update is called once per frame
     void Update()
     {
-        distanceVector = Player.transform.position - transform.position;
+        distanceVector = player.transform.position - transform.position;
 
         HoverSinWave();
 
@@ -52,10 +58,15 @@ public class Soul_Follow : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
     }
 
+    //public void Initialize(GameObject player)
+    //{
+    //    Player = player;
+    //}
+
     private bool CanFollow()
     {
         float distanceToPlayer = distanceVector.magnitude;
-        if (Player != null && distanceToPlayer <= followRange)
+        if (player != null && distanceToPlayer <= followRange)
             return true;
         return false;
     }
