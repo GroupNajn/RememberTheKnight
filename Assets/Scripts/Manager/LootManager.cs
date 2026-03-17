@@ -11,7 +11,7 @@ public  class LootManager : MonoBehaviour
     // Script by Henric 2026-03-15
     [Header("Loot_Table")]
     [SerializeField] List<Droppable> lootTable;
-    private HashSet<Droppable> droppedLoot;
+    private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //private HashSet<IDroppable> lootTable = new HashSet<IDroppable>();
@@ -38,12 +38,14 @@ public  class LootManager : MonoBehaviour
 
     public void RegisterLoot(Droppable loot)
     {
-        droppedLoot.Add(loot);
+        if (loot != null)
+            droppedLoot.Add(loot);
     }
 
     public void UnregisterLoot(Droppable loot)
     {
-        droppedLoot.Remove(loot);
+        if (loot != null)
+            droppedLoot.Remove(loot);
     }
     private void OnEnable()
     {
