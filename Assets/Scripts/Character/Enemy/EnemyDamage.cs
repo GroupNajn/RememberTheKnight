@@ -61,7 +61,4 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         EventSystem.OnEnemySpawn?.Invoke(this);
 
     }
-
-
-
 }

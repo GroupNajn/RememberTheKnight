@@ -17,10 +17,12 @@ public class WeaponManager : MonoBehaviour
         if (Hidden)
         {
             currentRightHandWeapon.SetActive(false);
+            currentLeftHandWeapon.SetActive(false);
         }
         else
         {
             currentRightHandWeapon.SetActive(true);
+            currentLeftHandWeapon.SetActive(true);
         }
     }
 
