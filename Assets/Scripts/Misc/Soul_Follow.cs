@@ -23,7 +23,6 @@ public class Soul_Follow : MonoBehaviour
 
     [SerializeField] float growthRate;
     [SerializeField] float drag; // DeAcceleration drag
-    [SerializeField] private Event_System EventSystem;
     private float maxFollowSpeed = 10.0f;
     private float hoverOffset;
     private Vector3 dirVector;
@@ -38,7 +37,6 @@ public class Soul_Follow : MonoBehaviour
         mouth = GameObject.Find("Jaw").transform;
         //if (Player == null) return;
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        //Initialize(Player);
     }
 
    
@@ -66,12 +64,6 @@ public class Soul_Follow : MonoBehaviour
 
         transform.position += velocity * Time.deltaTime;
     }
-
-    //public void Initialize(GameObject player)
-    //{
-    //    Player = player;
-    //}
-
     private bool CanFollow()
     {
         float distanceToPlayer = distanceVector.magnitude;
