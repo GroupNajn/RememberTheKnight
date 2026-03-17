@@ -22,7 +22,7 @@ public partial class GetAnimationStateAction : Action
     {
 
         Bool.Value = Animator.Value.GetCurrentAnimatorStateInfo(LayerIndex.Value).IsName(Name);
-        Debug.Log(Bool.Value ? "Attacking" : "Not attacking");
+        //Debug.Log(Bool.Value ? "Attacking" : "Not attacking");
         return Status.Success;
     }
 

@@ -24,7 +24,7 @@ public partial class ThreatAction : Action
             ThreatValue.Value = 0;
         }
         else
-        { ThreatValue.Value = MathF.Round(1 - (dist / (Radius.Value + AttackRadius)), 2); Debug.Log($"current threat{ThreatValue.Value}"); }
+        { ThreatValue.Value = MathF.Round(1 - (dist / (Radius.Value + AttackRadius)), 2); /*Debug.Log($"current threat{ThreatValue.Value}");*/ }
         return Status.Success;
     }
 
