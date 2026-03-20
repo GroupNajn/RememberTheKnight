@@ -21,7 +21,7 @@ public class ProjectileHandler : MonoBehaviour
 
     }
 
-    void ShootProjectile()
+    public void ShootProjectile()
     {
         Vector3 targetPosistion;
 
