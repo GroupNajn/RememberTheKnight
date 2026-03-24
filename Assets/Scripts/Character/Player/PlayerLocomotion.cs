@@ -1,11 +1,9 @@
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [DefaultExecutionOrder(-2)]
 public class PlayerLocomotion : MonoBehaviour
 {
-
     //Made by Jonathan Blixt
 
     #region Class Variables
@@ -16,7 +14,7 @@ public class PlayerLocomotion : MonoBehaviour
     public Vector2 MovementInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool DodgePressed { get; private set; }
-    public bool SprintToggledOn = true;
+    public bool SprintToggledOn = false;
 
     //============= action =============
     public bool PickUpPressed { get; private set; }
@@ -50,9 +48,6 @@ public class PlayerLocomotion : MonoBehaviour
     //================ Movement ================
     public void OnDodge(InputValue context)
     {
-        //if (!context.performed)
-        //    return;
-
         DodgePressed = true;
     }
 
@@ -63,14 +58,13 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void OnMovement(InputValue context)
     {
-
         MovementInput = context.Get<Vector2>();
     }
 
 
     public void OnToggleSprint(InputValue action)
     { 
-            SprintToggledOn = !SprintToggledOn;
+          SprintToggledOn = !SprintToggledOn;
     }
 
     //================ Camera ================
@@ -86,16 +80,10 @@ public class PlayerLocomotion : MonoBehaviour
     //================ Actions ================
     public void OnPickUp(InputValue context)
     {
-        //if (!context.performed)
-        //    return;
-
         PickUpPressed = true;
     }
     public void OnAttacking(InputValue context)
     {
-        //if (!context.performed)
-        //    return;
-
         AttackPressed = true;
         Debug.Log("input kom");
     }

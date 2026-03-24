@@ -5,25 +5,24 @@ public class PlayerStats : MonoBehaviour, IDamageable
     // Made by Lukas 2026-03-14
     // Updated by Lukas and Jonatan and Wilmer 2026-03-16
 
-
-
     private PlayerCombatManager playerCombatManager;
     private Animator playerAnimator;
-
 
     [field: SerializeField] public float MaxHealth { get; private set; }
     [field: SerializeField] public float Health { get; set; }
 
     [Header("Stats")]
+    [Header("Movement")]
     public float walkSpeedMultiplier = 0f;
     public float sprintSpeedMultiplier = 0f;
     public float gravity = 25f;
     public float normalRotationSpeed = 10f;
     public float attackRotationSpeed = 5f;
+    [Header("Dodge")]
     public float dodgeSpeedMultiplier = 0f;
     public float dodgeCoolDown = 1f;
     public float dodgeDuration = 0.2f;
-
+    [Header("Knockback")]
     public float knockbackResistance = 5f;
 
     // [HideInInspector]
