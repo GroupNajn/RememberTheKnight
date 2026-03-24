@@ -11,7 +11,7 @@ public class TargetLockHandler : MonoBehaviour
     public LayerMask enemyLayer;
 
     public Animator cameraAnimator;
-    public bool isLockedOn = false;
+    public bool IsLockedOn = false;
 
     public Transform currentTarget;
     public CinemachineTargetGroup targetGroup;
@@ -26,13 +26,13 @@ public class TargetLockHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!isLockedOn)
+            if (!IsLockedOn)
             {
                 FindTarget();
 
                 if (currentTarget != null)
                 {
-                    isLockedOn = true;
+                    IsLockedOn = true;
                     SwitchCams();
                 }
             }
@@ -42,7 +42,7 @@ public class TargetLockHandler : MonoBehaviour
             }
         }
 
-        if (isLockedOn)
+        if (IsLockedOn)
         {
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
@@ -60,14 +60,14 @@ public class TargetLockHandler : MonoBehaviour
     void Unlock()
     {
         ClearTarget();
-        isLockedOn = false;
+        IsLockedOn = false;
         SwitchCams();
     }
 
     void ToggleLock()
     {
-        isLockedOn = !isLockedOn;
-        cameraAnimator.SetBool("IsLockedOn", isLockedOn);
+        IsLockedOn = !IsLockedOn;
+        cameraAnimator.SetBool("IsLockedOn", IsLockedOn);
     }
 
     void FindTarget()
@@ -133,10 +133,10 @@ public class TargetLockHandler : MonoBehaviour
 
         if (axisControllerFreeLook != null)
         {
-            axisControllerFreeLook.enabled = !isLockedOn;
+            axisControllerFreeLook.enabled = !IsLockedOn;
         }
 
-        if (isLockedOn)
+        if (IsLockedOn)
         {
             cinemachineHardLockCam.ForceCameraPosition(pos: cinemachineFreeLookCam.State.GetFinalPosition(), rot: cinemachineFreeLookCam.State.GetFinalOrientation());
             cameraAnimator.Play(stateName: "HardLockCamera");
