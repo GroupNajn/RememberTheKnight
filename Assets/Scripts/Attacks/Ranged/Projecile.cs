@@ -8,6 +8,11 @@ public class Projecile : MonoBehaviour
     public float speed;
     public Vector3 direction;
 
+    private void Start()
+    {
+        Destroy(gameObject, 10);
+    }
+
     void Update()
     {
         transform.position += direction * speed * Time.deltaTime;
