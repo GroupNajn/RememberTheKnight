@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         else if (!isLockedOnAndWalking)
         {
             PlayerAnimator.SetFloat("Y", currentInputMagnitude);
+            PlayerAnimator.SetFloat("X", 0);
             RotatePlayerToTarget();
         }
         else if (isIdling)
