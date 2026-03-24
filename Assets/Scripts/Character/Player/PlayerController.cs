@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -26,7 +27,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private float currentRotationSpeed
     {
 
-        get { return playerCombatManager.isAttackRotationSpeed ? playerStats.attackRotationSpeed : playerStats.normalRotationSpeed; }
+        get
+        {
+            if (lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Attacking)
+                return 0;
+            else
+                return playerCombatManager.isAttackRotationSpeed ? playerStats.attackRotationSpeed : playerStats.normalRotationSpeed;
+        }
         set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
     }
 
