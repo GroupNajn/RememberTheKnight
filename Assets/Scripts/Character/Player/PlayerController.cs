@@ -37,6 +37,12 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
     }
 
+    private bool animCanceleble
+    {
+        get{return playerCombatManager.animationCanceleble; }
+        set {}
+    }
+
 
     public float MovingThreshold = 0.01f;
 
@@ -114,7 +120,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleDodge(bool isIdling, bool isDodging)
     {
-        if (!isIdling && playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && !playerState.InActionState())
+        if (!isIdling && playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
         {
             PlayerAnimator.SetTrigger("Dodge");
             playerState.SetMoveState(MoveState.Dodging);
@@ -160,7 +166,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != attackHash)
         {
-            Debug.Log("Attack animation finished, returning to idling");
+            //Debug.Log("Attack animation finished, returning to idling");
             playerState.SetMoveState(MoveState.Idling);
         }
 
@@ -194,6 +200,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             isKnockedback = false;
             knockbackForce = Vector3.zero;
             playerState.SetMoveState(MoveState.Idling);
+           // Debug.Log("Set Idling because of knockback");
         }
     }
 
@@ -254,6 +261,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
+            //Debug.Log("Idling because dodgeDuration was 0");
         }
     }
 
