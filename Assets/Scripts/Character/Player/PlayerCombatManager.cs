@@ -9,6 +9,7 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] public bool isInvulnerable = false;
     [SerializeField] public bool canCombo = false;
     [SerializeField] public bool isAttackRotationSpeed = false;
+    [SerializeField] public bool animationCanceleble = true;
 
     private void Awake()
     {
@@ -56,5 +57,14 @@ public class PlayerCombatManager : MonoBehaviour
     public void ResetAttackRotationSpeed()
     {
         isAttackRotationSpeed = false;
+    }
+
+    public void SetAnimationCancelebleFalse()
+    {
+        animationCanceleble = false;
+    }
+    public void SetAnimationCancelebleTrue()
+    {
+        animationCanceleble = true;
     }
 }
