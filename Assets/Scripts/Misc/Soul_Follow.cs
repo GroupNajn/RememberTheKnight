@@ -11,12 +11,22 @@ public class Soul_Follow : MonoBehaviour
     [SerializeField] private float hoverHeight;
     [SerializeField] private float growthRate;
     [SerializeField] private float drag;
+    [SerializeField] private float transitionDuration;
+    [SerializeField] private float blendSpeed;
+    
 
     private float maxFollowSpeed = 10.0f;
     private float hoverOffset;
+    private float transitionTimer = 0f;
+    private bool isTransitioning = true;
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
+    private Vector3 currentVelocity;
+    private Vector3 launchVelocity;
+
+    private Vector3 hoverVelocity = Vector3.zero;
+
 
     private Transform mouth;
     private Droppable droppable;
@@ -27,18 +37,22 @@ public class Soul_Follow : MonoBehaviour
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
         mouth = GameObject.Find("Jaw").transform;
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-
         droppable = GetComponent<Droppable>();
         bounceScript = GetComponent<BounceScript>();
     }
 
     void Update()
     {
-        if (bounceScript != null && !bounceScript.FinishedBounce)
+        if (bounceScript != null && !bounceScript.HasLanded)
             return;
         if (player == null)
             return;
-        Debug.Log("Soul_Follow took over at frame: " + Time.frameCount);
+        if (!bounceScript.HasLanded) return;
+        launchVelocity = bounceScript.Velocity;
+        currentVelocity = launchVelocity;
+
+
+
         distanceVector = player.position - transform.position;
 
         HoverSinWave();
@@ -72,6 +86,13 @@ public class Soul_Follow : MonoBehaviour
             return;
 
         float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.001f);
-        transform.position += new Vector3(0, y, 0);
+
+        // sätt bara Y-velocity, behåll X/Z från annan rörelse
+        hoverVelocity = new Vector3(0f, y, 0f);
+
+        velocity += hoverVelocity;
     }
+
+  
+
 }

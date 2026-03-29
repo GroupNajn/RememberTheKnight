@@ -5,66 +5,83 @@ public class BounceScript : MonoBehaviour
 {
     [Header("Bounce")]
     [SerializeField] private float launchSpeed = 3f;
-    [SerializeField] private float firstBounceHeight = 2f;
+    [SerializeField] private float launchHeight = 2f;
     [SerializeField] private int bounceCount = 3;
-    [SerializeField] private float bounceDuration = 0.25f;
-    [SerializeField] private float bounceDamping = 0.5f;
+    [SerializeField] private float launchDuration = 0.25f;
+    [SerializeField] private float landDamping = 0.5f;
 
     private Vector3 horizontalDirection;
     private float groundY;
-    private bool finishedBounce = false;
-
-    public bool FinishedBounce => finishedBounce;
+    private bool hasLanded = false;
+    private Vector3 velocity;
+    private Vector3 velocityBeforeElapsedTime;
+    public Vector3 Velocity => velocityBeforeElapsedTime;
+    public bool HasLanded => hasLanded;
 
     void Start()
     {
         groundY = transform.position.y;
         horizontalDirection = GetRandomDirection();
+        StartCoroutine(LaunchOnSpawn());
 
-        StartCoroutine(BounceRoutine());
     }
 
-    private IEnumerator BounceRoutine()
+ 
+
+
+    private IEnumerator LaunchOnSpawn()
     {
-        float currentHeight = firstBounceHeight;
+        float currentHeight = launchHeight;
         Vector3 currentPos = transform.position;
 
         for (int i = 0; i < bounceCount; i++)
         {
             float elapsed = 0f;
 
-            while (elapsed < bounceDuration)
+            if (velocity == Vector3.zero)
+            {
+                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
+                velocity = new Vector3(horizontalVelocity.x, 0f, horizontalVelocity.z);
+            }
+
+            while (elapsed < launchDuration)
             {
                 elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / bounceDuration);
+                float t = Mathf.Clamp01(elapsed / launchDuration);
 
-                Debug.Log(t);
                 float parabola = 4f * t * (1f - t);
                 float yOffset = parabola * currentHeight;
 
-               
-                Vector3 horizontalMove = horizontalDirection * launchSpeed * Time.deltaTime;
-                currentPos += horizontalMove;
+                // Horizontal velocity
+                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
 
-                transform.position = new Vector3(
-                    currentPos.x,
-                    groundY + yOffset,
-                    currentPos.z
-                );
+                // Derivatan av 4 * t * (1 - t) är 4 - 8t
+                // Eftersom t = elapsed / launchDuration måste vi dela med launchDuration
+                float yVelocity = (4f * currentHeight * (1f - 2f * t)) / launchDuration;
+
+                velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
+
+                currentPos += new Vector3(velocity.x, 0f, velocity.z) * Time.deltaTime;
+
+                transform.position = new Vector3(currentPos.x, groundY + yOffset, currentPos.z);
+
+                if (elapsed > launchDuration) velocityBeforeElapsedTime = velocity; 
+                
 
                 yield return null;
             }
 
-           
-            currentPos = new Vector3(transform.position.x, groundY, transform.position.z);
+            currentPos = new Vector3(currentPos.x, groundY, currentPos.z);
             transform.position = currentPos;
 
-            
-            currentHeight *= bounceDamping;
+            currentHeight *= landDamping;
             launchSpeed *= 0.7f;
+
+            Vector3 newHorizontalVelocity = horizontalDirection * launchSpeed;
+            velocity = new Vector3(newHorizontalVelocity.x, 0f, newHorizontalVelocity.z);
         }
-       
-        finishedBounce = true;
+
+        hasLanded = true;
     }
 
     private Vector3 GetRandomDirection()
