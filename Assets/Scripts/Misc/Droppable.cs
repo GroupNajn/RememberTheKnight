@@ -1,29 +1,68 @@
+using System.Collections;
 using UnityEngine;
 
-public class Droppable : MonoBehaviour
+public class Droppable : MonoBehaviour, IPickupable
 {
+    [SerializeField] private float weight = 5.0f;
+    [SerializeField] private float pickUpDelay;
+    [SerializeField] private string itemName;
 
-    [SerializeField] public float Weight = 5.0f;
-     
-    [SerializeField] string Name = "Default";
+    [SerializeField] private Tier tier = Tier.Common;
+    public Tier Tier => tier;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private PickableState pickable = PickableState.NotPickable;
+    public PickableState Pickable => pickable;
+
+    private Transform playerTransform;
+
+    public float Weight => weight;
+    public string Name
+    {
+        get => itemName;
+        set => itemName = value;
+    }
+
     void Start()
     {
+        GameObject player = GameObject.FindWithTag("Player");
 
+        if (player != null)
+            playerTransform = player.transform;
+
+        StartCoroutine(WaitForInitialization(pickUpDelay));
     }
 
-    void Update()
-    {
-
-    }
     private void OnEnable()
     {
-        LootManager.instance.RegisterLoot(this);
+        if (LootManager.instance != null)
+            LootManager.instance.RegisterLoot(this);
     }
 
     private void OnDisable()
     {
-        LootManager.instance.UnregisterLoot(this);
+        if (LootManager.instance != null)
+            LootManager.instance.UnregisterLoot(this);
+    }
+
+    IEnumerator WaitForInitialization(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pickable = PickableState.Pickable;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Triggered by: " + other.name);
+
+        if (other.CompareTag("Player") && pickable == PickableState.Pickable)
+        {
+            Pickup();
+        }
+    }
+
+    public void Pickup()
+    {
+        Debug.Log($"You picked up {itemName}");
+        Destroy(gameObject);
     }
 }
