@@ -87,7 +87,7 @@ public class Soul_Follow : MonoBehaviour
 
         float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.001f);
 
-        // sätt bara Y-velocity, behåll X/Z från annan rörelse
+        // set y-velocity and keep xz velocity
         hoverVelocity = new Vector3(0f, y, 0f);
 
         velocity += hoverVelocity;

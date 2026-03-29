@@ -56,7 +56,7 @@ public class BounceScript : MonoBehaviour
                 Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
 
                 // Derivatan av 4 * t * (1 - t) är 4 - 8t
-                // Eftersom t = elapsed / launchDuration måste vi dela med launchDuration
+                
                 float yVelocity = (4f * currentHeight * (1f - 2f * t)) / launchDuration;
 
                 velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
