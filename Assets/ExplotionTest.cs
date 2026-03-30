@@ -22,38 +22,45 @@ public class ExplotionTest : MonoBehaviour
         {
             Debug.Log(distanceToPlayer);
             time = 0;
-            bool playerHit = false;
+            Explode();
+        }
+    }
 
-            for (int i = 0; i < hitchecks.Length; i++)
+    public void Explode()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        bool playerHit = false;
+
+        for (int i = 0; i < hitchecks.Length; i++)
+        {
+            Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
+                CharacterController cc = hit.collider.GetComponent<CharacterController>();
 
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (cc != null || distanceToPlayer <= 1f)
                 {
-                    CharacterController cc = hit.collider.GetComponent<CharacterController>();
-
-                    if (cc != null || distanceToPlayer <= 1f)
+                    playerHit = true;
+                    Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.green, explotionInterval);
+                    IKnockbackable damageable = hit.collider.GetComponent<IKnockbackable>();
+                    if (damageable != null)
                     {
-                        playerHit = true;
-                        Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.green, explotionInterval);
-                        IKnockbackable damageable = hit.collider.GetComponent<IKnockbackable>();
-                        if (damageable != null)
-                        {
-                            damageable.ApplyKnockback(explosionForce, explotionRadius, transform.position);
-                        }
-                        break;
+                        damageable.ApplyKnockback(explosionForce, explotionRadius, transform.position);
                     }
-                    Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.red, explotionInterval);
+                    break;
                 }
+                Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.red, explotionInterval);
             }
-            if (playerHit)
-            {
-               // Debug.Log("Player is hit by the explosion!");
-            }
-            else
-            {
-               // Debug.Log("Player is protected from the explosion by an obstacle!");
-            }
+        }
+        if (playerHit)
+        {
+            // Debug.Log("Player is hit by the explosion!");
+        }
+        else
+        {
+            // Debug.Log("Player is protected from the explosion by an obstacle!");
         }
     }
 }
