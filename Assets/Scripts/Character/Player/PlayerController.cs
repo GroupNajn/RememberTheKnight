@@ -3,10 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public interface IKnockbackable
-{
-    void ApplyKnockback(float force, float radius, Vector3 pos);
-}
+
 
 public class PlayerController : MonoBehaviour, IKnockbackable
 {
