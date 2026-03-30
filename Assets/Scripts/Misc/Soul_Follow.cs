@@ -61,12 +61,13 @@ public class Soul_Follow : MonoBehaviour
         {
             if (followSpeed < maxFollowSpeed)
                 followSpeed *= Mathf.Exp((growthRate * 0.1f) * Time.deltaTime);
-
+            HoverSinWave();
             dirVector = distanceVector.normalized;
             velocity = dirVector * followSpeed;
         }
         else
         {
+            HoverSinWave();
             velocity *= Mathf.Exp(-drag * Time.deltaTime);
             followSpeed = 1.0f;
         }
