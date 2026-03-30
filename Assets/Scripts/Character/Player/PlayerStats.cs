@@ -45,6 +45,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         playerCombatManager = PlayerCombatManager.Instance;
         playerAnimator = GetComponent<Animator>();
+        playerVFX = GetComponentInChildren<PlayerVFX>();
         Health = MaxHealth;
     }
 

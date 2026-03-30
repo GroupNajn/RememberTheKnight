@@ -25,6 +25,8 @@ public class EnemyDamage : MonoBehaviour, IDamageable
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
+            characterVFX.PlayBloodSplatter(contactPoint);
+
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
             Debug.Log($"Health {Health}/{MaxHealth}");
@@ -50,6 +52,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         if (!CanTakeDamage)
         {
+
             damageCooldownTimer -= Time.deltaTime;
             if (damageCooldownTimer <= 0)
             {
@@ -61,6 +64,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        characterVFX = GetComponent<CharacterVFX>();
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         if (Event_System.instance != null)
