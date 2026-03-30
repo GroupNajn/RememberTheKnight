@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private bool animCanceleble
     {
-        get{return playerCombatManager.animationCanceleble; }
-        set {}
+        get { return playerCombatManager.animationCanceleble; }
+        set { }
     }
 
 
@@ -96,8 +96,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         InitialChecksAndHandlers();
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
-        HandleAnimationInputs(isIdling);
-        HandleDodge(isIdling, isDodging);
+        bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
+        HandleAnimationInputs(isIdling, isLockedOnAndWalking);
+        HandleDodge(isIdling, isDodging, isLockedOnAndWalking);
         HandleAttack();
     }
 
@@ -118,15 +119,31 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             HandleLateralMovement();
     }
 
-    private void HandleDodge(bool isIdling, bool isDodging)
+    private void HandleDodge(bool isIdling, bool isDodging, bool isLockedOnAndWalking)
     {
-        if (!isIdling && playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
+
+        if(playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
         {
-            PlayerAnimator.SetTrigger("Dodge");
-            playerState.SetMoveState(MoveState.Dodging);
-            dodgeDurationRemaining = playerStats.dodgeDuration;
-            dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
-            Dodge();
+            if (isLockedOnAndWalking && playerLocomotionInput.MovementInput.y <= 0)
+            {
+                PlayerAnimator.SetTrigger("BackStep");
+                playerState.SetMoveState(MoveState.Dodging);
+            }
+            else if (!isIdling)
+            {
+                PlayerAnimator.SetTrigger("Dodge");
+                playerState.SetMoveState(MoveState.Dodging);
+            }
+            else if(isIdling)
+            {
+                PlayerAnimator.SetTrigger("BackStep");
+                playerState.SetMoveState(MoveState.Dodging);
+            }
+            if (playerState.CurrentMoveState == MoveState.Dodging)
+            {
+                dodgeDurationRemaining = playerStats.dodgeDuration;
+                dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
+            }
         }
 
         if (dodgeCoolDownRemaining > 0)
@@ -136,10 +153,39 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             Dodge();
     }
 
-    private void HandleAnimationInputs(bool isIdling)
+    private void Dodge()
     {
-        bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
+        if (dodgeDurationRemaining == playerStats.dodgeDuration)
+        {
+            Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
+            dodgeDirection = playerRotation * transform.forward;
+        }
+        dodgeDurationRemaining -= Time.deltaTime;
 
+
+        if (dodgeDurationRemaining <= playerStats.dodgeDuration - dodgeDelay)
+        {
+            Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
+            Vector3 newVelocity = _characterController.velocity + movementDelta;
+
+            newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
+            newVelocity.y = _verticalVelocity;
+
+            // un comment for frontflip MLG XD
+            _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+            _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+        }
+        if (dodgeDurationRemaining <= 0)
+        {
+            playerState.SetMoveState(MoveState.Idling);
+            PlayerAnimator.ResetTrigger("Dodge");
+            PlayerAnimator.ResetTrigger("BackStep");
+            //Debug.Log("Idling because dodgeDuration was 0");
+        }
+    }
+
+    private void HandleAnimationInputs(bool isIdling, bool isLockedOnAndWalking)
+    {
         playerLockRotation.RotationEnabled = isLockedOnAndWalking;
 
         if (isLockedOnAndWalking)
@@ -200,7 +246,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             isKnockedback = false;
             knockbackForce = Vector3.zero;
             playerState.SetMoveState(MoveState.Idling);
-           // Debug.Log("Set Idling because of knockback");
+            // Debug.Log("Set Idling because of knockback");
         }
     }
 
@@ -235,35 +281,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         currentInputMagnitudeY = Mathf.MoveTowards(currentInputMagnitudeY, targetMagnitudeY, Time.deltaTime * AnimatorSmoothing);
     }
 
-    private void Dodge()
-    {
-        if (dodgeDurationRemaining == playerStats.dodgeDuration)
-        {
-            Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
-            dodgeDirection = playerRotation * transform.forward;
-        }
-        dodgeDurationRemaining -= Time.deltaTime;
-
-
-        if (dodgeDurationRemaining <= playerStats.dodgeDuration - dodgeDelay)
-        {
-            Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
-            Vector3 newVelocity = _characterController.velocity + movementDelta;
-
-            newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
-            newVelocity.y = _verticalVelocity;
-
-            // un comment for frontflip MLG XD
-            _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-            _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-        }
-        if (dodgeDurationRemaining <= 0)
-        {
-            playerState.SetMoveState(MoveState.Idling);
-            PlayerAnimator.ResetTrigger("Dodge");
-            //Debug.Log("Idling because dodgeDuration was 0");
-        }
-    }
+   
 
     private void HandleLateralMovement() //(Horizontal)
     {
