@@ -25,6 +25,7 @@ public class HealthbarScrip : MonoBehaviour
     void UpdateHealthBar(float current, float max)
     {
         healthbar.maxValue = max;
+        Debug.Log($"Updating health bar: current={current}, max={max}");
         healthbar.value = current;
     }
 }
