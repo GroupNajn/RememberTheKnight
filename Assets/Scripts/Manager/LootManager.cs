@@ -13,9 +13,9 @@ public class LootManager : MonoBehaviour
     private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
 
-    private float oneItemDropChance;
-    private float twoItemDropChance;
-    private float threeItemDropChance;
+    //[SerializeField] float oneItemDropChance;
+    //[SerializeField] float twoItemDropChance;
+    //[SerializeField] float threeItemDropChance;
 
 
 
@@ -32,9 +32,9 @@ public class LootManager : MonoBehaviour
 
     private void Start()
     {
-        oneItemDropChance = 80.0f;
-        twoItemDropChance = 15.0f;
-        threeItemDropChance = 5.0f;
+        //oneItemDropChance = 80.0f;
+        //twoItemDropChance = 15.0f;
+        //threeItemDropChance = 5.0f;
 
         if (Event_System.instance == null)
         {
@@ -42,7 +42,7 @@ public class LootManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("LootManager subscribed");
+        //Debug.Log("LootManager subscribed");
         Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
     }
 
@@ -63,6 +63,12 @@ public class LootManager : MonoBehaviour
         if (loot != null)
             droppedLoot.Remove(loot);
     }
+
+    //public void CalculateLootTier(EnemyDamage enemy)
+    //{
+    //    float totalTierWight = 0;
+
+    //}
 
     public void GetOneRandomItemLoot(EnemyDamage enemy)
     {
@@ -91,11 +97,17 @@ public class LootManager : MonoBehaviour
     {
         Vector3 pos = enemy.transform.position;
         Instantiate(item, pos, Quaternion.identity);
+
     }
+
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {
         float percent = (itemW / SumOfW) * 100;
         Debug.Log(percent);
     }
+
+
+
+
 }
