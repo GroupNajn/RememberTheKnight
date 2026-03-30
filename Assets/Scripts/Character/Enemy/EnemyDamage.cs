@@ -16,7 +16,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
-    public void TakeDamage(float damage)
+    private CharacterVFX characterVFX;
+
+    public void TakeDamage(float damage, Vector3 contactPoint)
     {
         if (CanTakeDamage && Health > 0)
         {

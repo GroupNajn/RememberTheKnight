@@ -28,7 +28,7 @@ public class DamageTrigger : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.TakeDamage(damageAmount);
+            damageable.TakeDamage(damageAmount, contactPoint);
         }
     }
 }
