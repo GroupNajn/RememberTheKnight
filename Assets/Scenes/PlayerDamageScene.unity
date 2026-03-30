@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 53193511}
   - component: {fileID: 53193510}
   - component: {fileID: 53193509}
+  - component: {fileID: 53193514}
   m_Layer: 0
   m_Name: DamageCube
   m_TagString: Untagged
@@ -151,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
 --- !u!65 &53193510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -241,6 +241,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &53193514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53193508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d4bdd2780ce574f9670c37fa774fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 0}
 --- !u!1 &668572974
 GameObject:
   m_ObjectHideFlags: 0
