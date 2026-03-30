@@ -18,7 +18,6 @@ public class DamageTrigger : MonoBehaviour
         }
         else
         {
-            //Debug.Break();
             damageAmount = 10;
         }
     }

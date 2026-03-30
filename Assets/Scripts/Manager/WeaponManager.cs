@@ -5,7 +5,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] GameObject currentRightHandWeapon;
     [SerializeField] GameObject currentLeftHandWeapon;
 
-    bool Hidden = true;
+    bool Hidden = false;
 
     private void Update()
     {   
@@ -30,7 +30,11 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null )
         {
+            Debug.Log("Activating right damage collider");
+
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
+
+            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 
@@ -38,7 +42,11 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
+            Debug.Log("Deactivating right damage collider");
+
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
+
+            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 
@@ -46,7 +54,11 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null )
         {
+            Debug.Log("Activating left damage collider");
+
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
+
+            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 
@@ -54,7 +66,11 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
+            Debug.Log("Deactivating left damage collider");
+
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
+
+            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 }
