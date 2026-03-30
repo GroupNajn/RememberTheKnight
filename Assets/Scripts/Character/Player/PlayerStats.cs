@@ -82,6 +82,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     private void NotifyHealthChanged()
     {
+
+        Debug.Log("EVENT TRIGGERED: " + Health);
         OnHealthChanged?.Invoke(Health, MaxHealth);
     }
 
@@ -98,5 +100,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         float totalHeal = amount * healMultiplier;
         Health = Mathf.Clamp(Health + totalHeal, 0, MaxHealth);
+        NotifyHealthChanged();
     }
 }

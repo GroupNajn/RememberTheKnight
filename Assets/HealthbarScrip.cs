@@ -4,13 +4,13 @@ using UnityEngine.UI;
 public class HealthbarScrip : MonoBehaviour
 {
     public Slider healthbar;
-    [field: SerializeField] public MonoBehaviour target; // drag Player OR Enemy here
+    [SerializeField] private MonoBehaviour target;// drag Player OR Enemy here
 
     private IDamageable damageable;
 
     void Start()
     {
-        damageable = target as IDamageable; 
+        damageable = target.GetComponent<IDamageable>();
 
         if (damageable == null )
         {
