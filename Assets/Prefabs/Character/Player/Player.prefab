@@ -241,7 +241,7 @@ CharacterController:
   m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.1
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.000001
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &1529693946768076600
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e71f922817a4b64b9a1c484b46e7768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SprintToggledOn: 1
+  SprintToggledOn: 0
 --- !u!114 &7333838977578531082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,10 +274,11 @@ MonoBehaviour:
   walkAcceleration: 0.25
   sprintAcceleration: 0.5
   drag: 20
-  movingThreshold: 0.01
+  MovingThreshold: 0.01
   AnimatorSmoothing: 5
   dodgeAcceleration: 1
   dodgeDelay: 0.1
+  lockHandler: {fileID: 0}
   knockbackCalculationPos: {fileID: 3376499992144017366}
   knockbackForce: {x: 0, y: 0, z: 0}
 --- !u!114 &7272143101240945305
@@ -329,7 +330,7 @@ MonoBehaviour:
   attackRotationSpeed: 1.5
   dodgeSpeedMultiplier: 0
   dodgeCoolDown: 1
-  dodgeDuration: 0.2
+  dodgeDuration: 0.6
   knockbackResistance: 5
   isDead: 0
 --- !u!114 &2045710683252585095
@@ -347,6 +348,7 @@ MonoBehaviour:
   isInvulnerable: 0
   canCombo: 0
   isAttackRotationSpeed: 0
+  animationCanceleble: 0
 --- !u!114 &2484520924626661676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockHandler: {fileID: 0}
   rotationSpeed: 10
+  RotationEnabled: 0
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +513,22 @@ PrefabInstance:
     - target: {fileID: 6030414680109792853, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_Height
+      value: 1.0366234
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_Center.x
+      value: 0.00000015650781
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5016883
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_Center.z
+      value: -0.00000003041591
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -124,9 +124,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if(playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
         {
-            if (isLockedOnAndWalking && playerLocomotionInput.MovementInput.y <= 0)
+            if (lockHandler.IsLockedOn)
             {
-                PlayerAnimator.SetTrigger("BackStep");
+                PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
             }
             else if (!isIdling)
@@ -180,30 +180,34 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");
-            //Debug.Log("Idling because dodgeDuration was 0");
         }
     }
 
     private void HandleAnimationInputs(bool isIdling, bool isLockedOnAndWalking)
     {
         playerLockRotation.RotationEnabled = isLockedOnAndWalking;
+        PlayerAnimator.SetBool("IsLockedOn", lockHandler.IsLockedOn);
 
-        if (isLockedOnAndWalking)
+        if(playerState.CurrentMoveState != MoveState.Dodging)
         {
-            PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
-            PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
+            if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting)
+            {
+                PlayerAnimator.SetFloat("Y", currentInputMagnitude);
+                PlayerAnimator.SetFloat("X", 0);
+                RotatePlayerToTarget();
+            }
+            else if (lockHandler.IsLockedOn)
+            {
+                PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
+                PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
+            }
+            else if (isIdling)
+            {
+                PlayerAnimator.SetFloat("Y", currentInputMagnitude);
+                PlayerAnimator.SetFloat("X", 0);
+            }
         }
-        else if (!isLockedOnAndWalking)
-        {
-            PlayerAnimator.SetFloat("Y", currentInputMagnitude);
-            PlayerAnimator.SetFloat("X", 0);
-            RotatePlayerToTarget();
-        }
-        else if (isIdling)
-        {
-            PlayerAnimator.SetFloat("Y", currentInputMagnitude);
-            PlayerAnimator.SetFloat("X", 0);
-        }
+       
     }
 
     private void HandleAttack()
@@ -212,7 +216,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != attackHash)
         {
-            //Debug.Log("Attack animation finished, returning to idling");
             playerState.SetMoveState(MoveState.Idling);
         }
 
@@ -246,7 +249,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             isKnockedback = false;
             knockbackForce = Vector3.zero;
             playerState.SetMoveState(MoveState.Idling);
-            // Debug.Log("Set Idling because of knockback");
         }
     }
 
@@ -281,11 +283,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         currentInputMagnitudeY = Mathf.MoveTowards(currentInputMagnitudeY, targetMagnitudeY, Time.deltaTime * AnimatorSmoothing);
     }
 
-   
-
     private void HandleLateralMovement() //(Horizontal)
     {
-
         float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration : walkAcceleration;
         float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
 
@@ -338,7 +337,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         knockbackForce = knockbackDirection * calculatedForce;
-        //   Debug.Log("Applying knockback with force: " + calculatedForce + " and radius: " + radius);
     }
 
     private void GroundedCheck()
