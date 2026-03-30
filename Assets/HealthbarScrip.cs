@@ -12,20 +12,20 @@ public class HealthbarScrip : MonoBehaviour
     {
         damageable = target.GetComponent<IDamageable>();
 
-        if (damageable == null )
+        if (damageable == null)
         {
             Debug.LogError("Target does not implement IDamageable!");
             return;
         }
         damageable.OnHealthChanged += UpdateHealthBar;
 
-        UpdateHealthBar(damageable.Health, damageable.MaxHealth);
+        healthbar.maxValue = damageable.MaxHealth;
+        healthbar.value = damageable.MaxHealth;
     }
 
     void UpdateHealthBar(float current, float max)
     {
         healthbar.maxValue = max;
-        Debug.Log($"Updating health bar: current={current}, max={max}");
         healthbar.value = current;
     }
 }
