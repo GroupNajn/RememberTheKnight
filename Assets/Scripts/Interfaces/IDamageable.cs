@@ -6,6 +6,9 @@ public interface IDamageable
 
     public float MaxHealth { get;}
     public float Health { get; }
+
+    System.Action<float, float> OnHealthChanged { get; set; }
+
     public bool CanTakeDamage { get; }
 
     //IEnumerator DamageCoolDown(int damageDelay); // Uncomment if you want to use a cooldown for taking damage, but currently not used in the project

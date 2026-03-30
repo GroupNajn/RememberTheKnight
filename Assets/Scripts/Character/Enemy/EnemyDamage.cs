@@ -10,6 +10,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     // Made by Lukas and Anton A 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
+    public System.Action<float, float> OnHealthChanged { get; set; }
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer = 1;
@@ -22,6 +23,8 @@ public class EnemyDamage : MonoBehaviour, IDamageable
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
+            OnHealthChanged?.Invoke(Health, MaxHealth);
+
             Debug.Log($"Health {Health}/{MaxHealth}");
             CanTakeDamage = false;
             if (Health <= 0)

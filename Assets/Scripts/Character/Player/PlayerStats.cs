@@ -10,6 +10,9 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     [field: SerializeField] public float MaxHealth { get; private set; }
     [field: SerializeField] public float Health { get; set; }
+    public System.Action<float, float> OnHealthChanged { get; set; }
+    
+    float healMultiplier = 0;
 
     [Header("Stats")]
     [Header("Movement")]
@@ -28,6 +31,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     // [HideInInspector]
 
     [HideInInspector]
+
     public bool CanTakeDamage
     {
         get { return !playerCombatManager.isInvulnerable; }
@@ -51,7 +55,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
         else
         {
-            isDead = false;        
+            isDead = false;
         }
         playerAnimator.SetBool("IsDead", isDead);
     }
@@ -61,6 +65,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
         if (CanTakeDamage && !isDead)
         {
             Health -= damage;
+            NotifyHealthChanged();
+
             if (isDead)
             {
                 Death();
@@ -72,5 +78,28 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         Debug.Log("DIE!");
         playerAnimator.SetBool("IsDead", true);
+    }
+
+    private void NotifyHealthChanged()
+    {
+
+        Debug.Log("EVENT TRIGGERED: " + Health);
+        OnHealthChanged?.Invoke(Health, MaxHealth);
+    }
+
+    public void SetMaxHealth(float newMaxHealth)
+    {
+        MaxHealth = newMaxHealth;
+
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+
+        NotifyHealthChanged();
+    }
+
+    public void Heal(float amount )
+    {
+        float totalHeal = amount * healMultiplier;
+        Health = Mathf.Clamp(Health + totalHeal, 0, MaxHealth);
+        NotifyHealthChanged();
     }
 }
