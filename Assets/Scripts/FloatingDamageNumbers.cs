@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 public class FloatingDamageNumbers : MonoBehaviour
 {
 
-
     [SerializeField] GameObject prefab;
     private Transform spawnPos;
     private TextMeshProUGUI textMesh;
@@ -16,7 +15,8 @@ public class FloatingDamageNumbers : MonoBehaviour
     private void Awake()
     {
 
-
+        //spawnPos = transform.Find("HealthBar/Numbers_Spawn_Position");
+        //Debug.LogError(spawnPos);
     }
 
     private void OnDisable()
@@ -26,16 +26,14 @@ public class FloatingDamageNumbers : MonoBehaviour
 
     private void Start()
     {
-        spawnPos = transform.GetChild(3);
+
+        spawnPos = transform.Find("HealthBar/Numbers_Spawn_Position");
+        Debug.Log(spawnPos);
         Event_System.instance.OnEnemyDamage += SpawnFloatingNumbers;
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.F1))
-        //{
-        //    SpawnFloatingNumbers();
-        //}
         if (textMesh != null)
             textMesh.transform.rotation = this.transform.rotation * Quaternion.Euler(0f, 180f, 0f);
         
@@ -54,12 +52,12 @@ public class FloatingDamageNumbers : MonoBehaviour
     {
        
         if (parentTransform.root != this.transform.root) return;
-
-        var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, spawnPos);
-        
-        textMesh = popup.GetComponent<TextMeshProUGUI>();
+        //var transform = GetComponent<Transform>().Find("HealthBar");
+        var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, this.transform);
+       
+        textMesh = popup.GetComponentInChildren<TextMeshProUGUI>();
         textMesh.text = damage.ToString();
         
-        StartCoroutine(DisableAfterTime(popup, 1f));
+        StartCoroutine(DisableAfterTime(popup, 3f));
     }
 }

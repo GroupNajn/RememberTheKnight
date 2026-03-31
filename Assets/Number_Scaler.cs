@@ -10,6 +10,11 @@ public class Number_Scaler : MonoBehaviour
     private float time = 0f;
     private TextMeshProUGUI tmp;
     private Vector3 origin;
+    [SerializeField] float sizeScaler = 1f;
+    [SerializeField] float sizeDecreaser = 1f;
+    [SerializeField] float heightScaler= 1f;
+    [SerializeField] float heightDecreaser = 1f;
+
 
     private void Awake()
     {
@@ -22,8 +27,8 @@ public class Number_Scaler : MonoBehaviour
     void Update()
     {
         tmp.color = new Color(1,1,1, opacityCurve.Evaluate(time));
-        transform.localScale = Vector3.one * scaleCurve.Evaluate(time);
-        transform.position = origin + new Vector3(0, 1 + heightCurve.Evaluate(time), 0);
+        transform.localScale = (Vector3.one * (scaleCurve.Evaluate(time) * sizeScaler) / sizeDecreaser);
+        transform.position = origin + new Vector3(0, ((heightCurve.Evaluate(time) * heightScaler )/ heightDecreaser), 0);
         time += Time.deltaTime;
 
 
