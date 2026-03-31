@@ -16,13 +16,17 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
-    public void TakeDamage(float damage)
+    private EnemyVFX enemyVFX;
+
+    public void TakeDamage(float damage, Vector3 contactPoint)
     {
         if (CanTakeDamage && Health > 0)
         {
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
+            enemyVFX.PlayBloodSplatter(contactPoint);
+
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
             Debug.Log($"Health {Health}/{MaxHealth}");
@@ -48,6 +52,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         if (!CanTakeDamage)
         {
+
             damageCooldownTimer -= Time.deltaTime;
             if (damageCooldownTimer <= 0)
             {
@@ -59,6 +64,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        enemyVFX = GetComponent<EnemyVFX>();
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         if (Event_System.instance != null)

@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     private PlayerCombatManager playerCombatManager;
     private Animator playerAnimator;
+    private PlayerVFX playerVFX;
 
     [field: SerializeField] public float MaxHealth { get; private set; }
     [field: SerializeField] public float Health { get; set; }
@@ -44,6 +45,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         playerCombatManager = PlayerCombatManager.Instance;
         playerAnimator = GetComponent<Animator>();
+        playerVFX = GetComponentInChildren<PlayerVFX>();
         Health = MaxHealth;
     }
 
@@ -60,13 +62,13 @@ public class PlayerStats : MonoBehaviour, IDamageable
         playerAnimator.SetBool("IsDead", isDead);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 contactPoint)
     {
         if (CanTakeDamage && !isDead)
         {
-            Health -= damage;
-            NotifyHealthChanged();
+            playerVFX.PlayBloodSplatter(contactPoint);
 
+            Health -= damage;
             if (isDead)
             {
                 Death();
