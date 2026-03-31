@@ -30,6 +30,7 @@ public class Droppable : MonoBehaviour, IPickupable
             playerTransform = player.transform;
 
         StartCoroutine(WaitForInitialization(pickUpDelay));
+
     }
 
     private void OnEnable()
@@ -63,6 +64,7 @@ public class Droppable : MonoBehaviour, IPickupable
     public void Pickup()
     {
         Debug.Log($"You picked up {itemName}");
+        Event_System.instance?.OnLootPickedUp.Invoke();
         Destroy(gameObject);
     }
 }

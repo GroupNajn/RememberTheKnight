@@ -44,6 +44,8 @@ public class LootManager : MonoBehaviour
 
         //Debug.Log("LootManager subscribed");
         Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
+
+    
     }
 
     private void OnDestroy()
