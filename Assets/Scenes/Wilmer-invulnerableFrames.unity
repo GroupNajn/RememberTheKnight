@@ -704,11 +704,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9022567644156599586, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
   m_PrefabInstance: {fileID: 4667650221313969639}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1461962298 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 3822874533635884638, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
-  m_PrefabInstance: {fileID: 4667650221313969639}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1461962299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,10 +716,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01fdf850a6077142a30de8038e9c8b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1461962298}
   isInvulnerable: 0
   canCombo: 0
   isAttackRotationSpeed: 0
+  animationCanceleble: 1
 --- !u!114 &1461962306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,6 +733,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 5
+  <Health>k__BackingField: 0
+  walkSpeedMultiplier: 0
+  sprintSpeedMultiplier: 0
+  gravity: 25
+  normalRotationSpeed: 10
+  attackRotationSpeed: 5
+  dodgeSpeedMultiplier: 0
+  dodgeCoolDown: 1
+  dodgeDuration: 0.2
+  knockbackResistance: 5
+  isDead: 0
 --- !u!1 &1678185993
 GameObject:
   m_ObjectHideFlags: 0
