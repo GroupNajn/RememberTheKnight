@@ -137,7 +137,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PickUp"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""c4319887-905a-4776-b155-b71d62f2d8b3"",
                     ""expectedControlType"": """",
@@ -317,7 +317,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PickUp"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -356,7 +356,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_ToggleSprint = m_PlayerLocomotionMap.FindAction("ToggleSprint", throwIfNotFound: true);
         m_PlayerLocomotionMap_Dodge = m_PlayerLocomotionMap.FindAction("Dodge", throwIfNotFound: true);
         m_PlayerLocomotionMap_Attacking = m_PlayerLocomotionMap.FindAction("Attacking", throwIfNotFound: true);
-        m_PlayerLocomotionMap_PickUp = m_PlayerLocomotionMap.FindAction("PickUp", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Interact = m_PlayerLocomotionMap.FindAction("Interact", throwIfNotFound: true);
         m_PlayerLocomotionMap_ScrollCamera = m_PlayerLocomotionMap.FindAction("ScrollCamera", throwIfNotFound: true);
         // ThirdPersonMap
         m_ThirdPersonMap = asset.FindActionMap("ThirdPersonMap", throwIfNotFound: true);
@@ -449,7 +449,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_ToggleSprint;
     private readonly InputAction m_PlayerLocomotionMap_Dodge;
     private readonly InputAction m_PlayerLocomotionMap_Attacking;
-    private readonly InputAction m_PlayerLocomotionMap_PickUp;
+    private readonly InputAction m_PlayerLocomotionMap_Interact;
     private readonly InputAction m_PlayerLocomotionMap_ScrollCamera;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
@@ -483,9 +483,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Attacking => m_Wrapper.m_PlayerLocomotionMap_Attacking;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerLocomotionMap/PickUp".
+        /// Provides access to the underlying input action "PlayerLocomotionMap/Interact".
         /// </summary>
-        public InputAction @PickUp => m_Wrapper.m_PlayerLocomotionMap_PickUp;
+        public InputAction @Interact => m_Wrapper.m_PlayerLocomotionMap_Interact;
         /// <summary>
         /// Provides access to the underlying input action "PlayerLocomotionMap/ScrollCamera".
         /// </summary>
@@ -531,9 +531,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attacking.started += instance.OnAttacking;
             @Attacking.performed += instance.OnAttacking;
             @Attacking.canceled += instance.OnAttacking;
-            @PickUp.started += instance.OnPickUp;
-            @PickUp.performed += instance.OnPickUp;
-            @PickUp.canceled += instance.OnPickUp;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
             @ScrollCamera.started += instance.OnScrollCamera;
             @ScrollCamera.performed += instance.OnScrollCamera;
             @ScrollCamera.canceled += instance.OnScrollCamera;
@@ -563,9 +563,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attacking.started -= instance.OnAttacking;
             @Attacking.performed -= instance.OnAttacking;
             @Attacking.canceled -= instance.OnAttacking;
-            @PickUp.started -= instance.OnPickUp;
-            @PickUp.performed -= instance.OnPickUp;
-            @PickUp.canceled -= instance.OnPickUp;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
             @ScrollCamera.started -= instance.OnScrollCamera;
             @ScrollCamera.performed -= instance.OnScrollCamera;
             @ScrollCamera.canceled -= instance.OnScrollCamera;
@@ -815,12 +815,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttacking(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "PickUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPickUp(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "ScrollCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

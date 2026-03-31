@@ -25,10 +25,14 @@ public class DamageTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Hello IS DAMAGE");
+
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+
         if (damageable != null)
         {
-            damageable.TakeDamage(damageAmount);
+            Vector3 contactPoint = other.ClosestPoint(transform.position);
+
+            damageable.TakeDamage(damageAmount, contactPoint);
         }
     }
 }
