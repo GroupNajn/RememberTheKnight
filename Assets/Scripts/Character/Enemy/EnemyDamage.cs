@@ -16,7 +16,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer = 1;
     [SerializeField] float damageCooldown = 1;
 
-    private CharacterVFX characterVFX;
+    private EnemyVFX enemyVFX;
 
     public void TakeDamage(float damage, Vector3 contactPoint)
     {
@@ -25,7 +25,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
             Debug.Log($"Taking damage{damage}");
 
             Health -= damage;
-            characterVFX.PlayBloodSplatter(contactPoint);
+            enemyVFX.PlayBloodSplatter(contactPoint);
 
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
@@ -64,7 +64,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        characterVFX = GetComponent<CharacterVFX>();
+        enemyVFX = GetComponent<EnemyVFX>();
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         if (Event_System.instance != null)
