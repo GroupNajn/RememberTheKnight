@@ -2,6 +2,8 @@ using Unity.Behavior;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
+
 
 [RequireComponent(typeof(ITriggerable))]
 public class EnemyDamage : MonoBehaviour, IDamageable
@@ -10,7 +12,8 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     // Made by Lukas and Anton A 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
-    public System.Action<float, float> OnHealthChanged { get; set; }
+    public Action<float, float> OnHealthChanged { get; set; }
+    
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer = 1;
@@ -23,9 +26,12 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         if (CanTakeDamage && Health > 0)
         {
             Debug.Log($"Taking damage{damage}");
-
+            Event_System.instance.OnEnemyDamage?.Invoke(this.transform,damage);
             Health -= damage;
+
+
             enemyVFX.PlayBloodSplatter(contactPoint);
+
 
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
@@ -69,6 +75,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         onDeath = GetComponent<ITriggerable>();
         if (Event_System.instance != null)
             Event_System.instance.OnEnemySpawn?.Invoke(this);
+
         else
             Debug.LogError("Event_System.instance is null in EnemyDamage.Start()");
     }

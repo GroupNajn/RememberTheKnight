@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ public class HealthbarScrip : MonoBehaviour
 
         healthbar.maxValue = damageable.MaxHealth;
         healthbar.value = damageable.MaxHealth;
+
+
     }
 
     void UpdateHealthBar(float current, float max)
@@ -28,4 +31,6 @@ public class HealthbarScrip : MonoBehaviour
         healthbar.maxValue = max;
         healthbar.value = current;
     }
+
+  
 }
