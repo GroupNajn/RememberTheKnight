@@ -113,6 +113,17 @@ public class TargetLockHandler : MonoBehaviour
         targetGroup.AddMember(playerTransform, 0.75f, 1f);
         //targetGroup.AddMember(testCubeTransform, 0.75f, 1f);
         targetGroup.AddMember(currentTarget, 1f, 1);
+
+        //currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowCanvas();
+        EnemyHealthBarCanvas enemyHealthBarCanvas = currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>();
+        if (enemyHealthBarCanvas != null)
+        {
+            enemyHealthBarCanvas.ShowHealthBar();
+        }
+        else
+        {
+            Debug.LogWarning("EnemyHealthBarCanvas not found on target: " + currentTarget.name);
+        }
     }
 
     void ClearTarget()
