@@ -51,10 +51,9 @@ Locomotion Sets include...
 Package Includes
 *************************************
 
-244 Unique Animations
+273 Unique Animations
 Low Poly Man Model
-Spear Model
-Shield Model
+Sword Model
 
 *************************************
 CONTACT
