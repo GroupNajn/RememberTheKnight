@@ -1,5 +1,4 @@
 using Unity.Behavior;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
@@ -13,7 +12,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     public Action<float, float> OnHealthChanged { get; set; }
-    
+
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer;
@@ -26,7 +25,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         if (CanTakeDamage && Health > 0)
         {
             Debug.Log($"Taking damage{damage}");
-            Event_System.instance.OnEnemyDamage?.Invoke(this.transform,damage);
+            Event_System.instance.OnEnemyDamage?.Invoke(this.transform, damage);
             Health -= damage;
 
 
