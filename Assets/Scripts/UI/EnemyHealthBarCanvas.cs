@@ -8,6 +8,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
     EnemyDamage enemyDamage;
     Slider healthBar;
+    bool isOnCooldown = false;
 
     private void Start()
     {
@@ -23,7 +24,6 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
         Event_System.instance.OnEnemyDamage += ShowHealthBarForDuration;
 
-        //StartCoroutine(HideAfterDelay()); // Start with the canvas hidden after a delay
         HideHealthBar(); // Start with the canvas hidden immediately
     }
 
@@ -54,7 +54,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
     public void HideHealthBar()
     {
-        if (healthBar == null)
+        if (healthBar == null || isOnCooldown)
             return;
 
         healthBar.gameObject.SetActive(false);
@@ -62,7 +62,9 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
     IEnumerator HideHealthBarAfterDelay()
     {
+        isOnCooldown = true;
         yield return new WaitForSeconds(displayDuration);
+        isOnCooldown = false;
         HideHealthBar();
     }
 }
