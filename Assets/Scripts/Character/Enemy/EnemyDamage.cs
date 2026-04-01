@@ -9,7 +9,7 @@ using System;
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
     //[SerializeField] private Event_System EventSystem;
-    // Made by Lukas and Anton A 2026-03-06
+    // Made by Lukas and Anton B 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     public Action<float, float> OnHealthChanged { get; set; }

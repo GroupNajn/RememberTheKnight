@@ -30,7 +30,11 @@ public class HealthbarScrip : MonoBehaviour
     {
         healthbar.maxValue = max;
         healthbar.value = current;
-    }
 
-  
+        if (current <= 0)
+        {
+            Destroy(healthbar.gameObject);
+            damageable.OnHealthChanged -= UpdateHealthBar;
+        }
+    }  
 }

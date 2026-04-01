@@ -2468,7 +2468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
-  damageCooldown: 2
+  damageCooldown: 0
 --- !u!136 &1294823646022744045
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5284,6 +5284,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6504825722562781706}
     m_Modifications:
+    - target: {fileID: 3143790575938063055, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3384794278524948712, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: target
       value: 
@@ -5395,28 +5399,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4565870402855886969, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8311477201755246138}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
---- !u!1 &3413178842182100729 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4565870402855886969, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
-  m_PrefabInstance: {fileID: 1153826273954711168}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8311477201755246138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3413178842182100729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfc7637146020b47b71a836d585b724, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7630152972248263425 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8782170257363758465, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
