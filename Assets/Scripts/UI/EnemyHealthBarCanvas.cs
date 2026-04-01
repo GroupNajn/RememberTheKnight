@@ -67,4 +67,14 @@ public class EnemyHealthBarCanvas : MonoBehaviour
         isOnCooldown = false;
         HideHealthBar();
     }
+
+    private void OnDissable()
+    {
+        Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
+    }
+
+    private void OnDestroy()
+    {
+        Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
+    }
 }
