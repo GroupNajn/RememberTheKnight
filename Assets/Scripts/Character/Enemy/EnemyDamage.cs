@@ -16,7 +16,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
-    float damageCooldownTimer = 1;
+    float damageCooldownTimer;
     [SerializeField] float damageCooldown = 1;
 
     private EnemyVFX enemyVFX;

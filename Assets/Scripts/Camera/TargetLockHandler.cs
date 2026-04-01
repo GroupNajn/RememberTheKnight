@@ -119,7 +119,8 @@ public class TargetLockHandler : MonoBehaviour
 
     void ClearTarget()
     {
-        currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().HideHealthBar();
+        if (currentTarget != null)
+            currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().HideHealthBar();
 
         currentTarget = null;
 
