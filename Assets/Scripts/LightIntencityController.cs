@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class LightIntencityController : MonoBehaviour
@@ -8,6 +9,17 @@ public class LightIntencityController : MonoBehaviour
     [SerializeField] private float minIntensity = 0.5f;
     [SerializeField] private float maxIntensity = 1f;
     [SerializeField] private float intensityChangeSpeed = 0.5f;
+
+    Color lowColor;
+    Color highColor;
+
+    [SerializeField] Color warmLowColor = new Color(1f, 0.6f, 0.2f);
+    [SerializeField] Color warmHighColor = new Color(1f, 0.5f, 0.2f);
+
+    [SerializeField] Color coldLowColor = new Color(1f, 1f, 1f);
+    [SerializeField] Color coldHighColor = new Color(1f, 1f, 1f);
+
+    [SerializeField] private bool warmColor = true;
 
     private float noiseOffset;
 
@@ -26,8 +38,17 @@ public class LightIntencityController : MonoBehaviour
 
         float intencityToColor = Mathf.InverseLerp(minIntensity, maxIntensity, lightToControl.intensity);
 
-        Color lowColor = new Color(1f, 0.6f, 0.2f);
-        Color highColor = new Color(1f, 0.5f, 0.2f);
+        if (warmColor)
+        {
+            lowColor = warmLowColor;
+            highColor = warmHighColor;
+        }
+        else
+        {
+            lowColor = coldLowColor;
+            highColor = coldHighColor;
+        }
+
 
         lightToControl.color = Color.Lerp(lowColor, highColor, intencityToColor);
     }
