@@ -9,9 +9,12 @@ public class LootManager : MonoBehaviour
     public static LootManager instance;
 
     [Header("Loot_Table")]
-    [SerializeField] List<Droppable> lootTable;
+    [SerializeField] List<Droppable> CommonLootTable;
+    [SerializeField] List<Droppable> UnCommonLootTable;
     private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
+
+
 
     //[SerializeField] float oneItemDropChance;
     //[SerializeField] float twoItemDropChance;
@@ -76,13 +79,13 @@ public class LootManager : MonoBehaviour
     {
         float totalWeight = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (Droppable item in CommonLootTable)
             totalWeight += item.Weight;
 
         float roll = Random.Range(0, totalWeight);
         float current = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (Droppable item in CommonLootTable)
         {
             current += item.Weight;
             if (roll < current)
