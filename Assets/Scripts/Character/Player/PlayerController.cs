@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 PlayerAnimator.SetFloat("X", 0);
                 RotatePlayerToTarget();
             }
-            else if (lockHandler.IsLockedOn)
+            else if (lockHandler.IsLockedOn && playerState.CurrentMoveState != MoveState.Dodging)
             {
                 PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
                 PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
