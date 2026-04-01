@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
             newVelocity.y = _verticalVelocity;
 
-            // un comment for frontflip MLG XD
+            // un comment for frontflip
             _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
             _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
         }
@@ -187,7 +187,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if(playerState.CurrentMoveState != MoveState.Dodging)
         {
-            if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting)
+            if (lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Dodging)
+            {
+                //keep input till end of dodge
+            }
+            else if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
             {
                 PlayerAnimator.SetFloat("Y", currentInputMagnitude);
                 PlayerAnimator.SetFloat("X", 0);
@@ -198,6 +202,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
                 PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
             }
+
             else if (isIdling)
             {
                 PlayerAnimator.SetFloat("Y", currentInputMagnitude);
@@ -317,7 +322,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         Vector2 inputDir = playerLocomotionInput.MovementInput;
 
-        if (inputDir != Vector2.zero && playerState.CurrentMoveState != MoveState.Dodging) // calculates rotation for player depending input (8D movement)
+        if (inputDir != Vector2.zero && playerState.CurrentMoveState != MoveState.Dodging || lockHandler.IsLockedOn) // calculates rotation for player depending input (8D movement)
         {
             float cameraY = _playerCamera.transform.eulerAngles.y;
 
