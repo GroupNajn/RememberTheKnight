@@ -69,6 +69,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
             playerVFX.PlayBloodSplatter(contactPoint);
 
             Health -= damage;
+            NotifyHealthChanged();
             if (isDead)
             {
                 Death();
