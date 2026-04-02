@@ -6,7 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
 [RequireComponent(typeof(Animator))]
-public class EnemyLocomotion : MonoBehaviour
+public class NavmeshBehaviourSync : MonoBehaviour
 {
     void Awake()
     {
