@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Soul_Follow : MonoBehaviour
+public class Loot_Follow : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField] private Transform player;
@@ -50,13 +50,27 @@ public class Soul_Follow : MonoBehaviour
         if (!bounceScript.HasLanded) return;
         launchVelocity = bounceScript.Velocity;
         currentVelocity = launchVelocity;
-
-
-
         distanceVector = player.position - transform.position;
+
+
+
 
         HoverSinWave();
 
+        SetLootFollow();
+
+        transform.position += velocity * Time.deltaTime;
+    }
+
+    private bool CanFollow()
+    {
+        float distanceToPlayer = distanceVector.magnitude;
+        return player != null && distanceToPlayer <= followRange;
+    }
+
+
+    public void SetLootFollow()
+    {
         if (CanFollow() && droppable.Pickable == PickableState.Pickable)
         {
             if (followSpeed < maxFollowSpeed)
@@ -71,16 +85,9 @@ public class Soul_Follow : MonoBehaviour
             velocity *= Mathf.Exp(-drag * Time.deltaTime);
             followSpeed = 1.0f;
         }
-
-        transform.position += velocity * Time.deltaTime;
     }
 
-    private bool CanFollow()
-    {
-        float distanceToPlayer = distanceVector.magnitude;
-        return player != null && distanceToPlayer <= followRange;
-    }
-
+  
     private void HoverSinWave()
     {
         if (droppable.Pickable != PickableState.Pickable)

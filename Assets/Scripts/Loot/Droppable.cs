@@ -14,6 +14,8 @@ public class Droppable : MonoBehaviour, IPickupable
 
     [SerializeField] private PickableState pickable = PickableState.NotPickable;
     public PickableState Pickable => pickable;
+    private bool followLogicOverritten = false;
+    public bool FollowLogicOverritten => followLogicOverritten;
 
     private Transform playerTransform;
 
@@ -52,6 +54,8 @@ public class Droppable : MonoBehaviour, IPickupable
         yield return new WaitForSeconds(delay);
         pickable = PickableState.Pickable;
     }
+
+  
 
     void OnTriggerEnter(Collider other)
     {

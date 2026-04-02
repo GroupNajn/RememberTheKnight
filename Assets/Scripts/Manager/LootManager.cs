@@ -16,7 +16,8 @@ public class LootManager : MonoBehaviour
     [SerializeField] List<Droppable> rareLootTable;
     [SerializeField] List<Droppable> EpicLootTable;
     [SerializeField] List<Droppable> LegendaryLootTable;
-    private HashSet<Droppable> droppedLoot = new();
+    public HashSet<Droppable> DroppedLoot {get {return droppedLoot;}}
+    HashSet<Droppable> droppedLoot;
     [SerializeField] Droppable soulPrefab;
 
     //[SerializeField] float oneItemDropChance;
@@ -122,6 +123,8 @@ public class LootManager : MonoBehaviour
 
 
     }
+
+
 
     public void DropLoot(Droppable item, EnemyDamage enemy)
     {
