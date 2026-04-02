@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+
+// Script made by Henric some random date.
 public class Droppable : MonoBehaviour, IPickupable
 {
     [SerializeField] private float weight = 5.0f;

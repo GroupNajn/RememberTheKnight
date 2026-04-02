@@ -2,6 +2,8 @@ using TMPro;
 
 using UnityEngine;
 
+// Script made by Henric 2026-03-30
+
 public class Number_Scaler : MonoBehaviour
 {
     public AnimationCurve opacityCurve;
@@ -24,8 +26,9 @@ public class Number_Scaler : MonoBehaviour
 
 
 
-    void Update()
-    {
+    void Update() // The  following variables are evalutaed with the respect of time of the AnimationCurves in the inspector.
+                  // The scaler, and decreaser variables are to sclae the changes in proportion to the scale of our game units. 
+    {  
         tmp.color = new Color(1,1,1, opacityCurve.Evaluate(time));
         transform.localScale = (Vector3.one * (scaleCurve.Evaluate(time) * sizeScaler) / sizeDecreaser);
         transform.position = origin + new Vector3(0, ((heightCurve.Evaluate(time) * heightScaler )/ heightDecreaser), 0);
