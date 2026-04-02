@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using UnityEngine.UIElements;
 
+
+// Script made by Henric 2026-03-25
 public class FloatingDamageNumbers : MonoBehaviour
 {
 

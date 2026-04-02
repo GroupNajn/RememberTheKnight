@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 
+// Script made by Henric some random date
+
 public class LootManager : MonoBehaviour
 {
     public static LootManager instance;
 
     [Header("Loot_Table")]
-    [SerializeField] List<Droppable> lootTable;
+    [SerializeField] List<Droppable> commonLootTable;
+    [SerializeField] List<Droppable> unCommonLootTable;
     private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
 
@@ -76,13 +79,13 @@ public class LootManager : MonoBehaviour
     {
         float totalWeight = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (Droppable item in commonLootTable)
             totalWeight += item.Weight;
 
         float roll = Random.Range(0, totalWeight);
         float current = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (Droppable item in commonLootTable)
         {
             current += item.Weight;
             if (roll < current)
