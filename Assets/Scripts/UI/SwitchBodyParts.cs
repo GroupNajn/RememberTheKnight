@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 public class SwitchBodyParts : MonoBehaviour
@@ -509,6 +510,11 @@ public class SwitchBodyParts : MonoBehaviour
         if (rightKnee.Count > 0) rightKnee[currentRightKnee].SetActive(true);
         if (leftLeg.Count > 0) leftLeg[currentLeftLeg].SetActive(true);
         if (rightLeg.Count > 0) rightLeg[currentRightLeg].SetActive(true);
+    }
+
+    public void OnClick()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }
 
