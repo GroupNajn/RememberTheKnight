@@ -345,6 +345,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""e757dc11-d0c6-4741-abac-4eed7052bd1f"",
             ""actions"": [],
             ""bindings"": []
+        },
+        {
+            ""name"": ""UIMap"",
+            ""id"": ""b41d41e7-56c0-42fb-8b2f-728d8f60b9f2"",
+            ""actions"": [
+                {
+                    ""name"": ""PauseGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f6ed44f-fccb-4908-82c1-59e7557a0750"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ce6ef7d7-44ff-436f-9233-c1c956d16598"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -362,6 +390,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_ThirdPersonMap = asset.FindActionMap("ThirdPersonMap", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
+        // UIMap
+        m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
+        m_UIMap_PauseGame = m_UIMap.FindAction("PauseGame", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -369,6 +400,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerLocomotionMap.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerLocomotionMap.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_ThirdPersonMap.enabled, "This will cause a leak and performance issues, PlayerControls.ThirdPersonMap.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerActionsMap.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerActionsMap.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UIMap.enabled, "This will cause a leak and performance issues, PlayerControls.UIMap.Disable() has not been called.");
     }
 
     /// <summary>
@@ -772,6 +804,102 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PlayerActionsMapActions" /> instance referencing this action map.
     /// </summary>
     public PlayerActionsMapActions @PlayerActionsMap => new PlayerActionsMapActions(this);
+
+    // UIMap
+    private readonly InputActionMap m_UIMap;
+    private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
+    private readonly InputAction m_UIMap_PauseGame;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UIMap".
+    /// </summary>
+    public struct UIMapActions
+    {
+        private @PlayerControls m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UIMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UIMap/PauseGame".
+        /// </summary>
+        public InputAction @PauseGame => m_Wrapper.m_UIMap_PauseGame;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UIMap; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UIMapActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UIMapActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UIMapActions" />
+        public void AddCallbacks(IUIMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIMapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIMapActionsCallbackInterfaces.Add(instance);
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UIMapActions" />
+        private void UnregisterCallbacks(IUIMapActions instance)
+        {
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIMapActions.UnregisterCallbacks(IUIMapActions)" />.
+        /// </summary>
+        /// <seealso cref="UIMapActions.UnregisterCallbacks(IUIMapActions)" />
+        public void RemoveCallbacks(IUIMapActions instance)
+        {
+            if (m_Wrapper.m_UIMapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UIMapActions.AddCallbacks(IUIMapActions)" />
+        /// <seealso cref="UIMapActions.RemoveCallbacks(IUIMapActions)" />
+        /// <seealso cref="UIMapActions.UnregisterCallbacks(IUIMapActions)" />
+        public void SetCallbacks(IUIMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIMapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIMapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UIMapActions" /> instance referencing this action map.
+    /// </summary>
+    public UIMapActions @UIMap => new UIMapActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerLocomotionMap" which allows adding and removing callbacks.
     /// </summary>
@@ -844,5 +972,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// <seealso cref="PlayerActionsMapActions.RemoveCallbacks(IPlayerActionsMapActions)" />
     public interface IPlayerActionsMapActions
     {
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIMap" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UIMapActions.AddCallbacks(IUIMapActions)" />
+    /// <seealso cref="UIMapActions.RemoveCallbacks(IUIMapActions)" />
+    public interface IUIMapActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "PauseGame" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPauseGame(InputAction.CallbackContext context);
     }
 }
