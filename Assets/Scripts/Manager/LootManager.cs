@@ -11,8 +11,11 @@ public class LootManager : MonoBehaviour
     public static LootManager instance;
 
     [Header("Loot_Table")]
-    [SerializeField] List<Droppable> commonLootTable;
-    [SerializeField] List<Droppable> unCommonLootTable;
+    [SerializeField] List<Droppable> CommonLootTable;
+    [SerializeField] List<Droppable> UncommonLootTable;
+    [SerializeField] List<Droppable> rareLootTable;
+    [SerializeField] List<Droppable> EpicLootTable;
+    [SerializeField] List<Droppable> LegendaryLootTable;
     private HashSet<Droppable> droppedLoot = new();
     [SerializeField] Droppable soulPrefab;
 
@@ -48,7 +51,7 @@ public class LootManager : MonoBehaviour
         //Debug.Log("LootManager subscribed");
         Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
 
-    
+
     }
 
     private void OnDestroy()
@@ -79,13 +82,13 @@ public class LootManager : MonoBehaviour
     {
         float totalWeight = 0;
 
-        foreach (Droppable item in commonLootTable)
+        foreach (var item in SwitchLootTable(enemy.tier))
             totalWeight += item.Weight;
 
         float roll = Random.Range(0, totalWeight);
         float current = 0;
 
-        foreach (Droppable item in commonLootTable)
+        foreach (var item in SwitchLootTable(enemy.tier))
         {
             current += item.Weight;
             if (roll < current)
@@ -96,6 +99,28 @@ public class LootManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private List<Droppable> SwitchLootTable(Tier tier)
+    {
+        switch (tier)
+        {
+            case Tier.Common:
+                return CommonLootTable;
+            case Tier.Uncommon:
+                return UncommonLootTable;
+            case Tier.Rare:
+                return rareLootTable;
+            case Tier.Epic:
+                return EpicLootTable;
+            case Tier.Legendary:
+                return LegendaryLootTable;
+            default:
+                return CommonLootTable;
+
+        }
+
+
     }
 
     public void DropLoot(Droppable item, EnemyDamage enemy)
