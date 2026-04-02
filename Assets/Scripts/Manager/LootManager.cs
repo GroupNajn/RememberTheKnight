@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 
 // Script made by Henric some random date
@@ -20,10 +21,7 @@ public class LootManager : MonoBehaviour
     HashSet<Loot> droppedLoot;
     [SerializeField] Loot soulPrefab;
 
-    //[SerializeField] float oneItemDropChance;
-    //[SerializeField] float twoItemDropChance;
-    //[SerializeField] float threeItemDropChance;
-
+    [SerializeField] List<float> amountChanceTable;
 
 
     /*
@@ -39,10 +37,7 @@ public class LootManager : MonoBehaviour
 
     private void Start()
     {
-        //oneItemDropChance = 80.0f;
-        //twoItemDropChance = 15.0f;
-        //threeItemDropChance = 5.0f;
-
+    
         if (Event_System.instance == null)
         {
             Debug.LogError("Event_System.instance is null in LootManager.Start()");
@@ -50,7 +45,7 @@ public class LootManager : MonoBehaviour
         }
 
         //Debug.Log("LootManager subscribed");
-        Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
+        Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
 
 
     }
@@ -58,7 +53,7 @@ public class LootManager : MonoBehaviour
     private void OnDestroy()
     {
         if (Event_System.instance != null)
-            Event_System.instance.OnEnemyKilled -= GetOneRandomItemLoot;
+            Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
     public void RegisterLoot(Loot loot)
@@ -72,12 +67,16 @@ public class LootManager : MonoBehaviour
         if (loot != null)
             droppedLoot.Remove(loot);
     }
+    public void RollMultipuleLoot(EnemyDamage enemy)
+    {
+        for (int i = 0; i < CalculateLootAmount(); i++)
+        {
+            GetOneRandomItemLoot(enemy);
+        }    
+    }
 
-    //public void CalculateLootTier(EnemyDamage enemy)
-    //{
-    //    float totalTierWight = 0;
 
-    //}
+
 
     public void GetOneRandomItemLoot(EnemyDamage enemy)
     {
@@ -123,6 +122,32 @@ public class LootManager : MonoBehaviour
 
 
     }
+
+    private int CalculateLootAmount()
+    {
+        float totalWeight = 0;
+        foreach (var weight in amountChanceTable)
+        {
+            totalWeight += weight;
+        }
+
+        float roll = Random.Range(0, totalWeight);
+        float current = 0;
+
+        for (int i = 0; i < amountChanceTable.Count; i++)
+        {
+            current += amountChanceTable[i];
+
+            if (roll < current)
+            {
+                return i + 1; 
+            }
+        }
+
+        return 1; 
+    }
+
+
 
 
 
