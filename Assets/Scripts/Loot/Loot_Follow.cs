@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Loot_Follow : MonoBehaviour
@@ -13,12 +14,13 @@ public class Loot_Follow : MonoBehaviour
     [SerializeField] private float drag;
     [SerializeField] private float transitionDuration;
     [SerializeField] private float blendSpeed;
-    
-
+    private bool hasLifted = false;
+    private float liftSpeed = 1.5f;
+    private float boostSpeed = 50f;
+    private float liftTargetY;
+    private bool liftInitialized = false;
     private float maxFollowSpeed = 10.0f;
     private float hoverOffset;
-    private float transitionTimer = 0f;
-    private bool isTransitioning = true;
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
@@ -26,10 +28,11 @@ public class Loot_Follow : MonoBehaviour
     private Vector3 launchVelocity;
 
     private Vector3 hoverVelocity = Vector3.zero;
-
+    private enum FollowLogic { NotOverriten, Overwritten }
+    private FollowLogic followLogic = FollowLogic.NotOverriten;
 
     private Transform mouth;
-    private Droppable droppable;
+    private Loot loot;
     private BounceScript bounceScript;
 
     void Start()
@@ -37,29 +40,37 @@ public class Loot_Follow : MonoBehaviour
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
         mouth = GameObject.Find("Jaw").transform;
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        droppable = GetComponent<Droppable>();
+        loot = GetComponent<Loot>();
         bounceScript = GetComponent<BounceScript>();
+        Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
+        Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
+
+    }
+
+    private void OnDestroy()
+    {
+        Event_System.instance.OnPullAllLoot -= OverWriteFollowEnum;
+        Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
     }
 
     void Update()
     {
-        if (bounceScript != null && !bounceScript.HasLanded)
-            return;
         if (player == null)
             return;
-        if (!bounceScript.HasLanded) return;
-        launchVelocity = bounceScript.Velocity;
-        currentVelocity = launchVelocity;
+
+        if (bounceScript != null && !bounceScript.HasLanded)
+            return;
+
         distanceVector = player.position - transform.position;
-
-
-
-
-        HoverSinWave();
 
         SetLootFollow();
 
-        transform.position += velocity * Time.deltaTime;
+        bool handledMovement = FollowNoDistanceCheck();
+
+        if (!handledMovement)
+        {
+            transform.position += velocity * Time.deltaTime;
+        }
     }
 
     private bool CanFollow()
@@ -71,26 +82,27 @@ public class Loot_Follow : MonoBehaviour
 
     public void SetLootFollow()
     {
-        if (CanFollow() && droppable.Pickable == PickableState.Pickable)
+        if (CanFollow() && loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.NotOverriten)
         {
             if (followSpeed < maxFollowSpeed)
                 followSpeed *= Mathf.Exp((growthRate * 0.1f) * Time.deltaTime);
-            HoverSinWave();
             dirVector = distanceVector.normalized;
             velocity = dirVector * followSpeed;
+            HoverSinWave();
         }
-        else
+        else if (!CanFollow() && loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.NotOverriten)
         {
             HoverSinWave();
-            velocity *= Mathf.Exp(-drag * Time.deltaTime);
+            velocity *= Mathf.Exp(-drag * Time.deltaTime); followSpeed = 1.0f;
+            
             followSpeed = 1.0f;
         }
     }
 
-  
+
     private void HoverSinWave()
     {
-        if (droppable.Pickable != PickableState.Pickable)
+        if (loot.Pickable != PickableState.Pickable)
             return;
 
         float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.001f);
@@ -101,6 +113,52 @@ public class Loot_Follow : MonoBehaviour
         velocity += hoverVelocity;
     }
 
-  
+   
+    private bool FollowNoDistanceCheck()
+    {
+        if (loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.Overwritten)
+        {
+            if (!liftInitialized)
+            {
+                liftTargetY = transform.position.y + 2f;
+                liftInitialized = true;
+                velocity = Vector3.zero;
+            }
+
+            if (!hasLifted) // bool if lift is completed
+            {
+                Vector3 pos = transform.position;
+                pos.y = Mathf.Lerp(pos.y, liftTargetY, liftSpeed * Time.deltaTime);
+                transform.position = pos;
+
+                velocity = Vector3.zero;
+
+                if (Mathf.Abs(pos.y - liftTargetY) < 0.05f) // Distance check to see if height distance have been reached
+                {
+                    pos.y = liftTargetY;
+                    transform.position = pos;
+                    hasLifted = true;
+                }
+
+                return true; // returns true when moved this frame
+            }
+
+            dirVector = (player.position - transform.position).normalized;
+            velocity = dirVector * boostSpeed;
+        }
+
+        return false;
+    }
+
+    private void OverWriteFollowEnum()
+    {
+        followLogic = FollowLogic.Overwritten;
+    }
+
+    private void ResetFollowEnum()
+    {
+        followLogic = FollowLogic.NotOverriten;
+    }
+
 
 }

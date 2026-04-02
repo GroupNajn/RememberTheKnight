@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 // Script made by Henric some random date.
-public class Droppable : MonoBehaviour, IPickupable
+public class Loot : MonoBehaviour, IPickupable
 {
     [SerializeField] private float weight = 5.0f;
     [SerializeField] private float pickUpDelay;
@@ -34,13 +34,15 @@ public class Droppable : MonoBehaviour, IPickupable
             playerTransform = player.transform;
 
         StartCoroutine(WaitForInitialization(pickUpDelay));
+        if (LootManager.instance != null)
+            LootManager.instance.RegisterLoot(this);
 
     }
 
     private void OnEnable()
     {
-        if (LootManager.instance != null)
-            LootManager.instance.RegisterLoot(this);
+        //if (LootManager.instance != null)
+        //    LootManager.instance.RegisterLoot(this);
     }
 
     private void OnDisable()

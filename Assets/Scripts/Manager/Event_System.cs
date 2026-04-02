@@ -9,10 +9,11 @@ public class Event_System : MonoBehaviour
     public Action<EnemyDamage> OnEnemyKilled;
     public Action<EnemyDamage> OnEnemySpawn;
     public Action<int> OnPlayerDamaged;
-    public Action<Droppable> OnGetLoot;
+    public Action<Loot> OnGetLoot;
     public Action<Transform, float> OnEnemyDamage;
     public Action OnLootPickedUp;
     public Action OnPullAllLoot;
+    public Action OnResetPullAllLoot;
 
 
     /*

@@ -11,14 +11,14 @@ public class LootManager : MonoBehaviour
     public static LootManager instance;
 
     [Header("Loot_Table")]
-    [SerializeField] List<Droppable> CommonLootTable;
-    [SerializeField] List<Droppable> UncommonLootTable;
-    [SerializeField] List<Droppable> rareLootTable;
-    [SerializeField] List<Droppable> EpicLootTable;
-    [SerializeField] List<Droppable> LegendaryLootTable;
-    public HashSet<Droppable> DroppedLoot {get {return droppedLoot;}}
-    HashSet<Droppable> droppedLoot;
-    [SerializeField] Droppable soulPrefab;
+    [SerializeField] List<Loot> CommonLootTable;
+    [SerializeField] List<Loot> UncommonLootTable;
+    [SerializeField] List<Loot> rareLootTable;
+    [SerializeField] List<Loot> EpicLootTable;
+    [SerializeField] List<Loot> LegendaryLootTable;
+    public HashSet<Loot> DroppedLoot {get {return droppedLoot;}}
+    HashSet<Loot> droppedLoot;
+    [SerializeField] Loot soulPrefab;
 
     //[SerializeField] float oneItemDropChance;
     //[SerializeField] float twoItemDropChance;
@@ -34,7 +34,7 @@ public class LootManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        droppedLoot = new HashSet<Droppable>();
+        droppedLoot = new HashSet<Loot>();
     }
 
     private void Start()
@@ -61,13 +61,13 @@ public class LootManager : MonoBehaviour
             Event_System.instance.OnEnemyKilled -= GetOneRandomItemLoot;
     }
 
-    public void RegisterLoot(Droppable loot)
+    public void RegisterLoot(Loot loot)
     {
         if (loot != null)
             droppedLoot.Add(loot);
     }
 
-    public void UnregisterLoot(Droppable loot)
+    public void UnregisterLoot(Loot loot)
     {
         if (loot != null)
             droppedLoot.Remove(loot);
@@ -102,7 +102,7 @@ public class LootManager : MonoBehaviour
         }
     }
 
-    private List<Droppable> SwitchLootTable(Tier tier)
+    private List<Loot> SwitchLootTable(Tier tier)
     {
         switch (tier)
         {
@@ -126,7 +126,7 @@ public class LootManager : MonoBehaviour
 
 
 
-    public void DropLoot(Droppable item, EnemyDamage enemy)
+    public void DropLoot(Loot item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
         Instantiate(item, pos, Quaternion.identity);
