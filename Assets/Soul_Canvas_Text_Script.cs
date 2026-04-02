@@ -9,6 +9,7 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
     {
         tmp = GetComponentInChildren<TextMeshProUGUI>();
         Event_System.instance.OnLootPickedUp += IncreaseSoulAmount;
+        tmp.text = soulAmount.ToString();
     }
 
     private void OnDisable()

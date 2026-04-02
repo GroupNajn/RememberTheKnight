@@ -18,6 +18,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer;
     [SerializeField] float damageCooldown = 1;
 
+    public Tier tier;
     private EnemyVFX enemyVFX;
 
     public void TakeDamage(float damage, Vector3 contactPoint)
