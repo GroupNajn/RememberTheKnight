@@ -66,7 +66,7 @@ public class Droppable : MonoBehaviour, IPickupable
     public void Pickup()
     {
         Debug.Log($"You picked up {itemName}");
-        Event_System.instance?.OnLootPickedUp.Invoke();
         Destroy(gameObject);
+        Event_System.instance?.OnLootPickedUp.Invoke();
     }
 }
