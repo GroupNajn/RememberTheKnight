@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyDamage))]
 public class Explode : MonoBehaviour
 {
-    [SerializeField] GameObject explosion;
+    ParticleSystem explosion;
     float time = 0;
     public float explotionInterval = 0.1f;
     public float explotionRadius = 5.0f;
@@ -12,22 +12,26 @@ public class Explode : MonoBehaviour
     GameObject[] hitchecks;
 
     EnemyDamage enemyDamage;
+    GameObject barrel;
     void Start()
     {
         enemyDamage = GetComponent<EnemyDamage>();
 
         player = GameObject.FindGameObjectWithTag("Player");
         hitchecks = GameObject.FindGameObjectsWithTag("HitCheck");
+        explosion = GetComponentInChildren<ParticleSystem>();
+        barrel = FindChildRecursive(transform, "SM_Prop_Barrel_Open_01").gameObject;
     }
 
     public void OnExplode()
     {
-        enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         bool playerHit = false;
-        Instantiate(explosion);
-        explosion.GetComponentInChildren<ParticleSystem>().Play();
+        explosion.Play();
+        enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
+        Destroy(barrel);
+
         for (int i = 0; i < hitchecks.Length; i++)
         {
             Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
@@ -56,5 +60,16 @@ public class Explode : MonoBehaviour
     void Update()
     {
 
+    }
+
+    private Transform FindChildRecursive(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name) return child;
+            Transform result = FindChildRecursive(child, name);
+            if (result != null) return result;
+        }
+        return null;
     }
 }
