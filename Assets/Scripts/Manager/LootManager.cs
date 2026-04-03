@@ -19,12 +19,7 @@ public class LootManager : MonoBehaviour
     public HashSet<Loot> DroppedLoot {get {return droppedLoot;}}
     HashSet<Loot> droppedLoot;
     [SerializeField] Loot soulPrefab;
-
-    //[SerializeField] float oneItemDropChance;
-    //[SerializeField] float twoItemDropChance;
-    //[SerializeField] float threeItemDropChance;
-
-
+    [SerializeField] List<float> amountChanceTable;
 
     /*
      * Managers need to be initialized via Awake to get priority,
@@ -50,7 +45,7 @@ public class LootManager : MonoBehaviour
         }
 
         //Debug.Log("LootManager subscribed");
-        Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
+        Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
 
 
     }
@@ -58,7 +53,7 @@ public class LootManager : MonoBehaviour
     private void OnDestroy()
     {
         if (Event_System.instance != null)
-            Event_System.instance.OnEnemyKilled -= GetOneRandomItemLoot;
+            Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
     public void RegisterLoot(Loot loot)
@@ -123,6 +118,41 @@ public class LootManager : MonoBehaviour
 
 
     }
+
+    public void RollMultipuleLoot(EnemyDamage enemy)
+    {
+        for (int i = 0; i < CalculateLootAmount(); i++)
+        {
+            GetOneRandomItemLoot(enemy);
+        }
+    }
+
+    private int CalculateLootAmount()
+    {
+        float totalWeight = 0;
+        foreach (var weight in amountChanceTable)
+        {
+            totalWeight += weight;
+        }
+
+        float roll = Random.Range(0, totalWeight);
+        float current = 0;
+
+        for (int i = 0; i < amountChanceTable.Count; i++)
+        {
+            current += amountChanceTable[i];
+
+            if (roll < current)
+            {
+                return i + 1;
+            }
+        }
+
+        return 1;
+    }
+
+
+
 
 
 
