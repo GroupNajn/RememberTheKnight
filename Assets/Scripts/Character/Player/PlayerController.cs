@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IKnockbackable
 {
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         playerCombatManager = PlayerCombatManager.Instance;
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
+
     }
 
     private void Update()
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
         playerLockRotation.RotationEnabled = lockHandler.IsLockedOn && !isSprinting && !isDodging;
         HandleAnimationInputs(isIdling);
-        HandleDodge( isDodging);
+        HandleDodge(isDodging);
         HandleAttack();
     }
 
@@ -113,7 +115,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             HandleLateralMovement();
     }
 
-    private void HandleDodge( bool isDodging)
+    private void HandleDodge(bool isDodging)
     {
         if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
         {
@@ -234,7 +236,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
 
-        if (isIdling )
+        if (isIdling)
         {
             targetMagnitude = 0f;
         }
@@ -243,7 +245,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (isIdling && playerLocomotionInput.MovementInput.x == 0 )
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0)
         {
             targetMagnitudeX = 0f;
         }
@@ -252,7 +254,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0 )
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0)
         {
             targetMagnitudeY = 0f;
         }
@@ -309,7 +311,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
             }
         }
-        
+
     }
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
@@ -322,5 +324,31 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void GroundedCheck()
     {
         playerState.IsGrounded = _characterController.isGrounded;
+    }
+
+
+    // CAMERA FIND
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+
+        if (_playerCamera == null)
+        {
+            _playerCamera = Camera.main.gameObject;
+        }
+
+        if (lockHandler == null)
+        {
+            lockHandler = FindFirstObjectByType<TargetLockHandler>();
+        }
     }
 }
