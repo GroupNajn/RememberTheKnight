@@ -1,9 +1,5 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Playables;
-
-
 
 public class PlayerController : MonoBehaviour, IKnockbackable
 {
@@ -23,7 +19,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     public float drag = 0.1f;
     private float currentRotationSpeed
     {
-
         get
         {
             if (lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Attacking)
@@ -40,17 +35,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         set { }
     }
 
-
     public float MovingThreshold = 0.01f;
 
     public float AnimatorSmoothing = 5f;
 
     private int attackHash = Animator.StringToHash("Attacking");
+    private int dodgeHash = Animator.StringToHash("Dodgeing");
 
 
     [Header("Dodge")]
     public float dodgeAcceleration = 1f;
-    private float dodgeDurationRemaining;
+    //  private float dodgeDurationRemaining;
     private float dodgeCoolDownRemaining;
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
@@ -84,7 +79,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         playerLockRotation = GetComponent<PlayerLockRotation>();
     }
 
-
     private void Update()
     {
         if (playerStats.isDead)
@@ -93,15 +87,18 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         InitialChecksAndHandlers();
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
+        bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
         bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
-        HandleAnimationInputs(isIdling, isLockedOnAndWalking);
-        HandleDodge(isIdling, isDodging, isLockedOnAndWalking);
+        playerLockRotation.RotationEnabled = lockHandler.IsLockedOn && !isSprinting && !isDodging;
+        HandleAnimationInputs(isIdling);
+        HandleDodge( isDodging);
         HandleAttack();
     }
 
     private void LateUpdate()
     {
         PlayerAnimator.ResetTrigger("Dodge");
+        PlayerAnimator.ResetTrigger("BackStep");
         PlayerAnimator.ResetTrigger("LightAttack");
     }
 
@@ -116,29 +113,23 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             HandleLateralMovement();
     }
 
-    private void HandleDodge(bool isIdling, bool isDodging, bool isLockedOnAndWalking)
+    private void HandleDodge( bool isDodging)
     {
-
-        if(playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
+        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
         {
-            if (lockHandler.IsLockedOn)
-            {
-                PlayerAnimator.SetTrigger("Dodge");
-                playerState.SetMoveState(MoveState.Dodging);
-            }
-            else if (!isIdling)
-            {
-                PlayerAnimator.SetTrigger("Dodge");
-                playerState.SetMoveState(MoveState.Dodging);
-            }
-            else if(isIdling)
+            if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
             }
+            else
+            {
+                PlayerAnimator.SetTrigger("Dodge");
+                playerState.SetMoveState(MoveState.Dodging);
+            }
+
             if (playerState.CurrentMoveState == MoveState.Dodging)
             {
-                dodgeDurationRemaining = playerStats.dodgeDuration;
                 dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
             }
         }
@@ -152,27 +143,19 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void Dodge()
     {
-        if (dodgeDurationRemaining == playerStats.dodgeDuration)
-        {
-            Quaternion playerRotation = Quaternion.Euler(0, transform.rotation.y, 0);
-            dodgeDirection = playerRotation * transform.forward;
-        }
-        dodgeDurationRemaining -= Time.deltaTime;
+        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
 
+        Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
+        Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-        if (dodgeDurationRemaining <= playerStats.dodgeDuration - dodgeDelay)
-        {
-            Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
-            Vector3 newVelocity = _characterController.velocity + movementDelta;
+        newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
+        newVelocity.y = _verticalVelocity;
 
-            newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
-            newVelocity.y = _verticalVelocity;
+        // un comment for frontflip
+        _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+        _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
 
-            // un comment for frontflip
-            _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-            _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-        }
-        if (dodgeDurationRemaining <= 0)
+        if (!PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != dodgeHash)
         {
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
@@ -180,36 +163,25 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
     }
 
-    private void HandleAnimationInputs(bool isIdling, bool isLockedOnAndWalking)
+    private void HandleAnimationInputs(bool isIdling)
     {
-        playerLockRotation.RotationEnabled = isLockedOnAndWalking;
-        PlayerAnimator.SetBool("IsLockedOn", lockHandler.IsLockedOn);
-
-        if(playerState.CurrentMoveState != MoveState.Dodging)
+        if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
         {
-            if (lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Dodging)
-            {
-                //keep input till end of dodge
-            }
-            else if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
-            {
-                PlayerAnimator.SetFloat("Y", currentInputMagnitude);
-                PlayerAnimator.SetFloat("X", 0);
-                RotatePlayerToTarget();
-            }
-            else if (lockHandler.IsLockedOn && playerState.CurrentMoveState != MoveState.Dodging)
-            {
-                PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
-                PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
-            }
-
-            else if (isIdling)
-            {
-                PlayerAnimator.SetFloat("Y", currentInputMagnitude);
-                PlayerAnimator.SetFloat("X", 0);
-            }
+            PlayerAnimator.SetFloat("Y", currentInputMagnitude);
+            PlayerAnimator.SetFloat("X", 0);
         }
-       
+        else if (lockHandler.IsLockedOn && playerState.CurrentMoveState != MoveState.Sprinting && playerState.CurrentMoveState != MoveState.Dodging)
+        {
+            PlayerAnimator.SetFloat("Y", currentInputMagnitudeY);
+            PlayerAnimator.SetFloat("X", currentInputMagnitudeX);
+        }
+        else if (isIdling)
+        {
+            PlayerAnimator.SetFloat("Y", currentInputMagnitude);
+            PlayerAnimator.SetFloat("X", 0);
+        }
+        RotatePlayerToTarget();
+
     }
 
     private void HandleAttack()
@@ -256,11 +228,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void CalculateInputMagnitude()
     {
+        bool isDodgeing = playerState.CurrentMoveState == MoveState.Dodging;
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
         //==========================X + Y=========================
 
         float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
 
-        if (playerState.CurrentMoveState == MoveState.Idling)
+        if (isIdling )
         {
             targetMagnitude = 0f;
         }
@@ -269,7 +243,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (playerState.CurrentMoveState == MoveState.Idling && playerLocomotionInput.MovementInput.x == 0)
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0 )
         {
             targetMagnitudeX = 0f;
         }
@@ -278,11 +252,12 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (playerState.CurrentMoveState == MoveState.Idling && playerLocomotionInput.MovementInput.y == 0)
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 )
         {
             targetMagnitudeY = 0f;
         }
         currentInputMagnitudeY = Mathf.MoveTowards(currentInputMagnitudeY, targetMagnitudeY, Time.deltaTime * AnimatorSmoothing);
+        Debug.Log($"Magnitude: {currentInputMagnitude}, MagnitudeX: {currentInputMagnitudeX}, MagnitudeY: {currentInputMagnitudeY}");
     }
 
     private void HandleLateralMovement() //(Horizontal)
@@ -321,17 +296,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void RotatePlayerToTarget()
     {
         Vector2 inputDir = playerLocomotionInput.MovementInput;
-
-        if (inputDir != Vector2.zero && playerState.CurrentMoveState != MoveState.Dodging || lockHandler.IsLockedOn) // calculates rotation for player depending input (8D movement)
+        if (playerState.CurrentMoveState != MoveState.Dodging)
         {
-            float cameraY = _playerCamera.transform.eulerAngles.y;
+            if (inputDir != Vector2.zero && !lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting) // calculates rotation for player depending input (8D movement)
+            {
+                float cameraY = _playerCamera.transform.eulerAngles.y;
 
-            float movementAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
+                float movementAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
 
-            Quaternion targetRotation = Quaternion.Euler(0f, cameraY + movementAngle, 0f);
+                Quaternion targetRotation = Quaternion.Euler(0f, cameraY + movementAngle, 0f);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
+            }
         }
+        
     }
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
