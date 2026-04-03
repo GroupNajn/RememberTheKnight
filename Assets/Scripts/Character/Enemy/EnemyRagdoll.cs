@@ -1,10 +1,13 @@
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyRagdoll : MonoBehaviour, ITriggerable
 
 {
@@ -17,6 +20,9 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
         characterRigidbody = GetComponent<Rigidbody>();
         characterLimbs = GetComponentsInChildren<Rigidbody>();
         characterJoints = GetComponentsInChildren<CharacterJoint>();
+        characterController = GetComponent<CharacterController>();
+        navmeshAgent = GetComponent<NavMeshAgent>();
+
         DisableRagdoll();
     }
 
@@ -42,7 +48,8 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
         characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
         capsuleCollider.enabled = false;
-
+        characterController.enabled = false;
+        navmeshAgent.enabled = false;
         isRagdolled = true;
     }
 
@@ -56,11 +63,12 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.detectCollisions = false;
         }
 
-        //characterRigidbody.useGravity = true;
-        characterRigidbody.isKinematic = true;
+        characterRigidbody.useGravity = true;
+        characterRigidbody.isKinematic = false;
         characterRigidbody.detectCollisions = true;
         capsuleCollider.enabled = true;
-
+        characterController.enabled = true;
+        navmeshAgent.enabled = true;
         isRagdolled = false;
     }
 
@@ -71,6 +79,8 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
     private Rigidbody[] characterLimbs;
     private CharacterJoint[] characterJoints;
     private CapsuleCollider capsuleCollider;
+    private CharacterController characterController;
+    private NavMeshAgent navmeshAgent;
 
     private bool isRagdolled = false;
 }
