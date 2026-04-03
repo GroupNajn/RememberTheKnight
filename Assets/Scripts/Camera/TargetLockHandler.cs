@@ -31,6 +31,24 @@ public class TargetLockHandler : MonoBehaviour
     [Header(header: "Cameras")]
     [SerializeField] private GameObject freeLookCam;
     [SerializeField] private GameObject hardlockCam;
+    public CinemachineCamera cinemachineFreeLookCam;
+    public CinemachineCamera cinemachineHardLockCam;
+
+
+    void Start()
+    {
+        cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
+        cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
+
+        if (playerTransform == null)
+        {
+            playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Transform>().Find("PlayerLookAt");
+
+            cinemachineFreeLookCam.Follow = playerTransform;
+            cinemachineHardLockCam.Follow = playerTransform;
+        }
+
+    }
 
     void Update()
     {
@@ -201,8 +219,6 @@ public class TargetLockHandler : MonoBehaviour
     private void SwitchCams()
     {
         CinemachineInputAxisController axisControllerFreeLook = freeLookCam.GetComponent<CinemachineInputAxisController>();
-        CinemachineCamera cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
-        CinemachineCamera cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
         CinemachineGroupFraming cinemachineHardLockCamGroupFraming = hardlockCam.GetComponent<CinemachineGroupFraming>();
 
         if (axisControllerFreeLook != null)
