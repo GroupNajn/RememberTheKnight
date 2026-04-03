@@ -1,15 +1,20 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CardSelectionUI : MonoBehaviour
 {
-    GameObject cardSelectUI;
-    void Awake()
+    PlayerInput playerInput;
+    PlayerUIManager playerUIManager;
+
+    private void Start()
     {
-        cardSelectUI = transform.Find("CardSelectUI").gameObject;
+        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        playerUIManager = GetComponentInParent<PlayerUIManager>();
+
+        playerUIManager.CloseCardSelectUI(); // Ensure the card selection UI is closed at the start
     }
 
-    public void OpenCardSelectUI()
-    {
-        cardSelectUI.SetActive(true);
-    }
+
+
+
 }

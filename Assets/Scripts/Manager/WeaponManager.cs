@@ -53,11 +53,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-            Debug.Log("Activating right damage collider");
-
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
-
-            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
 
             rightDamageTrigger.ResetDamage();
         }
@@ -67,11 +63,9 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-            Debug.Log("Deactivating right damage collider");
 
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
 
-            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 
@@ -79,11 +73,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-            Debug.Log("Activating left damage collider");
-
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
-
-            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
 
             leftDamageTrigger.ResetDamage();
         }
@@ -93,11 +83,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-            Debug.Log("Deactivating left damage collider");
-
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
-
-            Debug.Log("Collider enabled: " + currentRightHandWeapon.GetComponent<Collider>().enabled);
         }
     }
 }

@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class InteractCardSelect: MonoBehaviour, IInteractable
 {
-    CardSelectionUI cardSelectionUI;
+    PlayerUIManager playerUIManager;
 
-    void Awake()
+    void Start()
     {
-        cardSelectionUI = FindFirstObjectByType<CardSelectionUI>();
-
+        playerUIManager = FindFirstObjectByType<PlayerUIManager>();
     }
     public void Interact()
     {
         Debug.Log("Interacted with " + gameObject.name);
 
-        cardSelectionUI.OpenCardSelectUI();
+        playerUIManager.OpenCardSelectUI();
     }
 }
