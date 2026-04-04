@@ -9,11 +9,15 @@ public class Event_System : MonoBehaviour
     public Action<EnemyDamage> OnEnemyKilled;
     public Action<EnemyDamage> OnEnemySpawn;
     public Action<int> OnPlayerDamaged;
-    public Action<Droppable> OnGetLoot;
+    public Action<Loot> OnGetLoot;
     public Action<Transform, float> OnEnemyDamage;
     public Action OnLootPickedUp;
+    public Action OnPullAllLoot;
+    public Action OnResetPullAllLoot;
+
 
     /*
+     * 
      * Managers need to be initialized via Awake to get priority,
      * before all other GameObjects call and Subscribe to their Actions/Events, 
      */

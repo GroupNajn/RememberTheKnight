@@ -38,8 +38,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     {
         if (textMesh != null)
             textMesh.transform.rotation = this.transform.rotation * Quaternion.Euler(0f, 180f, 0f);
-        
-
+       
 
     }
 
