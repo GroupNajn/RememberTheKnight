@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour, IKnockbackable
 {
 
-    // Made by Jonathan Blixt
+    // Made by Jonathan Blixt - edited by Michaëla for stamina
 
     #region Class Variables
     [Header("Components")]
@@ -68,7 +68,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     public Transform knockbackCalculationPos;
     private bool isKnockedback = false;
     public Vector3 knockbackForce = Vector3.zero;
+
+    [Header("Stamina")]
+    StaminaController staminaController;
     #endregion
+    
 
     private void Start()
     {
@@ -78,7 +82,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         playerCombatManager = PlayerCombatManager.Instance;
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
-
+        staminaController = GetComponent<StaminaController>();
     }
 
     private void Update()
@@ -117,8 +121,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleDodge(bool isDodging)
     {
-        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
+        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble ) 
         {
+            if (!staminaController.CanPerform(StaminaController.StaminaAction.Dodging))
+                return;
+
             if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
             {
                 PlayerAnimator.SetTrigger("BackStep");
@@ -133,12 +140,15 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             if (playerState.CurrentMoveState == MoveState.Dodging)
             {
                 dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
-            }
+            }   
+            staminaController.UseStamina(StaminaController.StaminaAction.Dodging);
+
         }
 
         if (dodgeCoolDownRemaining > 0)
             dodgeCoolDownRemaining -= Time.deltaTime;
 
+     
         if (isDodging)
             Dodge();
     }
@@ -197,11 +207,23 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (playerLocomotionInput.AttackPressed && !playerState.InActionState())
         {
+            bool success = staminaController.UseStamina(StaminaController.StaminaAction.lightAttacking);
+
+            if (!success)
+            {
+                return;
+            }
             playerState.SetMoveState(MoveState.Attacking);
             PlayerAnimator.SetTrigger("LightAttack");
         }
         else if (playerLocomotionInput.AttackPressed && playerState.CurrentMoveState == MoveState.Attacking && playerCombatManager.canCombo == true)
         {
+            bool success = staminaController.UseStamina(StaminaController.StaminaAction.lightAttacking);
+
+            if (!success)
+            {
+                return;
+            }               
             PlayerAnimator.SetTrigger("IsCombo");
             playerCombatManager.canCombo = false;
         }
@@ -264,8 +286,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleLateralMovement() //(Horizontal)
     {
-        float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration : walkAcceleration;
-        float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
+        //float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration : walkAcceleration;
+        //float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
+
+        bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
+
+        float lateralAcceleration = isSprinting ? sprintAcceleration : walkAcceleration;
+        float clampedLateralMagnitude = isSprinting ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -282,8 +309,31 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         _characterController.Move(newVelocity * Time.deltaTime);
 
-        if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
-            playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > MovingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
+        //    if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
+        //        playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > MovingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
+
+        if (!playerState.InActionState())
+        {
+            bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
+            bool canSprint = staminaController.CanPerform(StaminaController.StaminaAction.Sprinting);
+
+            MoveState targetState;
+
+            if (playerLocomotionInput.MovementInput.magnitude <= MovingThreshold)
+            {
+                targetState = MoveState.Idling;
+            }
+            else if (wantsToSprint && canSprint)
+            {
+                targetState = MoveState.Sprinting;
+            }
+            else
+            {
+                targetState = MoveState.Walking;
+            }
+
+            playerState.SetMoveState(targetState);
+        }
     }
 
     private void HandleVerticalMovement()
