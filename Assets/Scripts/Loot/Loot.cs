@@ -57,8 +57,6 @@ public class Loot : MonoBehaviour, IPickupable
         pickable = PickableState.Pickable;
     }
 
-  
-
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Triggered by: " + other.name);

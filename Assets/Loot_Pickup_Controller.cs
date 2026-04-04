@@ -7,6 +7,7 @@ public class LootFollowController : MonoBehaviour
 
     private bool overridden = false;
     private bool overrideCoroutineRunning = false;
+    private bool manaulOverride;
     private Coroutine overrideRoutine;
 
     private void Update()
@@ -14,22 +15,29 @@ public class LootFollowController : MonoBehaviour
         if (LootManager.instance == null)
             return;
 
-        bool hasLoot = LootManager.instance.DroppedLoot.Count > 0;
+        bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 0;
+
+        if (Input.GetKeyDown(KeyCode.H) && hasLootThreshhold)
+        {
+            Event_System.instance.OnPullAllLoot?.Invoke();
+            overridden = true;
+        }
+
 
         // Start overrite and not coroutineRunning
-        if (hasLoot && !overridden && !overrideCoroutineRunning)
+        if (hasLootThreshhold && !overridden && !overrideCoroutineRunning)
         {
             overrideRoutine = StartCoroutine(OverrideFollowLogic());
         }
 
         // Reset if not lot and in overriden state
-        if (!hasLoot && overridden)
+        if (!hasLootThreshhold && overridden)
         {
             ResetFollowLogic();
         }
 
         // If loot gets destroyed before finished reset
-        if (!hasLoot && overrideCoroutineRunning)
+        if (!hasLootThreshhold && overrideCoroutineRunning)
         {
             StopCoroutine(overrideRoutine);
             overrideCoroutineRunning = false;
@@ -45,7 +53,7 @@ public class LootFollowController : MonoBehaviour
         if (LootManager.instance != null && LootManager.instance.DroppedLoot.Count > 0 && !overridden)
         {
             Event_System.instance?.OnPullAllLoot?.Invoke();
-            Debug.Log("INVOKED OVERRIDE LOGIC");
+            //Debug.Log("INVOKED OVERRIDE LOGIC");
 
             overridden = true;
         }
@@ -56,7 +64,7 @@ public class LootFollowController : MonoBehaviour
     private void ResetFollowLogic()
     {
         Event_System.instance?.OnResetPullAllLoot?.Invoke();
-        Debug.Log("INVOKED RESET LOGIC");
+        //Debug.Log("INVOKED RESET LOGIC");
 
         overridden = false;
     }

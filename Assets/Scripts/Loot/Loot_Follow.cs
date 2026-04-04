@@ -42,6 +42,8 @@ public class Loot_Follow : MonoBehaviour
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         loot = GetComponent<Loot>();
         bounceScript = GetComponent<BounceScript>();
+        followLogic = FollowLogic.NotOverriten;
+
         Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
         Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
 
