@@ -83,10 +83,10 @@ public class LootManager : MonoBehaviour
     {
         float totalWeight = 0;
 
-        foreach (var item in SwitchLootTable(enemy.tier))
+        foreach (var item in SwitchLootTable(enemy.tier)) // Add all weights from items for the respective loot table
             totalWeight += item.Weight;
 
-        float roll = Random.Range(0, totalWeight);
+        float roll = Random.Range(0, totalWeight); // Make a roll from 0 to the sum of all weights. (e.g) 0-250
         float current = 0;
 
         foreach (var item in SwitchLootTable(enemy.tier))
