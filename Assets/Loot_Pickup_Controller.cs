@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LootFollowController : MonoBehaviour
 {
+    //Script made by Henric 2026-04-01
+
     [SerializeField] private float overrideDelay = 10f;
 
     private bool overridden = false;
@@ -24,19 +26,19 @@ public class LootFollowController : MonoBehaviour
         }
 
 
-        // Start overrite and not coroutineRunning
+        // Start override routine 
         if (hasLootThreshhold && !overridden && !overrideCoroutineRunning)
         {
             overrideRoutine = StartCoroutine(OverrideFollowLogic());
         }
 
-        // Reset if not lot and in overriden state
+        // Reset if no loot in loot hashSet and in overriden state
         if (!hasLootThreshhold && overridden)
         {
             ResetFollowLogic();
         }
 
-        // If loot gets destroyed before finished reset
+        // If loot hashSet has no loot, reest override bool and stop Coroutine. 
         if (!hasLootThreshhold && overrideCoroutineRunning)
         {
             StopCoroutine(overrideRoutine);
