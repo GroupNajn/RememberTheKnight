@@ -2305,6 +2305,9 @@ GameObject:
   - component: {fileID: 7255731434245421946}
   - component: {fileID: -6980765978834375828}
   - component: {fileID: -3157446338962667459}
+  - component: {fileID: 4169640787588922893}
+  - component: {fileID: 5833686196531756475}
+  - component: {fileID: 6198742877613150421}
   m_Layer: 0
   m_Name: EnemyWitchCaster
   m_TagString: Untagged
@@ -2357,14 +2360,17 @@ Animator:
   m_GameObject: {fileID: 4059207040045649482}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0dcad412e4df7364880958fbda1ede6b, type: 3}
-  m_Controller: {fileID: 9100000, guid: e33dd44990cc5cd7cad5a7eb0e7f1c9d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1f525bf4d6dc3eddf8649705d85ea3da, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 1
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Eyes'\n\tTransform 'Eyes'\n\tFrom animation
+    clip 'spear_main_light_attack_01'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2383,7 +2389,7 @@ NavMeshAgent:
   m_Acceleration: 2
   avoidancePriority: 50
   m_AngularSpeed: 180
-  m_StoppingDistance: 1
+  m_StoppingDistance: 10
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2602,6 +2608,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
+--- !u!114 &4169640787588922893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e876ea397fe9dc547bcf927d73f0479f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5833686196531756475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac6a152cad43f44f8793aaddf486916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  projectile: {fileID: 3129132563675642798, guid: 2fce6c8cbf354804185618127357b989, type: 3}
+  firePoint: {fileID: 805738711881523792}
+  projectileSpeed: 30
+--- !u!114 &6198742877613150421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21440ad8d1f5741d9b8ba6652d27b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4103938120646374376
 GameObject:
   m_ObjectHideFlags: 0
@@ -5584,6 +5630,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1716161641559451227}
     m_Modifications:
+    - target: {fileID: 8138382567012936407, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.017
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138382567012936407, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.933
+      objectReference: {fileID: 0}
+    - target: {fileID: 8138382567012936407, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 8738271613209915362, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5668,3 +5726,8 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 28c16d6a2f9d0d149a647997134995de, type: 3}
+--- !u!4 &805738711881523792 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8138382567012936407, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
+  m_PrefabInstance: {fileID: 8926091329347455111}
+  m_PrefabAsset: {fileID: 0}
