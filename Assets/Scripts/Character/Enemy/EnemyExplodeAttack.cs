@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyDamage))]
-public class Explode : MonoBehaviour
+public class EnemyExplodeAttack : MonoBehaviour
 {
     ParticleSystem explosion;
     float time = 0;

@@ -2303,8 +2303,9 @@ GameObject:
   - component: {fileID: -4713826263582080163}
   - component: {fileID: 1103057133317655882}
   - component: {fileID: 6023347184367459638}
+  - component: {fileID: 91903681499389335}
   m_Layer: 8
-  m_Name: EnemySkeleton0_with_ragdoll_and_barrel
+  m_Name: EnemySkeletonBoomboy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2465,7 +2466,7 @@ CapsuleCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.4
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.8972488, z: 0}
@@ -2602,6 +2603,21 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.98, z: 0}
+--- !u!114 &91903681499389335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624532995418066361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fccdf7e4a090d121598e0a8875093bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ragdoll: {fileID: 0}
+  prefab: {fileID: 8077119868138552059, guid: 899a043753bdddb42b04f658dae783f3, type: 3}
+  timeOutSeconds: 10
 --- !u!1 &4672731988933066374
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,13 +2,10 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(BehaviorGraphAgent))]
-[RequireComponent(typeof(CapsuleCollider))]
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(NavMeshAgent))]
-public class EnemyRagdoll : MonoBehaviour, ITriggerable
+[RequireComponent(typeof(Animator), typeof(BehaviorGraphAgent), typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody), typeof(CharacterController), typeof(CapsuleCollider))]
+[System.Serializable]
+public class EnemyRagdoll : MonoBehaviour
 
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,18 +20,11 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
         characterController = GetComponent<CharacterController>();
         navmeshAgent = GetComponent<NavMeshAgent>();
 
+
         DisableRagdoll();
     }
 
-
-
-    // Update is called once per frame
-    public void Trigger()
-    {
-        EnableRagdoll();
-    }
-
-    private void EnableRagdoll()
+    public void EnableRagdoll()
     {
 
         animator.enabled = false;
@@ -44,8 +34,6 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.isKinematic = false;
             characterLimb.detectCollisions = true;
         }
-
-        characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
         capsuleCollider.enabled = false;
         characterController.enabled = false;
@@ -53,7 +41,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
         isRagdolled = true;
     }
 
-    private void DisableRagdoll()
+    public void DisableRagdoll()
     {
         animator.enabled = true;
         behaviorGraphAgent.enabled = true;
@@ -62,9 +50,7 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.isKinematic = true;
             characterLimb.detectCollisions = false;
         }
-
-        characterRigidbody.useGravity = true;
-        characterRigidbody.isKinematic = false;
+        characterRigidbody.isKinematic = true;
         characterRigidbody.detectCollisions = true;
         capsuleCollider.enabled = true;
         characterController.enabled = true;
