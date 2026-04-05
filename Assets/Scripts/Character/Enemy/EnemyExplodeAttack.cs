@@ -20,7 +20,9 @@ public class EnemyExplodeAttack : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         hitchecks = GameObject.FindGameObjectsWithTag("HitCheck");
         explosion = GetComponentInChildren<ParticleSystem>();
-        barrel = FindChildRecursive(transform, "SM_Prop_Barrel_Open_01").gameObject;
+        barrel = FindChildRecursive(transform, "SM_Prop_Barrel_01").gameObject;
+        if (barrel == null) barrel = FindChildRecursive(transform, "SM_Prop_Barrel_Open_01").gameObject;
+
     }
 
     public void OnExplode()
@@ -30,7 +32,7 @@ public class EnemyExplodeAttack : MonoBehaviour
         bool playerHit = false;
         explosion.Play();
         enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
-        Destroy(barrel);
+        if (barrel != null) Destroy(barrel);
 
         for (int i = 0; i < hitchecks.Length; i++)
         {
