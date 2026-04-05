@@ -1,11 +1,11 @@
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(BehaviorGraphAgent))]
-[RequireComponent(typeof(CapsuleCollider))]
-[RequireComponent(typeof(Rigidbody))]
-public class EnemyRagdoll : MonoBehaviour, ITriggerable
+[RequireComponent(typeof(Animator), typeof(BehaviorGraphAgent), typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody), typeof(CharacterController), typeof(CapsuleCollider))]
+[System.Serializable]
+public class EnemyRagdoll : MonoBehaviour
 
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,18 +17,14 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
         characterRigidbody = GetComponent<Rigidbody>();
         characterLimbs = GetComponentsInChildren<Rigidbody>();
         characterJoints = GetComponentsInChildren<CharacterJoint>();
+        characterController = GetComponent<CharacterController>();
+        navmeshAgent = GetComponent<NavMeshAgent>();
+
+
         DisableRagdoll();
     }
 
-
-
-    // Update is called once per frame
-    public void Trigger()
-    {
-        EnableRagdoll();
-    }
-
-    private void EnableRagdoll()
+    public void EnableRagdoll()
     {
 
         animator.enabled = false;
@@ -38,15 +34,14 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.isKinematic = false;
             characterLimb.detectCollisions = true;
         }
-
-        characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
         capsuleCollider.enabled = false;
-
+        characterController.enabled = false;
+        navmeshAgent.enabled = false;
         isRagdolled = true;
     }
 
-    private void DisableRagdoll()
+    public void DisableRagdoll()
     {
         animator.enabled = true;
         behaviorGraphAgent.enabled = true;
@@ -55,12 +50,11 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
             characterLimb.isKinematic = true;
             characterLimb.detectCollisions = false;
         }
-
-        //characterRigidbody.useGravity = true;
         characterRigidbody.isKinematic = true;
         characterRigidbody.detectCollisions = true;
         capsuleCollider.enabled = true;
-
+        characterController.enabled = true;
+        navmeshAgent.enabled = true;
         isRagdolled = false;
     }
 
@@ -71,6 +65,8 @@ public class EnemyRagdoll : MonoBehaviour, ITriggerable
     private Rigidbody[] characterLimbs;
     private CharacterJoint[] characterJoints;
     private CapsuleCollider capsuleCollider;
+    private CharacterController characterController;
+    private NavMeshAgent navmeshAgent;
 
     private bool isRagdolled = false;
 }

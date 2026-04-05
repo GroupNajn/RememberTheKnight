@@ -3522,8 +3522,9 @@ GameObject:
   - component: {fileID: 4706509211613699545}
   - component: {fileID: 5230179467872825185}
   - component: {fileID: -4835182522718850906}
+  - component: {fileID: 721856792429107399}
   m_Layer: 8
-  m_Name: EnemySkeleton0_with_ragdoll
+  m_Name: EnemySkeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3684,7 +3685,7 @@ CapsuleCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.3643942
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.8972488, z: 0}
@@ -3710,9 +3711,9 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!143 &7251928779263390990
@@ -3766,6 +3767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
   damageCooldown: 0
+  tier: 0
 --- !u!114 &4706509211613699545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3805,6 +3807,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 8168637187360933013, guid: 0679021804fd44d488b812785d7e59b0, type: 3}
+--- !u!114 &721856792429107399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7493179197623156213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fccdf7e4a090d121598e0a8875093bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ragdoll: {fileID: 0}
+  prefab: {fileID: 8077119868138552059, guid: 899a043753bdddb42b04f658dae783f3, type: 3}
+  timeOutSeconds: 10
 --- !u!1 &7567551982458796554
 GameObject:
   m_ObjectHideFlags: 0
