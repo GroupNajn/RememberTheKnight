@@ -4,20 +4,15 @@ using UnityEngine.PlayerLoop;
 public class ProjectileHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] Transform shooter;
-    [SerializeField] Transform target;
+    CapsuleCollider selfHitbox;
+    public GameObject target;
     public GameObject projectile;
     public Transform firePoint;
     public float projectileSpeed = 30;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ShootProjectile();
-        }
-
+        selfHitbox = GetComponent<CapsuleCollider>();
     }
 
     public void ShootProjectile()
@@ -27,7 +22,7 @@ public class ProjectileHandler : MonoBehaviour
         if (target != null)
         {
             // if there is a target shoot towards them
-            targetPosistion = target.position;
+            targetPosistion = target.transform.position;
         }
         else
         {
@@ -46,7 +41,7 @@ public class ProjectileHandler : MonoBehaviour
         projectileObject.GetComponent<Projecile>().direction = direction;
         projectileObject.GetComponent<Projecile>().speed = 30f;
 
-        Physics.IgnoreCollision(projectileObject.GetComponent<Collider>(), shooter.GetComponent<Collider>());
+        Physics.IgnoreCollision(projectileObject.GetComponent<Collider>(), selfHitbox);
 
     }
 }
