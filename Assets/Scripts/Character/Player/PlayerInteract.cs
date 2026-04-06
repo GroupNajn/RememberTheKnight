@@ -5,14 +5,18 @@ public class PlayerInteract : MonoBehaviour
 {
     private Camera camera;
     public float InteractDistance = 8f;
+    PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        camera = Camera.main;
+        playerController = GetComponent<PlayerController>();
+        //camera = playerController._playerCamera.GetComponent<Camera>();
     }
 
     public void OnInteract()
     {
+        camera = playerController._playerCamera.GetComponent<Camera>();
+
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * InteractDistance, Color.red, 1f);
         RaycastHit hit;
