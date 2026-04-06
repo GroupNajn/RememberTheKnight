@@ -1,9 +1,9 @@
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyDamage))]
 public class EnemyExplodeAttack : MonoBehaviour
 {
-    ParticleSystem explosion;
     float time = 0;
     public float explotionInterval = 0.1f;
     public float explotionRadius = 5.0f;
@@ -12,16 +12,19 @@ public class EnemyExplodeAttack : MonoBehaviour
     GameObject[] hitchecks;
 
     EnemyDamage enemyDamage;
-    GameObject barrel;
-    void Start()
+    [SerializeField] GameObject barrel;
+    [SerializeField] ParticleSystem explosion;
+    void Awake()
     {
         enemyDamage = GetComponent<EnemyDamage>();
 
         player = GameObject.FindGameObjectWithTag("Player");
         hitchecks = GameObject.FindGameObjectsWithTag("HitCheck");
-        explosion = GetComponentInChildren<ParticleSystem>();
-        barrel = FindChildRecursive(transform, "SM_Prop_Barrel_01").gameObject;
-        if (barrel == null) barrel = FindChildRecursive(transform, "SM_Prop_Barrel_Open_01").gameObject;
+        GetComponentsInChildren<Transform>().ToList().ForEach(transform =>
+        {
+            if (transform.name == "SM_Prop_Barrel_01") barrel = transform.gameObject;
+            if (transform.name == "SM_Prop_Barrel_Open_01") barrel = transform.gameObject;
+        });
 
     }
 
@@ -30,10 +33,14 @@ public class EnemyExplodeAttack : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
         bool playerHit = false;
-        explosion.Play();
-        enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
-        if (barrel != null) Destroy(barrel);
-
+        //explosion.Play();
+        if (barrel != null)
+        {
+            Destroy(barrel);
+            var boom = Instantiate(explosion, barrel.transform.position, Quaternion.identity);
+            boom.Play();
+            enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
+        }
         for (int i = 0; i < hitchecks.Length; i++)
         {
             Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
@@ -64,14 +71,4 @@ public class EnemyExplodeAttack : MonoBehaviour
 
     }
 
-    private Transform FindChildRecursive(Transform parent, string name)
-    {
-        foreach (Transform child in parent)
-        {
-            if (child.name == name) return child;
-            Transform result = FindChildRecursive(child, name);
-            if (result != null) return result;
-        }
-        return null;
-    }
 }

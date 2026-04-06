@@ -26,7 +26,6 @@ public class NavmeshBehaviourSync : MonoBehaviour
         float moveMagnitude = animator.GetFloat("SpeedMagnitude");
         float result = Mathf.Lerp(moveSpeed, moveMagnitude, 0.05f * navAgent.acceleration);
         animator.SetFloat("MovementSpeed", MathF.Round(result, 1));
-        stoppingDistance.Value = navAgent.stoppingDistance;
         agentSpeed.Value = navAgent.speed;
     }
     private Animator animator;

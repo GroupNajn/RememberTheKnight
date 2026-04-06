@@ -2415,12 +2415,30 @@ MonoBehaviour:
   - rid: 8685798969299173858
   - rid: 7708414523334197248
   - rid: 8685799151979987007
+  - rid: 4680590360873795903
+  - rid: 4680590360873796567
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
+    - rid: 4680590360873795903
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5384484207346578971
+          m_Value1: 7703358295934630559
+        Name: attackDelay
+        m_Value: 2
+    - rid: 4680590360873796567
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 424389198254072288
+          m_Value1: 15845654370886051948
+        Name: animationName
+        m_Value: Ranged Attack
     - rid: 7708414523334197248
       type: {class: 'SharedBlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2501,7 +2519,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!143 &6134625186096966373
