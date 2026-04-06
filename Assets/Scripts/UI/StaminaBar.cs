@@ -12,7 +12,7 @@ public class StaminaBar : MonoBehaviour
     void Start()
     {
 
-        staminaController = GetComponent<StaminaController>(); 
+        staminaController = GetComponent<StaminaController>();
         if (playerStats == null)
         {
             Debug.LogError("StaminaBar: playerStats is missing!");
@@ -33,7 +33,9 @@ public class StaminaBar : MonoBehaviour
 
     private void Update()
     {
-        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, staminaBar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
+        bool lerpCondition = lerpingRectTransform.anchorMax.x > staminaBar.fillRect.anchorMax.x;
+        if (!lerpCondition) return;
+            lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, staminaBar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
     }
 
     // Update is called once per frame
