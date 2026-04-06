@@ -5,7 +5,7 @@ public class ProjectileHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     CapsuleCollider selfHitbox;
-    public GameObject target;
+    public Transform target;
     public GameObject projectile;
     public Transform firePoint;
     public float projectileSpeed = 30;
