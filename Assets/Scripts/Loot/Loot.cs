@@ -39,6 +39,10 @@ public class Loot : MonoBehaviour, IPickupable
 
     }
 
+    private void OnDestroy()
+    {
+    }
+
     private void OnEnable()
     {
         //if (LootManager.instance != null)
@@ -59,7 +63,7 @@ public class Loot : MonoBehaviour, IPickupable
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered by: " + other.name);
+        //Debug.Log("Triggered by: " + other.name);
 
         if (other.CompareTag("Player") && pickable == PickableState.Pickable)
         {
@@ -69,7 +73,8 @@ public class Loot : MonoBehaviour, IPickupable
 
     public void Pickup()
     {
-        Debug.Log($"You picked up {itemName}");
+        //Debug.Log($"You picked up {itemName}");
+
         Destroy(gameObject);
         Event_System.instance?.OnLootPickedUp.Invoke();
     }

@@ -38,7 +38,7 @@ public class Loot_Follow : MonoBehaviour
     void Start()
     {
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
-        mouth = GameObject.Find("Jaw").transform;
+        //mouth = GameObject.Find("Jaw").transform;
         player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
         loot = GetComponent<Loot>();
         bounceScript = GetComponent<BounceScript>();
