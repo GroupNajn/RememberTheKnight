@@ -30,8 +30,10 @@ public class HealthbarScrip : MonoBehaviour
 
     private void Update()
     {
-        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax,healthbar.fillRect.anchorMax,Time.deltaTime * lerpSpeed);
+        bool lerpCondition = lerpingRectTransform.anchorMax.x > healthbar.fillRect.anchorMax.x || lerpingRectTransform.anchorMin.x < healthbar.fillRect.anchorMin.x;
 
+        if (!lerpCondition) return;
+        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax,healthbar.fillRect.anchorMax,Time.deltaTime * lerpSpeed);
         lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin,healthbar.fillRect.anchorMin,Time.deltaTime * lerpSpeed);
 
 
