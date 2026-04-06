@@ -38,8 +38,8 @@ public class StaminaController : MonoBehaviour
         float cost = GetCost(action); 
         if (playerStats.currentStamina >= cost) 
         { 
-            playerStats.currentStamina -= cost; 
-            playerStats.onStaminaChange(playerStats.currentStamina, playerStats.maxStamina);
+            playerStats.currentStamina -= cost;
+            playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
             lastStaminaUseTime = Time.time;
             return true; 
         } 
@@ -64,8 +64,8 @@ public class StaminaController : MonoBehaviour
         if (playerStats.currentStamina < playerStats.maxStamina) 
         { 
             playerStats.currentStamina += playerStats.staminaRegenRate * Time.deltaTime;
-            playerStats.currentStamina = Mathf.Clamp(playerStats.currentStamina, 0, playerStats.maxStamina); 
-            playerStats.onStaminaChange(playerStats.currentStamina, playerStats.maxStamina); 
+            playerStats.currentStamina = Mathf.Clamp(playerStats.currentStamina, 0, playerStats.maxStamina);
+            playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
         } 
     }
 
@@ -78,5 +78,10 @@ public class StaminaController : MonoBehaviour
 
         return playerStats.currentStamina >= cost;
     }
+   
+    if (onStaminaChange == null)
+{
+    Debug.LogWarning("No listeners for stamina change!");
+}
 }
  
