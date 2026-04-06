@@ -172,7 +172,7 @@ public class LootManager : MonoBehaviour
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {
         float percent = (itemW / SumOfW) * 100;
-        Debug.Log(percent);
+        Debug.Log("%" + percent);
     }
 
 

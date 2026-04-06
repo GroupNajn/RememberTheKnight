@@ -6,6 +6,8 @@ public class StaminaBar : MonoBehaviour
     StaminaController staminaController;
     [SerializeField] PlayerStats playerStats;
     [SerializeField] Slider staminaBar;
+    [SerializeField] float lerpSpeed = 2f;
+    public RectTransform lerpingRectTransform;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +29,11 @@ public class StaminaBar : MonoBehaviour
 
         // Uppdatera UI direkt
         UpdateStaminaBar(playerStats.currentStamina, playerStats.maxStamina);
+    }
+
+    private void Update()
+    {
+        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, staminaBar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
     }
 
     // Update is called once per frame
