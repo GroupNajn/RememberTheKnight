@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     #region Class Variables
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private GameObject _playerCamera;
+    [SerializeField] public GameObject _playerCamera;
     PlayerStats playerStats;
     PlayerCombatManager playerCombatManager;
 
@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             targetMagnitudeY = 0f;
         }
         currentInputMagnitudeY = Mathf.MoveTowards(currentInputMagnitudeY, targetMagnitudeY, Time.deltaTime * AnimatorSmoothing);
-        Debug.Log($"Magnitude: {currentInputMagnitude}, MagnitudeX: {currentInputMagnitudeX}, MagnitudeY: {currentInputMagnitudeY}");
+        //Debug.Log($"Magnitude: {currentInputMagnitude}, MagnitudeX: {currentInputMagnitudeX}, MagnitudeY: {currentInputMagnitudeY}");
     }
 
     private void HandleLateralMovement() //(Horizontal)
