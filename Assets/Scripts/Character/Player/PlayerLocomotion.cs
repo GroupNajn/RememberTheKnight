@@ -85,6 +85,6 @@ public class PlayerLocomotion : MonoBehaviour
     public void OnAttacking(InputValue context)
     {
         AttackPressed = true;
-        Debug.Log("input kom");
+        //Debug.Log("input kom");
     }
 }
