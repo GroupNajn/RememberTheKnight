@@ -78,10 +78,5 @@ public class StaminaController : MonoBehaviour
 
         return playerStats.currentStamina >= cost;
     }
-   
-    if (onStaminaChange == null)
-{
-    Debug.LogWarning("No listeners for stamina change!");
-}
 }
  
