@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 3260141717616856015}
   - component: {fileID: -7806861115685689982}
   - component: {fileID: 3963613773250982607}
-  - component: {fileID: 8257205857401845891}
+  - component: {fileID: 8264907976927798666}
   m_Layer: 8
   m_Name: EnemyGravedigger
   m_TagString: Untagged
@@ -327,12 +327,21 @@ MonoBehaviour:
   - rid: 8685798969299173858
   - rid: 7708414523334197248
   - rid: 8685799151979987007
+  - rid: 4680590360873796568
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
+    - rid: 4680590360873796568
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 424389198254072288
+          m_Value1: 15845654370886051948
+        Name: animationName
+        m_Value: Hug Attack
     - rid: 7708414523334197248
       type: {class: 'SharedBlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -520,7 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdoll: {fileID: 0}
---- !u!114 &8257205857401845891
+--- !u!114 &8264907976927798666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -535,6 +544,8 @@ MonoBehaviour:
   explotionInterval: 0.1
   explotionRadius: 5
   explosionForce: 10
+  barrel: {fileID: 0}
+  explosion: {fileID: 8378878810905295279, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
 --- !u!1 &926649207798602021
 GameObject:
   m_ObjectHideFlags: 0
@@ -5035,7 +5046,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8840715012835835392}
-  - {fileID: 9081302249069343681}
   - {fileID: 4796212661353759353}
   m_Father: {fileID: 2595567265761777823}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5367,68 +5377,6 @@ Transform:
   - {fileID: 5617845450062310038}
   m_Father: {fileID: 5809392455534958475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1354768774898398739
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7811055899329086663}
-    m_Modifications:
-    - target: {fileID: 4060480521902534586, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_Name
-      value: Explosion
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
---- !u!4 &9081302249069343681 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7839182838483633618, guid: bb4fdd9e26dbb709598d470edb86cd79, type: 3}
-  m_PrefabInstance: {fileID: 1354768774898398739}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1552997646426714295
 PrefabInstance:
   m_ObjectHideFlags: 0
