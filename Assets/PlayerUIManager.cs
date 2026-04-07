@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +10,7 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject winMenuUI;
-    [SerializeField] private GameObject gameOverMenuUI;
+    [SerializeField] private GameObject gameDeathScreenUI;
 
     public bool PlayerUIActive = false;
 
@@ -21,6 +20,13 @@ public class PlayerUIManager : MonoBehaviour
         pauseMenu = GetComponent<PauseMenu>();
         cardSelectionUI = GetComponent<CardSelectionUI>();
     }
+
+    private void Start()
+    {
+        Event_System.instance.OnPlayerDeath += ShowDeathScreen;
+        Event_System.instance.OnWin += ShowWinMenu;
+    }
+
     void OnPauseGame()
     {
         if (!PlayerUIActive)
@@ -57,7 +63,7 @@ public class PlayerUIManager : MonoBehaviour
     {
         if (pauseMenuUI != null)
         {
-           pauseMenuUI.SetActive(true); // Show the pause menu
+            pauseMenuUI.SetActive(true); // Show the pause menu
         }
     }
 
@@ -84,6 +90,22 @@ public class PlayerUIManager : MonoBehaviour
 
     public void CloseCardSelectUI()
     {
-       cardSelectUI.SetActive(false);
+        cardSelectUI.SetActive(false);
+    }
+
+    public void ShowDeathScreen()
+    {
+        gameDeathScreenUI.SetActive(true);
+
+        PlayerUIActive = true;
+        Time.timeScale = 0f; // Pause the game by setting time scale to 0
+        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+        Cursor.visible = true; // Show the cursor when paused
+        playerInput.enabled = false; // Disable player input when paused
+    }
+
+    public void ShowWinMenu()
+    {
+        winMenuUI.SetActive(true);
     }
 }
