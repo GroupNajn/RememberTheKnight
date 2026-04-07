@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 3822874533635884638}
   - component: {fileID: 2491541292144789250}
   - component: {fileID: 7239316587428880690}
+  - component: {fileID: 4173656222757702254}
   - component: {fileID: 1529693946768076600}
   - component: {fileID: 7333838977578531082}
   - component: {fileID: 7272143101240945305}
@@ -234,7 +235,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -246,6 +247,29 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.000001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!136 &4173656222757702254
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &1529693946768076600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +358,9 @@ MonoBehaviour:
   dodgeCoolDown: 1
   dodgeDuration: 0.6
   knockbackResistance: 5
+  maxStamina: 100
+  currentStamina: 0
+  staminaRegenRate: 1.5
   isDead: 0
 --- !u!114 &2045710683252585095
 MonoBehaviour:
