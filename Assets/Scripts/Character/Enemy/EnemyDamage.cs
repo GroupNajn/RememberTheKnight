@@ -2,6 +2,8 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 [RequireComponent(typeof(ITriggerable))]
@@ -18,7 +20,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer;
     [SerializeField] float damageCooldown = 1;
 
+    public Tier tier;
     private EnemyVFX enemyVFX;
+    private List<Transform> childObjects;
 
     public void TakeDamage(float damage, Vector3 contactPoint)
     {
@@ -49,6 +53,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         onDeath?.Trigger();
         Debug.Log("Invoking OnEnemyKilled");
         Event_System.instance.OnEnemyKilled?.Invoke(this);
+        childObjects.ForEach(transform => transform.gameObject.layer = 11);
 
     }
 
@@ -72,6 +77,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         enemyVFX = GetComponent<EnemyVFX>();
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
+        childObjects = GetComponentsInChildren<Transform>().ToList();
         if (Event_System.instance != null)
             Event_System.instance.OnEnemySpawn?.Invoke(this);
 

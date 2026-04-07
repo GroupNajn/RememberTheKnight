@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 874641691848790214}
   - component: {fileID: 8186731655485823785}
   - component: {fileID: 5933447402786115221}
+  - component: {fileID: -7143012351233247275}
   m_Layer: 5
   m_Name: Soul_Canvas
   m_TagString: Untagged
@@ -103,6 +104,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &-7143012351233247275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482142107894325097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cb32cd87eb30b4db06529166a5e2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7744113679780993642
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -730, y: 485}
+  m_AnchoredPosition: {x: 973, y: 485}
   m_SizeDelta: {x: 50, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6132522322008989132
@@ -168,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 123123
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -251,9 +264,17 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 74300141542030244, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 33.98
+      objectReference: {fileID: 0}
     - target: {fileID: 2596782702831970450, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767275520034622841, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+      propertyPath: m_Name
+      value: Soul_Canvas_Orb
       objectReference: {fileID: 0}
     - target: {fileID: 2801271075908865460, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
       propertyPath: m_Name
@@ -326,10 +347,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2767275520034622841, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3929790022441863415}
   m_SourcePrefab: {fileID: 100100000, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
 --- !u!4 &2852226707080785282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8318615278074776259, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
   m_PrefabInstance: {fileID: 6117169850179020609}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8251680826004744760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2767275520034622841, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+  m_PrefabInstance: {fileID: 6117169850179020609}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &3929790022441863415
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251680826004744760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.22
+  m_Center: {x: 0, y: -0.07, z: 0}

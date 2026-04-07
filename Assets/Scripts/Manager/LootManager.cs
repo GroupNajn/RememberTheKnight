@@ -4,15 +4,22 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 
+// Script made by Henric some random date
+
 public class LootManager : MonoBehaviour
 {
     public static LootManager instance;
 
     [Header("Loot_Table")]
-    [SerializeField] List<Droppable> lootTable;
-    private HashSet<Droppable> droppedLoot = new();
-    [SerializeField] Droppable soulPrefab;
-
+    [SerializeField] List<Loot> CommonLootTable;
+    [SerializeField] List<Loot> UncommonLootTable;
+    [SerializeField] List<Loot> rareLootTable;
+    [SerializeField] List<Loot> EpicLootTable;
+    [SerializeField] List<Loot> LegendaryLootTable;
+    public HashSet<Loot> DroppedLoot {get {return droppedLoot;}}
+    HashSet<Loot> droppedLoot;
+    [SerializeField] Loot soulPrefab;
+    [SerializeField] List<float> amountChanceTable;
     //[SerializeField] float oneItemDropChance;
     //[SerializeField] float twoItemDropChance;
     //[SerializeField] float threeItemDropChance;
@@ -27,7 +34,7 @@ public class LootManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        droppedLoot = new HashSet<Droppable>();
+        droppedLoot = new HashSet<Loot>();
     }
 
     private void Start()
@@ -43,24 +50,24 @@ public class LootManager : MonoBehaviour
         }
 
         //Debug.Log("LootManager subscribed");
-        Event_System.instance.OnEnemyKilled += GetOneRandomItemLoot;
+        Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
 
-    
+
     }
 
     private void OnDestroy()
     {
         if (Event_System.instance != null)
-            Event_System.instance.OnEnemyKilled -= GetOneRandomItemLoot;
+            Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
-    public void RegisterLoot(Droppable loot)
+    public void RegisterLoot(Loot loot)
     {
         if (loot != null)
             droppedLoot.Add(loot);
     }
 
-    public void UnregisterLoot(Droppable loot)
+    public void UnregisterLoot(Loot loot)
     {
         if (loot != null)
             droppedLoot.Remove(loot);
@@ -76,13 +83,13 @@ public class LootManager : MonoBehaviour
     {
         float totalWeight = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (var item in SwitchLootTable(enemy.tier)) // Add all weights from items for the respective loot table
             totalWeight += item.Weight;
 
-        float roll = Random.Range(0, totalWeight);
+        float roll = Random.Range(0, totalWeight); // Make a roll from 0 to the sum of all weights. (e.g) 0-250
         float current = 0;
 
-        foreach (Droppable item in lootTable)
+        foreach (var item in SwitchLootTable(enemy.tier))
         {
             current += item.Weight;
             if (roll < current)
@@ -95,7 +102,66 @@ public class LootManager : MonoBehaviour
         }
     }
 
-    public void DropLoot(Droppable item, EnemyDamage enemy)
+    private List<Loot> SwitchLootTable(Tier tier)
+    {
+        switch (tier)
+        {
+            case Tier.Common:
+                return CommonLootTable;
+            case Tier.Uncommon:
+                return UncommonLootTable;
+            case Tier.Rare:
+                return rareLootTable;
+            case Tier.Epic:
+                return EpicLootTable;
+            case Tier.Legendary:
+                return LegendaryLootTable;
+            default:
+                return CommonLootTable;
+
+        }
+
+
+    }
+    public void RollMultipuleLoot(EnemyDamage enemy)
+    {
+        for (int i = 0; i < CalculateLootAmount(); i++)
+        {
+            GetOneRandomItemLoot(enemy);
+        }
+    }
+
+    private int CalculateLootAmount()
+    {
+        float totalWeight = 0;
+        foreach (var weight in amountChanceTable)
+        {
+            totalWeight += weight;
+        }
+
+        float roll = Random.Range(0, totalWeight);
+        float current = 0;
+
+        for (int i = 0; i < amountChanceTable.Count; i++)
+        {
+            current += amountChanceTable[i];
+
+            if (roll < current)
+            {
+                return i + 1;
+            }
+        }
+
+        return 1;
+    }
+
+
+
+
+
+
+
+    public void DropLoot(Loot item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
         Instantiate(item, pos, Quaternion.identity);
@@ -106,7 +172,7 @@ public class LootManager : MonoBehaviour
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {
         float percent = (itemW / SumOfW) * 100;
-        Debug.Log(percent);
+        Debug.Log("%" + percent);
     }
 
 

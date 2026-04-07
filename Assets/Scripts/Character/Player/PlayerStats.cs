@@ -12,6 +12,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [field: SerializeField] public float MaxHealth { get; private set; }
     [field: SerializeField] public float Health { get; set; }
     public System.Action<float, float> OnHealthChanged { get; set; }
+
+
     
     float healMultiplier = 0;
 
@@ -28,6 +30,13 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float dodgeDuration = 0.2f;
     [Header("Knockback")]
     public float knockbackResistance = 5f;
+
+    [Header("Stamina")]
+    public System.Action<float, float> onStaminaChange;
+    public float maxStamina = 100f;
+    public float currentStamina;
+    public float staminaRegenRate = 1.5f;
+
 
     // [HideInInspector]
 
@@ -47,6 +56,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         Health = MaxHealth;
+        currentStamina = maxStamina;
+        currentStamina = maxStamina;
     }
 
     private void Update()
@@ -60,6 +71,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
             isDead = false;
         }
         playerAnimator.SetBool("IsDead", isDead);
+    
     }
 
     public void TakeDamage(float damage, Vector3 contactPoint)
@@ -69,6 +81,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
             playerVFX.PlayBloodSplatter(contactPoint);
 
             Health -= damage;
+            NotifyHealthChanged();
             if (isDead)
             {
                 Death();
@@ -104,4 +117,13 @@ public class PlayerStats : MonoBehaviour, IDamageable
         Health = Mathf.Clamp(Health + totalHeal, 0, MaxHealth);
         NotifyHealthChanged();
     }
+
+    public void UpdateMaxStamina(float newMaxStamina)
+    {
+        maxStamina = newMaxStamina;
+
+        onStaminaChange?.Invoke(currentStamina, maxStamina);
+    }
+
+    
 }

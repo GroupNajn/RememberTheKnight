@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using UnityEngine.UIElements;
 
+
+// Script made by Henric 2026-03-25
 public class FloatingDamageNumbers : MonoBehaviour
 {
 
@@ -27,7 +29,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     private void Start()
     {
 
-        spawnPos = transform.Find("HealthBar/Numbers_Spawn_Position");
+        spawnPos = transform.Find("EnemyHealthBar/Numbers_Spawn_Position");
         Debug.Log(spawnPos);
         Event_System.instance.OnEnemyDamage += SpawnFloatingNumbers;
     }
@@ -36,8 +38,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     {
         if (textMesh != null)
             textMesh.transform.rotation = this.transform.rotation * Quaternion.Euler(0f, 180f, 0f);
-        
-
+       
 
     }
 

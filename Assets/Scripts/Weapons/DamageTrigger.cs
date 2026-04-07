@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(WeaponStats))]
 public class DamageTrigger : MonoBehaviour
@@ -8,6 +9,7 @@ public class DamageTrigger : MonoBehaviour
 
     WeaponData weaponData;
     float damageAmount;
+    HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
 
     private void Start()
     {
@@ -28,11 +30,17 @@ public class DamageTrigger : MonoBehaviour
 
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
 
-        if (damageable != null)
+        if (damageable != null && damagedObjects.Add(damageable))
         {
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
             damageable.TakeDamage(damageAmount, contactPoint);
         }
+    }
+
+    public void ResetDamage()
+    {
+        damagedObjects.Clear();
+        Debug.Log("Damage reset, ready to damage new targets.");
     }
 }

@@ -6,13 +6,23 @@ using System.Linq;
 using Unity.Behavior;
 
 public class TargetLockHandler : MonoBehaviour
-{
-    public float lockRadius = 15f;
+{ 
     public LayerMask enemyLayer;
-
+    public LayerMask lineOfSightLayer;
     public Animator cameraAnimator;
+
+    [Header(header: "TargetLock Settings")]
+    public float lockRadius = 15f;
+    public float breakLockDistance = 17.5f;
     public bool IsLockedOn = false;
 
+    private float lostSightTimer = 0f;
+    public float loseSightDelay = 0.5f;
+
+    [Range(0f, 1f)]
+    public float minDotProduct = 0.5f;
+
+    [Header(header: "Targets")]
     public Transform currentTarget;
     public CinemachineTargetGroup targetGroup;
     public Transform playerTransform;
@@ -21,6 +31,24 @@ public class TargetLockHandler : MonoBehaviour
     [Header(header: "Cameras")]
     [SerializeField] private GameObject freeLookCam;
     [SerializeField] private GameObject hardlockCam;
+    public CinemachineCamera cinemachineFreeLookCam;
+    public CinemachineCamera cinemachineHardLockCam;
+
+
+    void Start()
+    {
+        cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
+        cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
+
+        if (playerTransform == null)
+        {
+            playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Transform>().Find("PlayerLookAt");
+
+            cinemachineFreeLookCam.Follow = playerTransform;
+            cinemachineHardLockCam.Follow = playerTransform;
+        }
+
+    }
 
     void Update()
     {
@@ -44,8 +72,36 @@ public class TargetLockHandler : MonoBehaviour
 
         if (IsLockedOn)
         {
+            if (currentTarget != null)
+            {
+                float distance = Vector3.Distance(playerTransform.position, currentTarget.position);
+
+                if (distance > breakLockDistance)
+                {
+                    Unlock();
+                    return;
+                }
+
+                //Testing with lineofsight breaking lock.
+
+                if (!HasLineOfSight(currentTarget))
+                {
+                    lostSightTimer += Time.deltaTime;
+
+                    if (lostSightTimer >= loseSightDelay)
+                    {
+                        Unlock();
+                        return;
+                    }
+                }
+                else
+                {
+                    lostSightTimer = 0f;
+                }
+            }
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
+
                 FindTarget();
             }
             if (currentTarget == null)
@@ -70,6 +126,25 @@ public class TargetLockHandler : MonoBehaviour
         cameraAnimator.SetBool("IsLockedOn", IsLockedOn);
     }
 
+    bool HasLineOfSight(Transform target)
+    {
+        Vector3 origin = Camera.main.transform.position;
+
+        Collider col = target.GetComponent<Collider>();
+        Vector3 targetPoint = col != null ? col.bounds.center : target.position;
+
+        Vector3 direction = targetPoint - origin;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, direction, out hit, lockRadius, lineOfSightLayer))
+        {
+            return hit.transform == target;
+        }
+
+        return false;
+    }
+
     void FindTarget()
     {
         List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
@@ -88,6 +163,18 @@ public class TargetLockHandler : MonoBehaviour
 
         foreach (Collider enemy in enemies)
         {
+            Vector3 directionToEnemy = (enemy.transform.position - playerTransform.position).normalized;
+
+            Vector3 cameraForward = Camera.main.transform.forward;
+
+            float dot = Vector3.Dot(cameraForward, directionToEnemy);
+
+            if (dot < minDotProduct)
+                continue;
+
+            if (!HasLineOfSight(enemy.transform))
+                continue;
+
             float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
 
             if (distance < closestDistance)
@@ -132,8 +219,6 @@ public class TargetLockHandler : MonoBehaviour
     private void SwitchCams()
     {
         CinemachineInputAxisController axisControllerFreeLook = freeLookCam.GetComponent<CinemachineInputAxisController>();
-        CinemachineCamera cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
-        CinemachineCamera cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
         CinemachineGroupFraming cinemachineHardLockCamGroupFraming = hardlockCam.GetComponent<CinemachineGroupFraming>();
 
         if (axisControllerFreeLook != null)

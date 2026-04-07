@@ -11,14 +11,13 @@ public class LightIntencityController : MonoBehaviour
 
     Color lowColor;
     Color highColor;
-
+    [Header("Light Color Settings")]
+    [SerializeField] private bool warmLight = true;
     [SerializeField] Color warmLowColor = new Color(1f, 0.6f, 0.2f);
     [SerializeField] Color warmHighColor = new Color(1f, 0.5f, 0.2f);
 
-    [SerializeField] Color coldLowColor = new Color(1f, 1f, 1f);
-    [SerializeField] Color coldHighColor = new Color(1f, 1f, 1f);
-
-    [SerializeField] private bool warmColor = true;
+    [SerializeField] Color coldLowColor = new Color(0.3f, 0.7f, 0.9f);
+    [SerializeField] Color coldHighColor = new Color(0.1f, 0.5f, 0.9f);
 
     private float noiseOffset;
 
@@ -37,7 +36,7 @@ public class LightIntencityController : MonoBehaviour
 
         float intencityToColor = Mathf.InverseLerp(minIntensity, maxIntensity, lightToControl.intensity);
 
-        if (warmColor)
+        if (warmLight)
         {
             lowColor = warmLowColor;
             highColor = warmHighColor;
