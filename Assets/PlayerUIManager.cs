@@ -10,6 +10,8 @@ public class PlayerUIManager : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject cardSelectUI;
+    [SerializeField] private GameObject winMenuUI;
+    [SerializeField] private GameObject gameOverMenuUI;
 
     public bool PlayerUIActive = false;
 
