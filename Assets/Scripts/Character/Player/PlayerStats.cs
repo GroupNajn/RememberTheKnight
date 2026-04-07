@@ -107,6 +107,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         Debug.Log("EVENT TRIGGERED: Player Died");
         Event_System.instance.OnPlayerDeath?.Invoke();
     }
+
     public void SetMaxHealth(float newMaxHealth)
     {
         MaxHealth = newMaxHealth;
