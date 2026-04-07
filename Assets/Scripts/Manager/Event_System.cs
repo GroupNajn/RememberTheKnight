@@ -14,6 +14,8 @@ public class Event_System : MonoBehaviour
     public Action OnLootPickedUp;
     public Action OnPullAllLoot;
     public Action OnResetPullAllLoot;
+    public Action OnPlayerDeath;
+    public Action OnWin;
 
 
     /*
