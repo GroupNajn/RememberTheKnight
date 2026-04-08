@@ -46,7 +46,6 @@ public partial class RootMotionNavigateAction : Action
                                        !Mathf.Approximately(lastTargetPos.z, Target.Value.transform.position.z);
         lastTargetPos = Target.Value.transform.position;
 
-
         if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.transform.position);
 
 
