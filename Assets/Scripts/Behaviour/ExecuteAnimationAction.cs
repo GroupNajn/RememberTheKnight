@@ -11,33 +11,33 @@ public partial class ExecuteAnimationAction : Action
     [SerializeReference] public BlackboardVariable<string> TriggerName;
     [SerializeReference] public BlackboardVariable<string> StateName;
     [SerializeReference] public BlackboardVariable<Animator> Self;
-    [SerializeReference] public BlackboardVariable<bool> Boolean;
+    [SerializeReference] public BlackboardVariable<bool> IsWaiting = new(false);
 
     private bool isWaiting = false;
     protected override Status OnStart()
     {
         if (Self.Value == null) return Status.Failure;
         Self.Value.SetTrigger(TriggerName.Value);
-        isWaiting = true;
+        IsWaiting.Value = true;
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        if (!isWaiting) return Status.Success;
+        if (!IsWaiting.Value) return Status.Success;
         AnimatorStateInfo stateInfo = Self.Value.GetCurrentAnimatorStateInfo(0);
+
 
         if (stateInfo.IsName(StateName.Value) && stateInfo.normalizedTime < 1.0f)
         {
             return Status.Running;
         }
-        isWaiting = false;
         return Status.Success;
     }
 
     protected override void OnEnd()
     {
-
+        IsWaiting.Value = false;
     }
 }
 

@@ -8,7 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Animator))]
 public class NavmeshBehaviourSync : MonoBehaviour
 {
-    void Awake()
+    void Start()
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
@@ -16,21 +16,18 @@ public class NavmeshBehaviourSync : MonoBehaviour
         if (behaviorAgent.BlackboardReference.GetVariable("stoppingDistance", out stoppingDistance))
             stoppingDistance.Value = navAgent.stoppingDistance;
 
-        if (behaviorAgent.BlackboardReference.GetVariable("agentSpeed", out agentSpeed))
-            agentSpeed.Value = navAgent.speed;
-
     }
     void Update()
-    {
+    {/*
         float moveSpeed = animator.GetFloat("MovementSpeed");
         float moveMagnitude = animator.GetFloat("SpeedMagnitude");
         float result = Mathf.Lerp(moveSpeed, moveMagnitude, 0.05f * navAgent.acceleration);
         animator.SetFloat("MovementSpeed", MathF.Round(result, 1));
         agentSpeed.Value = navAgent.speed;
+        */
     }
     private Animator animator;
     private NavMeshAgent navAgent;
     private BehaviorGraphAgent behaviorAgent;
-    private BlackboardVariable<float> agentSpeed;
     private BlackboardVariable<float> stoppingDistance;
 }

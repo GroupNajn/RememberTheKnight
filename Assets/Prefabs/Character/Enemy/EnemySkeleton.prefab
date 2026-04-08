@@ -3576,8 +3576,8 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0dcad412e4df7364880958fbda1ede6b, type: 3}
   m_Controller: {fileID: 9100000, guid: e33dd44990cc5cd7cad5a7eb0e7f1c9d, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
+  m_CullingMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -3596,12 +3596,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 7493179197623156213}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 4
   m_Acceleration: 2
   avoidancePriority: 50
-  m_AngularSpeed: 180
-  m_StoppingDistance: 1
+  m_AngularSpeed: 360
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -3701,7 +3701,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.3643942
   m_Height: 1.8
@@ -3757,7 +3757,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.0001
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0.01
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &133418172861577880
 MonoBehaviour:

@@ -2356,8 +2356,8 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0dcad412e4df7364880958fbda1ede6b, type: 3}
   m_Controller: {fileID: 9100000, guid: 3f8c8071a644287919e208d9a4d3cbba, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
+  m_CullingMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -2376,7 +2376,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4624532995418066361}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 2
   m_Speed: 4
   m_Acceleration: 2
   avoidancePriority: 50
@@ -5582,6 +5582,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Barrel_Open_01
       objectReference: {fileID: 0}
+    - target: {fileID: 2190145996170096, guid: f55116dce50043b4ab8ce72817ee6de9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 814051202746284490, guid: f55116dce50043b4ab8ce72817ee6de9, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.95
@@ -5638,7 +5642,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 963259787, guid: f55116dce50043b4ab8ce72817ee6de9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
