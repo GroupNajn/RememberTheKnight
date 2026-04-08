@@ -24,11 +24,13 @@ public class ThisSceneManager : MonoBehaviour
             Instance = this;
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
+
+        playerInput = GameObject.FindWithTag("Player")?.GetComponent<PlayerInput>();
     }
 
     private void Start()
     {
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        //playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
     }
 
     public void LoadSceneNow(string sceneName)
