@@ -91,6 +91,12 @@ public class PlayerUIManager : MonoBehaviour
     public void CloseCardSelectUI()
     {
         cardSelectUI.SetActive(false);
+
+        PlayerUIActive = false;
+        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+        Cursor.visible = false; // Hide the cursor when resuming
+        playerInput.enabled = true; // Enable player input when resuming
     }
 
     public void ShowDeathScreen()
