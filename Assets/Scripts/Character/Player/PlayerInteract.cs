@@ -7,6 +7,7 @@ public class PlayerInteract : MonoBehaviour
     public float InteractDistance = 8f;
     PlayerController playerController;
     PlayerUIManager playerUIManager;
+    LayerMask layerMask = (1 << 9) | ~(1 << 3);
 
     void Start()
     {
@@ -29,13 +30,12 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * InteractDistance, Color.red, 1f);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
+        if (Physics.Raycast(ray, out hit, InteractDistance, layerMask))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
             if (interactable != null)
             {
-                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
@@ -48,7 +48,7 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
+        if (Physics.Raycast(ray, out hit, InteractDistance, layerMask))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
