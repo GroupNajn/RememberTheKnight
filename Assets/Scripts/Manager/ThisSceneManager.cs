@@ -121,7 +121,11 @@ public class ThisSceneManager : MonoBehaviour
         // Unload all scenes that are not the new active scene, except for the new active scene itself
         // Create a list of all currently loaded scenes to check for unloading, since the scene count will change as we unload scenes
 
-        SceneManager.UnloadSceneAsync(previousScene.name); // Unload the previous active scene immediately
+        if (previousScene.IsValid())
+        {
+            SceneManager.UnloadSceneAsync(previousScene.name); // Unload the previous active scene immediately
+        }
+
         int count = SceneManager.sceneCount;
         var scenes = new List<Scene>();
 
@@ -132,7 +136,7 @@ public class ThisSceneManager : MonoBehaviour
 
         foreach (var scene in scenes)
         {
-            if (scene != newScene)
+            if (scene != newScene && scene.IsValid())
             {
                 // Unload scenes that are not the new active scene
                 SceneManager.UnloadSceneAsync(scene.name);
