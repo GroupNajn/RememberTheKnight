@@ -5,7 +5,6 @@ public class PlayerInteract : MonoBehaviour
 {
     private Camera camera;
     public float InteractDistance = 8f;
-    [SerializeField] GameObject interactUI;
     PlayerController playerController;
     PlayerUIManager playerUIManager;
 
