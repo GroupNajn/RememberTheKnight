@@ -1,21 +1,19 @@
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteract : MonoBehaviour
 {
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    PlayerUIManager playerUIManager;
-    LayerMask layerMask = (1 << 9) | ~(1 << 3);
+    [SerializeField] PlayerUIManager playerUIManager;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         //camera = playerController._playerCamera.GetComponent<Camera>();
-        playerUIManager = FindFirstObjectByType<PlayerUIManager>();
 
-        playerUIManager.CloseInteractiveUI();
     }
 
     void Update()
@@ -30,12 +28,13 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * InteractDistance, Color.red, 1f);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, InteractDistance, layerMask))
+        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
             if (interactable != null)
             {
+                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
@@ -48,7 +47,7 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, InteractDistance, layerMask))
+        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
@@ -63,5 +62,25 @@ public class PlayerInteract : MonoBehaviour
         }
 
         playerUIManager.CloseInteractiveUI();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+
+        if (playerUIManager == null)
+        {
+            playerUIManager = FindFirstObjectByType<PlayerUIManager>();
+            Debug.Log("PlayerUIManager not found in the scene after loading. Please ensure there is a PlayerUIManager in the scene.");
+        }
     }
 }
