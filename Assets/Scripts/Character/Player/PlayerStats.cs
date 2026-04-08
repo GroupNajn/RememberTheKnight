@@ -31,8 +31,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [Header("Knockback")]
     public float knockbackResistance = 5f;
 
-    [Header("Stamina")]
     public System.Action<float, float> onStaminaChange;
+    [Header("Stamina")]
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRegenRate = 1.5f;
