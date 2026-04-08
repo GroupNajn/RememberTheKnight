@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class CardUI : MonoBehaviour
 {
-    public bool IsSelected { get; private set; }
+    [field: SerializeField] public bool IsSelected { get; private set; }
 
+    [SerializeField] public CardData cardData;
     public float angle = 5f;
     public float speed = 0.4f;
     public float offset = 0f;
