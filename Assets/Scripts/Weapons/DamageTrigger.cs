@@ -20,7 +20,7 @@ public class DamageTrigger : MonoBehaviour
         }
         else
         {
-            damageAmount = 10;
+            damageAmount = 999;
         }
     }
 

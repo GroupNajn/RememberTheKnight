@@ -43,10 +43,12 @@ public class HealthbarScrip : MonoBehaviour
 
     void UpdateHealthBar(float current, float max)
     {
+        
 
         healthbar.maxValue = max;
         healthbar.value = current;
-        if (current <= 0)
+        if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
+        if (current <= 0)                 // condition to destroy gameObject when health is 0 or below. 
         {
             Destroy(healthbar.gameObject);
             damageable.OnHealthChanged -= UpdateHealthBar;

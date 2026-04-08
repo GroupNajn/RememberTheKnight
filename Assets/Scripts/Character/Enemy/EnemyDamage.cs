@@ -53,7 +53,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         onDeath?.Trigger();
         Debug.Log("Invoking OnEnemyKilled");
         Event_System.instance.OnEnemyKilled?.Invoke(this);
-        childObjects.ForEach(transform => transform.gameObject.layer = 11);
+        childObjects.ForEach(transform => transform.gameObject.layer = 12);
 
     }
 

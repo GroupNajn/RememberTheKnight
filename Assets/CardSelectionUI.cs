@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using UnityEngine.Rendering;
+using System.Collections.Generic;
+using Unity.Multiplayer.Center.Common;
 
 public class CardSelectionUI : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class CardSelectionUI : MonoBehaviour
     [SerializeField] int maxCardsSelected = 4;
     [SerializeField] int currentCardsSelected = 0;
     [SerializeField] TextMeshProUGUI errorText;
+
+    List<CardData> SelectedList = new List<CardData>();
+
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
@@ -34,24 +39,19 @@ public class CardSelectionUI : MonoBehaviour
 
 
         playerUIManager.CloseCardSelectUI();
+
+
     }
 
     private void OnEnable()
     {
-        currentCardsSelected = 0;
-
         foreach (Button button in GetComponentsInChildren<Button>())
         {
             CardUI card = button.GetComponent<CardUI>();
             if (card == null) continue;
 
-            if (card.IsSelected)
-            {
-                currentCardsSelected++;
-            }
+            card.SetSelected(SelectedList.Contains(card.cardData));
 
-            Button btn = button;
-            btn.onClick.AddListener(() => OnCardSelect(btn));
         }
     }
 
@@ -72,14 +72,15 @@ public class CardSelectionUI : MonoBehaviour
         if (card.IsSelected)
         {
             card.SetSelected(false);
+            SelectedList.Remove(card.cardData);
             currentCardsSelected--;
+            Debug.Log("Card Deselected 123");
             return;
+
         }
 
         if (currentCardsSelected >= maxCardsSelected)
         {
-
-
             if (!errorActive)
             {
                 ShowError($"You can only select {maxCardsSelected} cards!", 5f);
@@ -88,12 +89,34 @@ public class CardSelectionUI : MonoBehaviour
             return;
         }
 
-        card.SetSelected(true);
-        currentCardsSelected++;
-        Debug.Log("CLICK FUNKAR: " + button.name);
+        if (!card.IsSelected)
+        {
+            card.SetSelected(true);
+            SelectedList.Add(card.cardData);
+            currentCardsSelected++;
+            return;
+        }
 
+    }
 
+    public void OnConfirmSelection()
+    {
+        if (currentCardsSelected == 0)
+        {
+            if (!errorActive)
+            {
+                ShowError("You must select at least one card!", 5f);
+            }
+            return;
+        }
 
+        // LÄS IM VILKA SOM ÄR SELECTED 
+        // APPLY EVENT FÖR SPELAREN
+
+        
+        Event_System.instance.OnStatsApplied?.Invoke(SelectedList);
+
+        playerUIManager.CloseCardSelectUI();
     }
     private void Update()
     {

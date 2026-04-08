@@ -4,8 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyDamage))]
 public class EnemyExplodeAttack : MonoBehaviour
 {
-    float time = 0;
-    public float explotionInterval = 0.1f;
+    public float DebugRay_DrawTime = 5f;
     public float explotionRadius = 5.0f;
     public float explosionForce = 10f;
     GameObject player;
@@ -14,7 +13,7 @@ public class EnemyExplodeAttack : MonoBehaviour
     EnemyDamage enemyDamage;
     [SerializeField] GameObject barrel;
     [SerializeField] ParticleSystem explosion;
-    void Awake()
+    void Start()
     {
         enemyDamage = GetComponent<EnemyDamage>();
 
@@ -25,15 +24,38 @@ public class EnemyExplodeAttack : MonoBehaviour
             if (transform.name == "SM_Prop_Barrel_01") barrel = transform.gameObject;
             if (transform.name == "SM_Prop_Barrel_Open_01") barrel = transform.gameObject;
         });
-
     }
 
     public void OnExplode()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector3.Distance(barrel.transform.position, player.transform.position);
 
         bool playerHit = false;
         //explosion.Play();
+        
+        for (int i = 0; i < hitchecks.Length; i++)
+        {
+            Ray ray = new Ray(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position);
+
+            if (Physics.Raycast(ray, out RaycastHit hit,explotionRadius,8))
+            {
+                CharacterController cc = hit.collider.GetComponent<CharacterController>();
+                IKnockbackable knockbackeble = hit.collider.GetComponent<PlayerController>();
+
+                if (cc != null && distanceToPlayer <= explotionRadius)
+                {
+                    playerHit = true;
+                    Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.green, DebugRay_DrawTime);
+                    if (knockbackeble != null)
+                    {
+                        knockbackeble.ApplyKnockback(explosionForce, explotionRadius, transform.position);
+                    }
+                    if(knockbackeble == null) Debug.Log("Explotion: could not find knockbackeble");
+                    break;
+                }
+                Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.red, DebugRay_DrawTime);
+            }
+        }
         if (barrel != null)
         {
             Destroy(barrel);
@@ -41,34 +63,11 @@ public class EnemyExplodeAttack : MonoBehaviour
             boom.Play();
             enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
         }
-        for (int i = 0; i < hitchecks.Length; i++)
+        if (playerHit)
         {
-            Ray ray = new Ray(transform.position, hitchecks[i].transform.position - transform.position);
+            float damage = Mathf.Lerp(0, 30, 1 - (distanceToPlayer / explotionRadius));
+            player.GetComponent<PlayerStats>().TakeDamage(damage, Vector3.zero);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                CharacterController cc = hit.collider.GetComponent<CharacterController>();
-
-                if (cc != null || distanceToPlayer <= 1f)
-                {
-                    playerHit = true;
-                    Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.green, explotionInterval);
-                    IKnockbackable damageable = hit.collider.GetComponent<IKnockbackable>();
-                    if (damageable != null)
-                    {
-                        damageable.ApplyKnockback(explosionForce, explotionRadius, transform.position);
-                    }
-                    break;
-                }
-                Debug.DrawRay(transform.position, hitchecks[i].transform.position - transform.position, Color.red, explotionInterval);
-            }
         }
-        if (playerHit) player.GetComponent<PlayerStats>().TakeDamage(30, Vector3.zero);
     }
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }

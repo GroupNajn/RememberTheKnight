@@ -38,7 +38,7 @@ public class LootFollowController : MonoBehaviour
             ResetFollowLogic();
         }
 
-        // If loot hashSet has no loot, reest override bool and stop Coroutine. 
+        // If loot-hashSet has no loot, reset override bool and stop Coroutine. 
         if (!hasLootThreshhold && overrideCoroutineRunning)
         {
             StopCoroutine(overrideRoutine);

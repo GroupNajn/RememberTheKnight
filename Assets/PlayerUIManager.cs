@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +9,9 @@ public class PlayerUIManager : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject cardSelectUI;
+    [SerializeField] private GameObject interactUI;
+    [SerializeField] private GameObject winMenuUI;
+    [SerializeField] private GameObject gameDeathScreenUI;
 
     public bool PlayerUIActive = false;
 
@@ -19,6 +21,13 @@ public class PlayerUIManager : MonoBehaviour
         pauseMenu = GetComponent<PauseMenu>();
         cardSelectionUI = GetComponent<CardSelectionUI>();
     }
+
+    private void Start()
+    {
+        Event_System.instance.OnPlayerDeath += ShowDeathScreen;
+        Event_System.instance.OnWin += ShowWinMenu;
+    }
+
     void OnPauseGame()
     {
         if (!PlayerUIActive)
@@ -29,7 +38,7 @@ public class PlayerUIManager : MonoBehaviour
             Cursor.visible = true; // Show the cursor when paused
             playerInput.enabled = false; // Disable player input when paused
 
-            ShowPauseMenu(); // Show the pause menu
+            OpenPauseMenu(); // Show the pause menu
         }
         else
         {
@@ -49,13 +58,17 @@ public class PlayerUIManager : MonoBehaviour
     {
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
+        CloseInteractiveUI(); // Hide the interact UI
+
     }
 
-    public void ShowPauseMenu()
+    public void OpenPauseMenu()
     {
         if (pauseMenuUI != null)
         {
-           pauseMenuUI.SetActive(true); // Show the pause menu
+            CloseInteractiveUI();
+            pauseMenuUI.SetActive(true); // Show the pause menu
+
         }
     }
 
@@ -69,9 +82,10 @@ public class PlayerUIManager : MonoBehaviour
 
     public void OpenCardSelectUI()
     {
-
-
+        Debug.Log("Opening Card Select UI");
+        CloseInteractiveUI();
         cardSelectUI.SetActive(true);
+        Debug.Log($"Card Select UI active: {cardSelectUI.activeInHierarchy}");
 
         PlayerUIActive = true;
         Time.timeScale = 0f; // Pause the game by setting time scale to 0
@@ -82,6 +96,40 @@ public class PlayerUIManager : MonoBehaviour
 
     public void CloseCardSelectUI()
     {
-       cardSelectUI.SetActive(false);
+        cardSelectUI.SetActive(false);
+
+        PlayerUIActive = false;
+        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+        Cursor.visible = false; // Hide the cursor when resuming
+        playerInput.enabled = true; // Enable player input when resuming
+    }
+
+    public void ShowDeathScreen()
+    {
+        CloseInteractiveUI();
+        gameDeathScreenUI.SetActive(true);
+
+        PlayerUIActive = true;
+        Time.timeScale = 0f; // Pause the game by setting time scale to 0
+        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+        Cursor.visible = true; // Show the cursor when paused
+        playerInput.enabled = false; // Disable player input when paused
+    }
+
+    public void ShowWinMenu()
+    {
+        CloseInteractiveUI();
+        winMenuUI.SetActive(true);
+    }
+
+    public void OpenInteractiveUI()
+    {
+        interactUI.SetActive(true);
+    }
+
+    public void CloseInteractiveUI()
+    {
+        interactUI.SetActive(false);
     }
 }

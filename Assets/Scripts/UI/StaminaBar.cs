@@ -8,6 +8,7 @@ public class StaminaBar : MonoBehaviour
     [SerializeField] Slider staminaBar;
     [SerializeField] float lerpSpeed = 2f;
     public RectTransform lerpingRectTransform;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,7 +25,7 @@ public class StaminaBar : MonoBehaviour
             Debug.LogError("StaminaBar: Slider is missing!");
             return;
         }
-
+         
         playerStats.onStaminaChange += UpdateStaminaBar;
 
         // Uppdatera UI direkt

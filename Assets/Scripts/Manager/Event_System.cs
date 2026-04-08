@@ -1,4 +1,7 @@
+using NUnit.Framework;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +17,9 @@ public class Event_System : MonoBehaviour
     public Action OnLootPickedUp;
     public Action OnPullAllLoot;
     public Action OnResetPullAllLoot;
+    public Action OnPlayerDeath;
+    public Action OnWin;
+    public Action<List<CardData>> OnStatsApplied;
 
 
     /*

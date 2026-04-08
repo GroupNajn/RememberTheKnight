@@ -66,8 +66,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
-    private bool isKnockedback = false;
+    public bool isKnockedback { get; private set; } = false;
     public Vector3 knockbackForce = Vector3.zero;
+    private bool ExplotionInfront;
 
     [Header("Stamina")]
     StaminaController staminaController;
@@ -273,6 +274,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             knockbackForce = Vector3.zero;
             playerState.SetMoveState(MoveState.Idling);
         }
+        PlayerAnimator.SetBool("IsKnockedbacked", playerState.CurrentMoveState == MoveState.Knockedback);
     }
 
     private void CalculateInputMagnitude()
@@ -393,8 +395,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
-        float calculatedForce = force * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
+        Debug.Log($"Applying knockback with force {force} and radius {radius} from position {pos}");
+        float calculatedForce = (force * 3)  * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
+        ExplotionInfront = Vector3.Dot(knockbackDirection, transform.forward.normalized) > 0;
+        PlayerAnimator.SetBool("ExplotionInfront", ExplotionInfront);
         knockbackForce = knockbackDirection * calculatedForce;
     }
 
