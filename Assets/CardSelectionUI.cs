@@ -112,7 +112,9 @@ public class CardSelectionUI : MonoBehaviour
 
         // LÄS IM VILKA SOM ÄR SELECTED 
         // APPLY EVENT FÖR SPELAREN
-        //Event_System.instance.OnCardsSelected?.Invoke(SelectedList);
+
+        
+        Event_System.instance.OnStatsApplied?.Invoke(SelectedList);
 
         playerUIManager.CloseCardSelectUI();
     }
