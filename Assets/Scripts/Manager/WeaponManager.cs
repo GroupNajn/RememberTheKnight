@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
+    CharacterSoundFXManager characterSoundFXManager;
+
     [SerializeField] GameObject currentRightHandWeapon;
     [SerializeField] GameObject currentLeftHandWeapon;
 
@@ -9,11 +11,17 @@ public class WeaponManager : MonoBehaviour
     DamageTrigger rightDamageTrigger;
     DamageTrigger leftDamageTrigger;
 
+    WeaponData currentRightWeaponData;
+    WeaponData currentLeftWeaponData;
+
     private void Start()
     {
+        characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
+
         if (currentRightHandWeapon != null)
         {
             rightDamageTrigger = currentRightHandWeapon.GetComponent<DamageTrigger>();
+            currentRightWeaponData = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData;
         }
         else
         {
@@ -23,6 +31,7 @@ public class WeaponManager : MonoBehaviour
         if (currentLeftHandWeapon != null)
         {
             leftDamageTrigger = currentLeftHandWeapon.GetComponent<DamageTrigger>();
+            currentLeftWeaponData = currentLeftHandWeapon.GetComponent<WeaponStats>().WeaponData;
         }
         else
         {
@@ -54,7 +63,7 @@ public class WeaponManager : MonoBehaviour
         if (currentRightHandWeapon != null)
         {
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
-
+            characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes));
             rightDamageTrigger.ResetDamage();
         }
     }
@@ -74,7 +83,7 @@ public class WeaponManager : MonoBehaviour
         if (currentRightHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
-
+            characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes));
             leftDamageTrigger.ResetDamage();
         }
     }
