@@ -30,8 +30,8 @@ public partial class RootMotionNavigateAction : Action
         if (dist <= navMeshAgent.stoppingDistance) return Status.Success;
 
         navMeshAgent.updatePosition = false;
+        navMeshAgent.updateRotation = false;
         navMeshAgent.SetDestination(Target.Value.transform.position);
-
         lastTargetPos = Target.Value.transform.position;
         IsNavigating.Value = true;
         return Status.Running;
@@ -41,18 +41,18 @@ public partial class RootMotionNavigateAction : Action
     {
         if (animator == null || navMeshAgent == null) return Status.Failure;
 
-        bool shouldUpdateDestination = !Mathf.Approximately(lastTargetPos.x, Target.Value.transform.position.x) ||
-                                       !Mathf.Approximately(lastTargetPos.y, Target.Value.transform.position.y) ||
-                                       !Mathf.Approximately(lastTargetPos.z, Target.Value.transform.position.z);
-        lastTargetPos = Target.Value.transform.position;
+        bool shouldUpdateDestination =
+            !Mathf.Approximately(lastTargetPos.x, Target.Value.transform.position.x) ||
+            !Mathf.Approximately(lastTargetPos.y, Target.Value.transform.position.y) ||
+            !Mathf.Approximately(lastTargetPos.z, Target.Value.transform.position.z);
 
         if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.transform.position);
-
+        lastTargetPos = Target.Value.transform.position;
 
         bool shouldBreak = Vector3.Distance(Self.Value.transform.position, Target.Value.transform.position) <= navMeshAgent.stoppingDistance;
 
 
-        float desiredSpeed = shouldBreak ? 0 : Mathf.Max(navMeshAgent.desiredVelocity.magnitude, 0.1f);
+        float desiredSpeed = Mathf.Max(navMeshAgent.desiredVelocity.magnitude, navMeshAgent.speed / 2);
         float currentSpeed = animator.GetFloat("MovementSpeed");
         animator.SetFloat("MovementSpeed", MathF.Round(Mathf.Lerp(currentSpeed, desiredSpeed, 0.5f * Time.fixedDeltaTime), 2));
 
