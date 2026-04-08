@@ -2303,6 +2303,8 @@ GameObject:
   - component: {fileID: -4713826263582080163}
   - component: {fileID: 1101119823454965747}
   - component: {fileID: 91903681499389335}
+  - component: {fileID: 893522055424362956}
+  - component: {fileID: 7131483574593807097}
   m_Layer: 8
   m_Name: EnemySkeletonBoomboy
   m_TagString: Untagged
@@ -2599,7 +2601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b03555b370ead56b3103c6d70ed6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explotionInterval: 0.1
+  DebugRay_DrawTime: 5
   explotionRadius: 5
   explosionForce: 10
   barrel: {fileID: 0}
@@ -2619,6 +2621,122 @@ MonoBehaviour:
   ragdoll: {fileID: 0}
   prefab: {fileID: 8077119868138552059, guid: 899a043753bdddb42b04f658dae783f3, type: 3}
   timeOutSeconds: 10
+--- !u!114 &893522055424362956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624532995418066361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035b28f8450156e4b8364015b8ec47aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageGrunts:
+  - {fileID: 8300000, guid: 2d9f1aa3752657b4dbf9aa2f92ebfd26, type: 3}
+  - {fileID: 8300000, guid: 674d9757765bd6746a0261c8c17b8c18, type: 3}
+  - {fileID: 8300000, guid: 397e4182f9c44c4429851ede57300b9b, type: 3}
+  - {fileID: 8300000, guid: 35a217bced0da50468b38a15578adb22, type: 3}
+  attackGrunts: []
+  footSteps: []
+--- !u!82 &7131483574593807097
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624532995418066361}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4672731988933066374
 GameObject:
   m_ObjectHideFlags: 0
