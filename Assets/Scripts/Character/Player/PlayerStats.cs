@@ -36,7 +36,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRegenRate = 1.5f;
-
+    private float baseHealth;
 
     // [HideInInspector]
 
@@ -56,9 +56,17 @@ public class PlayerStats : MonoBehaviour, IDamageable
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         Health = MaxHealth;
+        baseHealth = MaxHealth;
         currentStamina = maxStamina;
         currentStamina = maxStamina;
     }
+
+    //void ApplyStats(List<CardData> cards) 
+    //{
+    //    MaxHealth += card.healthModifier;
+        
+
+    //}
 
     private void Update()
     {
