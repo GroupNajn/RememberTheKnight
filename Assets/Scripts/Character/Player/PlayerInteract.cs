@@ -1,20 +1,19 @@
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteract : MonoBehaviour
 {
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    PlayerUIManager playerUIManager;
+   [SerializeField] PlayerUIManager playerUIManager;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         //camera = playerController._playerCamera.GetComponent<Camera>();
-        playerUIManager = FindFirstObjectByType<PlayerUIManager>();
 
-        playerUIManager.CloseInteractiveUI();
     }
 
     void Update()
@@ -64,4 +63,25 @@ public class PlayerInteract : MonoBehaviour
 
         playerUIManager.CloseInteractiveUI();
     }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+
+        if (playerUIManager == null)
+        {
+            playerUIManager = FindFirstObjectByType<PlayerUIManager>();
+            Debug.Log("PlayerUIManager not found in the scene after loading. Please ensure there is a PlayerUIManager in the scene.");
+        }
+    }
+
 }

@@ -15,10 +15,13 @@ public class CameraManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        //gameObject.SetActive(false);
     }
 
     private void Start()
     {
+
         FindThings();
     }
 
@@ -34,8 +37,8 @@ public class CameraManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
         Debug.Log("CameraManager: OnSceneLoaded called for scene " + scene.name);
+        //gameObject.SetActive(true);
         FindThings();
     }
 

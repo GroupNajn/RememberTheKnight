@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class ThisSceneManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class ThisSceneManager : MonoBehaviour
     [field: SerializeField] public Transform PlayerSpawnPosition { get; private set; }
 
     readonly Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();
+
+    PlayerInput playerInput;
 
     private void Awake()
     {
@@ -24,9 +27,16 @@ public class ThisSceneManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+    }
+
+
     public void LoadSceneNow(string sceneName)
     {
         // Instantly loads the new scene and unloads the other scenes
+        playerInput.enabled = true;
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 

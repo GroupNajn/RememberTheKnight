@@ -40,7 +40,6 @@ public class CardSelectionUI : MonoBehaviour
 
         playerUIManager.CloseCardSelectUI();
 
-
     }
 
     private void OnEnable()

@@ -1,9 +1,14 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerUIManager : MonoBehaviour
 {
+    public static PlayerUIManager Instance { get; private set; }
+
     PlayerInput playerInput;
+    PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
 
@@ -15,17 +20,47 @@ public class PlayerUIManager : MonoBehaviour
 
     public bool PlayerUIActive = false;
 
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        pauseMenu = GetComponent<PauseMenu>();
-        cardSelectionUI = GetComponent<CardSelectionUI>();
     }
 
     private void Start()
     {
+        UIInput = GetComponentInChildren<PlayerInput>();
+        pauseMenu = GetComponentInChildren<PauseMenu>();
+        cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
+
+        GetComponentsInChildren<Transform>().ToList().ForEach(t =>
+        {
+            if (t.gameObject.name == "PauseMenu") pauseMenuUI = t.gameObject;
+            else if (t.gameObject.name == "CardSelectUI") cardSelectUI = t.gameObject;
+            else if (t.gameObject.name == "InteractUI") interactUI = t.gameObject;
+            else if (t.gameObject.name == "WinMenu") winMenuUI = t.gameObject;
+            else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
+        });
+
+        playerInput.enabled = false;
+        UIInput.enabled = false;
+        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+        Cursor.visible = true; // Show the cursor when paused
+
+
         Event_System.instance.OnPlayerDeath += ShowDeathScreen;
         Event_System.instance.OnWin += ShowWinMenu;
+
+        //HideActiveUI();
     }
 
     void OnPauseGame()
@@ -64,7 +99,7 @@ public class PlayerUIManager : MonoBehaviour
 
     public void OpenPauseMenu()
     {
-        if (pauseMenuUI != null)
+        if (pauseMenuUI)
         {
             CloseInteractiveUI();
             pauseMenuUI.SetActive(true); // Show the pause menu
@@ -74,7 +109,7 @@ public class PlayerUIManager : MonoBehaviour
 
     public void ClosePauseMenu()
     {
-        if (pauseMenuUI != null)
+        if (pauseMenuUI)
         {
             pauseMenuUI.SetActive(false); // Hide the pause menu
         }
@@ -125,11 +160,49 @@ public class PlayerUIManager : MonoBehaviour
 
     public void OpenInteractiveUI()
     {
-        interactUI.SetActive(true);
+        if (interactUI)
+        {
+            interactUI.SetActive(true);
+        }
     }
 
     public void CloseInteractiveUI()
     {
-        interactUI.SetActive(false);
+        if (interactUI)
+            interactUI.SetActive(false);
+    }
+
+    //private void OnEnable()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //}
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        UIInput = GetComponentInChildren<PlayerInput>();
+        pauseMenu = GetComponentInChildren<PauseMenu>();
+        cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
+
+        GetComponentsInChildren<Transform>().ToList().ForEach(t =>
+        {
+            if (t.gameObject.name == "PauseMenu") pauseMenuUI = t.gameObject;
+            else if (t.gameObject.name == "CardSelectUI") cardSelectUI = t.gameObject;
+            else if (t.gameObject.name == "InteractUI") interactUI = t.gameObject;
+            else if (t.gameObject.name == "WinMenu") winMenuUI = t.gameObject;
+            else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
+        });
+
+        gameObject.SetActive(true);
+        UIInput.enabled = true;
     }
 }
