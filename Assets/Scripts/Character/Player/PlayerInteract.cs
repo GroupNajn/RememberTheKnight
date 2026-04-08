@@ -7,11 +7,15 @@ public class PlayerInteract : MonoBehaviour
     public float InteractDistance = 8f;
     [SerializeField] GameObject interactUI;
     PlayerController playerController;
+    PlayerUIManager playerUIManager;
 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
         //camera = playerController._playerCamera.GetComponent<Camera>();
+        playerUIManager = FindFirstObjectByType<PlayerUIManager>();
+
+        playerUIManager.CloseInteractiveUI();
     }
 
     void Update()
@@ -26,12 +30,13 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * InteractDistance, Color.red, 1f);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, InteractDistance,3))
+        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
             if (interactable != null)
             {
+                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
@@ -50,11 +55,14 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                interactUI.SetActive(true);
+                if (!playerUIManager.PlayerUIActive)
+                {
+                    playerUIManager.OpenInteractiveUI();
+                }
                 return;
             }
         }
 
-        interactUI.SetActive(false);
+        playerUIManager.CloseInteractiveUI();
     }
 }
