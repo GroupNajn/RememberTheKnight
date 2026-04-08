@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
@@ -14,7 +16,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public System.Action<float, float> OnHealthChanged { get; set; }
 
 
-    
+
     float healMultiplier = 0;
 
     [Header("Stats")]
@@ -36,8 +38,10 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRegenRate = 1.5f;
-    private float baseHealth;
 
+    // Base Values used for Applying Stats
+    private float baseHealth;
+    private float baseStamina;
     // [HideInInspector]
 
     [HideInInspector]
@@ -57,16 +61,27 @@ public class PlayerStats : MonoBehaviour, IDamageable
         playerVFX = GetComponentInChildren<PlayerVFX>();
         Health = MaxHealth;
         baseHealth = MaxHealth;
+        baseStamina = maxStamina;
         currentStamina = maxStamina;
         currentStamina = maxStamina;
+        Event_System.instance.OnStatsApplied += ApplyStats;
     }
 
-    //void ApplyStats(List<CardData> cards) 
-    //{
-    //    MaxHealth += card.healthModifier;
-        
+    void ApplyStats(List<CardData> cards)
+    {
+        MaxHealth = baseHealth;
+        maxStamina = baseStamina;
+        foreach (CardData card in cards)
+        {
+            if (card == null) continue;
+            MaxHealth += card.healthModifier;
+            maxStamina += card.staminaModifier;
+        }
+        Health = MaxHealth;
+        currentStamina = maxStamina;
 
-    //}
+
+    }
 
     private void Update()
     {
@@ -79,7 +94,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
             isDead = false;
         }
         playerAnimator.SetBool("IsDead", isDead);
-    
+
     }
 
     public void TakeDamage(float damage, Vector3 contactPoint)
@@ -125,7 +140,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         NotifyHealthChanged();
     }
 
-    public void Heal(float amount )
+    public void Heal(float amount)
     {
         float totalHeal = amount * healMultiplier;
         Health = Mathf.Clamp(Health + totalHeal, 0, MaxHealth);
@@ -139,5 +154,5 @@ public class PlayerStats : MonoBehaviour, IDamageable
         onStaminaChange?.Invoke(currentStamina, maxStamina);
     }
 
-    
+
 }
