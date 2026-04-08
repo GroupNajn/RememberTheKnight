@@ -31,8 +31,8 @@ public class TargetLockHandler : MonoBehaviour
     [Header(header: "Cameras")]
     [SerializeField] private GameObject freeLookCam;
     [SerializeField] private GameObject hardlockCam;
-    private CinemachineCamera cinemachineFreeLookCam;
-    private CinemachineCamera cinemachineHardLockCam;
+    public CinemachineCamera cinemachineFreeLookCam;
+    public CinemachineCamera cinemachineHardLockCam;
 
 
     void Start()
@@ -42,7 +42,7 @@ public class TargetLockHandler : MonoBehaviour
 
         if (playerTransform == null)
         {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerLookAt");
+            playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Transform>().Find("PlayerLookAt");
 
             cinemachineFreeLookCam.Follow = playerTransform;
             cinemachineHardLockCam.Follow = playerTransform;
@@ -52,7 +52,6 @@ public class TargetLockHandler : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (!IsLockedOn)
@@ -135,21 +134,12 @@ public class TargetLockHandler : MonoBehaviour
         Vector3 targetPoint = col != null ? col.bounds.center : target.position;
 
         Vector3 direction = targetPoint - origin;
-        float distance = direction.magnitude;
 
-        RaycastHit[] hits = Physics.RaycastAll(origin, direction.normalized, distance);
+        RaycastHit hit;
 
-        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-        foreach (var hit in hits)
+        if (Physics.Raycast(origin, direction, out hit, lockRadius, lineOfSightLayer))
         {
-            if (hit.collider.isTrigger)
-                continue;
-
-            if (hit.transform == target)
-                return true;
-
-            return false;
+            return hit.transform == target;
         }
 
         return false;
@@ -191,9 +181,6 @@ public class TargetLockHandler : MonoBehaviour
             {
                 closestDistance = distance;
                 bestTarget = enemy.transform;
-                //Debug.Log("Enemies in range: " + enemiesUnfiltered.Count);
-                //Debug.Log("Filtered enemies: " + enemies.Count);
-                //Debug.Log("Best target: " + bestTarget);
             }
         }
 
@@ -211,6 +198,7 @@ public class TargetLockHandler : MonoBehaviour
         targetGroup.Targets.Clear();
 
         targetGroup.AddMember(playerTransform, 0.75f, 1f);
+        //targetGroup.AddMember(testCubeTransform, 0.75f, 1f);
         targetGroup.AddMember(currentTarget, 1f, 1);
 
         currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
@@ -224,6 +212,8 @@ public class TargetLockHandler : MonoBehaviour
         currentTarget = null;
 
         targetGroup.Targets.Clear();
+        //targetGroup.AddMember(testCubeTransform, 0.75f, 1f);
+        //targetGroup.AddMember(playerTransform, 0.75f, 1f);
     }
 
     private void SwitchCams()
