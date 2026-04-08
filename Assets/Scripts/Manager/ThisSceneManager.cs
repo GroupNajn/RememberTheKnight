@@ -33,6 +33,10 @@ public class ThisSceneManager : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         // Loads the new scene in the background
+        if (pendingLoads.ContainsKey(sceneName))
+        {
+            return;
+        }
         StartCoroutine(LoadSeneAsync(sceneName));
     }
 
@@ -94,7 +98,10 @@ public class ThisSceneManager : MonoBehaviour
             yield return null;
         }
 
+        Debug.Log("Removing " + sceneName + " from pending loads");
+        Debug.Log("Pending loads count before removal: " + pendingLoads.Count);
         pendingLoads.Remove(sceneName);
+        Debug.Log("Pending loads count after removal : " + pendingLoads.Count);
 
         Scene scene = SceneManager.GetSceneByName(sceneName);
 
@@ -113,10 +120,12 @@ public class ThisSceneManager : MonoBehaviour
     {
         // Unload all scenes that are not the new active scene, except for the new active scene itself
         // Create a list of all currently loaded scenes to check for unloading, since the scene count will change as we unload scenes
+
+        SceneManager.UnloadSceneAsync(previousScene.name); // Unload the previous active scene immediately
         int count = SceneManager.sceneCount;
         var scenes = new List<Scene>();
 
-        for (int i = 0; i < count; i++)
+        for (int i = count - 1; i >= 0; i--)
         {
             scenes.Add(SceneManager.GetSceneAt(i));
         }

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable
 {
@@ -6,7 +8,22 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        ThisSceneManager.Instance.LoadScene(sceneToLoad);
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+
+        if (sceneToLoad != string.Empty)
+        {
+            ThisSceneManager.Instance.LoadScene(sceneToLoad);
+        }
+    }
+
+    private void OnActiveSceneChanged(Scene previousScene, Scene newScene)
+    {
+        if (sceneToLoad != string.Empty)
+        {
+            ThisSceneManager.Instance.LoadScene(sceneToLoad);
+        }
+
+            SceneManager.activeSceneChanged -= OnActiveSceneChanged;
     }
 
     public void Interact()
