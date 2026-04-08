@@ -151,6 +151,8 @@ GameObject:
   - component: {fileID: 25966239622868066}
   - component: {fileID: 9075057407305647986}
   - component: {fileID: 333612495369372603}
+  - component: {fileID: 4616614220705110301}
+  - component: {fileID: 1119958141479970838}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -581,6 +583,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d718a6b2841b344aa54f42106d3cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4616614220705110301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978a5fbe39df43c429403475138a2fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractDistance: 8
+--- !u!114 &1119958141479970838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5288396bfcebe439a469c67cb42a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprintDrainPerSecond: 0.5
+  dodgeCost: 20
+  heavyAttackCost: 30
+  lightAttackCost: 5
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
