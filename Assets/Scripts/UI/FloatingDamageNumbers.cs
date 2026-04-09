@@ -52,7 +52,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     private void SpawnFloatingNumbers(Transform parentTransform, float damage)
     {
 
-        if (parentTransform != transform)
+        if (parentTransform != transform.parent)
             return;
         //var transform = GetComponent<Transform>().Find("HealthBar");
         var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, transform);
