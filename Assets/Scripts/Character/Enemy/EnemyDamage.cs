@@ -29,7 +29,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         if (CanTakeDamage && Health > 0)
         {
             Debug.Log($"Taking damage{damage}");
-            Event_System.instance.OnEnemyDamage?.Invoke(this.transform, damage);
+            Event_System.instance.OnEnemyDamage?.Invoke(transform, damage);
             Health -= damage;
 
 

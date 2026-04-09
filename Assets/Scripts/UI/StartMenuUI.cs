@@ -26,11 +26,11 @@ public class StartMenuUI : MonoBehaviour
         Cursor.visible = true; // Show the cursor when in the start menu
     }
 
-    private void Update()
-    {
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
-        Cursor.visible = true; // Show the cursor when in the start menu
-    }
+    //private void Update()
+    //{
+    //    Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
+    //    Cursor.visible = true; // Show the cursor when in the start menu
+    //}
 
     public void StartGame()
     {

@@ -10,6 +10,7 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
         tmp = GetComponentInChildren<TextMeshProUGUI>();
         Event_System.instance.OnLootPickedUp += IncreaseSoulAmount;
         tmp.text = soulAmount.ToString();
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     private void OnDisable()

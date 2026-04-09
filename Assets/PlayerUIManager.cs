@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -56,10 +57,6 @@ public class PlayerUIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
 
-
-        Event_System.instance.OnPlayerDeath += ShowDeathScreen;
-        Event_System.instance.OnWin += ShowWinMenu;
-
         //HideActiveUI();
     }
 
@@ -89,12 +86,12 @@ public class PlayerUIManager : MonoBehaviour
 
     }
 
-    void HideActiveUI()
+    public void HideActiveUI()
     {
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseInteractiveUI(); // Hide the interact UI
-
+        CloseDeathScreen(); // Hide the death screen
     }
 
     public void OpenPauseMenu()
@@ -152,6 +149,16 @@ public class PlayerUIManager : MonoBehaviour
         playerInput.enabled = false; // Disable player input when paused
     }
 
+    public void CloseDeathScreen()
+    {
+        gameDeathScreenUI.SetActive(false);
+        PlayerUIActive = false;
+        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+        Cursor.visible = false; // Hide the cursor when resuming
+        playerInput.enabled = true; // Enable player input when resuming
+    }
+
     public void ShowWinMenu()
     {
         CloseInteractiveUI();
@@ -192,6 +199,9 @@ public class PlayerUIManager : MonoBehaviour
         UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
+
+        Event_System.instance.OnPlayerDeath += ShowDeathScreen;
+        Event_System.instance.OnWin += ShowWinMenu;
 
         GetComponentsInChildren<Transform>().ToList().ForEach(t =>
         {
