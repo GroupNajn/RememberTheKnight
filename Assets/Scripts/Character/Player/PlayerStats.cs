@@ -64,10 +64,26 @@ public class PlayerStats : MonoBehaviour, IDamageable
         baseStamina = maxStamina;
         currentStamina = maxStamina;
         currentStamina = maxStamina;
-        Event_System.instance.OnStatsApplied += ApplyStats;
+        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
     }
 
-    void ApplyStats(List<CardData> cards)
+    private void OnDisable()
+    {
+        if(Event_System.instance != null)
+        {
+        Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        }
+    }
+
+    void ApplyStatsFromCardSelection(List<CardData> cards)
     {
         MaxHealth = baseHealth;
         maxStamina = baseStamina;
@@ -79,9 +95,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
         Health = MaxHealth;
         currentStamina = maxStamina;
-
+        Debug.Log(Health);
+        Debug.Log(maxStamina);
 
     }
+
 
     private void Update()
     {
