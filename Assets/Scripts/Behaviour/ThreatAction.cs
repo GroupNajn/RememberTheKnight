@@ -8,7 +8,7 @@ using Unity.Properties;
 [NodeDescription(name: "Threat", story: "Sets [threatValue] based on distance between [Self] and [Target] when inside [radius]", category: "Action", id: "d30db1d6c9bd7521a4a25bb7bc54a70a")]
 public partial class ThreatAction : Action
 {
-    [SerializeReference] public BlackboardVariable<float> ThreatValue;
+    [SerializeReference] public BlackboardVariable<float> ThreatValue = new(0);
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
     [SerializeReference] public BlackboardVariable<float> Radius;
@@ -16,7 +16,8 @@ public partial class ThreatAction : Action
     [SerializeReference] public BlackboardVariable<float> AttackRadius = new(1);
     protected override Status OnStart()
     {
-        if (ThreatValue == null) return Status.Success;
+        if (Target.Value == null || Self.Value == null) return Status.Failure;
+
         var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.transform.position);
 
         if (dist > Radius)

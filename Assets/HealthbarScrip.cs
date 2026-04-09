@@ -9,7 +9,7 @@ public class HealthbarScrip : MonoBehaviour
     [SerializeField] private MonoBehaviour target;// drag Player OR Enemy here
     private Vector2 previousAncorPos;
     private IDamageable damageable;
-    [SerializeField]float lerpSpeed = 2f;
+    [SerializeField] float lerpSpeed = 2f;
 
     void Start()
     {
@@ -33,25 +33,25 @@ public class HealthbarScrip : MonoBehaviour
         bool lerpCondition = lerpingRectTransform.anchorMax.x > healthbar.fillRect.anchorMax.x || lerpingRectTransform.anchorMin.x < healthbar.fillRect.anchorMin.x;
 
         if (!lerpCondition) return;
-        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax,healthbar.fillRect.anchorMax,Time.deltaTime * lerpSpeed);
-        lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin,healthbar.fillRect.anchorMin,Time.deltaTime * lerpSpeed);
+        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, healthbar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
+        lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin, healthbar.fillRect.anchorMin, Time.deltaTime * lerpSpeed);
 
 
     }
-   
-  
+
+
 
     void UpdateHealthBar(float current, float max)
     {
-        
+
 
         healthbar.maxValue = max;
         healthbar.value = current;
-        if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
+        //if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
         if (current <= 0)                 // condition to destroy gameObject when health is 0 or below. 
         {
             Destroy(healthbar.gameObject);
             damageable.OnHealthChanged -= UpdateHealthBar;
         }
-    }  
+    }
 }
