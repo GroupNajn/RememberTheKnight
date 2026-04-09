@@ -4,15 +4,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class PlayerUIManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static PlayerUIManager Instance { get; private set; }
+    public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;
     PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
 
+    [SerializeField] private GameObject startMenuUI;
+    [SerializeField] private GameObject optionMenuUI;
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject interactUI;
@@ -109,6 +111,40 @@ public class PlayerUIManager : MonoBehaviour
         if (pauseMenuUI)
         {
             pauseMenuUI.SetActive(false); // Hide the pause menu
+        }
+    }
+    public void OpenStartMenu()
+    {
+        if (startMenuUI)
+        {
+            CloseInteractiveUI();
+            startMenuUI.SetActive(true); // Show the pause menu
+
+        }
+    }
+
+    public void CloseStartMenu()
+    {
+        if (startMenuUI)
+        {
+            startMenuUI.SetActive(false); // Hide the pause menu
+        }
+    }
+
+    public void OpenOptionMenu()
+    {
+        if (optionMenuUI)
+        {
+            optionMenuUI.SetActive(true);
+
+        }
+    }
+
+    public void CloseOptionMenu()
+    {
+        if (pauseMenuUI)
+        {
+            optionMenuUI.SetActive(false);
         }
     }
 
