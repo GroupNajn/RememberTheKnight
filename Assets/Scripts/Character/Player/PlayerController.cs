@@ -1,4 +1,5 @@
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private int attackHash = Animator.StringToHash("Attacking");
     private int dodgeHash = Animator.StringToHash("Dodgeing");
+    private int knockbackHash = Animator.StringToHash("Knockback");
 
 
     [Header("Dodge")]
@@ -89,7 +91,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void Update()
     {
         if (playerStats.isDead)
+        {
+            if(knockbackForce != Vector3.zero)
+            {
+                knockbackForce = Vector3.zero;
+                PlayerAnimator.SetBool("IsKnockedbacked", false);
+                PlayerAnimator.Play("revive", 0, 0f);
+            }
+            playerLockRotation.RotationEnabled = false;
+            lockHandler.IsLockedOn = false;
             return;
+        }
 
         InitialChecksAndHandlers();
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
@@ -125,7 +137,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleDodge(bool isDodging)
     {
-        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble)
+        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
+        bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
+
+        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble && !isKnockedBack)
         {
             if (!staminaController.CanPerform(StaminaController.StaminaAction.Dodging))
                 return;
@@ -341,7 +356,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (animCanceleble)
         {
-           
+
 
             bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
             bool canSprint = staminaController.CanPerform(StaminaController.StaminaAction.Sprinting);
@@ -377,7 +392,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void RotatePlayerToTarget()
     {
         Vector2 inputDir = playerLocomotionInput.MovementInput;
-        if (playerState.CurrentMoveState != MoveState.Dodging)
+        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
+        bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
+
+        if (playerState.CurrentMoveState != MoveState.Dodging && !isKnockedBack)
         {
             if (inputDir != Vector2.zero && !lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting) // calculates rotation for player depending input (8D movement)
             {
@@ -396,7 +414,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
         Debug.Log($"Applying knockback with force {force} and radius {radius} from position {pos}");
-        float calculatedForce = (force * 3)  * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
+        float calculatedForce = (force * 3) * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         ExplotionInfront = Vector3.Dot(knockbackDirection, transform.forward.normalized) > 0;
         PlayerAnimator.SetBool("ExplotionInfront", ExplotionInfront);
