@@ -82,7 +82,7 @@ public partial class RootMotionNavigateAction : Action
     {
         if (navMeshAgent != null)
         {
-            navMeshAgent.ResetPath();
+            if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
             navMeshAgent.velocity = Vector3.zero;
         }
         if (animator != null)
