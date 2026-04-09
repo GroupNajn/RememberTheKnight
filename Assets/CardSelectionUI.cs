@@ -10,7 +10,7 @@ using Unity.Multiplayer.Center.Common;
 public class CardSelectionUI : MonoBehaviour
 {
     PlayerInput playerInput;
-    PlayerUIManager playerUIManager;
+    UIManager uiManager;
 
     [SerializeField] ScrollRect cardScrollRect;
     [SerializeField] float ScrollAmount;
@@ -30,15 +30,15 @@ public class CardSelectionUI : MonoBehaviour
     private void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        playerUIManager = GetComponentInParent<PlayerUIManager>();
+        uiManager = GetComponentInParent<UIManager>();
 
         if (cardScrollRect == null)
-            cardScrollRect = playerUIManager.GetComponentInChildren<ScrollRect>();
+            cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
 
         errorText.gameObject.SetActive(false);
 
 
-        playerUIManager.CloseCardSelectUI();
+        uiManager.CloseCardSelectUI();
 
 
     }
@@ -116,7 +116,7 @@ public class CardSelectionUI : MonoBehaviour
         
         Event_System.instance.OnStatsApplied?.Invoke(SelectedList);
 
-        playerUIManager.CloseCardSelectUI();
+        uiManager.CloseCardSelectUI();
     }
     private void Update()
     {
