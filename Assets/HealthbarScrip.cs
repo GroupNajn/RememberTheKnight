@@ -47,7 +47,7 @@ public class HealthbarScrip : MonoBehaviour
 
         healthbar.maxValue = max;
         healthbar.value = current;
-        //if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
+        if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
         if (current <= 0)                 // condition to destroy gameObject when health is 0 or below. 
         {
             Destroy(healthbar.gameObject);
