@@ -51,10 +51,11 @@ public class FloatingDamageNumbers : MonoBehaviour
 
     private void SpawnFloatingNumbers(Transform parentTransform, float damage)
     {
-       
-        if (parentTransform.root != this.transform.root) return;
+
+        if (parentTransform != transform)
+            return;
         //var transform = GetComponent<Transform>().Find("HealthBar");
-        var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, this.transform);
+        var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, transform);
        
         textMesh = popup.GetComponentInChildren<TextMeshProUGUI>();
         textMesh.text = damage.ToString();

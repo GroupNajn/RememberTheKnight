@@ -40,7 +40,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
     public void ShowHealthBarForDuration(Transform target, float damage) // Used for showing the canvas when taking damage
     {
-        if (target.root != transform.root || healthBar == null) 
+        if (target != transform || healthBar == null) 
             return; // Ensure the event is for this enemy
         healthBar.gameObject.SetActive(true);
         StopCoroutine(HideHealthBarAfterDelay()); // Stop any existing hide coroutine to keep the canvas visible

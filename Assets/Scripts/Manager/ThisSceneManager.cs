@@ -12,18 +12,13 @@ public class ThisSceneManager : MonoBehaviour
 
     readonly Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();
     PlayerInput playerInput;
+    bool hasMovedPlayer = false;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
-        }
+        Instance = this;
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+        //Debug.Log("ThisSceneManager Instance set in Awake: " + Instance.name);
 
         playerInput = GameObject.FindWithTag("Player")?.GetComponent<PlayerInput>();
     }
@@ -84,7 +79,7 @@ public class ThisSceneManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
 
-        while (asyncLoad.progress < 0.9f)
+        while (asyncLoad.progress < 0.95f)
         {
             yield return null;
         }
@@ -126,10 +121,17 @@ public class ThisSceneManager : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+    }
+
     void OnActiveSceneChanged(Scene previousScene, Scene newScene)
     {
         // Unload all scenes that are not the new active scene, except for the new active scene itself
         // Create a list of all currently loaded scenes to check for unloading, since the scene count will change as we unload scenes
+
+        //Instance = this;
 
         if (previousScene.IsValid())
         {
@@ -137,6 +139,8 @@ public class ThisSceneManager : MonoBehaviour
         }
 
         playerInput.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         int count = SceneManager.sceneCount;
         var scenes = new List<Scene>();

@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
 
 
-    float healMultiplier = 0;
+    float healMultiplier = 1;
 
     [Header("Stats")]
     [Header("Movement")]
