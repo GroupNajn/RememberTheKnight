@@ -26,6 +26,9 @@ public partial class RootMotionNavigateAction : Action
         {
             return Status.Failure;
         }
+
+        if (!navMeshAgent.isOnNavMesh) return Status.Failure;
+
         var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.transform.position);
         if (dist <= navMeshAgent.stoppingDistance) return Status.Success;
 
@@ -40,6 +43,8 @@ public partial class RootMotionNavigateAction : Action
     protected override Status OnUpdate()
     {
         if (animator == null || navMeshAgent == null) return Status.Failure;
+        if (!navMeshAgent.isOnNavMesh) return Status.Failure;
+        if (navMeshAgent.hasPath && navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid) return Status.Failure;
 
         bool shouldUpdateDestination =
             !Mathf.Approximately(lastTargetPos.x, Target.Value.transform.position.x) ||
@@ -77,7 +82,7 @@ public partial class RootMotionNavigateAction : Action
     {
         if (navMeshAgent != null)
         {
-            navMeshAgent.ResetPath();
+            if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
             navMeshAgent.velocity = Vector3.zero;
         }
         if (animator != null)
