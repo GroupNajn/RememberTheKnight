@@ -91,7 +91,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void Update()
     {
         if (playerStats.isDead)
+        {
+            if(knockbackForce != Vector3.zero)
+            {
+                knockbackForce = Vector3.zero;
+                PlayerAnimator.SetBool("IsKnockedbacked", false);
+                PlayerAnimator.Play("revive", 0, 0f);
+            }
+            playerLockRotation.RotationEnabled = false;
+            lockHandler.IsLockedOn = false;
             return;
+        }
 
         InitialChecksAndHandlers();
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
