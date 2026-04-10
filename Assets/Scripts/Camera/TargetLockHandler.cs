@@ -6,7 +6,7 @@ using System.Linq;
 using Unity.Behavior;
 
 public class TargetLockHandler : MonoBehaviour
-{ 
+{
     public LayerMask enemyLayer;
     public LayerMask lineOfSightLayer;
     public Animator cameraAnimator;
@@ -52,25 +52,7 @@ public class TargetLockHandler : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (!IsLockedOn)
-            {
-                FindTarget();
-
-                if (currentTarget != null)
-                {
-                    IsLockedOn = true;
-                    SwitchCams();
-                }
-            }
-            else
-            {
-                Unlock();
-            }
-        }
-
+        // Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
         if (IsLockedOn)
         {
             if (currentTarget != null)
@@ -102,7 +84,6 @@ public class TargetLockHandler : MonoBehaviour
             }
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
-
                 FindTarget();
             }
             if (currentTarget == null)
@@ -110,6 +91,26 @@ public class TargetLockHandler : MonoBehaviour
                 FindTarget();
             }
             if (currentTarget == null) { Unlock(); }
+        }
+
+    }
+
+    private void OnTarget()
+    {
+
+        if (!IsLockedOn)
+        {
+            FindTarget();
+
+            if (currentTarget != null)
+            {
+                IsLockedOn = true;
+                SwitchCams();
+            }
+        }
+        else
+        {
+            Unlock();
         }
 
     }

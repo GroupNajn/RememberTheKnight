@@ -153,6 +153,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Holster"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f948ca1-7e4f-41d1-9d1c-6b329fba2756"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -331,20 +340,47 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64cbc2c9-2579-4465-8aae-155d332a3fb1"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Holster"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""ThirdPersonMap"",
-            ""id"": ""9265275f-811a-4e98-b05f-0fb619bfb4bc"",
-            ""actions"": [],
-            ""bindings"": []
-        },
-        {
             ""name"": ""PlayerActionsMap"",
             ""id"": ""e757dc11-d0c6-4741-abac-4eed7052bd1f"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Target"",
+                    ""type"": ""Button"",
+                    ""id"": ""532dfadd-ab6c-41f1-bee0-b4bd2a31f3bb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8e1b779a-a6df-47f4-969c-b4fc0440c408"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         },
         {
             ""name"": ""UIMap"",
@@ -386,10 +422,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_Attacking = m_PlayerLocomotionMap.FindAction("Attacking", throwIfNotFound: true);
         m_PlayerLocomotionMap_Interact = m_PlayerLocomotionMap.FindAction("Interact", throwIfNotFound: true);
         m_PlayerLocomotionMap_ScrollCamera = m_PlayerLocomotionMap.FindAction("ScrollCamera", throwIfNotFound: true);
-        // ThirdPersonMap
-        m_ThirdPersonMap = asset.FindActionMap("ThirdPersonMap", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Holster = m_PlayerLocomotionMap.FindAction("Holster", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
+        m_PlayerActionsMap_Target = m_PlayerActionsMap.FindAction("Target", throwIfNotFound: true);
         // UIMap
         m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
         m_UIMap_PauseGame = m_UIMap.FindAction("PauseGame", throwIfNotFound: true);
@@ -398,7 +434,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_PlayerLocomotionMap.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerLocomotionMap.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_ThirdPersonMap.enabled, "This will cause a leak and performance issues, PlayerControls.ThirdPersonMap.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerActionsMap.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerActionsMap.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UIMap.enabled, "This will cause a leak and performance issues, PlayerControls.UIMap.Disable() has not been called.");
     }
@@ -483,6 +518,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Attacking;
     private readonly InputAction m_PlayerLocomotionMap_Interact;
     private readonly InputAction m_PlayerLocomotionMap_ScrollCamera;
+    private readonly InputAction m_PlayerLocomotionMap_Holster;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
     /// </summary>
@@ -522,6 +558,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerLocomotionMap/ScrollCamera".
         /// </summary>
         public InputAction @ScrollCamera => m_Wrapper.m_PlayerLocomotionMap_ScrollCamera;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/Holster".
+        /// </summary>
+        public InputAction @Holster => m_Wrapper.m_PlayerLocomotionMap_Holster;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -569,6 +609,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ScrollCamera.started += instance.OnScrollCamera;
             @ScrollCamera.performed += instance.OnScrollCamera;
             @ScrollCamera.canceled += instance.OnScrollCamera;
+            @Holster.started += instance.OnHolster;
+            @Holster.performed += instance.OnHolster;
+            @Holster.canceled += instance.OnHolster;
         }
 
         /// <summary>
@@ -601,6 +644,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ScrollCamera.started -= instance.OnScrollCamera;
             @ScrollCamera.performed -= instance.OnScrollCamera;
             @ScrollCamera.canceled -= instance.OnScrollCamera;
+            @Holster.started -= instance.OnHolster;
+            @Holster.performed -= instance.OnHolster;
+            @Holster.canceled -= instance.OnHolster;
         }
 
         /// <summary>
@@ -635,94 +681,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// </summary>
     public PlayerLocomotionMapActions @PlayerLocomotionMap => new PlayerLocomotionMapActions(this);
 
-    // ThirdPersonMap
-    private readonly InputActionMap m_ThirdPersonMap;
-    private List<IThirdPersonMapActions> m_ThirdPersonMapActionsCallbackInterfaces = new List<IThirdPersonMapActions>();
-    /// <summary>
-    /// Provides access to input actions defined in input action map "ThirdPersonMap".
-    /// </summary>
-    public struct ThirdPersonMapActions
-    {
-        private @PlayerControls m_Wrapper;
-
-        /// <summary>
-        /// Construct a new instance of the input action map wrapper class.
-        /// </summary>
-        public ThirdPersonMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action map instance.
-        /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_ThirdPersonMap; }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
-        public void Enable() { Get().Enable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
-        public void Disable() { Get().Disable(); }
-        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
-        public bool enabled => Get().enabled;
-        /// <summary>
-        /// Implicitly converts an <see ref="ThirdPersonMapActions" /> to an <see ref="InputActionMap" /> instance.
-        /// </summary>
-        public static implicit operator InputActionMap(ThirdPersonMapActions set) { return set.Get(); }
-        /// <summary>
-        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <param name="instance">Callback instance.</param>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
-        /// </remarks>
-        /// <seealso cref="ThirdPersonMapActions" />
-        public void AddCallbacks(IThirdPersonMapActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Add(instance);
-        }
-
-        /// <summary>
-        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
-        /// </summary>
-        /// <remarks>
-        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
-        /// </remarks>
-        /// <seealso cref="ThirdPersonMapActions" />
-        private void UnregisterCallbacks(IThirdPersonMapActions instance)
-        {
-        }
-
-        /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ThirdPersonMapActions.UnregisterCallbacks(IThirdPersonMapActions)" />.
-        /// </summary>
-        /// <seealso cref="ThirdPersonMapActions.UnregisterCallbacks(IThirdPersonMapActions)" />
-        public void RemoveCallbacks(IThirdPersonMapActions instance)
-        {
-            if (m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        /// <summary>
-        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
-        /// </summary>
-        /// <remarks>
-        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
-        /// </remarks>
-        /// <seealso cref="ThirdPersonMapActions.AddCallbacks(IThirdPersonMapActions)" />
-        /// <seealso cref="ThirdPersonMapActions.RemoveCallbacks(IThirdPersonMapActions)" />
-        /// <seealso cref="ThirdPersonMapActions.UnregisterCallbacks(IThirdPersonMapActions)" />
-        public void SetCallbacks(IThirdPersonMapActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ThirdPersonMapActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    /// <summary>
-    /// Provides a new <see cref="ThirdPersonMapActions" /> instance referencing this action map.
-    /// </summary>
-    public ThirdPersonMapActions @ThirdPersonMap => new ThirdPersonMapActions(this);
-
     // PlayerActionsMap
     private readonly InputActionMap m_PlayerActionsMap;
     private List<IPlayerActionsMapActions> m_PlayerActionsMapActionsCallbackInterfaces = new List<IPlayerActionsMapActions>();
+    private readonly InputAction m_PlayerActionsMap_Target;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerActionsMap".
     /// </summary>
@@ -734,6 +696,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public PlayerActionsMapActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerActionsMap/Target".
+        /// </summary>
+        public InputAction @Target => m_Wrapper.m_PlayerActionsMap_Target;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -760,6 +726,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsMapActionsCallbackInterfaces.Add(instance);
+            @Target.started += instance.OnTarget;
+            @Target.performed += instance.OnTarget;
+            @Target.canceled += instance.OnTarget;
         }
 
         /// <summary>
@@ -771,6 +740,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="PlayerActionsMapActions" />
         private void UnregisterCallbacks(IPlayerActionsMapActions instance)
         {
+            @Target.started -= instance.OnTarget;
+            @Target.performed -= instance.OnTarget;
+            @Target.canceled -= instance.OnTarget;
         }
 
         /// <summary>
@@ -956,14 +928,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScrollCamera(InputAction.CallbackContext context);
-    }
-    /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "ThirdPersonMap" which allows adding and removing callbacks.
-    /// </summary>
-    /// <seealso cref="ThirdPersonMapActions.AddCallbacks(IThirdPersonMapActions)" />
-    /// <seealso cref="ThirdPersonMapActions.RemoveCallbacks(IThirdPersonMapActions)" />
-    public interface IThirdPersonMapActions
-    {
+        /// <summary>
+        /// Method invoked when associated input action "Holster" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHolster(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerActionsMap" which allows adding and removing callbacks.
@@ -972,6 +943,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// <seealso cref="PlayerActionsMapActions.RemoveCallbacks(IPlayerActionsMapActions)" />
     public interface IPlayerActionsMapActions
     {
+        /// <summary>
+        /// Method invoked when associated input action "Target" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTarget(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIMap" which allows adding and removing callbacks.

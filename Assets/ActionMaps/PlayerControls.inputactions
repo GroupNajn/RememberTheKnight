@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Holster",
+                    "type": "Button",
+                    "id": "3f948ca1-7e4f-41d1-9d1c-6b329fba2756",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -245,20 +254,47 @@
                     "action": "ScrollCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64cbc2c9-2579-4465-8aae-155d332a3fb1",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Holster",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "ThirdPersonMap",
-            "id": "9265275f-811a-4e98-b05f-0fb619bfb4bc",
-            "actions": [],
-            "bindings": []
-        },
-        {
             "name": "PlayerActionsMap",
             "id": "e757dc11-d0c6-4741-abac-4eed7052bd1f",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Target",
+                    "type": "Button",
+                    "id": "532dfadd-ab6c-41f1-bee0-b4bd2a31f3bb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8e1b779a-a6df-47f4-969c-b4fc0440c408",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Target",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         },
         {
             "name": "UIMap",
