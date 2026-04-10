@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.Cinemachine;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Behavior;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class TargetLockHandler : MonoBehaviour
 {
@@ -11,10 +13,13 @@ public class TargetLockHandler : MonoBehaviour
     public LayerMask lineOfSightLayer;
     public Animator cameraAnimator;
 
+    [SerializeField] private float mouseX;
+
     [Header(header: "TargetLock Settings")]
     public float lockRadius = 15f;
     public float breakLockDistance = 17.5f;
     public bool IsLockedOn = false;
+    public float lockBreakMouseXThreshold = 300f;
 
     private float lostSightTimer = 0f;
     public float loseSightDelay = 0.1f;
@@ -27,6 +32,7 @@ public class TargetLockHandler : MonoBehaviour
     public CinemachineTargetGroup targetGroup;
     public Transform playerTransform;
     public Transform testCubeTransform;
+    [SerializeField] private List<Transform> targetsInRange = new List<Transform>();
 
     [Header(header: "Cameras")]
     [SerializeField] private GameObject freeLookCam;
@@ -52,9 +58,15 @@ public class TargetLockHandler : MonoBehaviour
 
     void Update()
     {
+        Mathf.MoveTowards(mouseX, 0, Time.deltaTime * 300f);
         // Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
         if (IsLockedOn)
         {
+            if (mouseX > lockBreakMouseXThreshold || mouseX < -lockBreakMouseXThreshold)
+            {
+                FindNewTarget();
+            }
+
             if (currentTarget != null)
             {
                 float distance = Vector3.Distance(playerTransform.position, currentTarget.position);
@@ -97,7 +109,6 @@ public class TargetLockHandler : MonoBehaviour
 
     private void OnTarget()
     {
-
         if (!IsLockedOn)
         {
             FindTarget();
@@ -113,6 +124,11 @@ public class TargetLockHandler : MonoBehaviour
             Unlock();
         }
 
+    }
+
+    private void OnLook(InputValue context)
+    {
+        mouseX = context.Get<float>();
     }
 
     void Unlock()
@@ -144,6 +160,77 @@ public class TargetLockHandler : MonoBehaviour
 
     }
 
+    private void FindNewTarget()
+    {
+        List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
+        List<Collider> enemiesInRange = new();
+        Transform bestTarget = null;
+
+        enemiesUnfiltered.ForEach(enemy =>
+        {
+            var agent = enemy.gameObject.GetComponent<BehaviorGraphAgent>();
+            if (agent != null && agent.enabled)
+                enemiesInRange.Add(enemy);
+        });
+
+        for (int i = 0; i < enemiesInRange.Count; i++)
+        {
+            Vector3 directionToEnemy = (enemiesInRange[i].transform.position - playerTransform.position).normalized;
+            Vector3 cameraForward = Camera.main.transform.forward;
+
+            float dotfwd = Vector3.Dot(cameraForward, directionToEnemy);
+
+            if (dotfwd < minDotProduct || !HasLineOfSight(enemiesInRange[i].transform) || currentTarget == enemiesInRange[i])
+            {
+                enemiesInRange.Remove(enemiesInRange[i]);
+                i--;
+            }
+        }
+
+        for (int i = 0; i < enemiesInRange.Count; i++)
+        {
+            Vector3 directionToEnemy = (enemiesInRange[i].transform.position - playerTransform.position).normalized;
+            Vector3 cameraRight = Camera.main.transform.right;
+            float dotright = Vector3.Dot(cameraRight, directionToEnemy);
+
+            if (mouseX > 0 && dotright >= 0)
+            {
+                bestTarget = enemiesInRange[i].transform;
+            }
+
+            if (mouseX < 0 && dotright < 0)
+            {
+                bestTarget = enemiesInRange[i].transform;
+            }
+        }
+        if (bestTarget != null)
+        {
+            currentTarget = bestTarget;
+            AddTargets();
+            mouseX = 0f;
+
+        }
+        else
+        {
+            Unlock();
+        }
+    }
+    void OnSwitchTargetRight()
+    {
+        if (IsLockedOn)
+        {
+            mouseX = lockBreakMouseXThreshold + 1f;
+        }
+    }
+
+    void OnSwitchTargetLeft()
+    {
+        if (IsLockedOn)
+        {
+            mouseX = -lockBreakMouseXThreshold - 1f;
+        }
+    }
+
     void FindTarget()
     {
         List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
@@ -156,7 +243,7 @@ public class TargetLockHandler : MonoBehaviour
                 enemies.Add(enemy);
         });
 
-        Debug.Log("Enemies found: " + enemies.Count);
+       // Debug.Log("Enemies found: " + enemies.Count);
         float closestDistance = Mathf.Infinity;
         Transform bestTarget = null;
 
