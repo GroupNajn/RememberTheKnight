@@ -7,7 +7,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] GameObject currentRightHandWeapon;
     [SerializeField] GameObject currentLeftHandWeapon;
 
-    bool Hidden = false;
+    bool Holsterd = false;
     DamageTrigger rightDamageTrigger;
     DamageTrigger leftDamageTrigger;
 
@@ -40,13 +40,17 @@ public class WeaponManager : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Hidden = !Hidden;
-        }
+    {  
+        HolsterCheck();
+    }
 
-        if (Hidden)
+    private void OnHolster()
+    {
+        Holsterd = !Holsterd;
+    }
+    private void HolsterCheck()
+    {
+        if (Holsterd)
         {
             currentRightHandWeapon.SetActive(false);
             currentLeftHandWeapon.SetActive(false);
@@ -80,7 +84,7 @@ public class WeaponManager : MonoBehaviour
 
     public void ActivateLeftDamageCollider()
     {
-        if (currentRightHandWeapon != null)
+        if (currentLeftHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
             characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes));
@@ -90,7 +94,7 @@ public class WeaponManager : MonoBehaviour
 
     public void DeactivateLeftDamageCollider()
     {
-        if (currentRightHandWeapon != null)
+        if (currentLeftHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
         }
