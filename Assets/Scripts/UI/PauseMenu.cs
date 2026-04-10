@@ -5,12 +5,12 @@ public class PauseMenu : MonoBehaviour
 {
     bool isPaused = false;
     PlayerInput playerInput;
-    PlayerUIManager playerUIManager;
+    UIManager playerUIManager;
 
     void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        playerUIManager = GetComponentInParent<PlayerUIManager>();
+        playerUIManager = GetComponentInParent<UIManager>();
     }
     public void Resume()
     {

@@ -1,46 +1,33 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class StartMenuUI : MonoBehaviour
 {
-    GameObject startMenu;
-    GameObject characterSwitchUI;
-    PlayerInput playerInput;
-
+    UIManager uiManager;
+    //SceneData sceneData;
     void Awake()
     {
-        startMenu = transform.Find("StartMenu").gameObject;
-        characterSwitchUI = transform.Find("CharacterSwitchUI").gameObject;
-
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
-        Cursor.visible = true; // Show the cursor when in the start menu
     }
-
     private void Start()
     {
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-
-        playerInput.enabled = false;
-
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
-        Cursor.visible = true; // Show the cursor when in the start menu
+        uiManager = GetComponentInParent<UIManager>();
     }
-
-    //private void Update()
-    //{
-    //    Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
-    //    Cursor.visible = true; // Show the cursor when in the start menu
-    //}
-
     public void StartGame()
     {
-        playerInput.enabled = false;
-        startMenu.SetActive(false);
-        characterSwitchUI.SetActive(true);
+        uiManager.CloseStartMenu();
 
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when in the start menu
-        Cursor.visible = true; // Show the cursor when in the start menu
+        // LOAD NEXT SCENE
+        //SceneManager.LoadScene(sceneData.sceneIndex[1]);
     }
+
+    public void OpenOptions()
+    {
+        uiManager.OpenOptionMenu();
+        uiManager.CloseStartMenu();
+    }
+
 
     public void ExitGame()
     {

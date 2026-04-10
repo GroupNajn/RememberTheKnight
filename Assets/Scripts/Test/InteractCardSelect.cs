@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class InteractCardSelect: MonoBehaviour, IInteractable
 {
-    PlayerUIManager playerUIManager;
+    UIManager playerUIManager;
 
     void Start()
     {
-        playerUIManager = FindFirstObjectByType<PlayerUIManager>();
+        playerUIManager = FindFirstObjectByType<UIManager>();
     }
     public void Interact()
     {

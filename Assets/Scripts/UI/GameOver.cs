@@ -8,7 +8,7 @@ public class GameOver : MonoBehaviour
         Time.timeScale = 1f; // Ensure the game is not paused when loading the main menu
         ThisSceneManager.Instance.ActivateScene("LobbyMap"); // Load the lobby scene
 
-        PlayerUIManager.Instance.HideActiveUI(); // Hide any active UI elements
+        UIManager.Instance.HideActiveUI(); // Hide any active UI elements
 
         PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
         playerStats.Health = playerStats.MaxHealth; // Reset player's health to max

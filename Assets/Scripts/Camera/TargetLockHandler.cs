@@ -17,7 +17,7 @@ public class TargetLockHandler : MonoBehaviour
     public bool IsLockedOn = false;
 
     private float lostSightTimer = 0f;
-    public float loseSightDelay = 0.5f;
+    public float loseSightDelay = 0.1f;
 
     [Range(0f, 1f)]
     public float minDotProduct = 0.5f;
@@ -137,22 +137,10 @@ public class TargetLockHandler : MonoBehaviour
         Vector3 direction = targetPoint - origin;
         float distance = direction.magnitude;
 
-        RaycastHit[] hits = Physics.RaycastAll(origin, direction.normalized, distance);
+        bool hitSomething = Physics.Raycast(origin, direction.normalized, distance, lineOfSightLayer);
 
-        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+        return !hitSomething;
 
-        foreach (var hit in hits)
-        {
-            if (hit.collider.isTrigger)
-                continue;
-
-            if (hit.transform == target)
-                return true;
-
-            return false;
-        }
-
-        return false;
     }
 
     void FindTarget()
