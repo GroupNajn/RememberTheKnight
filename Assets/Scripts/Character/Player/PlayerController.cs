@@ -1,4 +1,5 @@
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     [Header("Dodge")]
     public float dodgeAcceleration = 1f;
+    //  private float dodgeDurationRemaining;
     private float dodgeCoolDownRemaining;
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
@@ -128,6 +130,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         GroundedCheck();
         HandleVerticalMovement();
         CalculateInputMagnitude();
+
+        //if (playerState.CurrentMoveState != MoveState.Knockedback) // if not knockedBack, allow normal movement
+        //    HandleLateralMovement();
     }
 
     private void HandleDodge(bool isDodging)
@@ -155,8 +160,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             {
                 dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
             }
-            playerCombatManager.SetAnimationCancelebleFalse();  
             staminaController.UseStamina(StaminaController.StaminaAction.Dodging);
+            playerCombatManager.SetAnimationCancelebleFalse();
         }
 
         if (dodgeCoolDownRemaining > 0)
@@ -183,7 +188,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (!PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != dodgeHash)
         {
-
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");

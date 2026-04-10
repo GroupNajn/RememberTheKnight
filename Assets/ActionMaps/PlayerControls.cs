@@ -322,7 +322,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""295d7925-8113-4b79-b5a6-b96efc2e4b59"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -366,33 +366,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""cf01826a-8a0b-496e-8525-5d2fc07d172f"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""SwitchTargetRight"",
-                    ""type"": ""Button"",
-                    ""id"": ""8a75979e-388a-4f59-9803-bc35a51b02f9"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SwitchTargetLeft"",
-                    ""type"": ""Button"",
-                    ""id"": ""a674ff65-19f0-464d-9d28-85d406bdde1a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -404,39 +377,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Target"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ab7599fb-7bac-4daf-9d78-9028c8efe9f0"",
-                    ""path"": ""<Mouse>/delta/x"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""00f9c489-09f0-4f82-b3c4-82aefd0bac8e"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchTargetRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e0784ca3-f530-4968-9d79-4b35a9b76cc7"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchTargetLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -486,9 +426,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
         m_PlayerActionsMap_Target = m_PlayerActionsMap.FindAction("Target", throwIfNotFound: true);
-        m_PlayerActionsMap_Look = m_PlayerActionsMap.FindAction("Look", throwIfNotFound: true);
-        m_PlayerActionsMap_SwitchTargetRight = m_PlayerActionsMap.FindAction("SwitchTargetRight", throwIfNotFound: true);
-        m_PlayerActionsMap_SwitchTargetLeft = m_PlayerActionsMap.FindAction("SwitchTargetLeft", throwIfNotFound: true);
         // UIMap
         m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
         m_UIMap_PauseGame = m_UIMap.FindAction("PauseGame", throwIfNotFound: true);
@@ -748,9 +685,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActionsMap;
     private List<IPlayerActionsMapActions> m_PlayerActionsMapActionsCallbackInterfaces = new List<IPlayerActionsMapActions>();
     private readonly InputAction m_PlayerActionsMap_Target;
-    private readonly InputAction m_PlayerActionsMap_Look;
-    private readonly InputAction m_PlayerActionsMap_SwitchTargetRight;
-    private readonly InputAction m_PlayerActionsMap_SwitchTargetLeft;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerActionsMap".
     /// </summary>
@@ -766,18 +700,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerActionsMap/Target".
         /// </summary>
         public InputAction @Target => m_Wrapper.m_PlayerActionsMap_Target;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerActionsMap/Look".
-        /// </summary>
-        public InputAction @Look => m_Wrapper.m_PlayerActionsMap_Look;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerActionsMap/SwitchTargetRight".
-        /// </summary>
-        public InputAction @SwitchTargetRight => m_Wrapper.m_PlayerActionsMap_SwitchTargetRight;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerActionsMap/SwitchTargetLeft".
-        /// </summary>
-        public InputAction @SwitchTargetLeft => m_Wrapper.m_PlayerActionsMap_SwitchTargetLeft;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -807,15 +729,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Target.started += instance.OnTarget;
             @Target.performed += instance.OnTarget;
             @Target.canceled += instance.OnTarget;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
-            @SwitchTargetRight.started += instance.OnSwitchTargetRight;
-            @SwitchTargetRight.performed += instance.OnSwitchTargetRight;
-            @SwitchTargetRight.canceled += instance.OnSwitchTargetRight;
-            @SwitchTargetLeft.started += instance.OnSwitchTargetLeft;
-            @SwitchTargetLeft.performed += instance.OnSwitchTargetLeft;
-            @SwitchTargetLeft.canceled += instance.OnSwitchTargetLeft;
         }
 
         /// <summary>
@@ -830,15 +743,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Target.started -= instance.OnTarget;
             @Target.performed -= instance.OnTarget;
             @Target.canceled -= instance.OnTarget;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
-            @SwitchTargetRight.started -= instance.OnSwitchTargetRight;
-            @SwitchTargetRight.performed -= instance.OnSwitchTargetRight;
-            @SwitchTargetRight.canceled -= instance.OnSwitchTargetRight;
-            @SwitchTargetLeft.started -= instance.OnSwitchTargetLeft;
-            @SwitchTargetLeft.performed -= instance.OnSwitchTargetLeft;
-            @SwitchTargetLeft.canceled -= instance.OnSwitchTargetLeft;
         }
 
         /// <summary>
@@ -1046,27 +950,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTarget(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnLook(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "SwitchTargetRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSwitchTargetRight(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "SwitchTargetLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSwitchTargetLeft(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIMap" which allows adding and removing callbacks.
