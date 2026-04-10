@@ -26,7 +26,7 @@ public class PlayerKeepBetweenScene : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform.position ?? transform.position;
-        transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn")?.transform.rotation ?? transform.rotation;
+        transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.position;
+        transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.rotation;
     }
 }

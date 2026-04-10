@@ -17,11 +17,6 @@ public class GlobalSceneManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start()
-    {
-        LoadScene("LobbyMap");
-    }
-
     public void LoadScene(string sceneName)
     {
         StartCoroutine(LoadSceneWithTransition(sceneName));

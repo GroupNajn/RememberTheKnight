@@ -20,7 +20,9 @@ public class StartMenuUI : MonoBehaviour
         uiManager.UIMenuActive = false;
 
         // LOAD NEXT SCENE
-        //SceneManager.LoadScene(sceneData.sceneIndex[1]);
+        SceneManager.LoadScene(SceneData.Instance[1]);
+
+        //uiManager.OpenCharacterSelectUI();
     }
 
     public void OpenStartOptions()
