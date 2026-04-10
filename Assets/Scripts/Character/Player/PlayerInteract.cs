@@ -53,7 +53,7 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                if (!playerUIManager.PlayerUIActive)
+                if (!playerUIManager.UIMenuActive)
                 {
                     playerUIManager.OpenInteractiveUI();
                 }
