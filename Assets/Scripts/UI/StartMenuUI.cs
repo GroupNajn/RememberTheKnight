@@ -17,14 +17,15 @@ public class StartMenuUI : MonoBehaviour
     public void StartGame()
     {
         uiManager.CloseStartMenu();
+        uiManager.UIMenuActive = false;
 
         // LOAD NEXT SCENE
         //SceneManager.LoadScene(sceneData.sceneIndex[1]);
     }
 
-    public void OpenOptions()
+    public void OpenStartOptions()
     {
-        uiManager.OpenOptionMenu();
+        uiManager.OpenStartOptionMenu();
         uiManager.CloseStartMenu();
     }
 
