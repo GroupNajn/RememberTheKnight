@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
             else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
         });
 
-        playerInput.enabled = false;
+        playerInput.enabled = true; // ÄNDRA DETTA TILL FALSE NÄR NI VILL TESTA STARTMENYN!!!!!!!!!!!!
         UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
