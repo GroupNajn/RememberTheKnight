@@ -114,6 +114,24 @@ public class UIManager : MonoBehaviour
         CloseDeathScreen(); // Hide the death screen
     }
 
+    public void CheckUIState()
+    {
+        if (!UIMenuActive)
+        {
+            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+            Cursor.visible = false; // Hide the cursor when resuming
+            playerInput.enabled = true; // Enable player input when resuming
+        }
+        else
+        {
+            Time.timeScale = 0f; // Pause the game by setting time scale to 0
+            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+            Cursor.visible = true; // Show the cursor when paused
+            playerInput.enabled = false; // Disable player input when paused
+        }
+    }
+
     public void OpenPauseMenu()
     {
         if (pauseMenuUI)
@@ -194,10 +212,7 @@ public class UIManager : MonoBehaviour
         Debug.Log($"Card Select UI active: {cardSelectUI.activeInHierarchy}");
 
         UIMenuActive = true;
-        Time.timeScale = 0f; // Pause the game by setting time scale to 0
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-        Cursor.visible = true; // Show the cursor when paused
-        playerInput.enabled = false; // Disable player input when paused
+        CheckUIState();
     }
 
     public void CloseCardSelectUI()
@@ -205,10 +220,7 @@ public class UIManager : MonoBehaviour
         cardSelectUI.SetActive(false);
 
         UIMenuActive = false;
-        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-        Cursor.visible = false; // Hide the cursor when resuming
-        playerInput.enabled = true; // Enable player input when resuming
+        CheckUIState();
     }
 
     public void ShowDeathScreen()
@@ -217,26 +229,22 @@ public class UIManager : MonoBehaviour
         gameDeathScreenUI.SetActive(true);
 
         UIMenuActive = true;
-        Time.timeScale = 0f; // Pause the game by setting time scale to 0
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-        Cursor.visible = true; // Show the cursor when paused
-        playerInput.enabled = false; // Disable player input when paused
+        CheckUIState();
     }
 
     public void CloseDeathScreen()
     {
         gameDeathScreenUI.SetActive(false);
         UIMenuActive = false;
-        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-        Cursor.visible = false; // Hide the cursor when resuming
-        playerInput.enabled = true; // Enable player input when resuming
+        CheckUIState();
     }
 
     public void ShowWinMenu()
     {
         CloseInteractiveUI();
         winMenuUI.SetActive(true);
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void OpenInteractiveUI()
