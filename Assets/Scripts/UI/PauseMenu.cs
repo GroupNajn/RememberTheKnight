@@ -32,8 +32,10 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f; // Ensure the game is not paused when loading the main menu
         playerInput.enabled = true; // Enable player input when loading the main menu
-
-        ThisSceneManager.Instance.LoadScene("LobbyMap"); // Load the lobby scene
+        Debug.Log("LoadLobby called. Time scale set to 1 and player input enabled.");
+        GlobalSceneManager.Instance.LoadScene("LobbyMap"); // Load the lobby scene
+        Debug.Log("Loading LobbyMap scene...");
+        Debug.Log($"Current timescale: {Time.timeScale}, PlayerInput enabled: {playerInput.enabled}");
     }
 
     public void QuitGame()
