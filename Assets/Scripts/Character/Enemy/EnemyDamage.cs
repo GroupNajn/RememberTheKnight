@@ -78,10 +78,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         childObjects = GetComponentsInChildren<Transform>().ToList();
-        if (Event_System.instance != null)
-            Event_System.instance.OnEnemySpawn?.Invoke(this);
-
-        else
-            Debug.LogError("Event_System.instance is null in EnemyDamage.Start()");
+       
     }
 }

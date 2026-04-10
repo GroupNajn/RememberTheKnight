@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 74300141542030244}
   - component: {fileID: 6599815340718160027}
   - component: {fileID: 8658175251866190526}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SoulOrb_V1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 2.157, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5699465585999259427}
   m_Father: {fileID: 8318615278074776259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &6599815340718160027
@@ -128,7 +129,7 @@ GameObject:
   - component: {fileID: -6488114877606157554}
   - component: {fileID: -7480633617958417653}
   - component: {fileID: -2309114969217535760}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Boss_Soul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,12 +167,16 @@ MonoBehaviour:
   player: {fileID: 0}
   followRange: 8
   followSpeed: 1
-  hoverSpeed: 2
-  hoverHeight: 3
   growthRate: 1.15
   drag: 2
-  transitionDuration: 2
-  blendSpeed: 0
+  maxFollowSpeed: 10
+  hoverSpeed: 3
+  hoverHeight: 8
+  baseHoverOffset: 0.8
+  moveToBaseDuration: 1
+  blendToHoverDuration: 1
+  liftSpeed: 1.5
+  boostSpeed: 50
 --- !u!114 &4251097540268861949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,9 +207,9 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4480
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -232,8 +237,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -249,8 +254,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4889ff3dc82d7aa46ab2cb39772a1962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchSpeed: 2
-  launchHeight: 1
-  bounceCount: 1
-  launchDuration: 1
-  landDamping: 0.5
+  launchForce: 5
+  bounceDamping: 0.5
+  maxBounces: 3
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 0
+  ignorePlayerTime: 1.5
+--- !u!1 &7739734768344367177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5699465585999259427}
+  m_Layer: 0
+  m_Name: Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5699465585999259427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739734768344367177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 74300141542030244}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

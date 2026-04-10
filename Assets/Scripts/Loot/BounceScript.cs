@@ -3,97 +3,124 @@ using UnityEngine;
 
 public class BounceScript : MonoBehaviour
 {
-    [Header("Bounce")]
-    [SerializeField] private float launchSpeed = 3f;
-    [SerializeField] private float launchHeight = 2f;
-    [SerializeField] private int bounceCount = 3;
-    [SerializeField] private float launchDuration = 0.25f;
-    [SerializeField] private float landDamping = 0.5f;
+    [SerializeField] private float launchForce = 5f;
+    [SerializeField] private float bounceDamping = 0.5f;
+    [SerializeField] private int maxBounces = 3;
+    [SerializeField] private LayerMask environmentMask;
+    [SerializeField] private float ignorePlayerTime = 1.5f;
 
-    private Vector3 horizontalDirection;
-    private float groundY;
+    private bool collisionRestored = false;
+
+    private Rigidbody rb;
+    private Collider myCollider;
+    private int bounceCount = 0;
     private bool hasLanded = false;
-    private Vector3 velocity;
-    private Vector3 velocityBeforeElapsedTime;
-    public Vector3 Velocity => velocityBeforeElapsedTime;
+
+    private Vector3 lastBouncePosition;
+    public Vector3 LastBouncePosition => lastBouncePosition;
+    private Vector3 horizontalDir;
+
     public bool HasLanded => hasLanded;
+    public Vector3 Velocity => rb.linearVelocity;
+
+    private Collider[] playerColliders;
 
     void Start()
     {
-        groundY = transform.position.y;
-        horizontalDirection = GetRandomDirection();
-        StartCoroutine(LaunchOnSpawn());
+        rb = GetComponent<Rigidbody>();
+        myCollider = GetComponent<Collider>();
 
+        IgnorePlayer();
+
+        horizontalDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+
+        Vector3 launchVelocity = horizontalDir * launchForce;
+        launchVelocity.y = launchForce;
+
+        rb.linearVelocity = launchVelocity;
+        rb.freezeRotation = true;
     }
 
- 
-
-
-    private IEnumerator LaunchOnSpawn()
+    private void IgnorePlayer()
     {
-        float currentHeight = launchHeight;
-        Vector3 currentPos = transform.position;
+        GameObject player = GameObject.FindWithTag("Player");
 
-        for (int i = 0; i < bounceCount; i++)
+        if (player != null)
         {
-            float elapsed = 0f;
+            playerColliders = player.GetComponentsInChildren<Collider>();
 
-            if (velocity == Vector3.zero)
+            foreach (Collider col in playerColliders)
             {
-                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
-                velocity = new Vector3(horizontalVelocity.x, 0f, horizontalVelocity.z);
+                if (col != null)
+                    Physics.IgnoreCollision(myCollider, col, true);
             }
-
-            while (elapsed < launchDuration)
-            {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / launchDuration);
-
-                float parabola = 4f * t * (1f - t);
-                float yOffset = parabola * currentHeight;
-
-                // Horizontal velocity
-                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
-
-                // Derivatan av 4 * t * (1 - t) är 4 - 8t
-                
-                float yVelocity = (4f * currentHeight * (1f - 2f * t)) / launchDuration;
-
-                velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
-
-                currentPos += new Vector3(velocity.x, 0f, velocity.z) * Time.deltaTime;
-
-                transform.position = new Vector3(currentPos.x, groundY + yOffset, currentPos.z);
-
-                if (elapsed > launchDuration) velocityBeforeElapsedTime = velocity; 
-                
-
-                yield return null;
-            }
-
-            currentPos = new Vector3(currentPos.x, groundY, currentPos.z);
-            transform.position = currentPos;
-
-            currentHeight *= landDamping;
-            launchSpeed *= 0.7f;
-
-            Vector3 newHorizontalVelocity = horizontalDirection * launchSpeed;
-            velocity = new Vector3(newHorizontalVelocity.x, 0f, newHorizontalVelocity.z);
         }
-
-        hasLanded = true;
+    }
+    private void RestorePlayerCollision()
+    {
+        if (playerColliders != null)
+        {
+            foreach (Collider col in playerColliders)
+            {
+                if (col != null)
+                    Physics.IgnoreCollision(myCollider, col, false);
+            }
+        }
     }
 
-    private Vector3 GetRandomDirection()
+
+
+
+    private void Update()
     {
-        float x = Random.Range(-1f, 1f);
-        float z = Random.Range(-1f, 1f);
+        if(!collisionRestored && hasLanded)
+        {
+            RestorePlayerCollision();
+            collisionRestored = true;
+        }
+    }
 
-        Vector3 dir = new Vector3(x, 0f, z).normalized;
+    void OnCollisionEnter(Collision collision)
+    {
+        if (hasLanded) return;
 
-        if (dir == Vector3.zero)
-            dir = Vector3.forward;
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Environment"))
+        {
+            bounceCount++;
 
-        return dir;
+            if (bounceCount >= maxBounces)
+            {
+                if (Physics.Raycast(transform.position + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 5f, environmentMask))
+                {
+                    float yOffset = myCollider.bounds.extents.y;
+                    lastBouncePosition = hit.point + Vector3.up * yOffset;
+                    transform.position = lastBouncePosition;
+                }
+                else
+                {
+                    lastBouncePosition = transform.position;
+                }
+
+                hasLanded = true;
+
+                rb.linearVelocity = Vector3.zero;
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                myCollider.isTrigger = true;
+
+                return;
+            }
+
+            float yVel = Mathf.Max(Mathf.Abs(rb.linearVelocity.y) * bounceDamping, 4f);
+
+            float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
+            horizontalSpeed *= 0.9f;
+            horizontalSpeed = Mathf.Max(horizontalSpeed, 2f);
+
+            Vector3 newVelocity = horizontalDir * horizontalSpeed;
+            newVelocity.y = yVel;
+
+            rb.linearVelocity = newVelocity;
+        }
     }
 }
