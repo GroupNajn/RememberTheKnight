@@ -13,8 +13,12 @@ public class GlobalSceneManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(gameObject); // TODO: Remove, should be in a parent object
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        transitionAnimator.ResetTrigger("FadeFromBlack");
     }
 
     public void LoadScene(string sceneName)
@@ -25,7 +29,8 @@ public class GlobalSceneManager : MonoBehaviour
     IEnumerator LoadSceneWithTransition(string sceneName)
     {
         transitionAnimator.SetTrigger("FadeToBlack");
-        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length + 2); // Wait for the fade-out animation to complete
+        yield return null; // Wait a frame to let the animator switch state
+        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
         SceneManager.LoadScene(sceneName);
     }
 
@@ -36,7 +41,7 @@ public class GlobalSceneManager : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        transitionAnimator.SetTrigger("FadeFromBlack");
-        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length + 2); // Wait for the fade-out animation to complete
+        //transitionAnimator.SetTrigger("FadeFromBlack");
+        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
     }
 }
