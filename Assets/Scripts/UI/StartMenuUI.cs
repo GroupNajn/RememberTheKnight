@@ -22,7 +22,8 @@ public class StartMenuUI : MonoBehaviour
         // LOAD NEXT SCENE
         GlobalSceneManager.Instance.LoadScene(SceneData.Instance[1]);
 
-        //uiManager.OpenCharacterSelectUI();
+        uiManager.OpenCharacterSelectUI();
+
     }
 
     public void OpenStartOptions()
