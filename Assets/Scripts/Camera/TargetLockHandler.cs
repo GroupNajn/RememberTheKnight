@@ -136,6 +136,8 @@ public class TargetLockHandler : MonoBehaviour
         ClearTarget();
         IsLockedOn = false;
         SwitchCams();
+        mouseX = 0f;
+
     }
 
     void ToggleLock()
@@ -153,6 +155,10 @@ public class TargetLockHandler : MonoBehaviour
 
         Vector3 direction = targetPoint - origin;
         float distance = direction.magnitude;
+        if (distance > lockRadius)
+        {
+            return false; // If the target is beyond lock radius, we can immediately return false without doing a raycast
+        }
 
         bool hitSomething = Physics.Raycast(origin, direction.normalized, distance, lineOfSightLayer);
 
@@ -162,59 +168,104 @@ public class TargetLockHandler : MonoBehaviour
 
     private void FindNewTarget()
     {
-        List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
+        Debug.Log("FIND NEW TARGETS CALLED");
+
+        Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
         List<Collider> enemiesInRange = new();
+
+        HashSet<Transform> seenTargets = new();
+
+        Debug.Log("Enemy Unfiltered found " + hits.Length);
+
+        // Collect unique enemies
+        foreach (Collider hit in hits)
+        {
+            BehaviorGraphAgent agent = hit.GetComponentInParent<BehaviorGraphAgent>();
+
+            if (agent == null || !agent.enabled)
+                continue;
+
+            Transform enemyTransform = agent.transform;
+
+            if (Vector3.Distance(enemyTransform.position, playerTransform.position) > lockRadius)
+                continue;
+
+            if (seenTargets.Add(enemyTransform))
+            {
+                enemiesInRange.Add(hit);
+                Debug.Log("Enemy Added to potential targets: " + enemyTransform.name);
+            }
+        }
+
+        Debug.Log("Enemies in range after first filter: " + enemiesInRange.Count);
+
+        // Filter by direction / line of sight / current target
+        for (int i = enemiesInRange.Count - 1; i >= 0; i--)
+        {
+            Transform enemy = enemiesInRange[i].transform;
+            Vector3 directionToEnemy = (enemy.position - playerTransform.position).normalized;
+
+            float dotfwd = Vector3.Dot(Camera.main.transform.forward, directionToEnemy);
+
+            if (dotfwd < minDotProduct || currentTarget == enemy)
+            {
+                Debug.Log("Enemy Removed due outside minDot or already being target: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+
+            float dotright = Vector3.Dot(Camera.main.transform.right, directionToEnemy);
+
+            if (mouseX < 0 && dotright >= 0)
+            {
+                Debug.Log("Enemy Removed due to being right of you: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+
+            if (mouseX > 0 && dotright < 0)
+            {
+                Debug.Log("Enemy Removed due to being left of you: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+        }
+
+        Debug.Log("Enemies in range filtered by direction and line of sight: " + enemiesInRange.Count);
+
+        if (enemiesInRange.Count == 0)
+        {
+            Debug.Log("No valid targets found.");
+          
+            return;
+        }
+
+        // Pick the best target
         Transform bestTarget = null;
+        float lowestDot = Mathf.Infinity;
 
-        enemiesUnfiltered.ForEach(enemy =>
+        foreach (Collider c in enemiesInRange)
         {
-            var agent = enemy.gameObject.GetComponent<BehaviorGraphAgent>();
-            if (agent != null && agent.enabled)
-                enemiesInRange.Add(enemy);
-        });
+            Transform enemy = c.transform;
+            Vector3 directionToEnemy = (enemy.position - playerTransform.position).normalized;
 
-        for (int i = 0; i < enemiesInRange.Count; i++)
-        {
-            Vector3 directionToEnemy = (enemiesInRange[i].transform.position - playerTransform.position).normalized;
-            Vector3 cameraForward = Camera.main.transform.forward;
+            float dotRight = Mathf.Abs(Vector3.Dot(Camera.main.transform.right, directionToEnemy));
 
-            float dotfwd = Vector3.Dot(cameraForward, directionToEnemy);
-
-            if (dotfwd < minDotProduct || !HasLineOfSight(enemiesInRange[i].transform) || currentTarget == enemiesInRange[i])
+            if (dotRight < lowestDot)
             {
-                enemiesInRange.Remove(enemiesInRange[i]);
-                i--;
+                lowestDot = dotRight;
+                bestTarget = enemy;
+                Debug.Log("New best target: " + enemy.name);
             }
         }
 
-        for (int i = 0; i < enemiesInRange.Count; i++)
-        {
-            Vector3 directionToEnemy = (enemiesInRange[i].transform.position - playerTransform.position).normalized;
-            Vector3 cameraRight = Camera.main.transform.right;
-            float dotright = Vector3.Dot(cameraRight, directionToEnemy);
+        Debug.Log("Best target: " + bestTarget.name);
 
-            if (mouseX > 0 && dotright >= 0)
-            {
-                bestTarget = enemiesInRange[i].transform;
-            }
-
-            if (mouseX < 0 && dotright < 0)
-            {
-                bestTarget = enemiesInRange[i].transform;
-            }
-        }
-        if (bestTarget != null)
-        {
-            currentTarget = bestTarget;
-            AddTargets();
-            mouseX = 0f;
-
-        }
-        else
-        {
-            Unlock();
-        }
+        currentTarget = bestTarget;
+        AddTargets();
+        mouseX = 0f;
     }
+
     void OnSwitchTargetRight()
     {
         if (IsLockedOn)
@@ -243,7 +294,7 @@ public class TargetLockHandler : MonoBehaviour
                 enemies.Add(enemy);
         });
 
-       // Debug.Log("Enemies found: " + enemies.Count);
+        // Debug.Log("Enemies found: " + enemies.Count);
         float closestDistance = Mathf.Infinity;
         Transform bestTarget = null;
 
