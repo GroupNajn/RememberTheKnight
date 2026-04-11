@@ -86,6 +86,9 @@ public class UIManager : MonoBehaviour
             if (startMenuUI.activeSelf)
                 return;
 
+            if (characterSelectUI.activeSelf)
+                return;
+
             if (startOptionMenuUI.activeSelf)
             {
                 CloseStartOptionMenu();
@@ -181,6 +184,7 @@ public class UIManager : MonoBehaviour
     {
         if (characterSelectUI)
         {
+            UIMenuActive = true;
             characterSelectUI.SetActive(true);
 
         }
