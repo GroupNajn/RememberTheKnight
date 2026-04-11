@@ -485,8 +485,13 @@ public class SwitchBodyParts : MonoBehaviour
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
 
+        // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
+        uiManager.OpenSoulUI();
+        uiManager.ShowPlayerBars();
+
         // LOAD NEXT SCENE
         GlobalSceneManager.Instance.LoadScene(SceneData.Instance[2]);
+
 
     }
 

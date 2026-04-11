@@ -22,6 +22,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject winMenuUI;
     [SerializeField] private GameObject gameDeathScreenUI;
+    [SerializeField] private GameObject soulUI;
+    [SerializeField] private GameObject healthBar;
+    [SerializeField] private GameObject staminaBar;
+
+
 
     public bool UIMenuActive = true;
 
@@ -79,6 +84,9 @@ public class UIManager : MonoBehaviour
         else
         {
             if (startMenuUI.activeSelf)
+                return;
+
+            if (characterSelectUI.activeSelf)
                 return;
 
             if (startOptionMenuUI.activeSelf)
@@ -176,6 +184,7 @@ public class UIManager : MonoBehaviour
     {
         if (characterSelectUI)
         {
+            UIMenuActive = true;
             characterSelectUI.SetActive(true);
 
         }
@@ -278,6 +287,22 @@ public class UIManager : MonoBehaviour
     {
         if (interactUI)
             interactUI.SetActive(false);
+    }
+
+    public void OpenSoulUI()
+    {
+        soulUI.SetActive(true);
+    }
+
+    public void CloseSoulUI()
+    {
+        soulUI.SetActive(false);
+    }
+
+    public void ShowPlayerBars()
+    {
+        healthBar.SetActive(true);
+        staminaBar.SetActive(true);
     }
 
     //private void OnEnable()
