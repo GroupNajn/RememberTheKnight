@@ -2,10 +2,13 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 
 public class SwitchBodyParts : MonoBehaviour
 {
+    UIManager uiManager;
+
     [SerializeField] private Gender currentGender = Gender.Male;
     public enum Gender
     {
@@ -91,8 +94,10 @@ public class SwitchBodyParts : MonoBehaviour
 
     private void Awake()
     {
+        uiManager = FindFirstObjectByType<UIManager>();
         FindRoots();
         RebuildParts();
+
     }
 
     private void FindRoots()
@@ -140,7 +145,7 @@ public class SwitchBodyParts : MonoBehaviour
         Transform gender = currentGender == Gender.Male ? maleParts : femaleParts;
         string genderPrefix = currentGender == Gender.Male ? "Male" : "Female";
 
-        head = GetChildren(gender.Find($"{genderPrefix}_00_Head/{genderPrefix}_Head_All_Elements"));
+        head = GetChildren(gender.Find($"{genderPrefix}_00_Head/{genderPrefix}_Head_No_Elements"));
         torso = GetChildren(gender.Find($"{genderPrefix}_03_Torso"));
         rightUppperArm = GetChildren(gender.Find($"{genderPrefix}_04_Arm_Upper_Right"));
         leftUppperArm = GetChildren(gender.Find($"{genderPrefix}_05_Arm_Upper_Left"));
@@ -152,12 +157,12 @@ public class SwitchBodyParts : MonoBehaviour
         rightLeg = GetChildren(gender.Find($"{genderPrefix}_11_Leg_Right"));
         leftLeg = GetChildren(gender.Find($"{genderPrefix}_12_Leg_Left"));
 
-        rightShoulder = GetChildren(allGenderParts.Find(""));
-        leftShoulder = GetChildren(allGenderParts.Find(""));
-        rightElbow = GetChildren(allGenderParts.Find(""));
-        leftElbow = GetChildren(allGenderParts.Find(""));
-        rightKnee = GetChildren(allGenderParts.Find(""));
-        leftKnee = GetChildren(allGenderParts.Find(""));
+        rightShoulder = GetChildren(allGenderParts.Find("All_05_Shoulder_Attachment_Right"));
+        leftShoulder = GetChildren(allGenderParts.Find("All_06_Shoulder_Attachment_Left"));
+        rightElbow = GetChildren(allGenderParts.Find("All_07_Elbow_Attachment_Right"));
+        leftElbow = GetChildren(allGenderParts.Find("All_08_Elbow_Attachment_Left"));
+        rightKnee = GetChildren(allGenderParts.Find("All_10_Knee_Attachement_Right"));
+        leftKnee = GetChildren(allGenderParts.Find("All_11_Knee_Attachement_Left"));
 
         ResetIndex();
         ActivateStartingBody();
@@ -408,6 +413,16 @@ public class SwitchBodyParts : MonoBehaviour
     {
         SwitchPart(rightLeg, ref currentRightLeg, -1);
         SwitchPart(leftLeg, ref currentLeftLeg, -1);
+    }
+
+    public void StartGame()
+    {
+        uiManager.CloseCharacterSelectUI();
+        uiManager.UIMenuActive = false;
+
+        // LOAD NEXT SCENE
+        SceneManager.LoadScene(SceneData.Instance[2]);
+
     }
 
     public void OnClick()
