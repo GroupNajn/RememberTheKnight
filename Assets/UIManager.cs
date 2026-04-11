@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     CardSelectionUI cardSelectionUI;
 
     [SerializeField] private GameObject startMenuUI;
+    [SerializeField] private GameObject characterSelectUI;
     [SerializeField] private GameObject startOptionMenuUI;
     [SerializeField] private GameObject pauseOptionMenuUI;
     [SerializeField] private GameObject pauseMenuUI;
@@ -112,6 +113,7 @@ public class UIManager : MonoBehaviour
         CloseCardSelectUI(); // Hide the card selection UI
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
+        CloseCharacterSelectUI(); // Hide the character select UI
     }
 
     public void CheckUIState()
@@ -167,6 +169,23 @@ public class UIManager : MonoBehaviour
         if (startMenuUI)
         {
             startMenuUI.SetActive(false); // Hide the pause menu
+        }
+    }
+
+    public void OpenCharacterSelectUI()
+    {
+        if (characterSelectUI)
+        {
+            characterSelectUI.SetActive(true);
+
+        }
+    }
+
+    public void CloseCharacterSelectUI()
+    {
+        if (characterSelectUI)
+        {
+            characterSelectUI.SetActive(false);
         }
     }
 
