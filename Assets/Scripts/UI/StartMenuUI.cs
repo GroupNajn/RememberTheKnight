@@ -24,6 +24,9 @@ public class StartMenuUI : MonoBehaviour
 
         uiManager.OpenCharacterSelectUI();
 
+        // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
+        uiManager.CloseSoulUI();
+
     }
 
     public void OpenStartOptions()
