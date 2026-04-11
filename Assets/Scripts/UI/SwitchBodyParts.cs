@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 using UnityEngine.SceneManagement;
 
 
@@ -210,6 +211,27 @@ public class SwitchBodyParts : MonoBehaviour
         TryActivate(leftLeg, 0);
     }
 
+    void ActivatCurrentBody()
+    {
+        TryActivate(head, currentHead);
+        TryActivate(rightShoulder, currentRightShoulder);
+        TryActivate(leftShoulder, currentLeftShoulder);
+        TryActivate(rightElbow, currentRightElbow);
+        TryActivate(leftElbow, currentLeftElbow);
+        TryActivate(torso, currentTorso);
+        TryActivate(rightUppperArm, currentRightUppperArm);
+        TryActivate(leftUppperArm, currentLeftUppperArm);
+        TryActivate(rightLowerArm, currentRightLowerArm);
+        TryActivate(leftLowerArm, currentLeftLowerArm);
+        TryActivate(rightHand, currentRightHand);
+        TryActivate(leftHand, currentLeftHand);
+        TryActivate(hips, currentHips);
+        TryActivate(rightKnee, currentRightKnee);
+        TryActivate(leftKnee, currentLeftKnee);
+        TryActivate(rightLeg, currentRightLeg);
+        TryActivate(leftLeg, currentLeftLeg);
+    }
+
     void ActivateSavedBody()
     {
         TryActivate(head, currentSavedHead);
@@ -307,6 +329,48 @@ public class SwitchBodyParts : MonoBehaviour
 
         ActivateSavedBody();
 
+    }
+
+    public void RandomizeBody()
+    {
+        TryDeactivateCurrentBody();
+
+        currentHead = UnityEngine.Random.Range(0, head.Count);
+
+        int shoulderIndex = UnityEngine.Random.Range(0, rightShoulder.Count);
+        currentRightShoulder = shoulderIndex;
+        currentLeftShoulder = shoulderIndex;
+        
+        int elbowIndex = UnityEngine.Random.Range(0, rightElbow.Count);
+        currentRightElbow = elbowIndex;
+        currentLeftElbow = elbowIndex;
+
+        currentTorso = UnityEngine.Random.Range(0, torso.Count);
+
+        int upperArmIndex = UnityEngine.Random.Range(0, rightUppperArm.Count);
+        currentRightUppperArm = upperArmIndex;
+        currentLeftUppperArm = upperArmIndex;
+
+        int lowerArmIndex = UnityEngine.Random.Range(0, rightLowerArm.Count);
+        currentRightLowerArm = lowerArmIndex;
+        currentLeftLowerArm = lowerArmIndex;
+
+        int handIndex = UnityEngine.Random.Range(0, rightHand.Count);
+        currentRightHand = handIndex;
+        currentLeftHand = handIndex;
+
+        currentHips = UnityEngine.Random.Range(0, hips.Count);
+
+        int kneeIndex = UnityEngine.Random.Range(0, rightKnee.Count);
+        currentRightKnee = kneeIndex;
+        currentLeftKnee = kneeIndex;
+
+        int legIndex = UnityEngine.Random.Range(0, rightLeg.Count);
+        currentRightLeg = legIndex;
+        currentLeftLeg = legIndex;
+
+
+        ActivatCurrentBody();
     }
 
     void TryDeactivateCurrentBody()
@@ -419,9 +483,10 @@ public class SwitchBodyParts : MonoBehaviour
     {
         uiManager.CloseCharacterSelectUI();
         uiManager.UIMenuActive = false;
+        uiManager.CheckUIState();
 
         // LOAD NEXT SCENE
-        SceneManager.LoadScene(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.LoadScene(SceneData.Instance[2]);
 
     }
 
