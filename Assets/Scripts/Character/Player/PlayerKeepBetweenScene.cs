@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerKeepBetweenScene : MonoBehaviour
 {
     public static PlayerKeepBetweenScene Instance { get; private set; }
-    bool hasMovedToSpawn = false;
 
     private void Awake()
     {
@@ -18,33 +15,18 @@ public class PlayerKeepBetweenScene : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        transform.position = ThisSceneManager.Instance.PlayerSpawnPosition.position;
-        transform.rotation = ThisSceneManager.Instance.PlayerSpawnPosition.rotation;
-
-        //StartCoroutine(SetPlayerPosition());
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    IEnumerator SetPlayerPosition()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        yield return null;
-
-        transform.position = ThisSceneManager.Instance.PlayerSpawnPosition.position;
-        transform.rotation = ThisSceneManager.Instance.PlayerSpawnPosition.rotation;
+        transform.position = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.position;
+        transform.rotation = GameObject.FindGameObjectWithTag("PlayerSpawn").transform.rotation;
     }
 }

@@ -9,19 +9,26 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;
-    PlayerInput UIInput;
+    //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
 
     [SerializeField] private GameObject startMenuUI;
-    [SerializeField] private GameObject optionMenuUI;
+    [SerializeField] private GameObject characterSelectUI;
+    [SerializeField] private GameObject startOptionMenuUI;
+    [SerializeField] private GameObject pauseOptionMenuUI;
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject winMenuUI;
     [SerializeField] private GameObject gameDeathScreenUI;
+    [SerializeField] private GameObject soulUI;
+    [SerializeField] private GameObject healthBar;
+    [SerializeField] private GameObject staminaBar;
 
-    public bool PlayerUIActive = false;
+
+
+    public bool UIMenuActive = true;
 
 
     private void Awake()
@@ -41,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        UIInput = GetComponentInChildren<PlayerInput>();
+        //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
 
@@ -49,24 +56,24 @@ public class UIManager : MonoBehaviour
         {
             if (t.gameObject.name == "PauseMenu") pauseMenuUI = t.gameObject;
             else if (t.gameObject.name == "CardSelectUI") cardSelectUI = t.gameObject;
+            else if (t.gameObject.name == "StartOptionMenuUI") startOptionMenuUI = t.gameObject;
+            else if (t.gameObject.name == "StartOptionMenuUI") startOptionMenuUI = t.gameObject;
             else if (t.gameObject.name == "InteractUI") interactUI = t.gameObject;
             else if (t.gameObject.name == "WinMenu") winMenuUI = t.gameObject;
             else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
         });
 
         playerInput.enabled = false;
-        UIInput.enabled = false;
+        //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
-
-        //HideActiveUI();
     }
 
     void OnPauseGame()
     {
-        if (!PlayerUIActive)
+        if (!UIMenuActive)
         {
-            PlayerUIActive = true;
+            UIMenuActive = true;
             Time.timeScale = 0f; // Pause the game by setting time scale to 0
             Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
             Cursor.visible = true; // Show the cursor when paused
@@ -76,11 +83,25 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            PlayerUIActive = false;
-            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-            Cursor.visible = false; // Hide the cursor when resuming
-            playerInput.enabled = true; // Enable player input when resuming
+            if (startMenuUI.activeSelf)
+                return;
+
+            if (characterSelectUI.activeSelf)
+                return;
+
+            if (startOptionMenuUI.activeSelf)
+            {
+                CloseStartOptionMenu();
+                OpenStartMenu();
+                return;
+            }
+
+            if (pauseOptionMenuUI.activeSelf)
+            {
+                ClosePauseOptionMenu();
+                OpenPauseMenu();
+                return;
+            }
 
             HideActiveUI();
 
@@ -90,16 +111,42 @@ public class UIManager : MonoBehaviour
 
     public void HideActiveUI()
     {
+        UIMenuActive = false;
+        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+        Cursor.visible = false; // Hide the cursor when resuming
+        playerInput.enabled = true; // Enable player input when resuming
+
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
+        CloseCharacterSelectUI(); // Hide the character select UI
+    }
+
+    public void CheckUIState()
+    {
+        if (!UIMenuActive)
+        {
+            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
+            Cursor.visible = false; // Hide the cursor when resuming
+            playerInput.enabled = true; // Enable player input when resuming
+        }
+        else
+        {
+            Time.timeScale = 0f; // Pause the game by setting time scale to 0
+            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+            Cursor.visible = true; // Show the cursor when paused
+            playerInput.enabled = false; // Disable player input when paused
+        }
     }
 
     public void OpenPauseMenu()
     {
         if (pauseMenuUI)
         {
+            UIMenuActive = true;
             CloseInteractiveUI();
             pauseMenuUI.SetActive(true); // Show the pause menu
 
@@ -109,7 +156,8 @@ public class UIManager : MonoBehaviour
     public void ClosePauseMenu()
     {
         if (pauseMenuUI)
-        {
+        {   
+            UIMenuActive = false;
             pauseMenuUI.SetActive(false); // Hide the pause menu
         }
     }
@@ -117,6 +165,7 @@ public class UIManager : MonoBehaviour
     {
         if (startMenuUI)
         {
+            UIMenuActive = true;
             CloseInteractiveUI();
             startMenuUI.SetActive(true); // Show the pause menu
 
@@ -131,20 +180,55 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenOptionMenu()
+    public void OpenCharacterSelectUI()
     {
-        if (optionMenuUI)
+        if (characterSelectUI)
         {
-            optionMenuUI.SetActive(true);
+            UIMenuActive = true;
+            characterSelectUI.SetActive(true);
 
         }
     }
 
-    public void CloseOptionMenu()
+    public void CloseCharacterSelectUI()
+    {
+        if (characterSelectUI)
+        {
+            characterSelectUI.SetActive(false);
+        }
+    }
+
+    public void OpenStartOptionMenu()
+    {
+        if (startOptionMenuUI)
+        {
+            startOptionMenuUI.SetActive(true);
+        }
+    }
+
+    public void CloseStartOptionMenu()
+    {
+        if (startOptionMenuUI)
+        {
+            startOptionMenuUI.SetActive(false);
+            
+        }
+    }
+    public void OpenPauseOptionMenu()
+    {
+        if (pauseOptionMenuUI)
+        {
+
+            pauseOptionMenuUI.SetActive(true);
+
+        }
+    }
+
+    public void ClosePauseOptionMenu()
     {
         if (pauseMenuUI)
         {
-            optionMenuUI.SetActive(false);
+            pauseOptionMenuUI.SetActive(false);
         }
     }
 
@@ -155,22 +239,16 @@ public class UIManager : MonoBehaviour
         cardSelectUI.SetActive(true);
         Debug.Log($"Card Select UI active: {cardSelectUI.activeInHierarchy}");
 
-        PlayerUIActive = true;
-        Time.timeScale = 0f; // Pause the game by setting time scale to 0
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-        Cursor.visible = true; // Show the cursor when paused
-        playerInput.enabled = false; // Disable player input when paused
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void CloseCardSelectUI()
     {
         cardSelectUI.SetActive(false);
 
-        PlayerUIActive = false;
-        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-        Cursor.visible = false; // Hide the cursor when resuming
-        playerInput.enabled = true; // Enable player input when resuming
+        UIMenuActive = false;
+        CheckUIState();
     }
 
     public void ShowDeathScreen()
@@ -178,27 +256,23 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI();
         gameDeathScreenUI.SetActive(true);
 
-        PlayerUIActive = true;
-        Time.timeScale = 0f; // Pause the game by setting time scale to 0
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-        Cursor.visible = true; // Show the cursor when paused
-        playerInput.enabled = false; // Disable player input when paused
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void CloseDeathScreen()
     {
         gameDeathScreenUI.SetActive(false);
-        PlayerUIActive = false;
-        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-        Cursor.visible = false; // Hide the cursor when resuming
-        playerInput.enabled = true; // Enable player input when resuming
+        UIMenuActive = false;
+        CheckUIState();
     }
 
     public void ShowWinMenu()
     {
         CloseInteractiveUI();
         winMenuUI.SetActive(true);
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void OpenInteractiveUI()
@@ -213,6 +287,22 @@ public class UIManager : MonoBehaviour
     {
         if (interactUI)
             interactUI.SetActive(false);
+    }
+
+    public void OpenSoulUI()
+    {
+        soulUI.SetActive(true);
+    }
+
+    public void CloseSoulUI()
+    {
+        soulUI.SetActive(false);
+    }
+
+    public void ShowPlayerBars()
+    {
+        healthBar.SetActive(true);
+        staminaBar.SetActive(true);
     }
 
     //private void OnEnable()
@@ -232,7 +322,7 @@ public class UIManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        UIInput = GetComponentInChildren<PlayerInput>();
+        //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
 
@@ -249,6 +339,6 @@ public class UIManager : MonoBehaviour
         });
 
         gameObject.SetActive(true);
-        UIInput.enabled = true;
+        //UIInput.enabled = true;
     }
 }

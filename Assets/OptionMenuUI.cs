@@ -29,6 +29,6 @@ public class OptionMenuUI : MonoBehaviour
     public void BackToStartMenu()
     {
         uiManager.OpenStartMenu();
-        uiManager.CloseOptionMenu();
+        uiManager.CloseStartOptionMenu();
     }
 }

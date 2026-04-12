@@ -6,7 +6,7 @@ public class GameOver : MonoBehaviour
     public void LoadLobby()
     {
         Time.timeScale = 1f; // Ensure the game is not paused when loading the main menu
-        ThisSceneManager.Instance.ActivateScene("LobbyMap"); // Load the lobby scene
+        GlobalSceneManager.Instance.LoadScene("LobbyMap"); // Load the lobby scene
 
         UIManager.Instance.HideActiveUI(); // Hide any active UI elements
 
