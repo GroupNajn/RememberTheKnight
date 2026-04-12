@@ -84,7 +84,9 @@ public class BounceScript : MonoBehaviour
     {
         if (hasLanded) return;
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Environment")) // Ignore Environement layer
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Environment")
+            || collision.gameObject.layer == LayerMask.NameToLayer("NavmeshGround")
+            || collision.gameObject.layer == LayerMask.NameToLayer("IgnoreDeocclude")) // Ignore Environement layer
         {
             bounceCount++; 
 
