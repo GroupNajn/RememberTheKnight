@@ -59,7 +59,6 @@ public class TargetLockHandler : MonoBehaviour
     void Update()
     {
         Mathf.MoveTowards(mouseX, 0, Time.deltaTime * 300f);
-        // Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
         if (IsLockedOn)
         {
             if (mouseX > lockBreakMouseXThreshold || mouseX < -lockBreakMouseXThreshold)
@@ -137,7 +136,6 @@ public class TargetLockHandler : MonoBehaviour
         IsLockedOn = false;
         SwitchCams();
         mouseX = 0f;
-
     }
 
     void ToggleLock()

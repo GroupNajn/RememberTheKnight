@@ -28,7 +28,7 @@ public class DamageTrigger : MonoBehaviour
     {
         Debug.Log("Hello IS DAMAGE");
 
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        IDamageable damageable = other.gameObject.GetComponentInParent<IDamageable>();
 
         if (damageable != null && damagedObjects.Add(damageable))
         {
