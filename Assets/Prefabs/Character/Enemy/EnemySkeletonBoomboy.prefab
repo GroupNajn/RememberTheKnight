@@ -2299,12 +2299,12 @@ GameObject:
   - component: {fileID: 4246300673112838670}
   - component: {fileID: 1591883518640622096}
   - component: {fileID: 3008564338695045849}
-  - component: {fileID: 534914814024994785}
   - component: {fileID: -4713826263582080163}
   - component: {fileID: 1101119823454965747}
   - component: {fileID: 91903681499389335}
   - component: {fileID: 893522055424362956}
   - component: {fileID: 7131483574593807097}
+  - component: {fileID: 1024757736383707528}
   m_Layer: 8
   m_Name: EnemySkeletonBoomboy
   m_TagString: Untagged
@@ -2561,20 +2561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 850a5ab494c6b120eaa429d33282dbf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &534914814024994785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4624532995418066361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 273d909d99146d9449aab44c6a62962b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 4116734298695124420}
-  currentLeftHandWeapon: {fileID: 8670252462366126120}
 --- !u!114 &-4713826263582080163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,6 +2722,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1024757736383707528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624532995418066361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7042e3a57bed0a543945efc8e68678d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRightHandWeapon: {fileID: 4116734298695124420}
+  currentLeftHandWeapon: {fileID: 8670252462366126120}
 --- !u!1 &4672731988933066374
 GameObject:
   m_ObjectHideFlags: 0
@@ -5666,7 +5666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6030414680109792853, guid: 804f2a1441b0ccf47b2c6f39713bea48, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5821,10 +5821,6 @@ PrefabInstance:
     - target: {fileID: 6030414680109792853, guid: 804f2a1441b0ccf47b2c6f39713bea48, type: 3}
       propertyPath: m_Name
       value: UnarmedWeapon
-      objectReference: {fileID: 0}
-    - target: {fileID: 6030414680109792853, guid: 804f2a1441b0ccf47b2c6f39713bea48, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
