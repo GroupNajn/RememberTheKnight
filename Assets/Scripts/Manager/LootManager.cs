@@ -31,10 +31,18 @@ public class LootManager : MonoBehaviour
      * before all other GameObjects call and Subscribe to their Actions/Events, 
      */
 
-    private void Awake()
+    void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("Duplicate manager destroyed");
+            Destroy(gameObject);
+            return;
+        }
         droppedLoot = new HashSet<Loot>();
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -78,6 +86,8 @@ public class LootManager : MonoBehaviour
     //    float totalTierWight = 0;
 
     //}
+
+    
 
     public void GetOneRandomItemLoot(EnemyDamage enemy)
     {
