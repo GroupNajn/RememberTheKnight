@@ -13,6 +13,7 @@ public class ProjectileHandler : MonoBehaviour
     void Start()
     {
         selfHitbox = GetComponent<CapsuleCollider>();
+
     }
 
     public void ShootProjectile()
