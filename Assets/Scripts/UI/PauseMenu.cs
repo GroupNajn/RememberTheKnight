@@ -30,7 +30,7 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadLobby()
     {
-        GlobalSceneManager.Instance.LoadScene(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();
     }

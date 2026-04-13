@@ -491,7 +491,7 @@ public class SwitchBodyParts : MonoBehaviour
         uiManager.ShowPlayerBars();
 
         // LOAD NEXT SCENE
-        GlobalSceneManager.Instance.LoadScene(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
 
 
     }
