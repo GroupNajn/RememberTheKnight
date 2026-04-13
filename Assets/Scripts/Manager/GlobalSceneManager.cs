@@ -8,16 +8,27 @@ public class GlobalSceneManager : MonoBehaviour
 {
     public static GlobalSceneManager Instance { get; private set; }
 
-    [SerializeField] Animator transitionAnimator;
+    Animator transitionAnimator;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
     {
+        transitionAnimator = GameObject.FindGameObjectWithTag("BlackFade").GetComponent<Animator>();
+
         transitionAnimator.ResetTrigger("FadeFromBlack");
     }
 
@@ -37,7 +48,14 @@ public class GlobalSceneManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        transitionAnimator.SetTrigger("FadeFromBlack");
+        if (transitionAnimator)
+        {
+            transitionAnimator.SetTrigger("FadeFromBlack");
+        }
+        else
+        {
+            Debug.Log("transitionAnimator is null, if this is not when starting the game, this is a problem");
+        }
     }
 
     IEnumerator FadeOut()
