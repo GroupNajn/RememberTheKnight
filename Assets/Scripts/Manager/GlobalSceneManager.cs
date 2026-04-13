@@ -9,6 +9,7 @@ public class GlobalSceneManager : MonoBehaviour
     public static GlobalSceneManager Instance { get; private set; }
 
     Animator transitionAnimator;
+    bool useTransition;
 
     private void Awake()
     {
@@ -32,13 +33,21 @@ public class GlobalSceneManager : MonoBehaviour
         transitionAnimator.ResetTrigger("FadeFromBlack");
     }
 
-    public void LoadScene(string sceneName)
+    public void LoadSceneNoTransition(string sceneName)
+    {
+        useTransition = false;
+        SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1f;
+    }
+
+    public void LoadSceneTransition(string sceneName)
     {
         StartCoroutine(LoadSceneWithTransition(sceneName));
     }
 
     IEnumerator LoadSceneWithTransition(string sceneName)
     {
+        useTransition = true;
         transitionAnimator.SetTrigger("FadeToBlack");
         yield return null; // Wait a frame to let the animator switch state
         yield return new WaitForSecondsRealtime(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
@@ -50,7 +59,10 @@ public class GlobalSceneManager : MonoBehaviour
     {
         if (transitionAnimator)
         {
-            transitionAnimator.SetTrigger("FadeFromBlack");
+            if (useTransition)
+            {
+                StartCoroutine(FadeOut());
+            }
         }
         else
         {
@@ -60,7 +72,8 @@ public class GlobalSceneManager : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        //transitionAnimator.SetTrigger("FadeFromBlack");
+        transitionAnimator.SetTrigger("FadeFromBlack");
         yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
+        // Add event to trigger when the fade-out animation is complete, if needed
     }
 }
