@@ -98,7 +98,6 @@ public class SwitchBodyParts : MonoBehaviour
         uiManager = FindFirstObjectByType<UIManager>();
         FindRoots();
         RebuildParts();
-
     }
 
     private void FindRoots()
@@ -484,6 +483,8 @@ public class SwitchBodyParts : MonoBehaviour
         uiManager.CloseCharacterSelectUI();
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
+
+        gameObject.SetActive(false);
 
         // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
         uiManager.OpenSoulUI();
