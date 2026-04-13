@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Projecile : MonoBehaviour
@@ -8,14 +10,21 @@ public class Projecile : MonoBehaviour
 
     public float speed;
     public Vector3 direction;
-    ParticleSystem projectile;
+    List<ParticleSystem> projectiles = new();
     Collider projectileCollider;
+    Vector3 origin;
+
+
+    private void Awake()
+    {
+        //Destroy(gameObject, 5f);
+        projectiles.AddRange(GetComponentsInChildren<ParticleSystem>());
+        projectileCollider = GetComponent<SphereCollider>();
+    }
 
     private void Start()
     {
-        Destroy(gameObject, 5f);
-        projectile = GetComponentInChildren<ParticleSystem>();
-        projectileCollider = GetComponent<Collider>();
+        origin = transform.position;
     }
 
     void Update()
@@ -24,7 +33,7 @@ public class Projecile : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (!collided && !other.gameObject.CompareTag("projectile") && !other.gameObject.CompareTag("Enemy"))
+        if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
 
@@ -34,9 +43,15 @@ public class Projecile : MonoBehaviour
 
     IEnumerator Collide()
     {
-        projectile.Stop();
+        projectiles.ForEach(projectile =>
+        {
+            if (projectile != null) projectile.Stop();
+        });
         projectileCollider.enabled = false;
-        yield return new WaitForSeconds(2);
+        if (Vector3.Distance(origin, transform.position) > 1f)
+        {
+            yield return new WaitForSeconds(.25f);
+        }
         Destroy(gameObject);
         yield return null;
     }
