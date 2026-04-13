@@ -16,6 +16,8 @@ public class Loot_Follow : MonoBehaviour
     [SerializeField] private float hoverSpeed = 1f;
     [SerializeField] private float hoverHeight = 0.08f;
     [SerializeField] private float baseHoverOffset = 0.8f;
+    [SerializeField] private float normalHoverHeight = 1.2f;
+    [SerializeField] private float heightSmoothTime = 0.25f;
 
     [Header("Landing Transition")]
     [SerializeField] private float moveToBaseDuration = 0.35f;
@@ -28,6 +30,7 @@ public class Loot_Follow : MonoBehaviour
     private bool hasLifted = false;
     private bool liftInitialized = false;
     private float liftTargetY;
+    private float ySmoothVelocity = 0.5f;
 
     private float hoverOffset;
     private Vector3 dirVector;
@@ -45,7 +48,8 @@ public class Loot_Follow : MonoBehaviour
         WaitingForLanding,
         MovingToBase,
         BlendingToHover,
-        Hovering
+        Hovering,
+        BlendingToNormalHeight
     }
 
     private HoverState hoverState = HoverState.WaitingForLanding;
@@ -60,6 +64,8 @@ public class Loot_Follow : MonoBehaviour
 
     void Start()
     {
+
+
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
 
         loot = GetComponent<Loot>();
@@ -111,6 +117,9 @@ public class Loot_Follow : MonoBehaviour
 
             case HoverState.Hovering:
                 UpdateFollowAndHover();
+                return;
+            case HoverState.BlendingToNormalHeight:
+
                 return;
         }
     }
@@ -165,11 +174,28 @@ public class Loot_Follow : MonoBehaviour
         SetLootFollow();
 
         Vector3 followMove = velocity * Time.deltaTime;
-
         basePosition.x += followMove.x;
         basePosition.z += followMove.z;
 
-        transform.position = GetHoverPosition();
+        Vector3 hoverPosition = GetHoverPosition();
+
+        Transform center = transform.Find("Center");
+        Vector3 rayStart = center != null ? center.position : transform.position;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 15f, bounceScript.EnvironmentMask))
+        {
+            Debug.DrawRay(rayStart, Vector3.down, Color.green, 10f);
+            float centerOffset = center != null ? center.position.y - transform.position.y : 0f;
+            float targetY = hit.point.y + normalHoverHeight - centerOffset;
+
+            if (transform.position.y != targetY)
+            {
+                hoverPosition.y = Mathf.MoveTowards(transform.position.y,targetY, followSpeed * Time.deltaTime);
+            }
+         
+        }
+
+        transform.position = hoverPosition;
     }
 
     private bool CanFollow()

@@ -27,10 +27,10 @@ public class LootFollowController : MonoBehaviour
 
 
         // Start override routine 
-        if (!overridden && !overrideCoroutineRunning)
-        {
-            overrideRoutine = StartCoroutine(OverrideFollowLogic());
-        }
+        //if (!overridden && !overrideCoroutineRunning)
+        //{
+        //    overrideRoutine = StartCoroutine(OverrideFollowLogic());
+        //}
 
         // Reset if no loot in loot hashSet and in overriden state
         if (!hasLootThreshhold && overridden)
