@@ -1,14 +1,13 @@
-using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] string returnButtonDefaultText;
+    string returnButtonDefaultText;
     [SerializeField] string returnButtonLobbyText;
-    [SerializeField] TMP_Text returnButtonText;
+    TMP_Text returnButtonText;
 
     PlayerInput playerInput;
     UIManager uiManager;
@@ -34,7 +33,7 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Searching for ReturnToLobbyButtonText (TMP) in children of " + gameObject.name);
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
-            if (child.name == "ReturnToLobbyButtonText (TMP)") 
+            if (child.name == "ReturnToLobbyButtonText (TMP)")
                 returnButtonText = child.GetComponent<TMP_Text>();
         }
     }
@@ -44,6 +43,11 @@ public class PauseMenu : MonoBehaviour
         if (scene.name == SceneData.Instance[2])
         {
             returnButtonText.text = returnButtonLobbyText; // Update the return button text for the lobby scene
+
+            // Change to call revive method in PlayerStats
+            PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
+            playerStats.Health = playerStats.MaxHealth; // Reset player's health to max
+            playerStats.Heal(playerStats.MaxHealth); // Notify health change to update UI and other systems
         }
         else
         {
@@ -62,7 +66,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void OpenPauseOptions()
-    { 
+    {
         uiManager.OpenPauseOptionMenu();
         uiManager.ClosePauseMenu();
     }
@@ -74,7 +78,7 @@ public class PauseMenu : MonoBehaviour
             QuitGame(); // Quit the application if already in the lobby scene
             return; // Not sure if needed, but just to be safe, we return after quitting
         }
-        
+
         GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();

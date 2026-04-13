@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static StaminaController;
 
 public class PlayerStats : MonoBehaviour, IDamageable
@@ -66,6 +67,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         currentStamina = maxStamina;
         currentStamina = maxStamina;
         Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
@@ -173,5 +175,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
         onStaminaChange?.Invoke(currentStamina, maxStamina);
     }
 
-
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == SceneData.Instance[2]) // Heal to max health after loading lobby
+        {
+            Heal(MaxHealth);
+        }
+    }
 }

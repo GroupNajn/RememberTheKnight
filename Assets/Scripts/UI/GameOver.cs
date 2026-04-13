@@ -16,11 +16,6 @@ public class GameOver : MonoBehaviour
         UIManager.Instance.HideActiveUI(); // Hide any active UI elements
         UIManager.Instance.CheckUIState();
 
-        // Change to call revive method in PlayerStats
-        PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-        playerStats.Health = playerStats.MaxHealth; // Reset player's health to max
-        playerStats.Heal(playerStats.MaxHealth); // Notify health change to update UI and other systems
-
         PlayerInput playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         playerInput.enabled = true; // Re-enable player input
 
