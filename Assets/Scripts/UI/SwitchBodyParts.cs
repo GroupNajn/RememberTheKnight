@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System;
-using UnityEngine.SceneManagement;
 
 
 public class SwitchBodyParts : MonoBehaviour
@@ -166,7 +163,7 @@ public class SwitchBodyParts : MonoBehaviour
 
         ResetIndex();
         ActivateStartingBody();
-    }  
+    }
 
     void ResetIndex()
     {
@@ -339,7 +336,7 @@ public class SwitchBodyParts : MonoBehaviour
         int shoulderIndex = UnityEngine.Random.Range(0, rightShoulder.Count);
         currentRightShoulder = shoulderIndex;
         currentLeftShoulder = shoulderIndex;
-        
+
         int elbowIndex = UnityEngine.Random.Range(0, rightElbow.Count);
         currentRightElbow = elbowIndex;
         currentLeftElbow = elbowIndex;
