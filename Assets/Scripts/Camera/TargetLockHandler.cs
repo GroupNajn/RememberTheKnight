@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 
 public class TargetLockHandler : MonoBehaviour
 {
-    public LayerMask enemyLayer;
-    public LayerMask lineOfSightLayer;
-    public Animator cameraAnimator;
+    private LayerMask enemyLayer;
+    private LayerMask lineOfSightLayer;
+    private Animator cameraAnimator;
 
-    [SerializeField] private float mouseX;
+    private float mouseX;
 
     [Header(header: "TargetLock Settings")]
     public float lockRadius = 15f;
@@ -27,18 +27,23 @@ public class TargetLockHandler : MonoBehaviour
 
     [Header(header: "Targets")]
     public Transform currentTarget;
-    public CinemachineTargetGroup targetGroup;
-    public Transform playerTransform;
-    public Transform testCubeTransform;
+    private CinemachineTargetGroup targetGroup;
+    private Transform playerTransform;
 
     [Header(header: "Cameras")]
-    [SerializeField] private GameObject freeLookCam;
-    [SerializeField] private GameObject hardlockCam;
+    private GameObject freeLookCam;
+    private GameObject hardlockCam;
     private CinemachineCamera cinemachineFreeLookCam;
     private CinemachineCamera cinemachineHardLockCam;
 
     void Start()
     {
+        targetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
+        enemyLayer = LayerMask.GetMask("Enemy");
+        lineOfSightLayer = LayerMask.GetMask("Environment", "Obstacle");
+        cameraAnimator = GetComponentInChildren<Animator>();
+        freeLookCam = GameObject.FindGameObjectWithTag("FreeLookCamera");
+        hardlockCam = GameObject.FindGameObjectWithTag("HardLockCamera");
         cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
         cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
 
@@ -49,7 +54,6 @@ public class TargetLockHandler : MonoBehaviour
             cinemachineFreeLookCam.Follow = playerTransform;
             cinemachineHardLockCam.Follow = playerTransform;
         }
-
     }
     void Update()
     {
