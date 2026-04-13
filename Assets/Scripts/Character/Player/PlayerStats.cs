@@ -1,6 +1,7 @@
 using NUnit.Framework;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static StaminaController;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
@@ -28,7 +29,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float attackRotationSpeed = 5f;
     [Header("Dodge")]
     public float dodgeSpeedMultiplier = 0f;
-    public float dodgeCoolDown = 1f;
+    public float dodgeCoolDown = 0.5f;
     public float dodgeDuration = 0.2f;
     [Header("Knockback")]
     public float knockbackResistance = 5f;

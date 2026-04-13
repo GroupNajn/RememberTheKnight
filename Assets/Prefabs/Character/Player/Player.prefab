@@ -517,7 +517,6 @@ GameObject:
   - component: {fileID: 25966239622868066}
   - component: {fileID: 9075057407305647986}
   - component: {fileID: 333612495369372603}
-  - component: {fileID: 2003804727042429226}
   - component: {fileID: 8548886817526811005}
   m_Layer: 3
   m_Name: Player
@@ -714,12 +713,12 @@ MonoBehaviour:
   normalRotationSpeed: 10
   attackRotationSpeed: 1.5
   dodgeSpeedMultiplier: 0
-  dodgeCoolDown: 0.8
+  dodgeCoolDown: 0.5
   dodgeDuration: 0.6
   knockbackResistance: 5
   maxStamina: 100
   currentStamina: 0
-  staminaRegenRate: 100
+  staminaRegenRate: 10
   isDead: 0
 --- !u!114 &2045710683252585095
 MonoBehaviour:
@@ -737,6 +736,9 @@ MonoBehaviour:
   canCombo: 0
   isAttackRotationSpeed: 0
   animationCanceleble: 0
+  currentAction: 0
+  staminaRegenDelay: 2
+  staminaRegenTime: 0
 --- !u!114 &2484520924626661676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,22 +909,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d718a6b2841b344aa54f42106d3cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2003804727042429226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6590469975317091890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5288396bfcebe439a469c67cb42a72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprintDrainPerSecond: 0.5
-  dodgeCost: 20
-  heavyAttackCost: 30
-  lightAttackCost: 5
 --- !u!114 &8548886817526811005
 MonoBehaviour:
   m_ObjectHideFlags: 0
