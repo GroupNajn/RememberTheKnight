@@ -13,6 +13,12 @@ public class Loot : MonoBehaviour, IPickupable
     public Tier Tier => tier;
 
     [SerializeField] private PickableState pickable = PickableState.NotPickable;
+
+    [Header("Card Data")]
+    [SerializeField] ScriptableObject lootData;
+
+
+
     public PickableState Pickable => pickable;
     private bool followLogicOverritten = false;
     public bool FollowLogicOverritten => followLogicOverritten;
@@ -29,7 +35,7 @@ public class Loot : MonoBehaviour, IPickupable
     void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
-
+        
         if (player != null)
             playerTransform = player.transform;
 

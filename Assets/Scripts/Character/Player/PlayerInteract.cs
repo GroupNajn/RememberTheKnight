@@ -7,7 +7,7 @@ public class PlayerInteract : MonoBehaviour
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    [SerializeField] PlayerUIManager playerUIManager;
+    [SerializeField] UIManager playerUIManager;
 
     void Start()
     {
@@ -53,7 +53,7 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                if (!playerUIManager.PlayerUIActive)
+                if (!playerUIManager.UIMenuActive)
                 {
                     playerUIManager.OpenInteractiveUI();
                 }
@@ -79,7 +79,7 @@ public class PlayerInteract : MonoBehaviour
 
         if (playerUIManager == null)
         {
-            playerUIManager = FindFirstObjectByType<PlayerUIManager>();
+            playerUIManager = FindFirstObjectByType<UIManager>();
             Debug.Log("PlayerUIManager not found in the scene after loading. Please ensure there is a PlayerUIManager in the scene.");
         }
     }

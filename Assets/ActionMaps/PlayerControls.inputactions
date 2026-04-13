@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Holster",
+                    "type": "Button",
+                    "id": "3f948ca1-7e4f-41d1-9d1c-6b329fba2756",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -227,7 +236,7 @@
                 {
                     "name": "",
                     "id": "295d7925-8113-4b79-b5a6-b96efc2e4b59",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -245,20 +254,107 @@
                     "action": "ScrollCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64cbc2c9-2579-4465-8aae-155d332a3fb1",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Holster",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "ThirdPersonMap",
-            "id": "9265275f-811a-4e98-b05f-0fb619bfb4bc",
-            "actions": [],
-            "bindings": []
-        },
-        {
             "name": "PlayerActionsMap",
             "id": "e757dc11-d0c6-4741-abac-4eed7052bd1f",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Target",
+                    "type": "Button",
+                    "id": "532dfadd-ab6c-41f1-bee0-b4bd2a31f3bb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "cf01826a-8a0b-496e-8525-5d2fc07d172f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwitchTargetRight",
+                    "type": "Button",
+                    "id": "8a75979e-388a-4f59-9803-bc35a51b02f9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchTargetLeft",
+                    "type": "Button",
+                    "id": "a674ff65-19f0-464d-9d28-85d406bdde1a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8e1b779a-a6df-47f4-969c-b4fc0440c408",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Target",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab7599fb-7bac-4daf-9d78-9028c8efe9f0",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00f9c489-09f0-4f82-b3c4-82aefd0bac8e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchTargetRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0784ca3-f530-4968-9d79-4b35a9b76cc7",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchTargetLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         },
         {
             "name": "UIMap",

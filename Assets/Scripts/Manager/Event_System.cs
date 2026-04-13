@@ -29,14 +29,24 @@ public class Event_System : MonoBehaviour
      */
 
 
-    private void Awake()
+    void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("Duplicate manager destroyed");
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+
+
 
     public void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.L)) ;
     }
 
 

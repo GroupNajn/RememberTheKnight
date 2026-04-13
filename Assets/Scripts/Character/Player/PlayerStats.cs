@@ -1,6 +1,7 @@
 using NUnit.Framework;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static StaminaController;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
@@ -28,7 +29,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float attackRotationSpeed = 5f;
     [Header("Dodge")]
     public float dodgeSpeedMultiplier = 0f;
-    public float dodgeCoolDown = 1f;
+    public float dodgeCoolDown = 0.5f;
     public float dodgeDuration = 0.2f;
     [Header("Knockback")]
     public float knockbackResistance = 5f;
@@ -64,10 +65,26 @@ public class PlayerStats : MonoBehaviour, IDamageable
         baseStamina = maxStamina;
         currentStamina = maxStamina;
         currentStamina = maxStamina;
-        Event_System.instance.OnStatsApplied += ApplyStats;
+        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
     }
 
-    void ApplyStats(List<CardData> cards)
+    private void OnDisable()
+    {
+        if(Event_System.instance != null)
+        {
+        Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        }
+    }
+
+    void ApplyStatsFromCardSelection(List<CardData> cards)
     {
         MaxHealth = baseHealth;
         maxStamina = baseStamina;
@@ -79,9 +96,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
         Health = MaxHealth;
         currentStamina = maxStamina;
-
+        Debug.Log(Health);
+        Debug.Log(maxStamina);
 
     }
+
 
     private void Update()
     {

@@ -1,42 +1,49 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.Cinemachine;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Unity.Behavior;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TargetLockHandler : MonoBehaviour
-{ 
-    public LayerMask enemyLayer;
-    public LayerMask lineOfSightLayer;
-    public Animator cameraAnimator;
+{
+    private LayerMask enemyLayer;
+    private LayerMask lineOfSightLayer;
+    private Animator cameraAnimator;
+
+    private float mouseX;
 
     [Header(header: "TargetLock Settings")]
     public float lockRadius = 15f;
     public float breakLockDistance = 17.5f;
     public bool IsLockedOn = false;
+    public float lockBreakMouseXThreshold = 300f;
 
     private float lostSightTimer = 0f;
-    public float loseSightDelay = 0.5f;
+    public float loseSightDelay = 0.1f;
 
     [Range(0f, 1f)]
     public float minDotProduct = 0.5f;
 
     [Header(header: "Targets")]
     public Transform currentTarget;
-    public CinemachineTargetGroup targetGroup;
-    public Transform playerTransform;
-    public Transform testCubeTransform;
+    private CinemachineTargetGroup targetGroup;
+    private Transform playerTransform;
 
     [Header(header: "Cameras")]
-    [SerializeField] private GameObject freeLookCam;
-    [SerializeField] private GameObject hardlockCam;
+    private GameObject freeLookCam;
+    private GameObject hardlockCam;
     private CinemachineCamera cinemachineFreeLookCam;
     private CinemachineCamera cinemachineHardLockCam;
 
-
     void Start()
     {
+        targetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
+        enemyLayer = LayerMask.GetMask("Enemy");
+        lineOfSightLayer = LayerMask.GetMask("Environment", "Obstacle");
+        cameraAnimator = GetComponentInChildren<Animator>();
+        freeLookCam = GameObject.FindGameObjectWithTag("FreeLookCamera");
+        hardlockCam = GameObject.FindGameObjectWithTag("HardLockCamera");
         cinemachineFreeLookCam = freeLookCam.GetComponent<CinemachineCamera>();
         cinemachineHardLockCam = hardlockCam.GetComponent<CinemachineCamera>();
 
@@ -47,32 +54,17 @@ public class TargetLockHandler : MonoBehaviour
             cinemachineFreeLookCam.Follow = playerTransform;
             cinemachineHardLockCam.Follow = playerTransform;
         }
-
     }
-
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 5f, Color.red);
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (!IsLockedOn)
-            {
-                FindTarget();
-
-                if (currentTarget != null)
-                {
-                    IsLockedOn = true;
-                    SwitchCams();
-                }
-            }
-            else
-            {
-                Unlock();
-            }
-        }
-
+        Mathf.MoveTowards(mouseX, 0, Time.deltaTime * 300f);
         if (IsLockedOn)
         {
+            if (mouseX > lockBreakMouseXThreshold || mouseX < -lockBreakMouseXThreshold)
+            {
+                FindNewTarget();
+            }
+
             if (currentTarget != null)
             {
                 float distance = Vector3.Distance(playerTransform.position, currentTarget.position);
@@ -102,7 +94,6 @@ public class TargetLockHandler : MonoBehaviour
             }
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
-
                 FindTarget();
             }
             if (currentTarget == null)
@@ -113,65 +104,35 @@ public class TargetLockHandler : MonoBehaviour
         }
 
     }
-
-    void Unlock()
-    {
-        ClearTarget();
-        IsLockedOn = false;
-        SwitchCams();
-    }
-
-    void ToggleLock()
-    {
-        IsLockedOn = !IsLockedOn;
-        cameraAnimator.SetBool("IsLockedOn", IsLockedOn);
-    }
-
-    bool HasLineOfSight(Transform target)
-    {
-        Vector3 origin = Camera.main.transform.position;
-
-        Collider col = target.GetComponent<Collider>();
-        Vector3 targetPoint = col != null ? col.bounds.center : target.position;
-
-        Vector3 direction = targetPoint - origin;
-        float distance = direction.magnitude;
-
-        RaycastHit[] hits = Physics.RaycastAll(origin, direction.normalized, distance);
-
-        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-        foreach (var hit in hits)
-        {
-            if (hit.collider.isTrigger)
-                continue;
-
-            if (hit.transform == target)
-                return true;
-
-            return false;
-        }
-
-        return false;
-    }
-
     void FindTarget()
     {
-        List<Collider> enemiesUnfiltered = new(Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer));
-        List<Collider> enemies = new();
+        Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
+        List<Collider> enemiesInRange = new();
+        HashSet<Transform> seenTargets = new();
 
-        enemiesUnfiltered.ForEach(enemy =>
+        foreach (Collider hit in hits)
         {
-            var agent = enemy.gameObject.GetComponent<BehaviorGraphAgent>();
-            if (agent != null && agent.enabled)
-                enemies.Add(enemy);
-        });
+            BehaviorGraphAgent agent = hit.GetComponentInParent<BehaviorGraphAgent>();
 
-        Debug.Log("Enemies found: " + enemies.Count);
+            if (agent == null || !agent.enabled)
+                continue;
+
+            Transform enemyTransform = agent.transform;
+
+
+            if (Vector3.Distance(enemyTransform.position, playerTransform.position) > lockRadius)
+                continue;
+
+            if (seenTargets.Add(enemyTransform))
+            {
+                enemiesInRange.Add(hit);
+            }
+        }
+
         float closestDistance = Mathf.Infinity;
         Transform bestTarget = null;
 
-        foreach (Collider enemy in enemies)
+        foreach (Collider enemy in enemiesInRange)
         {
             Vector3 directionToEnemy = (enemy.transform.position - playerTransform.position).normalized;
 
@@ -196,13 +157,139 @@ public class TargetLockHandler : MonoBehaviour
                 //Debug.Log("Best target: " + bestTarget);
             }
         }
+        currentTarget = bestTarget;
+        AddTargets();
+    }
+    private void FindNewTarget()
+    {
+        // Debug.Log("FIND NEW TARGETS CALLED");
 
+        Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
+        List<Collider> enemiesInRange = new();
+
+        HashSet<Transform> seenTargets = new();
+
+        // Debug.Log("Enemy Unfiltered found " + hits.Length);
+
+        // Collect unique enemies
+        foreach (Collider hit in hits)
+        {
+            BehaviorGraphAgent agent = hit.GetComponentInParent<BehaviorGraphAgent>();
+
+            if (agent == null || !agent.enabled)
+                continue;
+
+            Transform enemyTransform = agent.transform;
+
+            if (Vector3.Distance(enemyTransform.position, playerTransform.position) > lockRadius)
+                continue;
+
+            if (seenTargets.Add(enemyTransform))
+            {
+                enemiesInRange.Add(hit);
+                //   Debug.Log("Enemy Added to potential targets: " + enemyTransform.name);
+            }
+        }
+
+        // Debug.Log("Enemies in range after first filter: " + enemiesInRange.Count);
+
+        // Filter by direction / line of sight / current target
+        for (int i = enemiesInRange.Count - 1; i >= 0; i--)
+        {
+            Transform enemy = enemiesInRange[i].transform;
+            Vector3 directionToEnemy = (enemy.position - playerTransform.position).normalized;
+
+            float dotfwd = Vector3.Dot(Camera.main.transform.forward, directionToEnemy);
+
+            if (dotfwd < minDotProduct || currentTarget == enemy)
+            {
+                //      Debug.Log("Enemy Removed due outside minDot or already being target: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+
+            float dotright = Vector3.Dot(Camera.main.transform.right, directionToEnemy);
+
+            if (mouseX < 0 && dotright >= 0)
+            {
+                //     Debug.Log("Enemy Removed due to being right of you: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+
+            if (mouseX > 0 && dotright < 0)
+            {
+                //     Debug.Log("Enemy Removed due to being left of you: " + enemy.name);
+                enemiesInRange.RemoveAt(i);
+                continue;
+            }
+        }
+
+        //  Debug.Log("Enemies in range filtered by direction and line of sight: " + enemiesInRange.Count);
+
+        if (enemiesInRange.Count == 0)
+        {
+            //        Debug.Log("No valid targets found.");
+
+            return;
+        }
+
+        // Pick the best target
+        Transform bestTarget = null;
+        float lowestDot = Mathf.Infinity;
+
+        foreach (Collider c in enemiesInRange)
+        {
+            Transform enemy = c.transform;
+            Vector3 directionToEnemy = (enemy.position - playerTransform.position).normalized;
+
+            float dotRight = Mathf.Abs(Vector3.Dot(Camera.main.transform.right, directionToEnemy));
+
+            if (dotRight < lowestDot)
+            {
+                lowestDot = dotRight;
+                bestTarget = enemy;
+                //        Debug.Log("New best target: " + enemy.name);
+            }
+        }
+
+        //  Debug.Log("Best target: " + bestTarget.name);
 
         currentTarget = bestTarget;
         AddTargets();
+        mouseX = 0f;
+    }
+    void ToggleLock()
+    {
+        IsLockedOn = !IsLockedOn;
+        cameraAnimator.SetBool("IsLockedOn", IsLockedOn);
+    }
+    void Unlock()
+    {
+        ClearTarget();
+        IsLockedOn = false;
+        SwitchCams();
+        mouseX = 0f;
+    }
+    bool HasLineOfSight(Transform target)
+    {
+        Vector3 origin = Camera.main.transform.position;
+
+        Collider col = target.GetComponent<Collider>();
+        Vector3 targetPoint = col != null ? col.bounds.center : target.position;
+
+        Vector3 direction = targetPoint - origin;
+        float distance = direction.magnitude;
+        if (distance > lockRadius)
+        {
+            return false; // If the target is beyond lock radius, we can immediately return false without doing a raycast
+        }
+
+        bool hitSomething = Physics.Raycast(origin, direction.normalized, distance, lineOfSightLayer);
+
+        return !hitSomething;
 
     }
-
     void AddTargets()
     {
         if (currentTarget == null)
@@ -215,7 +302,6 @@ public class TargetLockHandler : MonoBehaviour
 
         currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
     }
-
     void ClearTarget()
     {
         if (currentTarget != null)
@@ -225,7 +311,6 @@ public class TargetLockHandler : MonoBehaviour
 
         targetGroup.Targets.Clear();
     }
-
     private void SwitchCams()
     {
         CinemachineInputAxisController axisControllerFreeLook = freeLookCam.GetComponent<CinemachineInputAxisController>();
@@ -246,6 +331,42 @@ public class TargetLockHandler : MonoBehaviour
             cinemachineHardLockCamGroupFraming.Damping = 0;
             cinemachineFreeLookCam.ForceCameraPosition(pos: cinemachineHardLockCam.State.GetFinalPosition(), rot: cinemachineHardLockCam.State.GetFinalOrientation());
             cameraAnimator.Play(stateName: "FreeLookCamera");
+        }
+    }
+    private void OnTarget()
+    {
+        if (!IsLockedOn)
+        {
+            FindTarget();
+
+            if (currentTarget != null)
+            {
+                IsLockedOn = true;
+                SwitchCams();
+            }
+        }
+        else
+        {
+            Unlock();
+        }
+
+    }
+    private void OnLook(InputValue context)
+    {
+        mouseX = context.Get<float>();
+    }
+    void OnSwitchTargetRight()
+    {
+        if (IsLockedOn)
+        {
+            mouseX = lockBreakMouseXThreshold + 1f;
+        }
+    }
+    void OnSwitchTargetLeft()
+    {
+        if (IsLockedOn)
+        {
+            mouseX = -lockBreakMouseXThreshold - 1f;
         }
     }
 }

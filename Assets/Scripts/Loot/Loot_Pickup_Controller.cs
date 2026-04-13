@@ -17,7 +17,7 @@ public class LootFollowController : MonoBehaviour
         if (LootManager.instance == null)
             return;
 
-        bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 0;
+        bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 1;
 
         if (Input.GetKeyDown(KeyCode.H) && hasLootThreshhold)
         {
@@ -27,7 +27,7 @@ public class LootFollowController : MonoBehaviour
 
 
         // Start override routine 
-        if (hasLootThreshhold && !overridden && !overrideCoroutineRunning)
+        if (!overridden && !overrideCoroutineRunning)
         {
             overrideRoutine = StartCoroutine(OverrideFollowLogic());
         }

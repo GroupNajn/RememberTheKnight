@@ -18,39 +18,39 @@ public class Enemy_Manager : MonoBehaviour
 
    
 
-    private void Start()
-    {
-        if (Event_System.instance == null)
-        {
-            Debug.LogError("Event_System.instance is null in Enemy_Manager.Start()");
-            return;
-        }
+    //private void Start()
+    //{
+    //    if (Event_System.instance == null)
+    //    {
+    //        Debug.LogError("Event_System.instance is null in Enemy_Manager.Start()");
+    //        return;
+    //    }
 
-        Event_System.instance.OnEnemySpawn += RegisterEnemy;
-        Event_System.instance.OnEnemyKilled += RemoveEnemy;
-    }
+    //    Event_System.instance.OnEnemySpawn += RegisterEnemy;
+    //    Event_System.instance.OnEnemyKilled += RemoveEnemy;
+    //}
 
-    private void OnDestroy()
-    {
-        if (Event_System.instance != null)
-        {
-            Event_System.instance.OnEnemySpawn -= RegisterEnemy;
-            Event_System.instance.OnEnemyKilled -= RemoveEnemy;
-        }
-    }
+    //private void OnDestroy()
+    //{
+    //    if (Event_System.instance != null)
+    //    {
+    //        Event_System.instance.OnEnemySpawn -= RegisterEnemy;
+    //        Event_System.instance.OnEnemyKilled -= RemoveEnemy;
+    //    }
+    //}
 
-    public void RegisterEnemy(EnemyDamage enemy)
-    {
-        Enemies.Add(enemy);
-    }
+    //public void RegisterEnemy(EnemyDamage enemy)
+    //{
+    //    Enemies.Add(enemy);
+    //}
 
-    public void RemoveEnemy(EnemyDamage enemy)
-    {
-        Enemies.Remove(enemy);
-    }
+    //public void RemoveEnemy(EnemyDamage enemy)
+    //{
+    //    Enemies.Remove(enemy);
+    //}
 
-    public IEnumerable<EnemyDamage> GetEnemies()
-    {
-        return Enemies;
-    }
+    //public IEnumerable<EnemyDamage> GetEnemies()
+    //{
+    //    return Enemies;
+    //}
 }
