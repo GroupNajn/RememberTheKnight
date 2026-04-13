@@ -65,12 +65,16 @@ public partial class RootMotionNavigateAction : Action
 
         Vector3 direction = (navMeshAgent.steeringTarget - Self.Value.transform.position).normalized;
         Quaternion desiredRotation = Quaternion.LookRotation(direction);
-        Self.Value.transform.rotation = Quaternion.Slerp(Self.Value.transform.rotation, desiredRotation, 2 * Time.fixedDeltaTime);
+        Self.Value.transform.rotation = Quaternion.RotateTowards(
+            Self.Value.transform.rotation,
+            desiredRotation,
+            navMeshAgent.angularSpeed * Time.fixedDeltaTime
+        );
 
         if (shouldBreak)
         {
             currentSpeed = animator.GetFloat("MovementSpeed");
-            float newSpeed = Mathf.Max(currentSpeed - 0.25f * Time.deltaTime, 0f);
+            float newSpeed = Mathf.Max(currentSpeed - 0.1f * Time.deltaTime, 0f);
             animator.SetFloat("MovementSpeed", newSpeed);
 
             if (!Mathf.Approximately(animator.GetFloat("MovementSpeed"), 0f)) return Status.Success;

@@ -21,13 +21,24 @@ public class ProjectileHandler : MonoBehaviour
 
         if (target != null)
         {
-            // if there is a target shoot towards them
-            targetPosistion = target.transform.position;
+            var firePointForwardXZ = new Vector2(transform.forward.x, transform.forward.z).normalized;
+            var targetDir = target.position - firePoint.position;
+            var targetXZ = new Vector2(targetDir.x, targetDir.z).normalized;
+            var angle = Mathf.Acos(Vector2.Dot(firePointForwardXZ, targetXZ));
+
+            if (angle < Mathf.PI / 4)
+            {
+                targetPosistion = target.transform.position;
+            }
+            else
+            {
+                targetPosistion = firePoint.position + transform.forward * 1000f;
+            }
         }
         else
         {
             // if there is no target shoot forward
-            targetPosistion = firePoint.position + firePoint.forward * 1000f;
+            targetPosistion = firePoint.position + transform.forward * 1000f;
         }
 
         Vector3 direction = (targetPosistion - firePoint.position).normalized;
