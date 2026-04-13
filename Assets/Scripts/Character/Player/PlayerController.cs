@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         set { playerCombatManager.isAttackRotationSpeed = value == playerStats.attackRotationSpeed; }
     }
 
-    private bool animCanceleble
+    private bool animCancelable
     {
         get { return playerCombatManager.animationCanceleble; }
         set { }
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         if (playerStats.isDead)
         {
-            if(knockbackForce != Vector3.zero)
+            if (knockbackForce != Vector3.zero)
             {
                 knockbackForce = Vector3.zero;
                 PlayerAnimator.SetBool("IsKnockedbacked", false);
@@ -135,9 +135,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
         bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
 
-        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCanceleble && !isKnockedBack)
+        if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCancelable && !isKnockedBack)
         {
-            if (!staminaController.CanPerform(StaminaController.StaminaAction.Dodging))
+            if (playerStats.currentStamina <= 0)
                 return;
 
             if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
@@ -154,9 +154,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             if (playerState.CurrentMoveState == MoveState.Dodging)
             {
                 dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
+
+                playerCombatManager.currentAction = StaminaAction.Dodge;
+                playerCombatManager.DrainStamina();
+
             }
-            playerCombatManager.SetAnimationCancelebleFalse();  
-            staminaController.UseStamina(StaminaController.StaminaAction.Dodging);
+            playerCombatManager.SetAnimationCancelebleFalse();
+            playerCombatManager.currentAction = StaminaAction.Dodge;
         }
 
         if (dodgeCoolDownRemaining > 0)
@@ -224,21 +228,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         }
 
-        if (playerLocomotionInput.AttackPressed && staminaController.UseStamina(StaminaController.StaminaAction.lightAttacking))
+        if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0)
         {
+            playerCombatManager.currentAction = StaminaAction.lightAttack;
+            
             if (playerCombatManager.canCombo == true)
             {
                 PlayerAnimator.SetTrigger("IsCombo");
                 playerCombatManager.canCombo = false;
             }
-            else if (animCanceleble)
+            else if (animCancelable)
             {
-                if (playerState.CurrentMoveState == MoveState.Dodging && animCanceleble)
-                {
-                    Debug.Log($"Started attacking early in dodge anim, animCanceleble = {animCanceleble}, movestate: {playerState.CurrentMoveState}");
-                }
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
+
             }
         }
 
@@ -350,32 +353,36 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //    if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
         //        playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > MovingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
 
-        if (animCanceleble)
+        if (animCancelable)
         {
 
 
             bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
-            bool canSprint = staminaController.CanPerform(StaminaController.StaminaAction.Sprinting);
 
             MoveState targetState;
 
             if (playerLocomotionInput.MovementInput.magnitude <= MovingThreshold)
             {
                 targetState = MoveState.Idling;
+                playerCombatManager.RegenerateStamina();
             }
-            else if (wantsToSprint && canSprint)
+            else if (wantsToSprint && playerStats.currentStamina >= 0)
             {
+                playerCombatManager.currentAction = StaminaAction.Sprint;
                 targetState = MoveState.Sprinting;
+
+                playerCombatManager.DrainStamina();
             }
             else
             {
                 targetState = MoveState.Walking;
+                playerCombatManager.RegenerateStamina();
             }
 
             playerState.SetMoveState(targetState);
+
         }
     }
-
     private void HandleVerticalMovement()
     {
         if (playerState.IsGrounded && _verticalVelocity < 0f)
