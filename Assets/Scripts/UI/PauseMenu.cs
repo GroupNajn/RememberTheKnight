@@ -62,8 +62,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void OpenPauseOptions()
-    {
-
+    { 
         uiManager.OpenPauseOptionMenu();
         uiManager.ClosePauseMenu();
     }
@@ -75,7 +74,7 @@ public class PauseMenu : MonoBehaviour
             QuitGame(); // Quit the application if already in the lobby scene
             return; // Not sure if needed, but just to be safe, we return after quitting
         }
-
+        
         GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();
