@@ -47,7 +47,18 @@ public class CharacterWeaponManager : MonoBehaviour
     }
     public virtual void HolsterCheck()
     {
+        if (Holsterd)
+        {
+            currentLeftHandWeapon.SetActive(false);
+            currentRightHandWeapon.SetActive(false);
+        }
+        else
+        {
+            currentLeftHandWeapon.SetActive(true);
+            currentRightHandWeapon.SetActive(true);
+        }
 
+            
     }
 
     public virtual void ActivateRightDamageCollider()
