@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,16 +10,20 @@ public class EnemyExplodeAttack : MonoBehaviour
     public float explotionRadius = 5.0f;
     public float explosionForce = 10f;
     GameObject player;
+    List<GameObject> damageables = new();
     GameObject[] hitchecks;
 
     EnemyDamage enemyDamage;
     [SerializeField] GameObject barrel;
     [SerializeField] ParticleSystem explosion;
+    [SerializeField] float explosionMaxDamage = 30f;
     void Start()
     {
         enemyDamage = GetComponent<EnemyDamage>();
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        damageables.Add(GameObject.FindGameObjectWithTag("Player"));
+        damageables.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
+
         hitchecks = GameObject.FindGameObjectsWithTag("HitCheck");
         GetComponentsInChildren<Transform>().ToList().ForEach(transform =>
         {
@@ -28,46 +34,49 @@ public class EnemyExplodeAttack : MonoBehaviour
 
     public void OnExplode()
     {
-        float distanceToPlayer = Vector3.Distance(barrel.transform.position, player.transform.position);
 
-        bool playerHit = false;
-        //explosion.Play();
-        
-        for (int i = 0; i < hitchecks.Length; i++)
+
+        foreach (var damageable in damageables)
         {
-            Ray ray = new Ray(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position);
+            bool damageableHit = false;
+            float distanceToDamageable = Vector3.Distance(barrel.transform.position, damageable.transform.position);
+            //explosion.Play();
 
-            if (Physics.Raycast(ray, out RaycastHit hit,explotionRadius,8))
+            for (int i = 0; i < hitchecks.Length; i++)
             {
-                CharacterController cc = hit.collider.GetComponent<CharacterController>();
-                IKnockbackable knockbackeble = hit.collider.GetComponent<PlayerController>();
+                Ray ray = new Ray(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position);
 
-                if (cc != null && distanceToPlayer <= explotionRadius)
+                if (Physics.Raycast(ray, out RaycastHit hit, explotionRadius, 8))
                 {
-                    playerHit = true;
-                    Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.green, DebugRay_DrawTime);
-                    if (knockbackeble != null)
-                    {
-                        knockbackeble.ApplyKnockback(explosionForce, explotionRadius, transform.position);
-                    }
-                    if(knockbackeble == null) Debug.Log("Explotion: could not find knockbackeble");
-                    break;
-                }
-                Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.red, DebugRay_DrawTime);
-            }
-        }
-        if (barrel != null)
-        {
-            Destroy(barrel);
-            var boom = Instantiate(explosion, barrel.transform.position, Quaternion.identity);
-            boom.Play();
-            enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
-        }
-        if (playerHit)
-        {
-            float damage = Mathf.Lerp(0, 30, 1 - (distanceToPlayer / explotionRadius));
-            player.GetComponent<PlayerStats>().TakeDamage(damage, Vector3.zero);
+                    CharacterController cc = hit.collider.GetComponent<CharacterController>();
+                    IKnockbackable knockbackeble = hit.collider.GetComponent<PlayerController>();
 
+                    if (cc != null && distanceToDamageable <= explotionRadius)
+                    {
+                        damageableHit = true;
+                        Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.green, DebugRay_DrawTime);
+                        if (knockbackeble != null)
+                        {
+                            knockbackeble.ApplyKnockback(explosionForce, explotionRadius, transform.position);
+                        }
+                        if (knockbackeble == null) Debug.Log("Explotion: could not find knockbackeble");
+                        break;
+                    }
+                    Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.red, DebugRay_DrawTime);
+                }
+            }
+            if (barrel != null)
+            {
+                Destroy(barrel);
+                var boom = Instantiate(explosion, barrel.transform.position, Quaternion.identity);
+                boom.Play();
+                enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
+            }
+            if (damageableHit)
+            {
+                float damage = MathF.Round(Mathf.Lerp(0, explosionMaxDamage, 1 - (distanceToDamageable / explotionRadius)), 0);
+                damageable.GetComponent<IDamageable>().TakeDamage(damage, Vector3.zero);
+            }
         }
     }
 }
