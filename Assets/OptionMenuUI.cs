@@ -11,9 +11,15 @@ public class OptionMenuUI : MonoBehaviour
     {
         uiManager = GetComponentInParent<UIManager>();
     }
-    public void OpenControlls()
+    public void OpenStartControlls()
     {
-        // NÄR VI LÄGGER TILL KONTROLL INSTÄLLNINGAR/
+        uiManager.CloseStartOptionMenu();
+        uiManager.OpenStartControllsUI();
+    }
+    public void OpenPauseControlls()
+    {
+        uiManager.ClosePauseOptionMenu();
+        uiManager.OpenPauseControllsUI();
     }
 
     public void OpenAudio()
@@ -30,5 +36,10 @@ public class OptionMenuUI : MonoBehaviour
     {
         uiManager.OpenStartMenu();
         uiManager.CloseStartOptionMenu();
+    }
+    public void BackToPauseMenu()
+    {
+        uiManager.OpenPauseMenu();
+        uiManager.ClosePauseOptionMenu();
     }
 }

@@ -15,9 +15,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject startMenuUI;
     [SerializeField] private GameObject characterSelectUI;
+    [SerializeField] private GameObject pauseMenuUI;
+
     [SerializeField] private GameObject startOptionMenuUI;
     [SerializeField] private GameObject pauseOptionMenuUI;
-    [SerializeField] private GameObject pauseMenuUI;
+
+    [SerializeField] private GameObject startControllsUI;
+    [SerializeField] private GameObject pauseControllsUI;
+
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject winMenuUI;
@@ -297,6 +302,24 @@ public class UIManager : MonoBehaviour
     public void CloseSoulUI()
     {
         soulUI.SetActive(false);
+    }
+    public void OpenStartControllsUI()
+    {
+        startControllsUI.SetActive(true);
+    }
+
+    public void CloseStartControllsUI()
+    {
+        startControllsUI.SetActive(false);
+    }
+    public void OpenPauseControllsUI()
+    {
+       pauseControllsUI.SetActive(true);
+    }
+
+    public void ClosePauseControllsUI()
+    {
+        pauseControllsUI.SetActive(false);
     }
 
     public void ShowPlayerBars()
