@@ -31,8 +31,10 @@ public class EnemyRagdoll : MonoBehaviour
         behaviorGraphAgent.enabled = false;
         foreach (var characterLimb in characterLimbs)
         {
-            characterLimb.isKinematic = false;
-            characterLimb.detectCollisions = true;
+            if (!characterLimb.CompareTag("Weapon"))
+               { characterLimb.isKinematic = false;
+                characterLimb.detectCollisions = true;
+            }
         }
         characterRigidbody.isKinematic = true;
         capsuleCollider.enabled = false;
@@ -47,8 +49,10 @@ public class EnemyRagdoll : MonoBehaviour
         behaviorGraphAgent.enabled = true;
         foreach (var characterLimb in characterLimbs)
         {
-            characterLimb.isKinematic = true;
-            characterLimb.detectCollisions = false;
+            if(!characterLimb.CompareTag("Weapon"))
+            {characterLimb.isKinematic = true;
+                characterLimb.detectCollisions = false;
+            }
         }
         characterRigidbody.isKinematic = true;
         characterRigidbody.detectCollisions = true;

@@ -73,7 +73,7 @@ public class BounceScript : MonoBehaviour
 
     private void Update()
     {
-        if(!collisionRestored && hasLanded)
+        if (!collisionRestored && hasLanded)
         {
             RestorePlayerCollision();
             collisionRestored = true;
@@ -88,16 +88,28 @@ public class BounceScript : MonoBehaviour
             || collision.gameObject.layer == LayerMask.NameToLayer("NavmeshGround")
             || collision.gameObject.layer == LayerMask.NameToLayer("IgnoreDeocclude")) // Ignore Environement layer
         {
-            bounceCount++; 
+            bounceCount++;
 
             if (bounceCount >= maxBounces)
             {
-                if (Physics.Raycast(transform.position + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 5f, environmentMask)) 
-                { // Raycast to save position of last landing to use for transition to hover state, needed for smooth lerp into the prefered distance above ground 
-                    // where last bounce was. Is used inside of the "loot_Hover script and Loot_Follow" script. 
+                if (Physics.Raycast(transform.position + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, 5f, environmentMask))
+                {
                     float yOffset = myCollider.bounds.extents.y;
-                    lastBouncePosition = hit.point + Vector3.up * yOffset;
-                    transform.position = lastBouncePosition;
+                    Vector3 newPosition = hit.point + Vector3.up * yOffset;
+
+                    // Om den nya positionen är för långt från nuvarande position,
+                    // behåll nuvarande position istället
+                    float maxSnapDistance = 1f;
+
+                    if (Vector3.Distance(transform.position, newPosition) <= maxSnapDistance)
+                    {
+                        lastBouncePosition = newPosition;
+                        transform.position = lastBouncePosition;
+                    }
+                    else
+                    {
+                        lastBouncePosition = transform.position;
+                    }
                 }
                 else
                 {
@@ -106,24 +118,24 @@ public class BounceScript : MonoBehaviour
                 // Disabling of rigidbody properties for custom gravity and movement. 
                 hasLanded = true;
 
-                rb.linearVelocity = Vector3.zero;
-                rb.isKinematic = true;
-                rb.useGravity = false;
-                myCollider.isTrigger = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            myCollider.isTrigger = true;
 
-                return;
-            }
-
-            float yVel = Mathf.Max(Mathf.Abs(rb.linearVelocity.y) * bounceDamping, 4f); // Dampen the bounce
-
-            float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude; 
-            horizontalSpeed *= 0.9f; // Decrease the horizontal speed
-            horizontalSpeed = Mathf.Max(horizontalSpeed, 2f); 
-
-            Vector3 newVelocity = horizontalDir * horizontalSpeed;
-            newVelocity.y = yVel;
-
-            rb.linearVelocity = newVelocity;
+            return;
         }
+
+        float yVel = Mathf.Max(Mathf.Abs(rb.linearVelocity.y) * bounceDamping, 4f); // Dampen the bounce
+
+        float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
+        horizontalSpeed *= 0.9f; // Decrease the horizontal speed
+        horizontalSpeed = Mathf.Max(horizontalSpeed, 2f);
+
+        Vector3 newVelocity = horizontalDir * horizontalSpeed;
+        newVelocity.y = yVel;
+
+        rb.linearVelocity = newVelocity;
     }
+}
 }
