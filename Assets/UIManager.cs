@@ -94,6 +94,9 @@ public class UIManager : MonoBehaviour
             if (characterSelectUI.activeSelf)
                 return;
 
+            if(gameDeathScreenUI.activeSelf)
+                return;
+
             if (startOptionMenuUI.activeSelf)
             {
                 CloseStartOptionMenu();
@@ -107,6 +110,8 @@ public class UIManager : MonoBehaviour
                 OpenPauseMenu();
                 return;
             }
+
+
 
             HideActiveUI();
 
