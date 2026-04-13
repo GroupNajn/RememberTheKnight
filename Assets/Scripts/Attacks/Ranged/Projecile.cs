@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Projecile : MonoBehaviour
@@ -7,21 +8,36 @@ public class Projecile : MonoBehaviour
 
     public float speed;
     public Vector3 direction;
+    ParticleSystem projectile;
+    Collider projectileCollider;
 
     private void Start()
     {
         Destroy(gameObject, 5f);
+        projectile = GetComponentInChildren<ParticleSystem>();
+        projectileCollider = GetComponent<Collider>();
     }
 
     void Update()
     {
-        transform.position += direction * speed * Time.deltaTime;
+        if (!collided) transform.position += speed * Time.deltaTime * direction;
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag != "projectile" && other.gameObject.tag != "Enemy")
+        if (!collided && !other.gameObject.CompareTag("projectile") && !other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
+            collided = true;
+
+            StartCoroutine(Collide());
         }
+    }
+
+    IEnumerator Collide()
+    {
+        projectile.Stop();
+        projectileCollider.enabled = false;
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
+        yield return null;
     }
 }
