@@ -8,7 +8,6 @@ public class GameOver : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        Time.timeScale = 1f; // Ensure the game is not paused when loading the main menu
         GlobalSceneManager.Instance.LoadScene(SceneData.Instance[2]); // Load the lobby scene
     }
 
