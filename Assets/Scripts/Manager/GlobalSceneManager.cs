@@ -30,11 +30,12 @@ public class GlobalSceneManager : MonoBehaviour
     {
         transitionAnimator.SetTrigger("FadeToBlack");
         yield return null; // Wait a frame to let the animator switch state
-        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
+        yield return new WaitForSecondsRealtime(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
         SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1f;
     }
 
-    private void OnSceneLoaded(Scene previousScene, LoadSceneMode newScene)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         transitionAnimator.SetTrigger("FadeFromBlack");
     }
