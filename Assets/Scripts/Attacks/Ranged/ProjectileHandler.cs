@@ -8,12 +8,15 @@ public class ProjectileHandler : MonoBehaviour
     public Transform target;
     public GameObject projectile;
     public Transform firePoint;
-    public float projectileSpeed = 30;
+    public float projectileSpeed = 20f;
 
     void Start()
     {
         selfHitbox = GetComponent<CapsuleCollider>();
-
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == "ShootingPoint") firePoint = child;
+        }
     }
 
     public void ShootProjectile()
@@ -51,7 +54,7 @@ public class ProjectileHandler : MonoBehaviour
 
 
         projectileObject.GetComponent<Projecile>().direction = direction;
-        projectileObject.GetComponent<Projecile>().speed = 30f;
+        projectileObject.GetComponent<Projecile>().speed = projectileSpeed;
 
         Physics.IgnoreCollision(projectileObject.GetComponent<Collider>(), selfHitbox);
 
