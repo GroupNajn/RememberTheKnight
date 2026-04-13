@@ -3,14 +3,14 @@ using UnityEngine;
 public class Projecile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private bool colided;
+    private bool collided;
 
     public float speed;
     public Vector3 direction;
 
     private void Start()
     {
-        Destroy(gameObject, 10);
+        Destroy(gameObject, 5f);
     }
 
     void Update()
