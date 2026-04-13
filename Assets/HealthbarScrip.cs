@@ -6,6 +6,7 @@ public class HealthbarScrip : MonoBehaviour
 {
     public Slider healthbar;
     public RectTransform lerpingRectTransform;
+    [SerializeField] bool isPlayer = false;
     [SerializeField] private MonoBehaviour target;// drag Player OR Enemy here
     private Vector2 previousAncorPos;
     private IDamageable damageable;
@@ -13,6 +14,10 @@ public class HealthbarScrip : MonoBehaviour
 
     void Start()
     {
+        if(isPlayer)
+        {
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<MonoBehaviour>();
+        }
         damageable = target.GetComponent<IDamageable>();
 
         if (damageable == null)

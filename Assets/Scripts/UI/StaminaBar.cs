@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
     StaminaController staminaController;
-    [SerializeField] PlayerStats playerStats;
+     PlayerStats playerStats;
     [SerializeField] Slider staminaBar;
     [SerializeField] float lerpSpeed = 2f;
     public RectTransform lerpingRectTransform;
@@ -12,6 +12,7 @@ public class StaminaBar : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
 
         staminaController = GetComponent<StaminaController>();
         if (playerStats == null)
