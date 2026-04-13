@@ -2312,7 +2312,7 @@ GameObject:
   - component: {fileID: -6362200048511867953}
   m_Layer: 8
   m_Name: EnemyWitchCaster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2418,7 +2418,6 @@ MonoBehaviour:
   - rid: 4680590414493778377
   - rid: 4680590414493778378
   - rid: 4680590414493778379
-  - rid: 4680590432079708379
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -2465,14 +2464,6 @@ MonoBehaviour:
           m_Value1: 13461439846945536860
         Name: threatRadius
         m_Value: 20
-    - rid: 4680590432079708379
-      type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 10632562583351214737
-          m_Value1: 7104702733973510500
-        Name: Attack
-        m_Value: {fileID: -1754588635599120563, guid: 9b158e6c6e0cc4d588f07c4659a9b087, type: 2}
 --- !u!136 &5379642801479569555
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2639,7 +2630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   projectile: {fileID: 3129132563675642798, guid: 2fce6c8cbf354804185618127357b989, type: 3}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 530928103790112294}
   projectileSpeed: 30
 --- !u!114 &6198742877613150421
 MonoBehaviour:
@@ -5558,6 +5549,11 @@ PrefabInstance:
 --- !u!1 &290804174469268257 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 411943351768226369, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
+  m_PrefabInstance: {fileID: 125714382696716640}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &530928103790112294 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 495568429871658822, guid: 1e8f1b17f1dd1524dbf61045da5b8288, type: 3}
   m_PrefabInstance: {fileID: 125714382696716640}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6463727640996828126 stripped
