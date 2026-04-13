@@ -6,6 +6,6 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        GlobalSceneManager.Instance.LoadScene(sceneToLoad);
+        GlobalSceneManager.Instance.LoadSceneTransition(sceneToLoad);
     }
 }
