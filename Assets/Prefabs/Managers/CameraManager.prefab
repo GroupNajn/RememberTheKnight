@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7862079897246053261}
   - component: {fileID: 45144315344247146}
   - component: {fileID: 2810024899164284025}
+  - component: {fileID: 1185637188692863598}
+  - component: {fileID: 1300240723322709067}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -55,9 +57,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   cameraAnimator: {fileID: 1845487816591626266}
+  mouseX: 0
   lockRadius: 15
   breakLockDistance: 17.5
   IsLockedOn: 0
+  lockBreakMouseXThreshold: 300
   loseSightDelay: 0.5
   minDotProduct: 0
   currentTarget: {fileID: 0}
@@ -78,6 +82,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba257e0cb9342154f9594f7f56b133c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1185637188692863598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296989383303517345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 78b31d802c3012848a27579bab7f0b35, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerActionsMap
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1300240723322709067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296989383303517345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485bb052f5ea1b541b4e5332afa43f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockHandler: {fileID: 45144315344247146}
+  mainCamera: {fileID: 8168169849816608695}
+  indicatorRect: {fileID: 0}
+  worldOffset: {x: 0, y: 2, z: 0}
 --- !u!1 &5752140397330459675
 GameObject:
   m_ObjectHideFlags: 0
