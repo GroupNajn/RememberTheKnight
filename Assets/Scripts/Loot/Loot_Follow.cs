@@ -220,9 +220,9 @@ public class Loot_Follow : MonoBehaviour
     {
         Vector3 rayStart = GetRayStartPosition();
 
-        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 2f, bounceScript.EnvironmentMask))
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 3f, bounceScript.EnvironmentMask))
         {
-            Debug.DrawRay(rayStart, Vector3.down * 2f, Color.green);
+            Debug.DrawRay(rayStart, Vector3.down * 3f, Color.green);
 
             float targetGroundY = GetTargetHoverY(hit.point.y);
 
@@ -240,7 +240,7 @@ public class Loot_Follow : MonoBehaviour
 
         Vector3 rayStart = GetRayStartPosition();
 
-        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 15f, bounceScript.EnvironmentMask))
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 3f, bounceScript.EnvironmentMask))
         {
             pos.y = GetTargetHoverY(hit.point.y);
         }
