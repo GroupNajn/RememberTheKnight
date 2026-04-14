@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable
 {
-    [SerializeField] string sceneToLoad;
+    [SerializeField] int sceneToLoadIndex;
 
     public void Interact()
     {
-        GlobalSceneManager.Instance.LoadSceneTransition(sceneToLoad);
+        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[sceneToLoadIndex]);
     }
 }
