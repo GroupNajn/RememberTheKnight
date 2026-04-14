@@ -81,10 +81,6 @@ public class PauseMenu : MonoBehaviour
 
         GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
 
-        PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-        playerStats.Health = playerStats.MaxHealth; // Reset player's health to max
-        playerStats.Heal(playerStats.MaxHealth); // Notify health change to update UI and other systems
-
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();
     }
