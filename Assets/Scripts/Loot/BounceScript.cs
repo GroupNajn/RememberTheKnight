@@ -9,6 +9,8 @@ public class BounceScript : MonoBehaviour
     [SerializeField] private LayerMask environmentMask;
     [SerializeField] private float ignorePlayerTime = 1.5f;
 
+    public LayerMask EnvironmentMask => environmentMask;
+
     private bool collisionRestored = false;
 
     private Rigidbody rb;

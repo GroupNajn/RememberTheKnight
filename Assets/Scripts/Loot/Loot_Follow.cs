@@ -16,6 +16,8 @@ public class Loot_Follow : MonoBehaviour
     [SerializeField] private float hoverSpeed = 1f;
     [SerializeField] private float hoverHeight = 0.08f;
     [SerializeField] private float baseHoverOffset = 0.8f;
+    [SerializeField] private float normalHoverHeight = 1.2f;
+    [SerializeField] private float heightSmoothTime = 0.25f;
 
     [Header("Landing Transition")]
     [SerializeField] private float moveToBaseDuration = 0.35f;
@@ -27,17 +29,26 @@ public class Loot_Follow : MonoBehaviour
 
     private bool hasLifted = false;
     private bool liftInitialized = false;
-    private float liftTargetY;
 
+    private float liftTargetY;
+    private float ySmoothVelocity = 0f;
+    private float currentGroundY;
     private float hoverOffset;
+
     private Vector3 dirVector;
     private Vector3 distanceVector;
     private Vector3 velocity;
 
     private Loot loot;
     private BounceScript bounceScript;
+    private Transform centerPoint;
 
-    private enum FollowLogic { NotOverriten, Overwritten }
+    private enum FollowLogic
+    {
+        NotOverriten,
+        Overwritten
+    }
+
     private FollowLogic followLogic = FollowLogic.NotOverriten;
 
     private enum HoverState
@@ -45,7 +56,8 @@ public class Loot_Follow : MonoBehaviour
         WaitingForLanding,
         MovingToBase,
         BlendingToHover,
-        Hovering
+        Hovering,
+        BlendingToNormalHeight
     }
 
     private HoverState hoverState = HoverState.WaitingForLanding;
@@ -58,12 +70,13 @@ public class Loot_Follow : MonoBehaviour
     private float stateTimer = 0f;
     private bool initialized = false;
 
-    void Start()
+    private void Start()
     {
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
 
         loot = GetComponent<Loot>();
         bounceScript = GetComponent<BounceScript>();
+        centerPoint = transform.Find("Center");
 
         if (player == null)
         {
@@ -72,17 +85,23 @@ public class Loot_Follow : MonoBehaviour
                 player = playerObj.transform;
         }
 
-        Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
-        Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
+            Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
+        }
     }
 
     private void OnDestroy()
     {
-        Event_System.instance.OnPullAllLoot -= OverWriteFollowEnum;
-        Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnPullAllLoot -= OverWriteFollowEnum;
+            Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
+        }
     }
 
-    void Update()
+    private void Update()
     {
         if (player == null || loot == null || bounceScript == null)
             return;
@@ -101,6 +120,9 @@ public class Loot_Follow : MonoBehaviour
 
         switch (hoverState)
         {
+            case HoverState.WaitingForLanding:
+                return;
+
             case HoverState.MovingToBase:
                 UpdateMoveToBase();
                 return;
@@ -110,7 +132,10 @@ public class Loot_Follow : MonoBehaviour
                 return;
 
             case HoverState.Hovering:
-                UpdateFollowAndHover();
+                UpdateHovering();
+                return;
+
+            case HoverState.BlendingToNormalHeight:
                 return;
         }
     }
@@ -119,9 +144,11 @@ public class Loot_Follow : MonoBehaviour
     {
         initialized = true;
 
-        basePosition = bounceScript.LastBouncePosition + Vector3.up * baseHoverOffset;
-
+        basePosition = bounceScript.LastBouncePosition;
         lerpStartPosition = transform.position;
+
+        currentGroundY = transform.position.y;
+
         stateTimer = 0f;
         hoverState = HoverState.MovingToBase;
     }
@@ -131,12 +158,15 @@ public class Loot_Follow : MonoBehaviour
         stateTimer += Time.deltaTime;
         float t = Mathf.Clamp01(stateTimer / moveToBaseDuration);
 
-        transform.position = Vector3.Lerp(lerpStartPosition, basePosition, t);
+        Vector3 targetBase = GetBaseGroundPosition();
+        transform.position = Vector3.Lerp(lerpStartPosition, targetBase, t);
 
         if (t >= 1f)
         {
-            transform.position = basePosition;
+            basePosition = targetBase;
+            currentGroundY = basePosition.y;
 
+            transform.position = basePosition;
             blendStartPosition = transform.position;
             initialHoverTarget = GetHoverPosition();
 
@@ -150,6 +180,9 @@ public class Loot_Follow : MonoBehaviour
         stateTimer += Time.deltaTime;
         float t = Mathf.Clamp01(stateTimer / blendToHoverDuration);
 
+        basePosition = GetBaseGroundPosition();
+        initialHoverTarget = GetHoverPosition();
+
         transform.position = Vector3.Lerp(blendStartPosition, initialHoverTarget, t);
 
         if (t >= 1f)
@@ -159,20 +192,82 @@ public class Loot_Follow : MonoBehaviour
         }
     }
 
-    private void UpdateFollowAndHover()
+    private void UpdateHovering() 
+    {
+        UpdateFollowVelocity();
+        UpdateBasePositionXZ();
+        UpdateGroundHeight();
+
+        Vector3 hoverPosition = GetHoverPosition();
+        transform.position = hoverPosition;
+    }
+
+    private void UpdateFollowVelocity() // Updates the correct position according to the math exp function and decrease with min function. 
     {
         distanceVector = player.position - transform.position;
         SetLootFollow();
-
-        Vector3 followMove = velocity * Time.deltaTime;
-
-        basePosition.x += followMove.x;
-        basePosition.z += followMove.z;
-
-        transform.position = GetHoverPosition();
     }
 
-    private bool CanFollow()
+    private void UpdateBasePositionXZ() // Updates the souls position in X and Z Plane
+    {
+        Vector3 followMove = velocity * Time.deltaTime;
+        basePosition.x += followMove.x;
+        basePosition.z += followMove.z;
+    }
+
+    private void UpdateGroundHeight() // A smoothing method using Mathf.SmoothDamp which is a "spring like smoothing function" according to unity docs
+                                      // IDK what that really means but yeah, 
+    {
+        Vector3 rayStart = GetRayStartPosition();
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 2f, bounceScript.EnvironmentMask))
+        {
+            Debug.DrawRay(rayStart, Vector3.down * 2f, Color.green);
+
+            float targetGroundY = GetTargetHoverY(hit.point.y);
+
+            currentGroundY = Mathf.SmoothDamp(currentGroundY, targetGroundY, ref ySmoothVelocity, heightSmoothTime);
+
+            basePosition.y = currentGroundY;
+        }
+    }
+
+    private Vector3 GetBaseGroundPosition() 
+    {
+        // Gets the raycast hit position in worldSpace coordinates, to calculate the desired height from the ground. 
+        // if raycast does not hit, fall back to the variable baseHoverOffset to get the proper height with a failsafe. 
+        Vector3 pos = bounceScript.LastBouncePosition;
+
+        Vector3 rayStart = GetRayStartPosition();
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 15f, bounceScript.EnvironmentMask))
+        {
+            pos.y = GetTargetHoverY(hit.point.y);
+        }
+        else
+        {
+            pos.y += baseHoverOffset;
+        }
+
+        return pos;
+    }
+
+    private Vector3 GetRayStartPosition() // RayStarts at the center gameObject 
+    {
+        return centerPoint != null ? centerPoint.position : transform.position;
+    }
+
+    private float GetCenterOffset() // Center offSet becuase souls parent transform is further down than Center gameObject's center, 
+    {
+        return centerPoint != null ? centerPoint.position.y - transform.position.y : 0f;
+    }
+
+    private float GetTargetHoverY(float groundY) // The desired height above the ground with the center offset position calculation.
+    {
+        return groundY + normalHoverHeight - GetCenterOffset();
+    }
+
+    private bool CanFollow() // Follow bool
     {
         return distanceVector.magnitude <= followRange;
     }
@@ -203,7 +298,7 @@ public class Loot_Follow : MonoBehaviour
         }
     }
 
-    private Vector3 GetHoverPosition()
+    private Vector3 GetHoverPosition() // To get the new hoverPosition in sinus wave
     {
         float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.01f);
         return basePosition + new Vector3(0f, y, 0f);
@@ -260,5 +355,7 @@ public class Loot_Follow : MonoBehaviour
         initialized = false;
         hoverState = HoverState.WaitingForLanding;
         stateTimer = 0f;
+        ySmoothVelocity = 0f;
+        currentGroundY = 0f;
     }
 }
