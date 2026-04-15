@@ -17,6 +17,7 @@ public class StartMenuUI : MonoBehaviour
     public void StartGame()
     {
         uiManager.CloseStartMenu();
+        uiManager.CloseBackgroundUI();
         uiManager.UIMenuActive = false;
 
         // LOAD NEXT SCENE
@@ -29,9 +30,9 @@ public class StartMenuUI : MonoBehaviour
 
     }
 
-    public void OpenStartOptions()
+    public void OpenOptions()
     {
-        uiManager.OpenStartOptionMenu();
+        uiManager.OpenOptionMenu();
         uiManager.CloseStartMenu();
     }
 
