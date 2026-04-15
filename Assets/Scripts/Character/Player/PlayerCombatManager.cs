@@ -107,9 +107,6 @@ public class PlayerCombatManager : MonoBehaviour
             playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
 
             staminaRegenTime = 0;
-
-            Debug.Log($"stamina drain {staminaCost}");
-
         }
     }
 
