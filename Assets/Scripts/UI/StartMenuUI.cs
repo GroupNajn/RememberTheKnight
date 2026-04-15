@@ -29,11 +29,11 @@ public class StartMenuUI : MonoBehaviour
 
     }
 
-    public void OpenStartOptions()
-    {
-        uiManager.OpenStartOptionMenu();
-        uiManager.CloseStartMenu();
-    }
+    //public void OpenStartOptions()
+    //{
+    //    uiManager.OpenStartOptionMenu();
+    //    uiManager.CloseStartMenu();
+    //}
 
 
     public void ExitGame()

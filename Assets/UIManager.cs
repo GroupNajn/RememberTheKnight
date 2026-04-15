@@ -13,18 +13,21 @@ public class UIManager : MonoBehaviour
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
 
+    [SerializeField] private GameObject backButtonUI;
+
+    [Header("Menu UI")]
+    [SerializeField] private GameObject backgrundUI;
     [SerializeField] private GameObject startMenuUI;
     [SerializeField] private GameObject characterSelectUI;
     [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private GameObject optionMenuUI;
+    [SerializeField] private GameObject controllsUI;
 
-    [SerializeField] private GameObject startOptionMenuUI;
-    [SerializeField] private GameObject pauseOptionMenuUI;
-
-    [SerializeField] private GameObject startControllsUI;
-    [SerializeField] private GameObject pauseControllsUI;
-
+    [Header("in game UI")]
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject interactUI;
+
+    [Header("static UI")]
     [SerializeField] private GameObject winMenuUI;
     [SerializeField] private GameObject gameDeathScreenUI;
     [SerializeField] private GameObject soulUI;
@@ -61,8 +64,7 @@ public class UIManager : MonoBehaviour
         {
             if (t.gameObject.name == "PauseMenu") pauseMenuUI = t.gameObject;
             else if (t.gameObject.name == "CardSelectUI") cardSelectUI = t.gameObject;
-            else if (t.gameObject.name == "StartOptionMenuUI") startOptionMenuUI = t.gameObject;
-            else if (t.gameObject.name == "StartOptionMenuUI") startOptionMenuUI = t.gameObject;
+            else if (t.gameObject.name == "StartOptionMenuUI") optionMenuUI = t.gameObject;
             else if (t.gameObject.name == "InteractUI") interactUI = t.gameObject;
             else if (t.gameObject.name == "WinMenu") winMenuUI = t.gameObject;
             else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
@@ -79,11 +81,8 @@ public class UIManager : MonoBehaviour
         if (!UIMenuActive)
         {
             UIMenuActive = true;
-            Time.timeScale = 0f; // Pause the game by setting time scale to 0
-            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-            Cursor.visible = true; // Show the cursor when paused
-            playerInput.enabled = false; // Disable player input when paused
 
+            CheckUIState();
             OpenPauseMenu(); // Show the pause menu
         }
         else
@@ -97,19 +96,19 @@ public class UIManager : MonoBehaviour
             if(gameDeathScreenUI.activeSelf)
                 return;
 
-            if (startOptionMenuUI.activeSelf)
-            {
-                CloseStartOptionMenu();
-                OpenStartMenu();
-                return;
-            }
+            //if (startOptionMenuUI.activeSelf)
+            //{
+            //    CloseStartOptionMenu();
+            //    OpenStartMenu();
+            //    return;
+            //}
 
-            if (pauseOptionMenuUI.activeSelf)
-            {
-                ClosePauseOptionMenu();
-                OpenPauseMenu();
-                return;
-            }
+            //if (pauseOptionMenuUI.activeSelf)
+            //{
+            //    ClosePauseOptionMenu();
+            //    OpenPauseMenu();
+            //    return;
+            //}
 
 
 
@@ -132,6 +131,8 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
+
+        CheckUIState();
     }
 
     public void CheckUIState()
@@ -152,25 +153,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenPauseMenu()
-    {
-        if (pauseMenuUI)
-        {
-            UIMenuActive = true;
-            CloseInteractiveUI();
-            pauseMenuUI.SetActive(true); // Show the pause menu
-
-        }
-    }
-
-    public void ClosePauseMenu()
-    {
-        if (pauseMenuUI)
-        {   
-            UIMenuActive = false;
-            pauseMenuUI.SetActive(false); // Hide the pause menu
-        }
-    }
+    // START MENU
     public void OpenStartMenu()
     {
         if (startMenuUI)
@@ -181,7 +164,6 @@ public class UIManager : MonoBehaviour
 
         }
     }
-
     public void CloseStartMenu()
     {
         if (startMenuUI)
@@ -190,6 +172,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // PAUSE MENU
+    public void OpenPauseMenu()
+    {
+        if (pauseMenuUI)
+        {
+            UIMenuActive = true;
+            CloseInteractiveUI();
+            pauseMenuUI.SetActive(true); // Show the pause menu
+
+        }
+    }
+    public void ClosePauseMenu()
+    {
+        if (pauseMenuUI)
+        {   
+            UIMenuActive = false;
+            pauseMenuUI.SetActive(false); // Hide the pause menu
+        }
+    }
+
+    // CHR SELECET
     public void OpenCharacterSelectUI()
     {
         if (characterSelectUI)
@@ -199,7 +202,6 @@ public class UIManager : MonoBehaviour
 
         }
     }
-
     public void CloseCharacterSelectUI()
     {
         if (characterSelectUI)
@@ -208,40 +210,36 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenStartOptionMenu()
+    // OPTION MENU
+    public void OpenOptionMenu()
     {
-        if (startOptionMenuUI)
+        if (optionMenuUI)
         {
-            startOptionMenuUI.SetActive(true);
+            optionMenuUI.SetActive(true);
         }
     }
 
-    public void CloseStartOptionMenu()
+    public void CloseOptionMenu()
     {
-        if (startOptionMenuUI)
+        if (optionMenuUI)
         {
-            startOptionMenuUI.SetActive(false);
-            
-        }
-    }
-    public void OpenPauseOptionMenu()
-    {
-        if (pauseOptionMenuUI)
-        {
-
-            pauseOptionMenuUI.SetActive(true);
+            optionMenuUI.SetActive(false);
 
         }
     }
 
-    public void ClosePauseOptionMenu()
+    // CONTROLLS UI
+    public void OpenControllsUI()
     {
-        if (pauseMenuUI)
-        {
-            pauseOptionMenuUI.SetActive(false);
-        }
+        controllsUI.SetActive(true);
     }
 
+    public void CloseControllsUI()
+    {
+        controllsUI.SetActive(false);
+    }
+
+    // CARD SELECT UI
     public void OpenCardSelectUI()
     {
         Debug.Log("Opening Card Select UI");
@@ -261,6 +259,7 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    //DEATH UI
     public void ShowDeathScreen()
     {
         CloseInteractiveUI();
@@ -277,7 +276,8 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
-    public void ShowWinMenu()
+    // WIN UI
+    public void OpenWinMenu()
     {
         CloseInteractiveUI();
         winMenuUI.SetActive(true);
@@ -285,6 +285,7 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    // INTERACT UI
     public void OpenInteractiveUI()
     {
         if (interactUI)
@@ -299,6 +300,7 @@ public class UIManager : MonoBehaviour
             interactUI.SetActive(false);
     }
 
+    // SOULS UI
     public void OpenSoulUI()
     {
         soulUI.SetActive(true);
@@ -308,24 +310,7 @@ public class UIManager : MonoBehaviour
     {
         soulUI.SetActive(false);
     }
-    public void OpenStartControllsUI()
-    {
-        startControllsUI.SetActive(true);
-    }
 
-    public void CloseStartControllsUI()
-    {
-        startControllsUI.SetActive(false);
-    }
-    public void OpenPauseControllsUI()
-    {
-       pauseControllsUI.SetActive(true);
-    }
-
-    public void ClosePauseControllsUI()
-    {
-        pauseControllsUI.SetActive(false);
-    }
 
     public void ShowPlayerBars()
     {
@@ -355,7 +340,7 @@ public class UIManager : MonoBehaviour
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
 
         Event_System.instance.OnPlayerDeath += ShowDeathScreen;
-        Event_System.instance.OnWin += ShowWinMenu;
+        Event_System.instance.OnWin += OpenWinMenu;
 
         GetComponentsInChildren<Transform>().ToList().ForEach(t =>
         {
