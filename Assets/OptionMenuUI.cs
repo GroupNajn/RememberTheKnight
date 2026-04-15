@@ -11,16 +11,12 @@ public class OptionMenuUI : MonoBehaviour
     {
         uiManager = GetComponentInParent<UIManager>();
     }
-    //public void OpenStartControlls()
-    //{
-    //    uiManager.CloseStartOptionMenu();
-    //    uiManager.OpenStartControllsUI();
-    //}
-    //public void OpenPauseControlls()
-    //{
-    //    uiManager.ClosePauseOptionMenu();
-    //    uiManager.OpenPauseControllsUI();
-    //}
+
+    public void OpenControlls()
+    {
+        uiManager.CloseOptionMenu();
+        uiManager.OpenControllsUI();
+    }
 
     public void OpenAudio()
     {
