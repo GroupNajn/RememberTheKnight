@@ -14,7 +14,7 @@ public class Event_System : MonoBehaviour
     public Action<int> OnPlayerDamaged;
     public Action<Loot> OnGetLoot;
     public Action<Transform, float> OnEnemyDamage;
-    public Action OnLootPickedUp;
+    public Action<Loot> OnLootPickedUp;
     public Action OnPullAllLoot;
     public Action OnResetPullAllLoot;
     public Action OnPlayerDeath;
@@ -41,13 +41,4 @@ public class Event_System : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L)) ;
-    }
-
-
 }

@@ -45,12 +45,16 @@ public class CardSelectionUI : MonoBehaviour
 
     private void OnEnable()
     {
+        List<CardUI> tempCards = new List<CardUI>();   
         foreach (Button button in GetComponentsInChildren<Button>())
         {
             CardUI card = button.GetComponent<CardUI>();
-            if (card == null) continue;
+            if(card == null) continue;
+            tempCards.Add(card);
+            
 
-            card.SetSelected(SelectedList.Contains(card.cardData));
+
+            //card.SetSelected(SelectedList.Contains(card.cardData));
 
         }
     }
@@ -76,7 +80,6 @@ public class CardSelectionUI : MonoBehaviour
             currentCardsSelected--;
             Debug.Log("Card Deselected 123");
             return;
-
         }
 
         if (currentCardsSelected >= maxCardsSelected)
