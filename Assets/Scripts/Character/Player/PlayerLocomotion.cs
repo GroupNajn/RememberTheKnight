@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 [DefaultExecutionOrder(-2)]
 public class PlayerLocomotion : MonoBehaviour
@@ -19,6 +20,7 @@ public class PlayerLocomotion : MonoBehaviour
     //============= action =============
     public bool PickUpPressed { get; private set; }
     public bool AttackPressed { get; private set; }
+    public bool AttackCharging = false;
 
 
 
@@ -64,7 +66,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void OnToggleSprint(InputValue action)
     { 
-          SprintToggledOn = !SprintToggledOn;
+          SprintToggledOn = action.isPressed;
     }
 
     //================ Camera ================
@@ -82,9 +84,34 @@ public class PlayerLocomotion : MonoBehaviour
     {
         PickUpPressed = true;
     }
-    public void OnAttacking(InputValue context)
+    //public void OnAttacking(InputAction.CallbackContext context)
+    //{
+
+    //    //Debug.Log("input kom");
+
+    //    if (context.started)
+    //    {
+    //        AttackPressed = true;   // button pressed
+    //    }
+    //    else if (context.canceled)
+    //    {
+    //        AttackPressed = false;  // button released
+    //    }
+    //}
+
+    public void OnAttacking(InputValue value)
     {
-        AttackPressed = true;
-        //Debug.Log("input kom");
+        if (value.isPressed)
+            AttackPressed = true;
+
+        AttackCharging = value.isPressed;
+        //Debug.Log("ATTACK VALUE: " + value.isPressed);
+    }
+    void Update()
+    {
+        if (AttackPressed)
+        {
+            //Debug.Log("Holding attack");
+        }
     }
 }

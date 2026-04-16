@@ -9,11 +9,24 @@ public class DamageTrigger : MonoBehaviour
 
     WeaponData weaponData;
     float damageAmount;
+    GameObject player;
+    PlayerController playerController;
+    Animator playerAnimator;
+    PlayerCombatManager combatManager;
+
+    private int chargedHash = Animator.StringToHash("ChargedAttack");
+
+
+
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
 
     private void Start()
     {
         weaponData = GetComponent<WeaponStats>().WeaponData;
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerAnimator = player.GetComponent<Animator>();
+        playerController = player.GetComponent<PlayerController>();
+        combatManager = player.GetComponent<PlayerCombatManager>();
         if (weaponData != null)
         {
             damageAmount = weaponData.BaseDamage;
@@ -26,12 +39,17 @@ public class DamageTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hello IS DAMAGE");
-
         IDamageable damageable = other.gameObject.GetComponentInParent<IDamageable>();
 
         if (damageable != null && damagedObjects.Add(damageable))
         {
+
+            if (other.gameObject != player && playerController.AttackCharged) // stamina gain if hit with a charged attack
+            {
+                combatManager.GainStamina(50);
+                playerController.AttackCharged = false;
+            }
+
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
             damageable.TakeDamage(damageAmount, contactPoint);

@@ -1,10 +1,10 @@
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IKnockbackable
 {
-
     // Made by Jonathan Blixt - edited by Michaëla for stamina
 
     #region Class Variables
@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private int dodgeHash = Animator.StringToHash("Dodgeing");
     private int knockbackHash = Animator.StringToHash("Knockback");
 
+    public bool AttackCharged { get; set; } = false;
 
     [Header("Dodge")]
     public float dodgeAcceleration = 1f;
@@ -192,7 +193,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");
             playerCombatManager.SetAnimationCancelebleTrue();
-
         }
     }
 
@@ -214,7 +214,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             PlayerAnimator.SetFloat("X", 0);
         }
         RotatePlayerToTarget();
-
     }
 
     private void HandleAttack()
@@ -225,48 +224,43 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             playerState.SetMoveState(MoveState.Idling);
             playerCombatManager.SetAnimationCancelebleTrue();
-
+            if (AttackCharged)
+            {
+                AttackCharged = false;
+            }
         }
 
-        if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0)
+        if (playerCombatManager.canCharge && playerCombatManager.fullyCharged) // if you can charge attack and you are fully charged, do a charge attack
+        {
+            PlayerAnimator.SetBool("IsCharged", true);
+            PlayerAnimator.SetTrigger("ChargeAttack");
+            playerCombatManager.DisableCanCharge();
+            playerCombatManager.FullyChargedFalse();
+            AttackCharged = true;
+        }
+        else if (playerCombatManager.canCharge && !playerLocomotionInput.AttackCharging) // if you can charge attack, and you are not charging, but you can charge, do a charge attack but not fully charged
+        {
+            PlayerAnimator.SetBool("IsCharged", false);
+            PlayerAnimator.SetTrigger("ChargeAttack");
+            playerCombatManager.fullyCharged = false;
+            playerCombatManager.DisableCanCharge();
+            playerCombatManager.FullyChargedFalse();
+        }
+        else if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
             playerCombatManager.currentAction = StaminaAction.lightAttack;
-            
-            if (playerCombatManager.canCombo == true)
+
+            if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
             {
                 PlayerAnimator.SetTrigger("IsCombo");
                 playerCombatManager.canCombo = false;
             }
-            else if (animCancelable)
+            else if (animCancelable) // otherwise if you can do a normal attack, do a normal attack
             {
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
-
             }
         }
-
-        //if (playerLocomotionInput.AttackPressed && animCanceleble)
-        //{
-        //    bool success = staminaController.UseStamina(StaminaController.StaminaAction.lightAttacking);
-
-        //    if (!success)
-        //    {
-        //        return;
-        //    }
-        //    playerState.SetMoveState(MoveState.Attacking);
-        //    PlayerAnimator.SetTrigger("LightAttack");
-        //}
-        //else if (playerLocomotionInput.AttackPressed && playerCombatManager.canCombo == true)
-        //{
-        //    bool success = staminaController.UseStamina(StaminaController.StaminaAction.lightAttacking);
-
-        //    if (!success)
-        //    {
-        //        return;
-        //    }
-        //    PlayerAnimator.SetTrigger("IsCombo");
-        //    playerCombatManager.canCombo = false;
-        //}
     }
 
     private void HandleKnockback()
@@ -355,8 +349,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (animCancelable)
         {
-
-
             bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
 
             MoveState targetState;
@@ -380,7 +372,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
 
             playerState.SetMoveState(targetState);
-
         }
     }
     private void HandleVerticalMovement()
@@ -416,7 +407,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
-        Debug.Log($"Applying knockback with force {force} and radius {radius} from position {pos}");
+        //Debug.Log($"Applying knockback with force {force} and radius {radius} from position {pos}");
         float calculatedForce = (force * 3) * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         ExplotionInfront = Vector3.Dot(knockbackDirection, transform.forward.normalized) > 0;

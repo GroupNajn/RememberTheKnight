@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-
-
     [SerializeField] GameObject currentRightHandWeapon;
     [SerializeField] GameObject currentLeftHandWeapon;
 
