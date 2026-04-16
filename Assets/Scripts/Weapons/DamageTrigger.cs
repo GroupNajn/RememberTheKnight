@@ -6,16 +6,58 @@ public class DamageTrigger : MonoBehaviour
 {
     // Made by Lukas and Anton B 2026-03-06
     // Updated by Lukas and Anton A 2026-03-16
+    // Updated by Jonathan  2026-04-16
 
     WeaponData weaponData;
-    float damageAmount;
+    float damageAmount
+    {
+        get
+        {
+            if (combatManager.lastAttackAction == StaminaAction.lightAttack)
+                return weaponData.BaseDamage;
+
+            else return weaponData.HeavyDamage;
+        }
+        set { }
+    }
+    float chargedDamageBonus
+    {
+        get
+        {
+            if (combatManager.lastAttackAction == StaminaAction.heavyAttack)
+                return weaponData.ChargedDamageBonus;
+
+            else return weaponData.HeavyChargedDamage;
+        }
+        set { }
+    }
+    //float damageAmount
+    //{
+    //    get
+    //    {
+    //        if (playerLocomotion.AttackPressed)
+    //            return weaponData.BaseDamage;
+
+    //        else return weaponData.HeavyDamage;
+    //    }
+    //    set { }
+    //}
+    //float chargedDamageBonus
+    //{
+    //    get
+    //    {
+    //        if (playerLocomotion.AttackPressed)
+    //            return weaponData.ChargedDamageBonus;
+
+    //        else return weaponData.HeavyChargedDamage;
+    //    }
+    //    set { }
+    //}
+    //float chargedDamageBonus;
     GameObject player;
     PlayerController playerController;
-    Animator playerAnimator;
     PlayerCombatManager combatManager;
-
-    private int chargedHash = Animator.StringToHash("ChargedAttack");
-
+    PlayerLocomotion playerLocomotion;
 
 
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
@@ -24,16 +66,18 @@ public class DamageTrigger : MonoBehaviour
     {
         weaponData = GetComponent<WeaponStats>().WeaponData;
         player = GameObject.FindGameObjectWithTag("Player");
-        playerAnimator = player.GetComponent<Animator>();
         playerController = player.GetComponent<PlayerController>();
         combatManager = player.GetComponent<PlayerCombatManager>();
+        playerLocomotion = player.GetComponent<PlayerLocomotion>();
         if (weaponData != null)
         {
-            damageAmount = weaponData.BaseDamage;
+            //damageAmount = weaponData.BaseDamage;
+            //chargedDamageBonus = weaponData.ChargedDamageBonus;
         }
         else
         {
             damageAmount = 999;
+            chargedDamageBonus = 0;
         }
     }
 
@@ -50,14 +94,19 @@ public class DamageTrigger : MonoBehaviour
 
         if (damageable != null && damagedObjects.Add(damageable))
         {
-
-            if (other.gameObject != player && playerController.AttackCharged) // stamina gain if hit with a charged attack
-            {
-                combatManager.GainStamina(50);
-                playerController.AttackCharged = false;
-            }
-
             Vector3 contactPoint = other.ClosestPoint(transform.position);
+
+            if (other.gameObject != player) // stamina gain if hit with a charged attack
+            {
+                if (playerController.AttackCharged)
+                {
+                    combatManager.GainStamina(30);
+                    playerController.AttackCharged = false;
+                    damageable.TakeDamage(damageAmount + chargedDamageBonus, contactPoint);
+                    return;
+                }
+
+            }
 
             damageable.TakeDamage(damageAmount, contactPoint);
         }

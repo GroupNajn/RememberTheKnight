@@ -9,6 +9,7 @@ public enum StaminaAction
 }
 public class PlayerCombatManager : MonoBehaviour
 {
+    //Updated by Jonathan 2026-04-16
     public static PlayerCombatManager Instance { get; private set; }
 
     Animator animator;
@@ -23,13 +24,14 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] public bool animationCanceleble = true;
 
     [SerializeField] public StaminaAction currentAction;
+    [SerializeField] public StaminaAction lastAttackAction;
 
     public Dictionary<StaminaAction, float> StaminaCostBasedOnAction = new Dictionary<StaminaAction, float>()
     {
         {StaminaAction.Sprint, 5 },
         {StaminaAction.Dodge, 20 },
         {StaminaAction.lightAttack, 5 },
-        {StaminaAction.heavyAttack, 15 }
+        {StaminaAction.heavyAttack, 25 }
 
     };
 
@@ -53,6 +55,13 @@ public class PlayerCombatManager : MonoBehaviour
 
     }
 
+    public void SetStaminaState(StaminaAction action)
+    {
+               currentAction = action;
+        if(action == StaminaAction.lightAttack || action == StaminaAction.heavyAttack)
+            lastAttackAction = action;
+    }
+
     public void EnableInvulnerable()
     {
         isInvulnerable = true;
@@ -69,7 +78,6 @@ public class PlayerCombatManager : MonoBehaviour
     public void EnableCanCombo()
     {
         canCombo = true;
-
     }
 
     public void DisableCanCombo()
@@ -109,12 +117,11 @@ public class PlayerCombatManager : MonoBehaviour
     public void SetAnimationCancelebleFalse()
     {
         animationCanceleble = false;
-    }
+    } 
     public void SetAnimationCancelebleTrue()
     {
         animationCanceleble = true;
     }
-
 
     public void DrainStamina()
     {

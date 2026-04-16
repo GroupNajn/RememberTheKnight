@@ -21,6 +21,8 @@ public class PlayerLocomotion : MonoBehaviour
     public bool PickUpPressed { get; private set; }
     public bool AttackPressed { get; private set; }
     public bool AttackCharging = false;
+    public bool HeavyAttackPressed { get; private set; }
+    public bool HeavyAttackCharging = false;
 
 
 
@@ -42,6 +44,7 @@ public class PlayerLocomotion : MonoBehaviour
         //movment
         DodgePressed = false;
         AttackPressed = false;
+        HeavyAttackPressed = false;
 
         //camera
         //ScrollInput = Vector2.zero;
@@ -99,7 +102,7 @@ public class PlayerLocomotion : MonoBehaviour
     //    }
     //}
 
-    public void OnAttacking(InputValue value)
+    public void OnAttack(InputValue value)
     {
         if (value.isPressed)
             AttackPressed = true;
@@ -107,11 +110,12 @@ public class PlayerLocomotion : MonoBehaviour
         AttackCharging = value.isPressed;
         //Debug.Log("ATTACK VALUE: " + value.isPressed);
     }
-    void Update()
+    public void OnHeavyAttack(InputValue value)
     {
-        if (AttackPressed)
-        {
-            //Debug.Log("Holding attack");
-        }
+        if (value.isPressed)
+            HeavyAttackPressed = true;
+
+        AttackCharging = value.isPressed;
+        //Debug.Log("HEAVY ATTACK VALUE: " + value.isPressed);
     }
 }
