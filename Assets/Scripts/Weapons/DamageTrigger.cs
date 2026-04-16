@@ -39,6 +39,13 @@ public class DamageTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        PlayerStates check = this.gameObject.GetComponentInParent<PlayerStates>();
+        if (check && other.gameObject == player)// prevent damaging self with own weapon
+        {
+            Debug.Log($"Prevented damage from: {check.gameObject}, to: {other.gameObject}");
+            return;
+        }
+
         IDamageable damageable = other.gameObject.GetComponentInParent<IDamageable>();
 
         if (damageable != null && damagedObjects.Add(damageable))
