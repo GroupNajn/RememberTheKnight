@@ -16,6 +16,9 @@ public class PlayerCombatManager : MonoBehaviour
 
     [SerializeField] public bool isInvulnerable = false;
     [SerializeField] public bool canCombo = false;
+    [SerializeField] public bool canCharge = false;
+    [SerializeField] public bool fullyCharged = false;
+    //[SerializeField] public bool Charging= false;
     [SerializeField] public bool isAttackRotationSpeed = false;
     [SerializeField] public bool animationCanceleble = true;
 
@@ -74,6 +77,25 @@ public class PlayerCombatManager : MonoBehaviour
         canCombo = false;
     }
 
+    public void EnableCanCharge()
+    {
+        canCharge = true;
+    }
+    public void DisableCanCharge() 
+    {
+        canCharge = false;
+    }
+
+    public void FullyChargedTrue()
+    {
+        fullyCharged = true; 
+    }
+    public void FullyChargedFalse() 
+    {
+        fullyCharged = false;
+    }
+
+
     public void SetAttackRotationSpeed()
     {
         isAttackRotationSpeed = true;
@@ -108,7 +130,7 @@ public class PlayerCombatManager : MonoBehaviour
 
             staminaRegenTime = 0;
 
-            Debug.Log($"stamina drain {staminaCost}");
+           // Debug.Log($"stamina drain {staminaCost}");
 
         }
     }
@@ -131,5 +153,14 @@ public class PlayerCombatManager : MonoBehaviour
 
             playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
         }
+    }
+
+    public void GainStamina(float amount)
+    {
+        Debug.Log($"Gained {amount} stamina.");
+        playerStats.currentStamina += amount;
+        if (playerStats.currentStamina > playerStats.maxStamina)
+            playerStats.currentStamina = playerStats.maxStamina;
+        playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
     }
 }

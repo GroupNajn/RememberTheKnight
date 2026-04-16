@@ -17,11 +17,19 @@ public enum MoveState
 public class PlayerStates : MonoBehaviour
 {
     [field: SerializeField] public MoveState CurrentMoveState { get; private set; } = MoveState.Idling;
+    GameObject player;
+    PlayerController playerController;
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+    }
 
     public bool IsGrounded;
     public void SetMoveState(MoveState playerMovementState)
     {
         CurrentMoveState = playerMovementState;
+       // playerController.AttackCharged = false;
     }
     public bool InActionState()
     {
