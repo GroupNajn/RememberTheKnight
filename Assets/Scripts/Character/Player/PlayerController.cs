@@ -156,12 +156,12 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             {
                 dodgeCoolDownRemaining = playerStats.dodgeCoolDown;
 
-                playerCombatManager.currentAction = StaminaAction.Dodge;
+                playerCombatManager.SetStaminaState(StaminaAction.Dodge);
                 playerCombatManager.DrainStamina();
 
             }
             playerCombatManager.SetAnimationCancelebleFalse();
-            playerCombatManager.currentAction = StaminaAction.Dodge;
+            playerCombatManager.SetStaminaState(StaminaAction.Dodge);
         }
 
         if (dodgeCoolDownRemaining > 0)
@@ -248,7 +248,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
         else if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            playerCombatManager.currentAction = StaminaAction.lightAttack;
+            playerCombatManager.SetStaminaState(StaminaAction.lightAttack);
+
 
             if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
             {
@@ -259,6 +260,22 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             {
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
+            }
+        }
+
+        if (playerLocomotionInput.HeavyAttackPressed && playerStats.currentStamina > 0) // if you can attack 
+        {
+            playerCombatManager.SetStaminaState(StaminaAction.heavyAttack);
+
+            if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
+            {
+                PlayerAnimator.SetTrigger("IsCombo");
+                playerCombatManager.canCombo = false;
+            }
+            else if (animCancelable) // otherwise if you can do a normal attack, do a normal attack
+            {
+                playerState.SetMoveState(MoveState.Attacking);
+                PlayerAnimator.SetTrigger("HeavyAttack");  
             }
         }
     }
@@ -360,7 +377,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
             else if (wantsToSprint && playerStats.currentStamina >= 0)
             {
-                playerCombatManager.currentAction = StaminaAction.Sprint;
+                playerCombatManager.SetStaminaState(StaminaAction.Sprint);
                 targetState = MoveState.Sprinting;
 
                 playerCombatManager.DrainStamina();

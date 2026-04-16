@@ -9,6 +9,10 @@ public class WeaponData : ScriptableObject
 
     [Header("Weapon Stats")]
     [SerializeField] public float BaseDamage = 1f;
+    [SerializeField] public float ChargedDamageBonus = 1f;
+
+    [SerializeField] public float HeavyDamage = 1f;
+    [SerializeField] public float HeavyChargedDamage = 1f;
 
     [Header("SFX")]
     public AudioClip[] whooshes;
