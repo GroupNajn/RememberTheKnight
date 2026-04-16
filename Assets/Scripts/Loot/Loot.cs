@@ -7,7 +7,7 @@ public class Loot : MonoBehaviour, IPickupable
 {
     [SerializeField] private float weight = 5.0f;
     [SerializeField] private float pickUpDelay;
-    [SerializeField] private string itemName;
+    [field: SerializeField] public string itemName { get;  private set;}
 
     [SerializeField] private Tier tier = Tier.Common;
     public Tier Tier => tier;
@@ -15,7 +15,8 @@ public class Loot : MonoBehaviour, IPickupable
     [SerializeField] private PickableState pickable = PickableState.NotPickable;
 
     [Header("Card Data")]
-    [SerializeField] ScriptableObject lootData;
+    [field:SerializeField] public ScriptableObject lootData { get; private set; }
+
 
 
 
@@ -82,6 +83,6 @@ public class Loot : MonoBehaviour, IPickupable
         //Debug.Log($"You picked up {itemName}");
 
         Destroy(gameObject);
-        Event_System.instance?.OnLootPickedUp.Invoke();
+        Event_System.instance?.OnLootPickedUp.Invoke(this);
     }
 }

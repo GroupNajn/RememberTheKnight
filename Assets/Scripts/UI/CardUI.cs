@@ -1,5 +1,8 @@
 using UnityEngine;
 
+
+
+// Script Updated by Henric 2026-04-17
 public class CardUI : MonoBehaviour
 {
     [field: SerializeField] public bool IsSelected { get; private set; }
@@ -23,7 +26,12 @@ public class CardUI : MonoBehaviour
     void Start()
     {
         startRotation = transform.localRotation;
+        IsSelected = false;
     }
+    // Added IsSelected = false becuase the first time the card is started via 
+    // UIManager it is set to false to default to that, once it's state has been updated once during the game.
+    // It will no longe be reset to false. 
+    
 
     private void Update()
     {

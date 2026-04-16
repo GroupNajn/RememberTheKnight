@@ -98,8 +98,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
         Health = MaxHealth;
         currentStamina = maxStamina;
-        Debug.Log(Health);
-        Debug.Log(maxStamina);
 
     }
 
