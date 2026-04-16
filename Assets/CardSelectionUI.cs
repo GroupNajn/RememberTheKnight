@@ -2,30 +2,29 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
-using UnityEngine.Rendering;
 using System.Collections.Generic;
-using Unity.Multiplayer.Center.Common;
 
+
+// Script made by Wilmer some day in april // Henric
+// Script Updated by Henric 2026-04-17
+// Comments added during -> 2026-04-17 session.
 public class CardSelectionUI : MonoBehaviour
 {
-    PlayerInput playerInput;
-    UIManager uiManager;
+    private PlayerInput playerInput;
+    private UIManager uiManager;
 
-    [SerializeField] ScrollRect cardScrollRect;
-    [SerializeField] float ScrollAmount;
+    [SerializeField] private ScrollRect cardScrollRect;
+    [SerializeField] private float scrollAmount;
 
-    [SerializeField] int maxCardsSelected = 4;
-    [SerializeField] int currentCardsSelected = 0;
-    [SerializeField] TextMeshProUGUI errorText;
+    [SerializeField] private int maxCardsSelected = 4;
+    [SerializeField] private TextMeshProUGUI errorText;
 
-    List<CardData> SelectedList = new List<CardData>();
-
+    public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
+    public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
-    bool fading = false;
-    bool errorActive = false;
+    private bool errorActive = false;
 
     private void Start()
     {
@@ -37,90 +36,107 @@ public class CardSelectionUI : MonoBehaviour
 
         errorText.gameObject.SetActive(false);
 
-
         uiManager.CloseCardSelectUI();
-
-
     }
 
     private void OnEnable()
     {
-        List<CardUI> tempCards = new List<CardUI>();   
-        foreach (Button button in GetComponentsInChildren<Button>())
+        RebuildSelectionState();
+    }
+
+    private void OnDisable()
+    {
+        errorText.gameObject.SetActive(false);
+        errorActive = false;
+        errorTimer = 0f;
+        errorText.alpha = 1f;
+    }
+
+    // Method to reset the state of selectes cards. Resets the list, to later check each
+    // Button to potentially re-add them to their respective list, since their boolean 
+    // is still active inside of the class. 
+    private void RebuildSelectionState()
+    {
+        selectedCards.Clear();
+        selectedCardData.Clear();
+
+        foreach (Button button in GetComponentsInChildren<Button>(true))
         {
             CardUI card = button.GetComponent<CardUI>();
-            if(card == null) continue;
-            tempCards.Add(card);
-            
+            if (card == null || card.cardData == null)
+                continue;
 
-
-            //card.SetSelected(SelectedList.Contains(card.cardData));
-
+            if (card.IsSelected)
+            {
+                if (selectedCards.Count < maxCardsSelected)
+                {
+                    selectedCards.Add(card);
+                    selectedCardData.Add(card.cardData);
+                }
+                else
+                {
+                    card.SetSelected(false);
+                }
+            }
         }
     }
 
     public void OnArrowUp()
     {
-        cardScrollRect.verticalNormalizedPosition += ScrollAmount;
+        cardScrollRect.verticalNormalizedPosition += scrollAmount;
     }
 
     public void OnArrowDown()
     {
-        cardScrollRect.verticalNormalizedPosition -= ScrollAmount;
+        cardScrollRect.verticalNormalizedPosition -= scrollAmount;
     }
 
+    // If a button is pressed and is active, set to to false, otherwise set it to active.
+    // Some if statements inside of the method to check if the selectedCard list is not at its 4 card select limit.
     public void OnCardSelect(Button button)
     {
         CardUI card = button.GetComponent<CardUI>();
+        if (card == null || card.cardData == null)
+            return;
 
         if (card.IsSelected)
         {
             card.SetSelected(false);
-            SelectedList.Remove(card.cardData);
-            currentCardsSelected--;
-            Debug.Log("Card Deselected 123");
+            selectedCards.Remove(card);
+            selectedCardData.Remove(card.cardData);
+            Debug.Log("Card Deselected");
             return;
         }
 
-        if (currentCardsSelected >= maxCardsSelected)
+        if (selectedCards.Count >= maxCardsSelected)
         {
             if (!errorActive)
-            {
                 ShowError($"You can only select {maxCardsSelected} cards!", 5f);
-            }
 
             return;
         }
 
-        if (!card.IsSelected)
-        {
-            card.SetSelected(true);
-            SelectedList.Add(card.cardData);
-            currentCardsSelected++;
-            return;
-        }
-
+        card.SetSelected(true);
+        selectedCards.Add(card);
+        selectedCardData.Add(card.cardData);
     }
 
+    // Confirm the selected cards and send a delegate event to the Event_System of which selectes cards
+    // With the cardData list as a parameter. 
     public void OnConfirmSelection()
     {
-        if (currentCardsSelected == 0)
+        if (selectedCards.Count == 0)
         {
             if (!errorActive)
-            {
                 ShowError("You must select at least one card!", 5f);
-            }
+
             return;
         }
 
-        // LÄS IM VILKA SOM ÄR SELECTED 
-        // APPLY EVENT FÖR SPELAREN
-
-        
-        Event_System.instance.OnStatsApplied?.Invoke(SelectedList);
-
+        Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
         uiManager.CloseCardSelectUI();
     }
+
     private void Update()
     {
         if (!errorActive) return;
@@ -129,17 +145,15 @@ public class CardSelectionUI : MonoBehaviour
 
         if (errorTimer <= fadeDuration)
         {
-            fading = true;
-
             float alpha = Mathf.Clamp01(errorTimer / fadeDuration);
             errorText.alpha = alpha;
         }
+
 
         if (errorTimer <= 0f)
         {
             errorText.gameObject.SetActive(false);
             errorActive = false;
-            fading = false;
             errorText.alpha = 1f;
         }
     }
@@ -147,7 +161,7 @@ public class CardSelectionUI : MonoBehaviour
     private void ShowError(string message, float duration)
     {
         errorText.text = message;
-        fadeDuration = duration * 0.25f; // Fade out over the last 25% of the duration
+        fadeDuration = duration * 0.25f;
         errorText.alpha = 1f;
         errorText.gameObject.SetActive(true);
         errorActive = true;
