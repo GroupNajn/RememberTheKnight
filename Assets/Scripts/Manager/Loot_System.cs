@@ -10,18 +10,18 @@ public class Loot_System : MonoBehaviour
 
     void Start()
     {
-        if(Event_System.instance != null)
+        if (Event_System.instance != null)
         {
-        Event_System.instance.OnLootPickedUp += IncreaseSouls;
+            Event_System.instance.OnLootPickedUp += IncreaseSouls;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
     }
 
     private void OnDisable()
     {
-        if(Event_System.instance != null)
+        if (Event_System.instance != null)
         {
-        Event_System.instance.OnLootPickedUp -= IncreaseSouls;
+            Event_System.instance.OnLootPickedUp -= IncreaseSouls;
         }
     }
 
@@ -29,17 +29,18 @@ public class Loot_System : MonoBehaviour
 
     void Update()
     {
-        
+
     }
+
 
 
     public void IncreaseSouls(Loot loot)
     {
-        if(loot.lootData == null)
+        if (loot.lootData == null)
         {
-        Souls_Collected += 1;
+            Souls_Collected += 1;
             canvasTextScript.SetSoulsAmount(Souls_Collected);
-        Debug.Log($"Souls Collected: {Souls_Collected}");
+            Debug.Log($"Souls Collected: {Souls_Collected}");
         }
     }
 

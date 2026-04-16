@@ -26,6 +26,7 @@ public class CardSelectionUI : MonoBehaviour
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
 
+
     private void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
