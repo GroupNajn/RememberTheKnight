@@ -10,9 +10,11 @@ public class GlobalSceneManager : MonoBehaviour
     public static GlobalSceneManager Instance { get; private set; }
 
     Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();
+    HashSet<string> loadingScenes = new HashSet<string>();
 
     Animator transitionAnimator;
     bool useTransition;
+    bool isTransitioning;
 
     private void Awake()
     {
@@ -51,6 +53,7 @@ public class GlobalSceneManager : MonoBehaviour
             return;
         }
 
+        loadingScenes.Add(sceneName);
         StartCoroutine(LoadSceneAsync(sceneName));
     }
 
@@ -71,6 +74,8 @@ public class GlobalSceneManager : MonoBehaviour
         }
 
         pendingLoads[sceneName] = asyncLoad;
+
+        loadingScenes.Remove(sceneName);
     }
 
     public void ActivateSceneNoTransition(string sceneName)
@@ -97,7 +102,7 @@ public class GlobalSceneManager : MonoBehaviour
         {
             if (useTransition)
             {
-                transitionAnimator.SetTrigger("FadeToBlack");
+                StartCoroutine(TransitionToScene(sceneName, null));
             }
 
             SceneManager.SetActiveScene(scene);
@@ -110,7 +115,7 @@ public class GlobalSceneManager : MonoBehaviour
         {
             if (useTransition)
             {
-                transitionAnimator.SetTrigger("FadeToBlack");
+                StartCoroutine(TransitionToScene(sceneName, asyncLoad));
             }
 
             StartCoroutine(ActivatePendingLoad(sceneName, asyncLoad));
@@ -121,10 +126,73 @@ public class GlobalSceneManager : MonoBehaviour
 
         if (useTransition)
         {
-            transitionAnimator.SetTrigger("FadeToBlack");
+            StartCoroutine(TransitionToScene(sceneName, asyncLoad));
         }
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    IEnumerator TransitionToScene(string sceneName, AsyncOperation pendingAsyncOp)
+    {
+        if (isTransitioning)
+        {
+            yield break;
+        }
+
+        isTransitioning = true;
+
+        // 1) Fade to black
+        yield return StartCoroutine(FadeToBlack());
+
+        Scene targetScene = SceneManager.GetSceneByName(sceneName);
+
+        // 2) Activate or load scene
+        if (pendingAsyncOp != null)
+        {
+            pendingAsyncOp.allowSceneActivation = true;
+            while (!pendingAsyncOp.isDone)
+            {
+                yield return null;
+            }
+            pendingLoads.Remove(sceneName);
+
+            while (!targetScene.isLoaded)
+            {
+                yield return null;
+            }
+        }
+
+        SceneManager.SetActiveScene(targetScene);
+
+        // 3) Unload old scene
+        yield return StartCoroutine(UnloadOtherScenes(targetScene));
+
+        // 4) Invoke event system
+        Event_System.instance.OnLoadScenes.Invoke();
+
+        // 5) Fade from black
+        yield return StartCoroutine(FadeFromBlack());
+
+        isTransitioning = false;
+    }
+
+    IEnumerator UnloadOtherScenes(Scene activeScene)
+    {
+        int count = SceneManager.sceneCount;
+        List<Scene> scenes = new List<Scene>();
+
+        for (int i = 0; i < count; i++)
+        {
+            scenes.Add(SceneManager.GetSceneAt(i));
+        }
+
+        foreach (Scene scene in scenes)
+        {
+            if (scene != activeScene && scene.IsValid() && scene.isLoaded)
+            {
+                yield return StartCoroutine(UnloadSceneAsync(scene));
+            }
+        }
     }
 
     //IEnumerator LoadSceneWithTransition(string sceneName)
@@ -141,6 +209,13 @@ public class GlobalSceneManager : MonoBehaviour
         if (asyncOperation == null)
         {
             yield break;
+        }
+
+        if (useTransition)
+        {
+            StartCoroutine(FadeToBlack());
+            yield return null;
+            yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length);
         }
 
         asyncOperation.allowSceneActivation = true;
@@ -167,18 +242,18 @@ public class GlobalSceneManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Scene loaded " + scene.name);
-        if (transitionAnimator)
-        {
-            if (useTransition)
-            {
-                StartCoroutine(FadeOut());
-            }
-        }
-        else
-        {
-            Debug.Log("transitionAnimator is null, if this is not when starting the game, this is a problem");
-        }
+        //Debug.Log("Scene loaded " + scene.name);
+        //if (transitionAnimator)
+        //{
+        //    if (useTransition)
+        //    {
+        //        StartCoroutine(FadeFromBlack());
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("transitionAnimator is null, if this is not when starting the game, this is a problem");
+        //}
     }
 
     private void OnActiveSceneChanged(Scene previousScene, Scene newScene)
@@ -186,9 +261,9 @@ public class GlobalSceneManager : MonoBehaviour
         Debug.Log($"Activated scene {newScene} from {previousScene}");
         if (transitionAnimator != null)
         {
-            if (useTransition)
+            if (!isTransitioning && useTransition)
             {
-                StartCoroutine(FadeOut());
+                StartCoroutine(FadeFromBlack());
             }
         }
         else
@@ -201,21 +276,21 @@ public class GlobalSceneManager : MonoBehaviour
         //    StartCoroutine(UnloadSceneAsync(previousScene)); 
         //}
 
-        int count = SceneManager.sceneCount;
-        List<Scene> scenes = new List<Scene>();
+        //int count = SceneManager.sceneCount;
+        //List<Scene> scenes = new List<Scene>();
+        
+        //for (int i = 0; i < count; i++)
+        //{
+        //    scenes.Add(SceneManager.GetSceneAt(i));
+        //}
 
-        for (int i = 0; i < count; i++)
-        {
-            scenes.Add(SceneManager.GetSceneAt(i));
-        }
-
-        foreach (Scene scene in scenes)
-        {
-            if (scene != newScene && scene.IsValid() && scene.isLoaded)
-            {
-                StartCoroutine(UnloadSceneAsync(scene)); 
-            }
-        }
+        //foreach (Scene scene in scenes)
+        //{
+        //    if (scene != newScene && scene.IsValid() && scene.isLoaded)
+        //    {
+        //        StartCoroutine(UnloadSceneAsync(scene)); 
+        //    }
+        //}
     }
 
     IEnumerator UnloadSceneAsync(Scene scene)
@@ -240,9 +315,20 @@ public class GlobalSceneManager : MonoBehaviour
         Debug.Log("asyncUnload is done");
     }
 
-    IEnumerator FadeOut()
+    IEnumerator FadeToBlack()
     {
+        transitionAnimator.SetTrigger("FadeToBlack");
+        yield return null;
+        yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
+        Event_System.instance.OnLoadScenes.Invoke();
+        Debug.Log("Faded to black");
+    }
+
+    IEnumerator FadeFromBlack()
+    {
+        Debug.Log("Fading from black");
         transitionAnimator.SetTrigger("FadeFromBlack");
+        yield return null;
         yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
         // Add event to trigger when the fade-out animation is complete, if needed
     }

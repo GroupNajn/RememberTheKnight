@@ -16,6 +16,6 @@ public class ProgressionPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Event_System.instance.OnLoadScenes.Invoke();
+        //Event_System.instance.OnLoadScenes.Invoke();
     }
 }

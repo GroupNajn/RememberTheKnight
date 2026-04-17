@@ -33,7 +33,6 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
