@@ -20,7 +20,7 @@ public class Event_System : MonoBehaviour
     public Action OnPlayerDeath;
     public Action OnWin;
     public Action<List<CardData>> OnStatsApplied;
-
+    public Action OnLoadScenes;
 
     /*
      * 

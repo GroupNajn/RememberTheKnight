@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,6 +34,14 @@ public class GlobalSceneManager : MonoBehaviour
     private void Start()
     {
         transitionAnimator.ResetTrigger("FadeFromBlack");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Event_System.instance.OnLoadScenes.Invoke();
+        } 
     }
 
     public void LoadScene(string sceneName)

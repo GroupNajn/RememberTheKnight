@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable
@@ -10,11 +11,17 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
     {
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
-        GlobalSceneManager.Instance.LoadScene(sceneName);
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
+        //GlobalSceneManager.Instance.LoadScene(sceneName);
     }
 
     public void Interact()
     {
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
+    }
+
+    private void OnLoadScenes()
+    {
+        GlobalSceneManager.Instance.LoadScene(sceneName);
     }
 }
