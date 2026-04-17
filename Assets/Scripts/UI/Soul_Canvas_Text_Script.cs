@@ -17,10 +17,8 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
        
     }
 
-
     public void SetSoulsAmount(int souls)
     {
-
         tmp.text = souls.ToString();
     }
 

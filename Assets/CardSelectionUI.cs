@@ -130,7 +130,7 @@ public class CardSelectionUI : MonoBehaviour
         {
             if (!errorActive)
                 ShowError("You must select at least one card!", 5f);
-
+            uiManager.CloseCardSelectUI();
             return;
         }
 
