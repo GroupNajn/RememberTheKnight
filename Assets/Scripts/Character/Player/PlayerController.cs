@@ -70,9 +70,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     public bool isKnockedback { get; private set; } = false;
     public Vector3 knockbackForce = Vector3.zero;
     private bool ExplotionInfront;
-
-    [Header("Stamina")]
-    StaminaController staminaController;
     #endregion
 
 
@@ -84,7 +81,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         playerCombatManager = PlayerCombatManager.Instance;
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
-        staminaController = GetComponent<StaminaController>();
     }
 
     private void Update()
