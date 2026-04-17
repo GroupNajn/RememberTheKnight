@@ -12,6 +12,8 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     private Collider interactCollider;
     [SerializeField] bool isExpended;
     private int currentSoulCollect;
+
+    public string InfoString { get; private set; } = null;
     void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();

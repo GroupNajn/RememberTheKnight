@@ -22,7 +22,6 @@ public class Event_System : MonoBehaviour
     public Action<List<CardData>> OnStatsApplied;
     public Action<int> OnSoulsSpent;
 
-
     /*
      * 
      * Managers need to be initialized via Awake to get priority,
