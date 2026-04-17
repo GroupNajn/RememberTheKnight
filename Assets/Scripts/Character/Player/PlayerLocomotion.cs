@@ -21,7 +21,7 @@ public class PlayerLocomotion : MonoBehaviour
     public bool HeavyAttackPressed { get; private set; }
     public bool HeavyAttackCharging = false;
     #endregion
-    private void LateUpdate()
+    private void LateUpdate() 
     {
         //movment
         DodgePressed = false;
