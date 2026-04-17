@@ -5,7 +5,7 @@ using UnityEngine;
 // Script made by Henric 2026-04-16
 public class Loot_System : MonoBehaviour
 {
-    [SerializeField] int Souls_Collected = 0;
+    [field: SerializeField] public int currentSoulCount { get; private set; } = 0;
     [SerializeField] CardData[] selectedCards = new CardData[4];
     private Soul_Canvas_Text_Script canvasTextScript;
     private readonly Dictionary<int, Loot> soulsCollected = new Dictionary<int, Loot>();
@@ -20,6 +20,7 @@ public class Loot_System : MonoBehaviour
         if (Event_System.instance != null)
         {
             Event_System.instance.OnLootPickedUp += IncreaseSouls;
+            Event_System.instance.OnSoulsSpent += ConsumeSouls;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
     }
@@ -29,6 +30,7 @@ public class Loot_System : MonoBehaviour
         if (Event_System.instance != null)
         {
             Event_System.instance.OnLootPickedUp -= IncreaseSouls;
+            Event_System.instance.OnSoulsSpent -= ConsumeSouls;
         }
         soulsCollected.Clear();
     }
@@ -38,6 +40,13 @@ public class Loot_System : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void ConsumeSouls(int souls)
+    {
+        currentSoulCount -= souls;
+        canvasTextScript.SetSoulsAmount(currentSoulCount);
+        Debug.Log($"Current Soul Count: {currentSoulCount}");
     }
 
 
@@ -52,9 +61,9 @@ public class Loot_System : MonoBehaviour
 
         if (loot.lootData == null)
         {
-            Souls_Collected += 1;
-            canvasTextScript.SetSoulsAmount(Souls_Collected);
-            Debug.Log($"Souls Collected: {Souls_Collected}");
+            currentSoulCount += 1;
+            canvasTextScript.SetSoulsAmount(currentSoulCount);
+            Debug.Log($"Souls Collected: {currentSoulCount}");
         }
     }
 }
