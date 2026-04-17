@@ -15,6 +15,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     Animator animator;
     PlayerStats playerStats;
+    PlayerManager playerManager;
     PlayerController playerController;
 
     [SerializeField] public bool isInvulnerable = false;
@@ -55,6 +56,7 @@ public class PlayerCombatManager : MonoBehaviour
 
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
+        playerManager = GetComponent<PlayerManager> ();
         playerController = GetComponent<PlayerController>();
     }
 
@@ -153,7 +155,7 @@ public class PlayerCombatManager : MonoBehaviour
                 staminaCost *= Time.deltaTime;
 
             playerStats.currentStamina -= staminaCost;
-            playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+            playerManager.onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
 
             staminaRegenTime = 0;
 
@@ -178,7 +180,7 @@ public class PlayerCombatManager : MonoBehaviour
             if (playerStats.currentStamina > playerStats.maxStamina)
                 playerStats.currentStamina = playerStats.maxStamina;
 
-            playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+            playerManager.onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
         }
     }
 
@@ -188,6 +190,6 @@ public class PlayerCombatManager : MonoBehaviour
         playerStats.currentStamina += amount;
         if (playerStats.currentStamina > playerStats.maxStamina)
             playerStats.currentStamina = playerStats.maxStamina;
-        playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+        playerManager.onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
     }
 }
