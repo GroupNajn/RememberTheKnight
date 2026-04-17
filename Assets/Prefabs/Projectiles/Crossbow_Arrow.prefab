@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 1370314625345763813}
   - component: {fileID: 2642362224450909760}
   - component: {fileID: 238542589221814922}
-  - component: {fileID: 2504070018874342655}
+  - component: {fileID: 778190378991381474}
   - component: {fileID: 2452477697918351436}
+  - component: {fileID: 6825843364255154833}
+  - component: {fileID: 256599362628247697}
   m_Layer: 7
   m_Name: Crossbow_Arrow
   m_TagString: Untagged
@@ -88,8 +90,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2504070018874342655
-MeshCollider:
+--- !u!135 &778190378991381474
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -106,10 +108,9 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2284668313668969885, guid: 74deb68836ae79341ab05690bce976c0, type: 2}
+  serializedVersion: 3
+  m_Radius: 0.085
+  m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!114 &2452477697918351436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,3 +125,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   direction: {x: 0, y: 0, z: 0}
+--- !u!114 &6825843364255154833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751765327054758751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d4bdd2780ce574f9670c37fa774fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: 36a31e000c89015409b266d7e02fc3b4, type: 2}
+--- !u!114 &256599362628247697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751765327054758751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
