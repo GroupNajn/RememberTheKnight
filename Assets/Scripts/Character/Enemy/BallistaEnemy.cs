@@ -1,45 +1,140 @@
+using System.Linq;
 using UnityEngine;
 
 public class BallistaEnemy : MonoBehaviour
 {
+    [Header("Targets")]
     [SerializeField] private Transform target;
 
     [Header("Parts")]
+    private BallistaProjectileHandler projHandler;
     [SerializeField] private Transform crossbowRoot;
     [SerializeField] private Transform crossbow;
+    [SerializeField] private Transform bow;
+    [SerializeField] private Transform arrow;
 
     [Header("Settings")]
-    [SerializeField] private float rotationSpeed = 5f;  
+    
+    [SerializeField] private float attackDelayTimer = 1f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackDuration = 3f;
     [SerializeField] private float attackRange = 10f;
+    [SerializeField] private float rotationSpeed = 5f;
+
+    private bool isAttacking = false;
+    private bool hasShot = false;
+    private bool arrowRestored = false;
+    private bool isWaitingToAttack = false;
+    private float attackTimer = 0f;
+    private float cooldownTimer = 0f;
+    private float delayTimer = 0f;
+
+    [Header("String/Arrow Positions")]
+    [SerializeField] private Vector3 bowReady;
+    [SerializeField] private Vector3 bowReleased;
+    [SerializeField] private Vector3 arrowReady;
+    [SerializeField] private Vector3 arrowReleased;
+
+    [Header("Animation")]
+    [SerializeField] private AnimationCurve attackCurve;
 
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Transform>().ToList().ForEach(transform => 
+        { 
+            if (transform.name == "Spine_02") target = transform; 
+        });
+        projHandler = GetComponent<BallistaProjectileHandler>();
     }
 
     void Update()
     {
+        cooldownTimer -= Time.deltaTime;
+
         float distance = Vector3.Distance(transform.position, target.position);
 
         if (distance <= attackRange)
         {
             AimAtPlayer();
+
+            if (!isAttacking && cooldownTimer <= 0f)
+            {
+                if (!isWaitingToAttack)
+                {
+                    isWaitingToAttack = true;
+                    delayTimer = attackDelayTimer;
+                }
+            }
+        }
+
+        if (isWaitingToAttack)
+        {
+            delayTimer -= Time.deltaTime;
+
+            if (delayTimer <= 0f)
+            {
+                isWaitingToAttack = false;
+                StartAttack();
+            }
+        }
+
+        if (isAttacking)
+        {
+            AttackPlayer();
         }
     }
     private void AimAtPlayer()
     {
         Vector3 direction = target.position - crossbowRoot.position;
 
-        Vector3 flatDirection = new Vector3(direction.x, 0f, direction.z);
-        Quaternion yawRotation = Quaternion.LookRotation(flatDirection);
-        crossbowRoot.rotation = Quaternion.Slerp(crossbowRoot.rotation, yawRotation, rotationSpeed * Time.deltaTime);
+        Vector3 horizontalDirection = new Vector3(direction.x, 0f, direction.z);
+        Quaternion rootRotation = Quaternion.LookRotation(horizontalDirection);
+        crossbowRoot.rotation = Quaternion.Slerp(crossbowRoot.rotation, rootRotation, rotationSpeed * Time.deltaTime);
 
-        Vector3 localDir = crossbowRoot.InverseTransformDirection(direction);
+        Vector3 localDirection = crossbowRoot.InverseTransformDirection(direction);
 
-        float pitchAngle = Mathf.Atan2(localDir.y, localDir.z) * Mathf.Rad2Deg;
+        float verticalAngle = Mathf.Atan2(localDirection.y, localDirection.z) * Mathf.Rad2Deg;
 
-        Quaternion pitchRotation = Quaternion.Euler(-pitchAngle, 0f, 0f);
+        Quaternion verticalRotation = Quaternion.Euler(-verticalAngle, 0f, 0f);
 
-        crossbow.localRotation = Quaternion.Slerp(crossbow.localRotation, pitchRotation, rotationSpeed * Time.deltaTime);
+        crossbow.localRotation = Quaternion.Slerp(crossbow.localRotation, verticalRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
+        attackTimer = 0f;
+    }
+
+    private void AttackPlayer()
+    {
+        attackTimer += Time.deltaTime;
+        float t = attackTimer / attackDuration;
+
+        float curveT = attackCurve.Evaluate(t);
+        curveT = Mathf.Pow(curveT, 0.8f);
+
+        bow.localPosition = Vector3.Lerp(bowReady, bowReleased, curveT);
+        arrow.localPosition = Vector3.Lerp(arrowReady, arrowReleased, curveT);
+
+        if (!hasShot && curveT >= 0.95f)
+        {
+            projHandler.Shoot();
+            hasShot = true;
+        }
+
+        if (hasShot && !arrowRestored && curveT <= 0.95f)
+        {
+            arrow.gameObject.SetActive(true);
+            arrowRestored = true;
+        }
+
+        if (t >= 1f)
+        {
+            isAttacking = false;
+            cooldownTimer = attackCooldown;
+            hasShot = false;
+            arrowRestored = false;
+        }
     }
 }
