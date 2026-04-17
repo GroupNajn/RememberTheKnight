@@ -18,10 +18,12 @@ public class CardUI : MonoBehaviour
     private RectTransform rectTransform;
     private float baseRotationZ;
 
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         baseRotationZ = rectTransform.localEulerAngles.z;
+        IsSelected = false;
     }
     void Start()
     {
