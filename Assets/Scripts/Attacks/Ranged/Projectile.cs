@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Projecile : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private bool collided;

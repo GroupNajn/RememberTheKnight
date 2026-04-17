@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class BallistaEnemy : MonoBehaviour
@@ -6,19 +7,27 @@ public class BallistaEnemy : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Header("Parts")]
-    private ProjectileHandler projHandler;
+    private BallistaProjectileHandler projHandler;
     [SerializeField] private Transform crossbowRoot;
     [SerializeField] private Transform crossbow;
     [SerializeField] private Transform bow;
     [SerializeField] private Transform arrow;
 
     [Header("Settings")]
-    private bool isAttacking = false;
-    private float attackTimer = 0f;
-
+    
+    [SerializeField] private float attackDelayTimer = 1f;
+    [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackDuration = 3f;
     [SerializeField] private float attackRange = 10f;
     [SerializeField] private float rotationSpeed = 5f;
+
+    private bool isAttacking = false;
+    private bool hasShot = false;
+    private bool arrowRestored = false;
+    private bool isWaitingToAttack = false;
+    private float attackTimer = 0f;
+    private float cooldownTimer = 0f;
+    private float delayTimer = 0f;
 
     [Header("String/Arrow Positions")]
     [SerializeField] private Vector3 bowReady;
@@ -26,22 +35,45 @@ public class BallistaEnemy : MonoBehaviour
     [SerializeField] private Vector3 arrowReady;
     [SerializeField] private Vector3 arrowReleased;
 
+    [Header("Animation")]
+    [SerializeField] private AnimationCurve attackCurve;
+
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        projHandler = GetComponent<ProjectileHandler>();
+        GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Transform>().ToList().ForEach(transform => 
+        { 
+            if (transform.name == "Spine_02") target = transform; 
+        });
+        projHandler = GetComponent<BallistaProjectileHandler>();
     }
 
     void Update()
     {
+        cooldownTimer -= Time.deltaTime;
+
         float distance = Vector3.Distance(transform.position, target.position);
 
         if (distance <= attackRange)
         {
             AimAtPlayer();
 
-            if (!isAttacking)
+            if (!isAttacking && cooldownTimer <= 0f)
             {
+                if (!isWaitingToAttack)
+                {
+                    isWaitingToAttack = true;
+                    delayTimer = attackDelayTimer;
+                }
+            }
+        }
+
+        if (isWaitingToAttack)
+        {
+            delayTimer -= Time.deltaTime;
+
+            if (delayTimer <= 0f)
+            {
+                isWaitingToAttack = false;
                 StartAttack();
             }
         }
@@ -79,18 +111,30 @@ public class BallistaEnemy : MonoBehaviour
         attackTimer += Time.deltaTime;
         float t = attackTimer / attackDuration;
 
-        bow.localPosition = Vector3.Lerp(bowReady, bowReleased, t);
+        float curveT = attackCurve.Evaluate(t);
+        curveT = Mathf.Pow(curveT, 0.8f);
 
-        arrow.localPosition = Vector3.Lerp(arrowReady, arrowReleased, t);
+        bow.localPosition = Vector3.Lerp(bowReady, bowReleased, curveT);
+        arrow.localPosition = Vector3.Lerp(arrowReady, arrowReleased, curveT);
+
+        if (!hasShot && curveT >= 0.95f)
+        {
+            projHandler.Shoot();
+            hasShot = true;
+        }
+
+        if (hasShot && !arrowRestored && curveT <= 0.95f)
+        {
+            arrow.gameObject.SetActive(true);
+            arrowRestored = true;
+        }
 
         if (t >= 1f)
         {
-            projHandler.ShootProjectile();
-
-            bow.localPosition = bowReady;
-            arrow.localPosition = arrowReady;
-
             isAttacking = false;
+            cooldownTimer = attackCooldown;
+            hasShot = false;
+            arrowRestored = false;
         }
     }
 }
