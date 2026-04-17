@@ -14,6 +14,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     Animator animator;
     PlayerStats playerStats;
+    PlayerController playerController;
 
     [SerializeField] public bool isInvulnerable = false;
     [SerializeField] public bool canCombo = false;
@@ -25,6 +26,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     [SerializeField] public StaminaAction currentAction;
     [SerializeField] public StaminaAction lastAttackAction;
+
 
     public Dictionary<StaminaAction, float> StaminaCostBasedOnAction = new Dictionary<StaminaAction, float>()
     {
@@ -52,14 +54,21 @@ public class PlayerCombatManager : MonoBehaviour
 
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
-
+        playerController = GetComponent<PlayerController>();
     }
 
     public void SetStaminaState(StaminaAction action)
     {
-               currentAction = action;
-        if(action == StaminaAction.lightAttack || action == StaminaAction.heavyAttack)
-            lastAttackAction = action;
+        currentAction = action;
+        //if (action == StaminaAction.lightAttack || action == StaminaAction.heavyAttack)
+        //{
+        //    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        //    if (stateInfo.tagHash != Animator.StringToHash("Attacking") && !animator.IsInTransition(0) || canCombo)
+        //    {
+        //        lastAttackAction = action;
+        //        Debug.Log($"New Attack Action: {lastAttackAction}");
+        //    }
+        //}
     }
 
     public void EnableInvulnerable()
@@ -89,16 +98,16 @@ public class PlayerCombatManager : MonoBehaviour
     {
         canCharge = true;
     }
-    public void DisableCanCharge() 
+    public void DisableCanCharge()
     {
         canCharge = false;
     }
 
     public void FullyChargedTrue()
     {
-        fullyCharged = true; 
+        fullyCharged = true;
     }
-    public void FullyChargedFalse() 
+    public void FullyChargedFalse()
     {
         fullyCharged = false;
     }
@@ -117,7 +126,7 @@ public class PlayerCombatManager : MonoBehaviour
     public void SetAnimationCancelebleFalse()
     {
         animationCanceleble = false;
-    } 
+    }
     public void SetAnimationCancelebleTrue()
     {
         animationCanceleble = true;
@@ -129,7 +138,7 @@ public class PlayerCombatManager : MonoBehaviour
         {
             float staminaCost = StaminaCostBasedOnAction[currentAction];
 
-            if(currentAction == StaminaAction.Sprint)
+            if (currentAction == StaminaAction.Sprint)
                 staminaCost *= Time.deltaTime;
 
             playerStats.currentStamina -= staminaCost;
@@ -137,7 +146,7 @@ public class PlayerCombatManager : MonoBehaviour
 
             staminaRegenTime = 0;
 
-           // Debug.Log($"stamina drain {staminaCost}");
+            // Debug.Log($"stamina drain {staminaCost}");
 
         }
     }
@@ -155,7 +164,7 @@ public class PlayerCombatManager : MonoBehaviour
         {
             playerStats.currentStamina += playerStats.staminaRegenRate * Time.deltaTime;
 
-            if(playerStats.currentStamina > playerStats.maxStamina)
+            if (playerStats.currentStamina > playerStats.maxStamina)
                 playerStats.currentStamina = playerStats.maxStamina;
 
             playerStats.onStaminaChange?.Invoke(playerStats.currentStamina, playerStats.maxStamina);

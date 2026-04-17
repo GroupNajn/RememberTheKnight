@@ -24,36 +24,14 @@ public class DamageTrigger : MonoBehaviour
     {
         get
         {
-            if (combatManager.lastAttackAction == StaminaAction.heavyAttack)
+            if (combatManager.lastAttackAction == StaminaAction.lightAttack)
                 return weaponData.ChargedDamageBonus;
 
             else return weaponData.HeavyChargedDamage;
         }
         set { }
     }
-    //float damageAmount
-    //{
-    //    get
-    //    {
-    //        if (playerLocomotion.AttackPressed)
-    //            return weaponData.BaseDamage;
-
-    //        else return weaponData.HeavyDamage;
-    //    }
-    //    set { }
-    //}
-    //float chargedDamageBonus
-    //{
-    //    get
-    //    {
-    //        if (playerLocomotion.AttackPressed)
-    //            return weaponData.ChargedDamageBonus;
-
-    //        else return weaponData.HeavyChargedDamage;
-    //    }
-    //    set { }
-    //}
-    //float chargedDamageBonus;
+   
     GameObject player;
     PlayerController playerController;
     PlayerCombatManager combatManager;
@@ -98,17 +76,17 @@ public class DamageTrigger : MonoBehaviour
 
             if (other.gameObject != player) // stamina gain if hit with a charged attack
             {
+                playerController.CheckActionState();
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);
-                    playerController.AttackCharged = false;
                     damageable.TakeDamage(damageAmount + chargedDamageBonus, contactPoint);
+                    Debug.Log("ActionState, Dealt extra damage because of charged attack");
                     return;
                 }
-
             }
 
-            damageable.TakeDamage(damageAmount, contactPoint);
+            damageable.TakeDamage(weaponData.BaseDamage, contactPoint);
         }
     }
 
