@@ -105,6 +105,7 @@ public class PlayerCombatManager : MonoBehaviour
     public void FullyChargedTrue()
     {
         fullyCharged = true;
+        playerController.AttackCharged = true;
     }
     public void FullyChargedFalse()
     {
@@ -133,14 +134,16 @@ public class PlayerCombatManager : MonoBehaviour
      
     public void SetHeavyFalse()
     {
-        if (lastAttackAction == StaminaAction.heavyAttack)
+        Debug.Log("SetHeavyFalse called");
+        if (lastAttackAction != StaminaAction.lightAttack)
             lastAttackAction = StaminaAction.lightAttack;
         currentAction = StaminaAction.lightAttack;
 
     }
     public void SetHeavyTrue()
     {
-        if (lastAttackAction == StaminaAction.lightAttack)
+        Debug.Log("SetHeavyTrue called");
+        if (lastAttackAction != StaminaAction.heavyAttack)
             lastAttackAction = StaminaAction.heavyAttack;
         currentAction = StaminaAction.heavyAttack;
     }

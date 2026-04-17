@@ -83,8 +83,10 @@ public class DamageTrigger : MonoBehaviour
                     combatManager.GainStamina(30);
                     damageable.TakeDamage(damageAmount + chargedDamageBonus, contactPoint);
                     Debug.Log("ActionState, Dealt extra damage because of charged attack");
-                    return;
+                    return;      
                 }
+                damageable.TakeDamage(damageAmount, contactPoint);
+                return; 
             }
 
             damageable.TakeDamage(weaponData.BaseDamage, contactPoint);

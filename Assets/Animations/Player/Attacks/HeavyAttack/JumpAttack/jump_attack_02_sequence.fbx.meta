@@ -1,13 +1,5 @@
 fileFormatVersion: 2
-guid: a0f6eeea8b7cd1941ac7bfbaec9b4b85
-AssetOrigin:
-  serializedVersion: 1
-  productId: 220752
-  packageName: Straight Sword Animation Set
-  packageVersion: 3.1
-  assetPath: Assets/Nephilite Studios/Animation Set/Neph Animations/Straight Sword
-    Animations/Nephilim Animations (Remastered)/Straight Sword Two Hand/straight_sword_th_charged_attack_01_release.fbx
-  uploadId: 753941
+guid: 4cb7f08306715db42b432331869110e9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -39,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: straight_sword_th_charged_attack_01_release
-      takeName: straight_sword_th_charged_attack_01_release
-      internalID: -7074790177980639238
+      name: straight_sword_th_jump_attack_02_sequence
+      takeName: straight_sword_th_jump_attack_02_sequence
+      internalID: -7080903018992881034
       firstFrame: 0
-      lastFrame: 40
+      lastFrame: 67
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -63,42 +55,70 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.006715165
+      - time: 0
+        functionName: SetAnimationCancelebleFalse
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.010236724
+        functionName: SetAttackRotationSpeed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.015994882
         functionName: SetHeavyTrue
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.028639609
+      - time: 0.02309583
         functionName: DrainStamina
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.066825755
+      - time: 0.0294438
+        functionName: EnableCanCharge
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.034885675
+        functionName: FullyChargedTrue
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4534664
         functionName: ActivateRightDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.3398568
+      - time: 0.6751828
         functionName: DeactivateRightDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.36741036
+      - time: 0.7662995
         functionName: ResetAttackRotationSpeed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.39871982
+      - time: 0.8140142
         functionName: SetAnimationCancelebleTrue
         data: 
         objectReferenceParameter: {instanceID: 0}
