@@ -8,6 +8,7 @@ public class GameOver : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
+        Debug.Log("Loading lobby");
         GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]); // Load the lobby scene
     }
 
