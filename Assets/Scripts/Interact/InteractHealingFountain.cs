@@ -8,6 +8,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     [SerializeField] GameObject lightObject;
     [SerializeField] private int healingCost = 5;
     private Light lightSource;
+    public bool IsInteractable { get; private set; } = true;
 
     private Collider interactCollider;
     [SerializeField] bool isExpended;

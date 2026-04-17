@@ -3,6 +3,7 @@ using UnityEngine;
 public interface IInteractable
 {
     void Interact();
+    bool IsInteractable { get; }
 
     // Info string is used in the logic of displaying an information string above the object
     // if it is set to null = in the script that implements IInteractable it will not activate the UI element. 

@@ -7,15 +7,16 @@ public class InteractableUI_WorldSpace_Controller : MonoBehaviour
     void Start()
     {
         spawnTransform = GameObject.Find("CanvasSpawnPoint").GetComponent<Transform>();
-        canvas = GetComponent<Canvas>();
+        canvas = GetComponentInChildren<Canvas>();
         canvas.GetComponent<Canvas>().worldCamera = Camera.main;
-        this.transform.LookAt(Camera.main.transform);
+        canvas.gameObject.SetActive(false);
+        //this.transform.LookAt(Camera.main.transform);
     }
 
     void Update()
     {
-
-
+        canvas.transform.LookAt(Camera.main.transform);
+        canvas.transform.rotation *= Quaternion.Euler(0f, 180, 0f);
     }
 
 

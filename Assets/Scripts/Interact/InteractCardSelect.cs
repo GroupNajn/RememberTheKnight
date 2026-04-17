@@ -5,6 +5,7 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
     UIManager playerUIManager;
 
     public string InfoString { get; private set; } = null;
+    public bool IsInteractable { get; private set; } = true;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
