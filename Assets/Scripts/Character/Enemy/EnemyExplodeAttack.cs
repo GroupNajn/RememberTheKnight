@@ -38,6 +38,7 @@ public class EnemyExplodeAttack : MonoBehaviour
 
         foreach (var damageable in damageables)
         {
+            if(damageable == null || barrel == null) continue;
             bool damageableHit = false;
             float distanceToDamageable = Vector3.Distance(barrel.transform.position, damageable.transform.position);
             //explosion.Play();
