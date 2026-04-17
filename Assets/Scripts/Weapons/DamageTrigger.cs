@@ -76,7 +76,8 @@ public class DamageTrigger : MonoBehaviour
 
             if (other.gameObject != player) // stamina gain if hit with a charged attack
             {
-                playerController.CheckActionState();
+             //   playerController.CheckActionState();
+
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);
