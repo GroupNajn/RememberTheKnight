@@ -36,8 +36,9 @@ public class CardSelectionUI : MonoBehaviour
             cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
 
         errorText.gameObject.SetActive(false);
-
+        RebuildSelectionState();
         uiManager.CloseCardSelectUI();
+        Debug.Log($"SelectedCards Count:::::::::::: {selectedCards.Count}");
     }
 
     private void OnEnable()
@@ -109,7 +110,7 @@ public class CardSelectionUI : MonoBehaviour
             return;
         }
 
-        if (selectedCards.Count >= maxCardsSelected)
+        if (selectedCards.Count > maxCardsSelected)
         {
             if (!errorActive)
                 ShowError($"You can only select {maxCardsSelected} cards!", 5f);
