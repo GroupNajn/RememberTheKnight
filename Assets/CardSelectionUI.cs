@@ -19,6 +19,7 @@ public class CardSelectionUI : MonoBehaviour
     [SerializeField] private int maxCardsSelected = 4;
     [SerializeField] private TextMeshProUGUI errorText;
 
+
     public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
     public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
 
@@ -39,6 +40,7 @@ public class CardSelectionUI : MonoBehaviour
         RebuildSelectionState();
         uiManager.CloseCardSelectUI();
         Debug.Log($"SelectedCards Count:::::::::::: {selectedCards.Count}");
+
     }
 
     private void OnEnable()
@@ -85,6 +87,8 @@ public class CardSelectionUI : MonoBehaviour
 
     public void OnArrowUp()
     {
+        
+
         cardScrollRect.verticalNormalizedPosition += scrollAmount;
     }
 
