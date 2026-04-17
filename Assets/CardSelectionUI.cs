@@ -26,6 +26,7 @@ public class CardSelectionUI : MonoBehaviour
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
 
+
     private void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
@@ -129,7 +130,7 @@ public class CardSelectionUI : MonoBehaviour
         {
             if (!errorActive)
                 ShowError("You must select at least one card!", 5f);
-
+            uiManager.CloseCardSelectUI();
             return;
         }
 
