@@ -4,6 +4,7 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
 {
     int soulAmount = 0;
     TextMeshProUGUI tmp;
+    private bool canIncreaseSouls = true;
 
     void Start()
     {
@@ -19,14 +20,17 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
 
     public void SetSoulsAmount(int souls)
     {
+        if (!canIncreaseSouls) return;
         tmp.text = souls.ToString();
+        canIncreaseSouls = false;
     }
 
 
 
     void Update()
     {
-
+        
+        if(!canIncreaseSouls) canIncreaseSouls = true;
     }
 
 
