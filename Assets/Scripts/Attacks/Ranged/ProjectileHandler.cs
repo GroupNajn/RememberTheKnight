@@ -53,8 +53,8 @@ public class ProjectileHandler : MonoBehaviour
         GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation);
 
 
-        projectileObject.GetComponent<Projecile>().direction = direction;
-        projectileObject.GetComponent<Projecile>().speed = projectileSpeed;
+        projectileObject.GetComponent<Projectile>().direction = direction;
+        projectileObject.GetComponent<Projectile>().speed = projectileSpeed;
 
         Physics.IgnoreCollision(projectileObject.GetComponent<Collider>(), selfHitbox);
 
