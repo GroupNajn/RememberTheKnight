@@ -103,6 +103,7 @@ public class GlobalSceneManager : MonoBehaviour
             if (useTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, null));
+                return;
             }
 
             SceneManager.SetActiveScene(scene);
@@ -116,17 +117,19 @@ public class GlobalSceneManager : MonoBehaviour
             if (useTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, asyncLoad));
+                return; 
             }
 
             StartCoroutine(ActivatePendingLoad(sceneName, asyncLoad));
             return;
-        }
+        } 
 
         Debug.Log($"{sceneName} was not preloaded, loading it directly");
 
         if (useTransition)
         {
             StartCoroutine(TransitionToScene(sceneName, asyncLoad));
+            return;
         }
 
         SceneManager.LoadScene(sceneName);
@@ -156,6 +159,21 @@ public class GlobalSceneManager : MonoBehaviour
             }
             pendingLoads.Remove(sceneName);
 
+            while (!targetScene.isLoaded)
+            {
+                yield return null;
+            }
+        }
+        else
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            asyncLoad.allowSceneActivation = true;
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+
+            targetScene = SceneManager.GetSceneByName(sceneName);
             while (!targetScene.isLoaded)
             {
                 yield return null;
@@ -320,8 +338,8 @@ public class GlobalSceneManager : MonoBehaviour
         transitionAnimator.SetTrigger("FadeToBlack");
         yield return null;
         yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
-        Event_System.instance.OnLoadScenes.Invoke();
         Debug.Log("Faded to black");
+        yield break;
     }
 
     IEnumerator FadeFromBlack()

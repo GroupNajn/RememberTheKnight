@@ -9,6 +9,11 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        if (sceneToLoadIndex < 0)
+        {
+            return;
+        }
+
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
         Event_System.instance.OnLoadScenes += OnLoadScenes;
@@ -17,11 +22,23 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (sceneToLoadIndex < 0)
+        {
+            return;
+        }
+
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
     }
 
     private void OnLoadScenes()
     {
+        if (sceneToLoadIndex < 0)
+        {
+            return;
+        }
+
         GlobalSceneManager.Instance.LoadScene(sceneName);
+
+        Event_System.instance.OnLoadScenes -= OnLoadScenes;
     }
 }
