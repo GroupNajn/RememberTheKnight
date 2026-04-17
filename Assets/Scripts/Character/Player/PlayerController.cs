@@ -62,9 +62,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private PlayerLocomotion playerLocomotionInput;
     private PlayerStates playerState;
     [SerializeField]
-    private TargetLockHandler lockHandler;
+    private TargetLockHandler lockHandler;   
     private PlayerLockRotation playerLockRotation;
-
+     
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     public bool isKnockedback { get; private set; } = false;
@@ -218,17 +218,30 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     }
     public void CheckActionState()
     {
-        if (playerLocomotionInput.HeavyAttackPressed || playerLocomotionInput.HeavyAttackCharging && playerCombatManager.lastAttackAction != StaminaAction.heavyAttack)
+        return;
+        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo nextStateInfo = PlayerAnimator.GetNextAnimatorStateInfo(0);
+
+        bool tagHashIsAttack = stateInfo.tagHash == attackHash || nextStateInfo.tagHash == attackHash;
+
+        if (animCancelable || playerCombatManager.canCombo)
         {
-            playerCombatManager.SetStaminaState(StaminaAction.heavyAttack);
-            playerCombatManager.lastAttackAction = StaminaAction.heavyAttack;
-            Debug.Log("ActionState Set to: Heavy Attack");
-        }
-        else if (playerLocomotionInput.AttackPressed || playerLocomotionInput.AttackCharging && playerCombatManager.lastAttackAction != StaminaAction.lightAttack)
-        {
-            playerCombatManager.SetStaminaState(StaminaAction.lightAttack);
-            playerCombatManager.lastAttackAction = StaminaAction.lightAttack;
-            Debug.Log("ActionState Set to: Light Attack");
+
+            if (playerCombatManager.currentAction == StaminaAction.lightAttack && animCancelable)
+            {
+                return;
+            }
+
+            if (playerLocomotionInput.HeavyAttackCharging)
+            {
+                playerCombatManager.SetStaminaState(StaminaAction.heavyAttack);
+                Debug.Log("ActionState Set to: Heavy Attack");
+            }
+            else
+            {
+                playerCombatManager.SetStaminaState(StaminaAction.lightAttack);
+                Debug.Log("ActionState Set to: Light Attack");
+            }
         }
     }
     private void HandleAttack()
@@ -243,7 +256,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             {
                 AttackCharged = false;
             }
-            CheckActionState();
         }
 
         if (playerCombatManager.canCharge && playerCombatManager.fullyCharged) // if you can charge attack and you are fully charged, do a charge attack
@@ -263,10 +275,12 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerCombatManager.DisableCanCharge();
             playerCombatManager.FullyChargedFalse();
             CheckActionState();
+
         }
         else if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            CheckActionState();
+            // playerCombatManager.currentAction = StaminaAction.lightAttack;
+
 
             if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
             {
@@ -278,19 +292,21 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
             }
-        } 
+            CheckActionState();
+
+        }
 
         if (playerLocomotionInput.HeavyAttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            CheckActionState();
-
+            // playerCombatManager.currentAction = StaminaAction.heavyAttack;
             if (animCancelable || playerCombatManager.canCombo == true) // otherwise if you can do a normal attack, do a normal attack    
             {
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("HeavyAttack");
             }
+            CheckActionState();
+
         }
-        //CheckActionState();
 
     }
 

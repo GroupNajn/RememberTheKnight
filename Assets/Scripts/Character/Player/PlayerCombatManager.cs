@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 public enum StaminaAction
 {
     Sprint,
@@ -62,12 +63,7 @@ public class PlayerCombatManager : MonoBehaviour
         currentAction = action;
         //if (action == StaminaAction.lightAttack || action == StaminaAction.heavyAttack)
         //{
-        //    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        //    if (stateInfo.tagHash != Animator.StringToHash("Attacking") && !animator.IsInTransition(0) || canCombo)
-        //    {
-        //        lastAttackAction = action;
-        //        Debug.Log($"New Attack Action: {lastAttackAction}");
-        //    }
+        //    lastAttackAction = action;
         //}
     }
 
@@ -77,6 +73,7 @@ public class PlayerCombatManager : MonoBehaviour
 
         // Debug.Log("Player is now invulnerable.");
     }
+
 
     public void DisableInvulnerable()
     {
@@ -129,7 +126,21 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void SetAnimationCancelebleTrue()
     {
-        animationCanceleble = true;
+        animationCanceleble = true;   
+    }
+     
+    public void SetHeavyFalse()
+    {
+        if (lastAttackAction == StaminaAction.heavyAttack)
+            lastAttackAction = StaminaAction.lightAttack;
+        currentAction = StaminaAction.lightAttack;
+
+    }
+    public void SetHeavyTrue()
+    {
+        if (lastAttackAction == StaminaAction.lightAttack)
+            lastAttackAction = StaminaAction.heavyAttack;
+        currentAction = StaminaAction.heavyAttack;
     }
 
     public void DrainStamina()
