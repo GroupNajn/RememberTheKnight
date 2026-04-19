@@ -23,11 +23,10 @@ public class BallistaEnemy : MonoBehaviour
 
     private bool isAttacking = false;
     private bool hasShot = false;
-    private bool arrowRestored = false;
-    private bool isWaitingToAttack = false;
+
     private float attackTimer = 0f;
     private float cooldownTimer = 0f;
-    private float delayTimer = 0f;
+    private float delayTimer = -1f;
 
     [Header("String/Arrow Positions")]
     [SerializeField] private Vector3 bowReady;
@@ -51,29 +50,38 @@ public class BallistaEnemy : MonoBehaviour
     {
         cooldownTimer -= Time.deltaTime;
 
+        if (target == null) return;
+
+        if (!IsTargetInRange()) return;
+
+        AimAtPlayer();
+        HandleAttackLogic();
+
+        
+    }
+
+    private bool IsTargetInRange()
+    {
         float distance = Vector3.Distance(transform.position, target.position);
+        return distance <= attackRange;
+    }
 
-        if (distance <= attackRange)
+    private void HandleAttackLogic()
+    {
+        if (!isAttacking && cooldownTimer <= 0f)
         {
-            AimAtPlayer();
-
-            if (!isAttacking && cooldownTimer <= 0f)
+            if (delayTimer <= 0f)
             {
-                if (!isWaitingToAttack)
-                {
-                    isWaitingToAttack = true;
-                    delayTimer = attackDelayTimer;
-                }
+                delayTimer = attackDelayTimer;
             }
         }
 
-        if (isWaitingToAttack)
+        if (delayTimer > 0f)
         {
             delayTimer -= Time.deltaTime;
 
             if (delayTimer <= 0f)
             {
-                isWaitingToAttack = false;
                 StartAttack();
             }
         }
@@ -121,20 +129,19 @@ public class BallistaEnemy : MonoBehaviour
         {
             projHandler.Shoot();
             hasShot = true;
+
+            cooldownTimer = attackCooldown;
         }
 
-        if (hasShot && !arrowRestored && curveT <= 0.95f)
+        if (hasShot && curveT <= 0.95f)
         {
             arrow.gameObject.SetActive(true);
-            arrowRestored = true;
         }
 
         if (t >= 1f)
         {
             isAttacking = false;
-            cooldownTimer = attackCooldown;
             hasShot = false;
-            arrowRestored = false;
         }
     }
 }
