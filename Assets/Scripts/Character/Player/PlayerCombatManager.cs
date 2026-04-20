@@ -59,6 +59,16 @@ public class PlayerCombatManager : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerController = GetComponent<PlayerController>();
     }
+    public void ResetValues()
+    {
+        isInvulnerable = false;
+        canCombo = false;
+        canCharge = false;
+        fullyCharged = false;
+        isAttackRotationSpeed = false;
+        animationCanceleble = true;
+        InCombat = false;
+    }
 
     public bool CheckInCombat()
     {

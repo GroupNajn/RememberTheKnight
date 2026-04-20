@@ -274,6 +274,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             if (playerState.CurrentMoveState != MoveState.Knockedback)
             {
                 playerState.SetMoveState(MoveState.Knockedback);
+                playerCombatManager.ResetValues();
                 isKnockedback = true;
             }
 
