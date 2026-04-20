@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerStats playerStats;
 
     public float MaxHealth => playerStats.MaxHealth;
-    public float Health  => playerStats.Health;
+    public float Health  => playerStats.CurrentHealth;
     public Action<float, float> OnHealthChanged { get; set; }
     public Action<float, float> onStaminaChanged;
 
@@ -32,11 +33,13 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats = GetComponent<PlayerStats>();
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
     }
 
     private void Update()
     {
-        if (playerStats.Health <= 0)
+        if (playerStats.CurrentHealth <= 0)
         {
             isDead = true;
         }
@@ -54,7 +57,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         {
             playerVFX.PlayBloodSplatter(contactPoint);
 
-            playerStats.Health -= damage;
+            playerStats.CurrentHealth -= damage;
             NotifyHealthChanged();
             if (isDead)
             {
@@ -73,7 +76,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
 
         //Debug.Log("EVENT TRIGGERED: " + playerStats.Health);
-        OnHealthChanged?.Invoke(playerStats.Health, playerStats.MaxHealth);
+        OnHealthChanged?.Invoke(playerStats.CurrentHealth, playerStats.MaxHealth);
     }
 
     public void NotifyDeath()
@@ -86,7 +89,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         playerStats.MaxHealth = newMaxHealth;
 
-        playerStats.Health = Mathf.Clamp(playerStats.Health, 0, playerStats.MaxHealth);
+        playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth, 0, playerStats.MaxHealth);
 
         NotifyHealthChanged();
     }
@@ -94,7 +97,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void Heal(float amount)
     {
         float totalHeal = amount * playerStats.healMultiplier;
-        playerStats.Health = Mathf.Clamp(playerStats.Health + totalHeal, 0, playerStats.MaxHealth);
+        playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
     }
 
@@ -102,6 +105,39 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         playerStats.maxStamina = newMaxStamina;
 
+        onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+    }
+
+    private void OnDisable()
+    {
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        }
+    }
+
+    public void ApplyStatsFromCardSelection(List<CardData> cards)
+    {
+        playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.maxStamina = playerStats.baseStamina;
+        foreach (CardData card in cards)
+        {
+            if (card == null) continue;
+            playerStats.MaxHealth += card.healthModifier;
+            playerStats.maxStamina += card.staminaModifier;
+        }
+        playerStats.CurrentHealth = MaxHealth;
+        playerStats.currentStamina = playerStats.maxStamina;
+
+        NotifyHealthChanged();
         onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
     }
 
