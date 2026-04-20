@@ -14,4 +14,5 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
 
         playerUIManager.OpenCardSelectUI();
     }
+
 }
