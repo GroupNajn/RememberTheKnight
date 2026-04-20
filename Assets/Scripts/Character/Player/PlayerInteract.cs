@@ -7,7 +7,6 @@ public class PlayerInteract : MonoBehaviour
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    [SerializeField] UIManager playerUIManager;
 
     void Start()
     {
@@ -34,7 +33,6 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
@@ -53,34 +51,14 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                if (!playerUIManager.UIMenuActive)
+                if (!UIManager.Instance.UIMenuActive)
                 {
-                    playerUIManager.OpenInteractiveUI();
+                    UIManager.Instance.OpenInteractiveUI();
                 }
                 return;
             }
         }
 
-        playerUIManager.CloseInteractiveUI();
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-
-        if (playerUIManager == null)
-        {
-            playerUIManager = FindFirstObjectByType<UIManager>();
-            Debug.Log("PlayerUIManager not found in the scene after loading. Please ensure there is a PlayerUIManager in the scene.");
-        }
+        UIManager.Instance.CloseInteractiveUI();
     }
 }

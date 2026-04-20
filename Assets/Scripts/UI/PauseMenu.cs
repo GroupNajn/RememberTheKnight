@@ -30,7 +30,6 @@ public class PauseMenu : MonoBehaviour
 
     void GetText()
     {
-        Debug.Log("Searching for ReturnToLobbyButtonText (TMP) in children of " + gameObject.name);
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name == "ReturnToLobbyButtonText (TMP)")
@@ -80,7 +79,7 @@ public class PauseMenu : MonoBehaviour
             return; // Not sure if needed, but just to be safe, we return after quitting
         }
 
-        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
 
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();
