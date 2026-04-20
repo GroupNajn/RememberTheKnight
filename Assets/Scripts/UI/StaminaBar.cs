@@ -8,6 +8,9 @@ public class StaminaBar : MonoBehaviour
     [SerializeField] Slider staminaBar;
     [SerializeField] float lerpSpeed = 2f;
     public RectTransform lerpingRectTransform;
+    [SerializeField] private RectTransform staminaBarTransform;
+    [SerializeField] private float widthPerStamina = 2f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,8 +56,12 @@ public class StaminaBar : MonoBehaviour
     void UpdateStaminaBar(float current, float max)
     {
 
-        Debug.Log("STAMINA BAR UPDATED");
+        //Debug.Log("STAMINA BAR UPDATED");
         staminaBar.maxValue = max;
         staminaBar.value = current;
+
+        Vector2 size = staminaBarTransform.sizeDelta;
+        size.x = max * widthPerStamina;
+        staminaBarTransform.sizeDelta = size;
     }
 }
