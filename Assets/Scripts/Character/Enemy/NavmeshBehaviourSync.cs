@@ -21,4 +21,16 @@ public class NavmeshBehaviourSync : MonoBehaviour
     private NavMeshAgent navAgent;
     private BehaviorGraphAgent behaviorAgent;
     private BlackboardVariable<float> stoppingDistance;
+    public bool InCombat
+    {
+        get
+        {
+            if (behaviorAgent.BlackboardReference.GetVariable("currentThreat", out BlackboardVariable<float> threat))
+            {
+                return threat.Value > 0.4;
+            }
+            return false;
+        }
+    }
+
 }

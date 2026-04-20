@@ -36,6 +36,7 @@ public class DamageTrigger : MonoBehaviour
     PlayerController playerController;
     PlayerCombatManager combatManager;
     PlayerLocomotion playerLocomotion;
+    Animator playerAnimator;
 
 
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
@@ -47,6 +48,7 @@ public class DamageTrigger : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         combatManager = player.GetComponent<PlayerCombatManager>();
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
+        playerAnimator = player.GetComponent<Animator>();
         if (weaponData != null)
         {
             //damageAmount = weaponData.BaseDamage;
@@ -76,13 +78,10 @@ public class DamageTrigger : MonoBehaviour
 
             if (other.gameObject != player) // stamina gain if hit with a charged attack
             {
-             //   playerController.CheckActionState();
-
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);
                     damageable.TakeDamage(damageAmount + chargedDamageBonus, contactPoint);
-                    Debug.Log("ActionState, Dealt extra damage because of charged attack");
                     return;      
                 }
                 damageable.TakeDamage(damageAmount, contactPoint);
