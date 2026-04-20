@@ -4,11 +4,11 @@ using UnityEngine.PlayerLoop;
 public class ProjectileHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    CapsuleCollider selfHitbox;
-    public Transform target;
-    public GameObject projectile;
-    public Transform firePoint;
-    public float projectileSpeed = 20f;
+    private CapsuleCollider selfHitbox;
+    [SerializeField] public Transform target;
+    [SerializeField] private GameObject projectile;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float projectileSpeed = 20f;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class ProjectileHandler : MonoBehaviour
 
     public void ShootProjectile()
     {
-        Vector3 targetPosistion;
+        Vector3 targetPosition;
 
         if (target != null)
         {
@@ -32,20 +32,20 @@ public class ProjectileHandler : MonoBehaviour
 
             if (angle < Mathf.PI / 4)
             {
-                targetPosistion = target.transform.position;
+                targetPosition = target.transform.position;
             }
             else
             {
-                targetPosistion = firePoint.position + transform.forward * 1000f;
+                targetPosition = firePoint.position + transform.forward * 1000f;
             }
         }
         else
         {
             // if there is no target shoot forward
-            targetPosistion = firePoint.position + transform.forward * 1000f;
+            targetPosition = firePoint.position + transform.forward * 1000f;
         }
 
-        Vector3 direction = (targetPosistion - firePoint.position).normalized;
+        Vector3 direction = (targetPosition - firePoint.position).normalized;
 
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
@@ -53,8 +53,8 @@ public class ProjectileHandler : MonoBehaviour
         GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation);
 
 
-        projectileObject.GetComponent<Projecile>().direction = direction;
-        projectileObject.GetComponent<Projecile>().speed = projectileSpeed;
+        projectileObject.GetComponent<Projectile>().direction = direction;
+        projectileObject.GetComponent<Projectile>().speed = projectileSpeed;
 
         Physics.IgnoreCollision(projectileObject.GetComponent<Collider>(), selfHitbox);
 

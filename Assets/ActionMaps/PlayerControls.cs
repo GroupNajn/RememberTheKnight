@@ -128,7 +128,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attacking"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""058c5a5d-6787-4a55-9e3f-2c9418bbf7aa"",
                     ""expectedControlType"": """",
@@ -158,6 +158,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Holster"",
                     ""type"": ""Button"",
                     ""id"": ""3f948ca1-7e4f-41d1-9d1c-6b329fba2756"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1121c24-55d2-4efc-a6e2-03da7582a805"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -312,10 +321,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""4f399693-88a8-4634-9a7b-1fc82e156faf"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attacking"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -349,6 +358,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Holster"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb053d87-c34b-4b73-b75c-1b3bf6fef5d9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -479,10 +499,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_Look = m_PlayerLocomotionMap.FindAction("Look", throwIfNotFound: true);
         m_PlayerLocomotionMap_ToggleSprint = m_PlayerLocomotionMap.FindAction("ToggleSprint", throwIfNotFound: true);
         m_PlayerLocomotionMap_Dodge = m_PlayerLocomotionMap.FindAction("Dodge", throwIfNotFound: true);
-        m_PlayerLocomotionMap_Attacking = m_PlayerLocomotionMap.FindAction("Attacking", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Attack = m_PlayerLocomotionMap.FindAction("Attack", throwIfNotFound: true);
         m_PlayerLocomotionMap_Interact = m_PlayerLocomotionMap.FindAction("Interact", throwIfNotFound: true);
         m_PlayerLocomotionMap_ScrollCamera = m_PlayerLocomotionMap.FindAction("ScrollCamera", throwIfNotFound: true);
         m_PlayerLocomotionMap_Holster = m_PlayerLocomotionMap.FindAction("Holster", throwIfNotFound: true);
+        m_PlayerLocomotionMap_HeavyAttack = m_PlayerLocomotionMap.FindAction("HeavyAttack", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
         m_PlayerActionsMap_Target = m_PlayerActionsMap.FindAction("Target", throwIfNotFound: true);
@@ -578,10 +599,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Look;
     private readonly InputAction m_PlayerLocomotionMap_ToggleSprint;
     private readonly InputAction m_PlayerLocomotionMap_Dodge;
-    private readonly InputAction m_PlayerLocomotionMap_Attacking;
+    private readonly InputAction m_PlayerLocomotionMap_Attack;
     private readonly InputAction m_PlayerLocomotionMap_Interact;
     private readonly InputAction m_PlayerLocomotionMap_ScrollCamera;
     private readonly InputAction m_PlayerLocomotionMap_Holster;
+    private readonly InputAction m_PlayerLocomotionMap_HeavyAttack;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
     /// </summary>
@@ -610,9 +632,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Dodge => m_Wrapper.m_PlayerLocomotionMap_Dodge;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerLocomotionMap/Attacking".
+        /// Provides access to the underlying input action "PlayerLocomotionMap/Attack".
         /// </summary>
-        public InputAction @Attacking => m_Wrapper.m_PlayerLocomotionMap_Attacking;
+        public InputAction @Attack => m_Wrapper.m_PlayerLocomotionMap_Attack;
         /// <summary>
         /// Provides access to the underlying input action "PlayerLocomotionMap/Interact".
         /// </summary>
@@ -625,6 +647,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerLocomotionMap/Holster".
         /// </summary>
         public InputAction @Holster => m_Wrapper.m_PlayerLocomotionMap_Holster;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/HeavyAttack".
+        /// </summary>
+        public InputAction @HeavyAttack => m_Wrapper.m_PlayerLocomotionMap_HeavyAttack;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -663,9 +689,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
-            @Attacking.started += instance.OnAttacking;
-            @Attacking.performed += instance.OnAttacking;
-            @Attacking.canceled += instance.OnAttacking;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -675,6 +701,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Holster.started += instance.OnHolster;
             @Holster.performed += instance.OnHolster;
             @Holster.canceled += instance.OnHolster;
+            @HeavyAttack.started += instance.OnHeavyAttack;
+            @HeavyAttack.performed += instance.OnHeavyAttack;
+            @HeavyAttack.canceled += instance.OnHeavyAttack;
         }
 
         /// <summary>
@@ -698,9 +727,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
-            @Attacking.started -= instance.OnAttacking;
-            @Attacking.performed -= instance.OnAttacking;
-            @Attacking.canceled -= instance.OnAttacking;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -710,6 +739,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Holster.started -= instance.OnHolster;
             @Holster.performed -= instance.OnHolster;
             @Holster.canceled -= instance.OnHolster;
+            @HeavyAttack.started -= instance.OnHeavyAttack;
+            @HeavyAttack.performed -= instance.OnHeavyAttack;
+            @HeavyAttack.canceled -= instance.OnHeavyAttack;
         }
 
         /// <summary>
@@ -1004,12 +1036,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDodge(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Attacking" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAttacking(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -1031,6 +1063,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHolster(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HeavyAttack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHeavyAttack(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerActionsMap" which allows adding and removing callbacks.

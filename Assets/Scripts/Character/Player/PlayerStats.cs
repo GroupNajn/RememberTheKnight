@@ -2,9 +2,8 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static StaminaController;
 
-public class PlayerStats : MonoBehaviour, IDamageable
+public class PlayerStats : MonoBehaviour
 {
     // Made by Lukas 2026-03-14
     // Updated by Lukas and Jonatan and Wilmer 2026-03-16
@@ -13,13 +12,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
 
-    [field: SerializeField] public float MaxHealth { get; private set; }
+    [field: SerializeField] public float MaxHealth { get; set; }
     [field: SerializeField] public float Health { get; set; }
-    public System.Action<float, float> OnHealthChanged { get; set; }
 
 
 
-    float healMultiplier = 1;
 
     [Header("Stats")]
     [Header("Movement")]
@@ -35,26 +32,28 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [Header("Knockback")]
     public float knockbackResistance = 5f;
 
-    public System.Action<float, float> onStaminaChange;
+
     [Header("Stamina")]
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRegenRate = 1.5f;
 
+    [Header("Multipliers")]
+    public float healMultiplier = 1;
+
+    [Header("Flags")]
+    [SerializeField] public bool isDead = false;
+
     // Base Values used for Applying Stats
-    private float baseHealth;
-    private float baseStamina;
-    // [HideInInspector]
+    public float baseHealth;
+    public float baseStamina;
 
     [HideInInspector]
-
     public bool CanTakeDamage
     {
         get { return !playerCombatManager.isInvulnerable; }
         private set { }
     }
-
-    [SerializeField] public bool isDead = false;
 
     private void Start()
     {
@@ -67,7 +66,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         currentStamina = maxStamina;
         currentStamina = maxStamina;
         Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
@@ -86,7 +84,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
     }
 
-    void ApplyStatsFromCardSelection(List<CardData> cards)
+    public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
         MaxHealth = baseHealth;
         maxStamina = baseStamina;
@@ -98,88 +96,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         }
         Health = MaxHealth;
         currentStamina = maxStamina;
-        Debug.Log(Health);
-        Debug.Log(maxStamina);
 
-    }
-
-
-    private void Update()
-    {
-        if (Health <= 0)
-        {
-            isDead = true;
-        }
-        else
-        {
-            isDead = false;
-        }
-        playerAnimator.SetBool("IsDead", isDead);
-
-    }
-
-    public void TakeDamage(float damage, Vector3 contactPoint)
-    {
-        if (CanTakeDamage && !isDead)
-        {
-            playerVFX.PlayBloodSplatter(contactPoint);
-
-            Health -= damage;
-            NotifyHealthChanged();
-            if (isDead)
-            {
-                Death();
-            }
-        }
-    }
-
-    public void Death()
-    {
-        Debug.Log("DIE!");
-        playerAnimator.SetBool("IsDead", true);
-    }
-
-    private void NotifyHealthChanged()
-    {
-
-        Debug.Log("EVENT TRIGGERED: " + Health);
-        OnHealthChanged?.Invoke(Health, MaxHealth);
-    }
-
-    public void NotifyDeath()
-    {
-        Debug.Log("EVENT TRIGGERED: Player Died");
-        Event_System.instance.OnPlayerDeath?.Invoke();
-    }
-
-    public void SetMaxHealth(float newMaxHealth)
-    {
-        MaxHealth = newMaxHealth;
-
-        Health = Mathf.Clamp(Health, 0, MaxHealth);
-
-        NotifyHealthChanged();
-    }
-
-    public void Heal(float amount)
-    {
-        float totalHeal = amount * healMultiplier;
-        Health = Mathf.Clamp(Health + totalHeal, 0, MaxHealth);
-        NotifyHealthChanged();
-    }
-
-    public void UpdateMaxStamina(float newMaxStamina)
-    {
-        maxStamina = newMaxStamina;
-
-        onStaminaChange?.Invoke(currentStamina, maxStamina);
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == SceneData.Instance[2]) // Heal to max health after loading lobby
-        {
-            Heal(MaxHealth);
-        }
     }
 }

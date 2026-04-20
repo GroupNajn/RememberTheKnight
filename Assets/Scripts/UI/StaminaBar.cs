@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class StaminaBar : MonoBehaviour
 {
-    StaminaController staminaController;
-     PlayerStats playerStats;
+    PlayerStats playerStats;
+    PlayerManager playerManager;
     [SerializeField] Slider staminaBar;
     [SerializeField] float lerpSpeed = 2f;
     public RectTransform lerpingRectTransform;
@@ -13,8 +13,8 @@ public class StaminaBar : MonoBehaviour
     void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
-        staminaController = GetComponent<StaminaController>();
         if (playerStats == null)
         {
             Debug.LogError("StaminaBar: playerStats is missing!");
@@ -26,24 +26,34 @@ public class StaminaBar : MonoBehaviour
             Debug.LogError("StaminaBar: Slider is missing!");
             return;
         }
-         
-        playerStats.onStaminaChange += UpdateStaminaBar;
+
+        playerManager.onStaminaChanged += UpdateStaminaBar;
 
         // Uppdatera UI direkt
         UpdateStaminaBar(playerStats.currentStamina, playerStats.maxStamina);
+        Debug.Log("SHOULD HAVE UPDATED");
     }
 
     private void Update()
     {
         bool lerpCondition = lerpingRectTransform.anchorMax.x > staminaBar.fillRect.anchorMax.x;
-        if (!lerpCondition) return;
+        if (lerpCondition)
+        {
             lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, staminaBar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
+        }
+        else
+        {
+            lerpingRectTransform.anchorMax = staminaBar.fillRect.anchorMax;
+        }
+
     }
 
     // Update is called once per frame
 
     void UpdateStaminaBar(float current, float max)
     {
+
+        Debug.Log("STAMINA BAR UPDATED");
         staminaBar.maxValue = max;
         staminaBar.value = current;
     }

@@ -59,8 +59,6 @@ public class LootManager : MonoBehaviour
 
         //Debug.Log("LootManager subscribed");
         Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
-
-
     }
 
     private void OnDestroy()
@@ -68,6 +66,28 @@ public class LootManager : MonoBehaviour
         if (Event_System.instance != null)
             Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Methods below handle the loot dropping and which item to drop depending on loot table. 
+
+
 
     public void RegisterLoot(Loot loot)
     {
@@ -80,14 +100,6 @@ public class LootManager : MonoBehaviour
         if (loot != null)
             droppedLoot.Remove(loot);
     }
-
-    //public void CalculateLootTier(EnemyDamage enemy)
-    //{
-    //    float totalTierWight = 0;
-
-    //}
-
-    
 
     public void GetOneRandomItemLoot(EnemyDamage enemy)
     {
@@ -165,12 +177,6 @@ public class LootManager : MonoBehaviour
         return 1;
     }
 
-
-
-
-
-
-
     public void DropLoot(Loot item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
@@ -178,7 +184,6 @@ public class LootManager : MonoBehaviour
         Debug.Log("ENEMY TRANSFORM POSITION" + enemy.transform.position);
 
     }
-
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {

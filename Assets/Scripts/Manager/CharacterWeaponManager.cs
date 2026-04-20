@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-
-
     [SerializeField] GameObject currentRightHandWeapon;
     [SerializeField] GameObject currentLeftHandWeapon;
 
@@ -13,12 +11,15 @@ public class CharacterWeaponManager : MonoBehaviour
 
     protected WeaponData currentRightWeaponData;
     protected WeaponData currentLeftWeaponData;
-    
+
     protected CharacterSoundFXManager characterSoundFXManager;
+    private PlayerController playerController;
+
 
     public virtual void Start()
     {
         characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
+        playerController = GetComponent<PlayerController>();
 
         if (currentRightHandWeapon != null)
         {
@@ -42,7 +43,7 @@ public class CharacterWeaponManager : MonoBehaviour
     }
 
     public virtual void Update()
-    {  
+    {
 
     }
     public virtual void HolsterCheck()
@@ -58,7 +59,7 @@ public class CharacterWeaponManager : MonoBehaviour
             currentRightHandWeapon.SetActive(true);
         }
 
-            
+
     }
 
     public virtual void ActivateRightDamageCollider()
@@ -77,6 +78,8 @@ public class CharacterWeaponManager : MonoBehaviour
         {
 
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
+            playerController.AttackCharged = false;
+
 
         }
     }
@@ -96,6 +99,8 @@ public class CharacterWeaponManager : MonoBehaviour
         if (currentLeftHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
+            playerController.AttackCharged = false;
+
         }
     }
 }

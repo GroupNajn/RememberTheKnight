@@ -11,12 +11,23 @@ public partial class ExecuteAnimationAction : Action
     [SerializeReference] public BlackboardVariable<string> TriggerName;
     [SerializeReference] public BlackboardVariable<string> StateName;
     [SerializeReference] public BlackboardVariable<Animator> Self;
+    [SerializeReference] public BlackboardVariable<string> OriginName = new("");
     [SerializeReference] public BlackboardVariable<bool> IsWaiting = new(false);
 
     private bool isWaiting = false;
+    private AnimatorStateInfo originState;
+    private AnimatorStateInfo currentState;
+    private AnimatorStateInfo nextState;
     protected override Status OnStart()
     {
         if (Self.Value == null) return Status.Failure;
+
+        originState = Self.Value.GetCurrentAnimatorStateInfo(0);
+        if (OriginName.Value.Length > 0)
+        {
+            if (!originState.IsName(OriginName.Value)) return Status.Failure;
+        }
+        originState = Self.Value.GetCurrentAnimatorStateInfo(0);
         Self.Value.SetTrigger(TriggerName.Value);
         IsWaiting.Value = true;
         return Status.Running;
@@ -25,14 +36,15 @@ public partial class ExecuteAnimationAction : Action
     protected override Status OnUpdate()
     {
         if (!IsWaiting.Value) return Status.Success;
-        AnimatorStateInfo stateInfo = Self.Value.GetCurrentAnimatorStateInfo(0);
+        currentState = Self.Value.GetCurrentAnimatorStateInfo(0);
+        nextState = Self.Value.GetNextAnimatorStateInfo(0);
 
 
-        if (stateInfo.IsName(StateName.Value) && stateInfo.normalizedTime < 1.0f)
+        if (currentState.fullPathHash == originState.fullPathHash)
         {
-            return Status.Running;
+            return Status.Success;
         }
-        return Status.Success;
+        return Status.Running;
     }
 
     protected override void OnEnd()

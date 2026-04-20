@@ -7,42 +7,27 @@ public class PlayerLocomotion : MonoBehaviour
     //Made by Jonathan Blixt
 
     #region Class Variables
-    //============= movement ==================
+    //============= Movement ==================
     [Header("Movement")]
-    private PlayerInput PlayerControls;
 
     public Vector2 MovementInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool DodgePressed { get; private set; }
     public bool SprintToggledOn = false;
 
-    //============= action =============
-    public bool PickUpPressed { get; private set; }
+    //============= Combat =============
     public bool AttackPressed { get; private set; }
-
-
-
-    //============= camera =============
-    //public Vector2 ScrollInput { get; private set; }
-
-    //[SerializeField] private Camera _virtualCamera;
-    //[SerializeField] private float _cameraZoomSpeed = 0.1f;
-    //[SerializeField] private float _cameraMinZoom = 1f;
-    //[SerializeField] private float _cameraMaxZoom = 5f;
+    public bool AttackCharging = false;
+    public bool HeavyAttackPressed { get; private set; }
+    public bool HeavyAttackCharging = false;
     #endregion
-
-    private void Awake()
-    {
-        PlayerControls = GetComponent<PlayerInput>();
-    }
-    private void LateUpdate()
+    private void LateUpdate() 
     {
         //movment
         DodgePressed = false;
+        //combat
         AttackPressed = false;
-
-        //camera
-        //ScrollInput = Vector2.zero;
+        HeavyAttackPressed = false;
     }
 
     //================ Movement ================
@@ -61,30 +46,26 @@ public class PlayerLocomotion : MonoBehaviour
         MovementInput = context.Get<Vector2>();
     }
 
-
     public void OnToggleSprint(InputValue action)
     { 
-          SprintToggledOn = !SprintToggledOn;
+          SprintToggledOn = action.isPressed;
     }
 
-    //================ Camera ================
-    //public void OnScrollCamera(InputValue context)
-    //{
-    //if (!context.performed)
-    //    return;
-    // return;
-    //Vector2 scrollInput = context.ReadValue<Vector2>();
-    //ScrollInput = -1f * scrollInput.normalized * _cameraZoomSpeed;
-    // }
+    //================ Combat ================
 
-    //================ Actions ================
-    public void OnPickUp(InputValue context)
+    public void OnAttack(InputValue value)
     {
-        PickUpPressed = true;
+        if (value.isPressed)
+            AttackPressed = true;
+
+        AttackCharging = value.isPressed;
     }
-    public void OnAttacking(InputValue context)
+    public void OnHeavyAttack(InputValue value)
     {
-        AttackPressed = true;
-        //Debug.Log("input kom");
+        if (value.isPressed)
+            HeavyAttackPressed = true;
+
+        AttackCharging = value.isPressed;
+        HeavyAttackCharging = value.isPressed;
     }
 }

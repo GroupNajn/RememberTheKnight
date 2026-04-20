@@ -44,9 +44,10 @@ public class PauseMenu : MonoBehaviour
             returnButtonText.text = returnButtonLobbyText; // Update the return button text for the lobby scene
 
             // Change to call revive method in PlayerStats
+            PlayerManager playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
             PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-            playerStats.Health = playerStats.MaxHealth; // Reset player's health to max
-            playerStats.Heal(playerStats.MaxHealth); // Notify health change to update UI and other systems
+            playerStats.Health = playerManager.MaxHealth; // Reset player's health to max
+            playerManager.Heal(playerManager.MaxHealth); // Notify health change to update UI and other systems
         }
         else
         {

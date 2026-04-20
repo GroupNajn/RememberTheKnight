@@ -3,28 +3,33 @@ using UnityEngine;
 
 public class InteractHealingFountain : MonoBehaviour, IInteractable
 {
-    private PlayerStats playerStats;
+    private PlayerManager playerManager;
 
     [SerializeField] GameObject lightObject;
+    [SerializeField] private int healingCost = 5;
     private Light lightSource;
 
     private Collider interactCollider;
     [SerializeField] bool isExpended;
+    private int currentSoulCollect;
     void Start()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
-    }
 
+    }
+    // The cost to heal is currently hard coded to the value 5. 
     public void Interact()
     {
-        if (!isExpended)
+        currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
+        if (!isExpended && currentSoulCollect >= healingCost)
         { 
-            playerStats.Heal(25f);
+            playerManager.Heal(25f);
             interactCollider.enabled = false;
             isExpended = true;
             StartCoroutine(FadeOut());
+            Event_System.instance?.OnSoulsSpent.Invoke(healingCost);
         }
     }
 
