@@ -212,34 +212,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
         RotatePlayerToTarget();
     }
-    public void CheckActionState()
-    {
-        return;
-        AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
-        AnimatorStateInfo nextStateInfo = PlayerAnimator.GetNextAnimatorStateInfo(0);
-
-        bool tagHashIsAttack = stateInfo.tagHash == attackHash || nextStateInfo.tagHash == attackHash;
-
-        if (animCancelable || playerCombatManager.canCombo)
-        {
-
-            if (playerCombatManager.currentAction == StaminaAction.lightAttack && animCancelable)
-            {
-                return;
-            }
-
-            if (playerLocomotionInput.HeavyAttackCharging)
-            {
-                playerCombatManager.SetStaminaState(StaminaAction.heavyAttack);
-                Debug.Log("ActionState Set to: Heavy Attack");
-            }
-            else
-            {
-                playerCombatManager.SetStaminaState(StaminaAction.lightAttack);
-                Debug.Log("ActionState Set to: Light Attack");
-            }
-        }
-    }
+   
     private void HandleAttack()
     {
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -261,7 +234,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerCombatManager.DisableCanCharge();
             playerCombatManager.FullyChargedFalse();
             AttackCharged = true;
-            CheckActionState();
         }
         else if (playerCombatManager.canCharge && !playerLocomotionInput.AttackCharging) // if you can charge attack, and you are not charging, but you can charge, do a charge attack but not fully charged
         {
@@ -270,12 +242,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerCombatManager.fullyCharged = false;
             playerCombatManager.DisableCanCharge();
             playerCombatManager.FullyChargedFalse();
-            CheckActionState();
 
         }
         else if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            // playerCombatManager.currentAction = StaminaAction.lightAttack;
 
 
             if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
@@ -288,19 +258,16 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
             }
-            CheckActionState();
 
         }
 
         if (playerLocomotionInput.HeavyAttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            // playerCombatManager.currentAction = StaminaAction.heavyAttack;
             if (animCancelable || playerCombatManager.canCombo == true) // otherwise if you can do a normal attack, do a normal attack    
             {
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("HeavyAttack");
             }
-            CheckActionState();
 
         }
 

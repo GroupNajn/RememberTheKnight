@@ -56,8 +56,22 @@ public class PlayerCombatManager : MonoBehaviour
 
         animator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
-        playerManager = GetComponent<PlayerManager> ();
+        playerManager = GetComponent<PlayerManager>();
         playerController = GetComponent<PlayerController>();
+    }
+
+    public bool CheckInCombat()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+
+            if (enemy.GetComponent<NavmeshBehaviourSync>().InCombat)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void SetStaminaState(StaminaAction action)
@@ -129,9 +143,9 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void SetAnimationCancelebleTrue()
     {
-        animationCanceleble = true;   
+        animationCanceleble = true;
     }
-     
+
     public void SetHeavyFalse()
     {
         Debug.Log("SetHeavyFalse called");
@@ -155,7 +169,15 @@ public class PlayerCombatManager : MonoBehaviour
             float staminaCost = StaminaCostBasedOnAction[currentAction];
 
             if (currentAction == StaminaAction.Sprint)
+            {
+
+                if (!CheckInCombat())  // If not in combat, sprinting doesn't drain stamina
+                {
+                    RegenerateStamina();
+                    return;
+                }
                 staminaCost *= Time.deltaTime;
+            }
 
             playerStats.currentStamina -= staminaCost;
             playerManager.onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
@@ -166,7 +188,6 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void RegenerateStamina()
     {
-
         if (staminaRegenTime <= staminaRegenDelay)
         {
             staminaRegenTime += Time.deltaTime;
