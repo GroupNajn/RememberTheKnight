@@ -8,11 +8,11 @@ public class LoadScene : MonoBehaviour
 
     private void Start()
     {
-        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
 
     private void OnEnable()
     {
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
 
     private void OnLoadScenes()

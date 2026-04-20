@@ -19,12 +19,6 @@ public class SceneData : MonoBehaviour
                     return "LobbyMap";
                 case 3:
                     return "First_Level";
-                case 4:
-                    return "Bugfixing_Scene";
-                case 5:
-                    return "RangedTest";
-                case 6:
-                    return "MainScene";
                 case int runSceneIndex when (runSceneIndex > staticSceneCount && runSceneIndex <= staticSceneCount + runSceneCount):
                     return $"Run_{runSceneIndex - staticSceneCount}";
                 default:

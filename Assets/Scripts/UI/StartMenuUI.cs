@@ -21,7 +21,7 @@ public class StartMenuUI : MonoBehaviour
         uiManager.UIMenuActive = false;
 
         // LOAD NEXT SCENE
-        GlobalSceneManager.Instance.ActivateSceneNoTransition(SceneData.Instance[1]);
+        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[1]);
 
         uiManager.OpenCharacterSelectUI();
 
