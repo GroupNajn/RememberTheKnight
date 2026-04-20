@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Unity.AppUI.Redux;
 using UnityEngine;
 
 public class InteractHealingFountain : MonoBehaviour, IInteractable
@@ -8,13 +10,15 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     [SerializeField] GameObject lightObject;
     [SerializeField] private int healingCost = 5;
     private Light lightSource;
-    public bool IsInteractable { get; private set; } = true;
+    public bool IsInteractable { get; set; } = false;
 
     private Collider interactCollider;
     [SerializeField] bool isExpended;
     private int currentSoulCollect;
 
-    public string InfoString { get; private set; } = null;
+    [field: SerializeField] public string InfoString { get; private set; } = null;
+
+    [field: SerializeField] public string ErrorString { get; private set; } = null;
     void Start()
     {
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
@@ -48,5 +52,4 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
         lightObject.SetActive(false);
         yield return null;
     }
-
 }

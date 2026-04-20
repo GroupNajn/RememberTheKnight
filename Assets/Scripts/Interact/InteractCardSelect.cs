@@ -4,8 +4,9 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
 {
     UIManager playerUIManager;
 
-    public string InfoString { get; private set; } = null;
-    public bool IsInteractable { get; private set; } = true;
+    [field: SerializeField] public string InfoString { get; private set; } = null;
+    [field:SerializeField] public string ErrorString { get; private set; } = null;
+    public bool IsInteractable { get; set; } = false;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();

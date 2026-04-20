@@ -50,12 +50,14 @@ public class PlayerInteract : MonoBehaviour
         if (Physics.Raycast(ray, out hit, InteractDistance, 3))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-
+            
             if (interactable != null)
             {
                 if (!playerUIManager.UIMenuActive)
                 {
                     playerUIManager.OpenInteractiveUI();
+                    interactable.IsInteractable = true;
+
                 }
                 return;
             }
