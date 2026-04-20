@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
+using UnityEngine.AI;
 public enum StaminaAction
 {
     Sprint,
@@ -13,7 +14,7 @@ public class PlayerCombatManager : MonoBehaviour
     //Updated by Jonathan 2026-04-16
     public static PlayerCombatManager Instance { get; private set; }
 
-    Animator animator;
+    Animator playerAnimator;
     PlayerStats playerStats;
     PlayerManager playerManager;
     PlayerController playerController;
@@ -22,10 +23,9 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] public bool canCombo = false;
     [SerializeField] public bool canCharge = false;
     [SerializeField] public bool fullyCharged = false;
-    //[SerializeField] public bool Charging= false;
     [SerializeField] public bool isAttackRotationSpeed = false;
     [SerializeField] public bool animationCanceleble = true;
-
+    public bool InCombat = false;
     [SerializeField] public StaminaAction currentAction;
     [SerializeField] public StaminaAction lastAttackAction;
 
@@ -54,7 +54,7 @@ public class PlayerCombatManager : MonoBehaviour
             Instance = this;
         }
 
-        animator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();
         playerStats = GetComponent<PlayerStats>();
         playerManager = GetComponent<PlayerManager>();
         playerController = GetComponent<PlayerController>();
@@ -62,39 +62,52 @@ public class PlayerCombatManager : MonoBehaviour
 
     public bool CheckInCombat()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+       
+
+        List<GameObject> enemies = new List<GameObject>();
+
+        
+            enemies.Clear();
+
+            int enemyLayerMask = 1 << 8;
+
+            Collider[] hits = Physics.OverlapSphere(this.gameObject.transform.position, 25, enemyLayerMask);
+
+            foreach (Collider hit in hits)
+            {
+                enemies.Add(hit.gameObject);
+            }
+        
+
+       
         foreach (GameObject enemy in enemies)
         {
-
-            if (enemy.GetComponent<NavmeshBehaviourSync>().InCombat)
+            if (enemy.GetComponent<NavmeshBehaviourSync>().InCombat && enemy.GetComponent<NavMeshAgent>().isActiveAndEnabled)
             {
+                InCombat = true;
                 return true;
             }
         }
+        InCombat = false;
         return false;
     }
 
     public void SetStaminaState(StaminaAction action)
     {
         currentAction = action;
-        //if (action == StaminaAction.lightAttack || action == StaminaAction.heavyAttack)
-        //{
-        //    lastAttackAction = action;
-        //}
+       
     }
 
     public void EnableInvulnerable()
     {
         isInvulnerable = true;
 
-        // Debug.Log("Player is now invulnerable.");
     }
 
 
     public void DisableInvulnerable()
     {
         isInvulnerable = false;
-        //  Debug.Log("Player is no longer invulnerable.");
     }
 
     public void EnableCanCombo()
@@ -102,9 +115,10 @@ public class PlayerCombatManager : MonoBehaviour
         canCombo = true;
     }
 
-    public void DisableCanCombo()
+    public void DisableCanCombo() // no longer used, but will cause errors if removed due to animation events
     {
-        canCombo = false;
+        //canCombo = false;
+        //animator.ResetTrigger("IsCombo");
     }
 
     public void EnableCanCharge()
@@ -120,6 +134,8 @@ public class PlayerCombatManager : MonoBehaviour
     {
         fullyCharged = true;
         playerController.AttackCharged = true;
+        playerAnimator.SetBool("IsCharged", true);
+
     }
     public void FullyChargedFalse()
     {
