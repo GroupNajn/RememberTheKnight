@@ -16,6 +16,8 @@ public class CardData : ScriptableObject
     public string CardName;
 
     public GameObject CardPrefab;
+    public Sprite cardImage;
+
     [Header("Card Stats")]
     [SerializeField] public float damageModifier = 1f;
     [SerializeField] public float healthModifier = 1f;
