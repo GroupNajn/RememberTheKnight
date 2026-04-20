@@ -65,20 +65,20 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        Debug.Log("DIE!");
+        //Debug.Log("DIE!");
         playerAnimator.SetBool("IsDead", true);
     }
 
     private void NotifyHealthChanged()
     {
 
-        Debug.Log("EVENT TRIGGERED: " + playerStats.Health);
+        //Debug.Log("EVENT TRIGGERED: " + playerStats.Health);
         OnHealthChanged?.Invoke(playerStats.Health, playerStats.MaxHealth);
     }
 
     public void NotifyDeath()
     {
-        Debug.Log("EVENT TRIGGERED: Player Died");
+        //Debug.Log("EVENT TRIGGERED: Player Died");
         Event_System.instance.OnPlayerDeath?.Invoke();
     }
 

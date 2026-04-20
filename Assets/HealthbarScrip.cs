@@ -8,6 +8,8 @@ public class HealthbarScrip : MonoBehaviour
     public RectTransform lerpingRectTransform;
     [SerializeField] bool isPlayer = false;
     [SerializeField] private MonoBehaviour target;// drag Player OR Enemy here
+    [SerializeField] private RectTransform healthBarTransform;
+    [SerializeField] private float widthPerHealth = 3f;
     private Vector2 previousAncorPos;
     private IDamageable damageable;
     [SerializeField] float lerpSpeed = 2f;
@@ -54,15 +56,22 @@ public class HealthbarScrip : MonoBehaviour
 
     void UpdateHealthBar(float current, float max)
     {
-
-
         healthbar.maxValue = max;
         healthbar.value = current;
+
+        // Resize based on max health
+        if (isPlayer)
+        {
+            Vector2 size = healthBarTransform.sizeDelta;
+            size.x = max * widthPerHealth;
+            healthBarTransform.sizeDelta = size;
+        }
         if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
         if (current <= 0)                 // condition to destroy gameObject when health is 0 or below. 
         {
             Destroy(healthbar.gameObject);
             damageable.OnHealthChanged -= UpdateHealthBar;
         }
+
     }
 }
