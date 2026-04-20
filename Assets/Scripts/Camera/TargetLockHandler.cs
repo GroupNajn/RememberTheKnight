@@ -96,10 +96,6 @@ public class TargetLockHandler : MonoBehaviour
             {
                 FindTarget();
             }
-            if (currentTarget == null)
-            {
-                FindTarget();
-            }
             if (currentTarget == null) { Unlock(); }
         }
 
