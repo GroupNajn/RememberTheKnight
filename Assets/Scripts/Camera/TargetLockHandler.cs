@@ -94,7 +94,7 @@ public class TargetLockHandler : MonoBehaviour
             }
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
-                FindTarget();
+                Unlock();
             }
             if (currentTarget == null) { Unlock(); }
         }
