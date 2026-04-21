@@ -7,6 +7,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 
     string sceneName;
 
+    public InteractableUIData UIData { get => UIData; private set => UIData = value;}
+
     private void Start()
     {
         if (sceneToLoadIndex < 0)

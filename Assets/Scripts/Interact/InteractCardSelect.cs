@@ -4,6 +4,7 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
 {
     UIManager playerUIManager;
 
+    public InteractableUIData UIData { get => UIData; private set => UIData = value; }
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();

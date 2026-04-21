@@ -12,6 +12,9 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     private Collider interactCollider;
     [SerializeField] bool isExpended;
     private int currentSoulCollect;
+
+    public InteractableUIData UIData { get => UIData; private set => UIData = value; }
+
     void Start()
     {
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
@@ -24,7 +27,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     {
         currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
         if (!isExpended && currentSoulCollect >= healingCost)
-        { 
+        {
             playerManager.Heal(25f);
             interactCollider.enabled = false;
             isExpended = true;
@@ -45,5 +48,6 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
         lightObject.SetActive(false);
         yield return null;
     }
+
 
 }
