@@ -12,31 +12,42 @@ public class PlayerStats : MonoBehaviour
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
 
-    [field: SerializeField] public float MaxHealth { get; set; }
-    [field: SerializeField] public float Health { get; set; }
+    [Header("Player Stats")]
 
+    [Header("Health")]
+    public float MaxHealth;
+    public float CurrentHealth;
+    public float healthRegenRate = 0f;
 
+    [Header("Stamina")]
+    public float maxStamina = 100f;
+    public float currentStamina;
+    public float staminaRegenRate = 1.5f;
 
+    [Header("Luck")]
+    public float currentLuck;
 
-    [Header("Stats")]
+    [Header("Damage")]
+    public float damageMultiplier;
+
+    [Header("Crit")]
+    public float critChance;
+
+    [Header("Movement Stats")]
     [Header("Movement")]
     public float walkSpeedMultiplier = 0f;
     public float sprintSpeedMultiplier = 0f;
     public float gravity = 25f;
     public float normalRotationSpeed = 10f;
     public float attackRotationSpeed = 5f;
+
     [Header("Dodge")]
     public float dodgeSpeedMultiplier = 0f;
     public float dodgeCoolDown = 0.5f;
     public float dodgeDuration = 0.2f;
+
     [Header("Knockback")]
     public float knockbackResistance = 5f;
-
-
-    [Header("Stamina")]
-    public float maxStamina = 100f;
-    public float currentStamina;
-    public float staminaRegenRate = 1.5f;
 
     [Header("Multipliers")]
     public float healMultiplier = 1;
@@ -52,6 +63,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Base Values")]
     public float baseHealth;
     public float baseStamina;
+    public float baseLuck;
 
     [HideInInspector]
     public bool CanTakeDamage
@@ -65,42 +77,41 @@ public class PlayerStats : MonoBehaviour
         playerCombatManager = PlayerCombatManager.Instance;
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
-        Health = MaxHealth;
+        CurrentHealth = MaxHealth;
         baseHealth = MaxHealth;
         baseStamina = maxStamina;
         currentStamina = maxStamina;
         currentStamina = maxStamina;
-        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
     }
 
-    private void OnDisable()
-    {
-        if(Event_System.instance != null)
-        {
-        Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
-        }
-    }
+    //private void OnDisable()
+    //{
+    //    if(Event_System.instance != null)
+    //    {
+    //    Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
+    //    }
+    //}
 
-    private void OnDestroy()
-    {
-        if (Event_System.instance != null)
-        {
-            Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
-        }
-    }
+    //private void OnDestroy()
+    //{
+    //    if (Event_System.instance != null)
+    //    {
+    //        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+    //    }
+    //}
 
-    public void ApplyStatsFromCardSelection(List<CardData> cards)
-    {
-        MaxHealth = baseHealth;
-        maxStamina = baseStamina;
-        foreach (CardData card in cards)
-        {
-            if (card == null) continue;
-            MaxHealth += card.healthModifier;
-            maxStamina += card.staminaModifier;
-        }
-        Health = MaxHealth;
-        currentStamina = maxStamina;
-
-    }
+    //public void ApplyStatsFromCardSelection(List<CardData> cards)
+    //{
+    //    MaxHealth = baseHealth;
+    //    maxStamina = baseStamina;
+    //    foreach (CardData card in cards)
+    //    {
+    //        if (card == null) continue;
+    //        MaxHealth += card.healthModifier;
+    //        maxStamina += card.staminaModifier;
+    //    }
+    //    Health = MaxHealth;
+    //    currentStamina = maxStamina;
+    //}
 }

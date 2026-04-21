@@ -46,7 +46,7 @@ public class PauseMenu : MonoBehaviour
             // Change to call revive method in PlayerStats
             PlayerManager playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
             PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-            playerStats.Health = playerManager.MaxHealth; // Reset player's health to max
+            playerStats.CurrentHealth = playerManager.MaxHealth; // Reset player's health to max
             playerManager.Heal(playerManager.MaxHealth); // Notify health change to update UI and other systems
         }
         else

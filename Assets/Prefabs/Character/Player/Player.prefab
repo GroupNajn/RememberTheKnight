@@ -655,6 +655,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SprintToggledOn: 0
+  AttackCharging: 0
+  HeavyAttackCharging: 0
 --- !u!114 &7333838977578531082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +676,7 @@ MonoBehaviour:
   drag: 20
   MovingThreshold: 0.01
   AnimatorSmoothing: 5
+  AttackCharged: 0
   dodgeAcceleration: 1
   dodgeDelay: 0.1
   lockHandler: {fileID: 0}
@@ -719,7 +722,10 @@ MonoBehaviour:
   maxStamina: 100
   currentStamina: 0
   staminaRegenRate: 33
+  healMultiplier: 1
   isDead: 0
+  baseHealth: 0
+  baseStamina: 0
 --- !u!114 &2045710683252585095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,9 +740,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInvulnerable: 0
   canCombo: 0
+  canCharge: 0
+  fullyCharged: 0
   isAttackRotationSpeed: 0
   animationCanceleble: 0
+  InCombat: 0
   currentAction: 0
+  lastAttackAction: 0
   staminaRegenDelay: 2
   staminaRegenTime: 0
 --- !u!114 &2484520924626661676
@@ -767,7 +777,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractDistance: 8
-  playerUIManager: {fileID: 0}
 --- !u!114 &8692204682195476090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,44 +1070,60 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0646
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.003
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99018246
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.1397197
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.0040980563
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.0005781052
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -16.063
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 0.494
       objectReference: {fileID: 0}
     - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -0.137
+      objectReference: {fileID: 0}
+    - target: {fileID: 3833202269244107968, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6030414680109792853, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_Name

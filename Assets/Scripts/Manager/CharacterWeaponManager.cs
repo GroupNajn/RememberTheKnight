@@ -14,12 +14,14 @@ public class CharacterWeaponManager : MonoBehaviour
 
     protected CharacterSoundFXManager characterSoundFXManager;
     private PlayerController playerController;
+    private Animator playerAnimator;
 
 
     public virtual void Start()
     {
         characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
         playerController = GetComponent<PlayerController>();
+        playerAnimator = GetComponent<Animator>();
 
         if (currentRightHandWeapon != null)
         {
@@ -76,11 +78,9 @@ public class CharacterWeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
             playerController.AttackCharged = false;
-
-
+            playerAnimator.SetBool("IsCharged", false);
         }
     }
 
@@ -100,6 +100,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
             playerController.AttackCharged = false;
+            playerAnimator.SetBool("IsCharged", false);
 
         }
     }
