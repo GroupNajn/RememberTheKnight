@@ -11,16 +11,17 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
 
     private Collider interactCollider;
     [SerializeField] bool isExpended;
+
     private int currentSoulCollect;
 
-    public InteractableUIData UIData { get => UIData; private set => UIData = value; }
+    public bool IsInteractable { get; set; } = false;
 
     void Start()
     {
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
-
+        
     }
     // The cost to heal is currently hard coded to the value 5. 
     public void Interact()
@@ -47,6 +48,25 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
         }
         lightObject.SetActive(false);
         yield return null;
+    }
+
+    public InteractableUIData GetUIData()
+    {
+        var data = new InteractableUIData();
+
+        if (!isExpended)
+        {
+            data.InfoText = $"Let me consume {healingCost} souls to replenish a " +
+            $"portion of your former self.";
+            data.CanInteract = true;
+        }
+        else
+        {
+            data.InfoText = $"My well's essence is depleted.";
+            data.CanInteract = false;
+        }
+
+            return data;
     }
 
 

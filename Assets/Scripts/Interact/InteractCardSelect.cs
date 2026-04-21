@@ -4,7 +4,8 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
 {
     UIManager playerUIManager;
 
-    public InteractableUIData UIData { get => UIData; private set => UIData = value; }
+    public bool IsInteractable { get; set; } = false;
+
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
@@ -14,6 +15,12 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
         Debug.Log("Interacted with " + gameObject.name);
 
         playerUIManager.OpenCardSelectUI();
+    }
+
+    public InteractableUIData GetUIData()
+    {
+        var UIData = new InteractableUIData();
+        return UIData;
     }
 
 }

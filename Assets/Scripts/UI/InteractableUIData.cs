@@ -3,9 +3,26 @@ using UnityEngine;
 
 public class InteractableUIData : MonoBehaviour
 {
-    public string infoText { get => infoText; private set => infoText = value; }
-    public string errorText { get => errorText; private set => errorText = value; } 
-    public bool canInteract { get; private set; }
+    private string infoText;
+    public string InfoText
+    {
+        get => infoText;
+        set => infoText = value;
+    }
+
+    private string errorText;
+    public string ErrorText
+    {
+        get => errorText;
+        set => errorText = value;
+    }
+    private bool canInteract;
+
+    public bool CanInteract
+    {
+        get => canInteract;
+        set => canInteract = value;
+    }
 
 
     void Start()
