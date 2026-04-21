@@ -55,7 +55,12 @@ public class PlayerStats : MonoBehaviour
     [Header("Flags")]
     [SerializeField] public bool isDead = false;
 
+    [Header("Healing Cup")]
+    public int maxHealingCharges = 100;
+    public int currentHealingCharges;
+
     // Base Values used for Applying Stats
+    [Header("Base Values")]
     public float baseHealth;
     public float baseStamina;
     public float baseLuck;

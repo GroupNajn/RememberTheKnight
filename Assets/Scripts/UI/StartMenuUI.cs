@@ -38,7 +38,7 @@ public class StartMenuUI : MonoBehaviour
 
             // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
             uiManager.CloseSoulUI();
-
+            uiManager.CloseCupUI();
         }
     }
 
