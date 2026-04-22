@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InteractHealingFountain : MonoBehaviour, IInteractable
 {
+    private GameObject player;
     private PlayerManager playerManager;
 
     [SerializeField] GameObject lightObject;
@@ -18,7 +19,8 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
 
     void Start()
     {
-        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
         
@@ -34,6 +36,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
             isExpended = true;
             StartCoroutine(FadeOut());
             Event_System.instance?.OnSoulsSpent.Invoke(healingCost);
+            player.GetComponent<PlayerVFX>().PlayHealVFX();
         }
     }
 
