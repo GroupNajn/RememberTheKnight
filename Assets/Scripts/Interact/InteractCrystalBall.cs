@@ -51,6 +51,23 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        
+        if(sceneToLoadIndex < 0)
+        {
+            UIData = null;
+        }
+        else if (sceneToLoadIndex == 2)
+        {
+            UIData.InfoText = "Touch the crystal ball to return return to lobby.";
+        }
+        else if (sceneToLoadIndex == 3)
+        {
+            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
+        }
+        else
+        {
+            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
+        }
         return UIData;
     }
 }
