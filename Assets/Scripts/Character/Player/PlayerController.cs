@@ -173,12 +173,12 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
         Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-        newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
+        newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.currentDodgeSpeedModifier);
         newVelocity.y = _verticalVelocity;
 
         // un comment for frontflip
-        _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-        _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+        _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.currentDodgeSpeedModifier * Time.deltaTime);
+        _characterController.Move(dodgeDirection * playerStats.currentDodgeSpeedModifier * Time.deltaTime);
 
         if (!PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != dodgeHash)
         {
@@ -279,7 +279,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
 
             _characterController.Move(knockbackForce * Time.deltaTime);
-            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.knockbackResistance);
+            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.currentKnockbackResistance);
         }
         else if (knockbackForce.magnitude <= 0.1 && isKnockedback)
         {
@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
 
         float lateralAcceleration = isSprinting ? sprintAcceleration : walkAcceleration;
-        float clampedLateralMagnitude = isSprinting ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
+        float clampedLateralMagnitude = isSprinting ? playerStats.currentSprintSpeedModifier : playerStats.currentWalkSpeedModifier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;

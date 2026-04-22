@@ -33,7 +33,6 @@ public class StaminaBar : MonoBehaviour
 
         // Uppdatera UI direkt
         UpdateStaminaBar(playerStats.currentStamina, playerStats.maxStamina);
-        Debug.Log("SHOULD HAVE UPDATED");
     }
 
     private void Update()

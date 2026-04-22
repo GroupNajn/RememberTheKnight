@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(WeaponStats))]
 public class DamageTrigger : MonoBehaviour
@@ -9,34 +9,36 @@ public class DamageTrigger : MonoBehaviour
     // Updated by Jonathan  2026-04-16
 
     WeaponData weaponData;
-    float damageAmount
-    {
-        get
-        {
-            if (combatManager.lastAttackAction == StaminaAction.lightAttack)
-                return weaponData.BaseDamage;
+    //float damageAmount
+    //{
+    //    get
+    //    {
+    //        if (combatManager.lastAttackAction == StaminaAction.lightAttack)
+    //            return weaponData.BaseDamage;
 
-            else return weaponData.HeavyDamage;
-        }
-        set { }
-    }
-    float chargedDamageBonus
-    {
-        get
-        {
-            if (combatManager.lastAttackAction == StaminaAction.lightAttack)
-                return weaponData.ChargedDamageBonus;
+    //        else return weaponData.HeavyDamage;
+    //    }
+    //    set { }
+    //}
+    //float chargedDamageBonus
+    //{
+    //    get
+    //    {
+    //        if (combatManager.lastAttackAction == StaminaAction.lightAttack)
+    //            return weaponData.ChargedDamageBonus;
 
-            else return weaponData.HeavyChargedDamage;
-        }
-        set { }
-    }
-   
+    //        else return weaponData.HeavyChargedDamage;
+    //    }
+    //    set { }
+    //}
+
     GameObject player;
-    PlayerController playerController;
+    [SerializeField] PlayerController playerController;
     PlayerCombatManager combatManager;
     PlayerLocomotion playerLocomotion;
     Animator playerAnimator;
+    PlayerWeaponManager playerWeaponManager;
+    EnemyWeaponManager enemyWeaponManager;
 
 
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
@@ -48,6 +50,7 @@ public class DamageTrigger : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         combatManager = player.GetComponent<PlayerCombatManager>();
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
+        playerWeaponManager = player.GetComponent<PlayerWeaponManager>();
         playerAnimator = player.GetComponent<Animator>();
         if (weaponData != null)
         {
@@ -56,17 +59,23 @@ public class DamageTrigger : MonoBehaviour
         }
         else
         {
-            damageAmount = 999;
-            chargedDamageBonus = 0;
+            // NOT NEEDED ANY MORE 
+            //damageAmount = 999;
+            //chargedDamageBonus = 0;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         PlayerStates check = this.gameObject.GetComponentInParent<PlayerStates>();
+
+        if (check == null)
+        {
+            enemyWeaponManager = this.gameObject.GetComponentInParent<EnemyWeaponManager>();
+        }
+
         if (check && other.gameObject == player)// prevent damaging self with own weapon
         {
-            Debug.Log($"Prevented damage from: {check.gameObject}, to: {other.gameObject}");
             return;
         }
 
@@ -76,25 +85,22 @@ public class DamageTrigger : MonoBehaviour
         {
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
-            if (other.gameObject != player) // stamina gain if hit with a charged attack
+            if (playerController != null) // stamina gain if hit with a charged attack
             {
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);
-                    damageable.TakeDamage(damageAmount + chargedDamageBonus, contactPoint);
-                    return;      
                 }
-                damageable.TakeDamage(damageAmount, contactPoint);
-                return; 
+                damageable.TakeDamage(playerWeaponManager.CalculateFinalDamage(playerWeaponManager.currentActiveWeaponData), contactPoint);
+                return;
             }
 
-            damageable.TakeDamage(weaponData.BaseDamage, contactPoint);
+            damageable.TakeDamage(enemyWeaponManager.CalculateFinalDamage(enemyWeaponManager.currentActiveWeaponData), contactPoint);
         }
     }
 
     public void ResetDamage()
     {
         damagedObjects.Clear();
-        Debug.Log("Damage reset, ready to damage new targets.");
     }
 }

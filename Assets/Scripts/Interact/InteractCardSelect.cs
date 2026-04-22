@@ -12,8 +12,6 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
     }
     public void Interact()
     {
-        Debug.Log("Interacted with " + gameObject.name);
-
         playerUIManager.OpenCardSelectUI();
     }
 

@@ -50,7 +50,7 @@ public class ProjectileHandler : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
 
-        GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation);
+        GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation, gameObject.transform);
 
 
         projectileObject.GetComponent<Projectile>().direction = direction;

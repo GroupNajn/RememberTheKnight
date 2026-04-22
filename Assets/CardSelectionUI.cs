@@ -20,8 +20,8 @@ public class CardSelectionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
 
 
-    public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
-    public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
+    [field: SerializeField] public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
+    [field: SerializeField] public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
@@ -38,7 +38,7 @@ public class CardSelectionUI : MonoBehaviour
 
         errorText.gameObject.SetActive(false);
         RebuildSelectionState();
-        Debug.Log($"SelectedCards Count:::::::::::: {selectedCards.Count}");
+        uiManager.CloseCardSelectUI();
 
     }
 
@@ -130,14 +130,6 @@ public class CardSelectionUI : MonoBehaviour
     // With the cardData list as a parameter. 
     public void OnConfirmSelection()
     {
-        if (selectedCards.Count == 0)
-        {
-            if (!errorActive)
-                ShowError("You must select at least one card!", 5f);
-            uiManager.CloseCardSelectUI();
-            return;
-        }
-
         Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
         uiManager.CloseCardSelectUI();
     }

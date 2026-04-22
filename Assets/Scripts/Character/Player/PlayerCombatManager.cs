@@ -174,7 +174,6 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void SetHeavyFalse()
     {
-        Debug.Log("SetHeavyFalse called");
         if (lastAttackAction != StaminaAction.lightAttack)
             lastAttackAction = StaminaAction.lightAttack;
         currentAction = StaminaAction.lightAttack;
@@ -182,7 +181,6 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void SetHeavyTrue()
     {
-        Debug.Log("SetHeavyTrue called");
         if (lastAttackAction != StaminaAction.heavyAttack)
             lastAttackAction = StaminaAction.heavyAttack;
         currentAction = StaminaAction.heavyAttack;

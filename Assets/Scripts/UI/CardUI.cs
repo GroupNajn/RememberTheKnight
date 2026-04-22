@@ -65,6 +65,5 @@ public class CardUI : MonoBehaviour
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
-        Debug.Log($"Card {(selected ? "Selected" : "Deselected")}");
     }
 }
