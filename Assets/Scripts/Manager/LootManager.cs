@@ -117,7 +117,6 @@ public class LootManager : MonoBehaviour
             if (roll < current)
             {
                 PrintPercentOnSelectedItem(current, totalWeight);
-                Debug.Log(item);
                 DropLoot(item, enemy);
                 return;
             }
@@ -181,7 +180,6 @@ public class LootManager : MonoBehaviour
     {
         Vector3 pos = enemy.transform.position;
         Instantiate(item, pos + new Vector3(0,0.5f,0), Quaternion.identity);
-        Debug.Log("ENEMY TRANSFORM POSITION" + enemy.transform.position);
 
     }
 

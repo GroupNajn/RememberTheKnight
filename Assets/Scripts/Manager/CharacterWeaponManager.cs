@@ -1,9 +1,10 @@
+using System.Transactions;
 using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-    [SerializeField] GameObject currentRightHandWeapon;
-    [SerializeField] GameObject currentLeftHandWeapon;
+    [SerializeField] protected GameObject currentRightHandWeapon;
+    [SerializeField] protected GameObject currentLeftHandWeapon;
 
     protected bool Holsterd = false;
     protected DamageTrigger rightDamageTrigger;
@@ -12,21 +13,23 @@ public class CharacterWeaponManager : MonoBehaviour
     protected WeaponData currentRightWeaponData;
     protected WeaponData currentLeftWeaponData;
 
+    public WeaponData currentActiveWeaponData;
+
     protected CharacterSoundFXManager characterSoundFXManager;
-    private PlayerController playerController;
-    private Animator playerAnimator;
+    protected float finalDamage;
+
 
 
     public virtual void Start()
     {
         characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
-        playerController = GetComponent<PlayerController>();
-        playerAnimator = GetComponent<Animator>();
 
         if (currentRightHandWeapon != null)
         {
             rightDamageTrigger = currentRightHandWeapon.GetComponent<DamageTrigger>();
             currentRightWeaponData = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData;
+
+            currentActiveWeaponData = currentRightWeaponData;
         }
         else
         {
@@ -71,6 +74,8 @@ public class CharacterWeaponManager : MonoBehaviour
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
             rightDamageTrigger.ResetDamage();
             characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes));
+
+            currentActiveWeaponData = currentRightWeaponData;
         }
     }
 
@@ -79,8 +84,7 @@ public class CharacterWeaponManager : MonoBehaviour
         if (currentRightHandWeapon != null)
         {
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
-            playerController.AttackCharged = false;
-            playerAnimator.SetBool("IsCharged", false);
+
         }
     }
 
@@ -91,6 +95,8 @@ public class CharacterWeaponManager : MonoBehaviour
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
             leftDamageTrigger.ResetDamage();
             characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes));
+
+            currentActiveWeaponData = currentLeftWeaponData;
         }
     }
 
@@ -99,9 +105,12 @@ public class CharacterWeaponManager : MonoBehaviour
         if (currentLeftHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
-            playerController.AttackCharged = false;
-            playerAnimator.SetBool("IsCharged", false);
 
         }
+    }
+
+    public virtual float CalculateFinalDamage(WeaponData weaponData)
+    {
+        return finalDamage;
     }
 }

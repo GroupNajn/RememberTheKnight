@@ -96,15 +96,13 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        float totalHeal = amount * playerStats.healMultiplier;
+        float totalHeal = amount * playerStats.currentHealModifier;
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
     }
 
-    public void UpdateMaxStamina(float newMaxStamina)
+    public void NotifyStaminaChanged()
     {
-        playerStats.maxStamina = newMaxStamina;
-
         onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
     }
 
@@ -128,17 +126,45 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         playerStats.MaxHealth = playerStats.baseHealth;
         playerStats.maxStamina = playerStats.baseStamina;
+
+        playerStats.currentLuck = playerStats.baseLuck;
+        playerStats.currentCritChance = playerStats.baseCritChance;
+
+        playerStats.currentWalkSpeedModifier = playerStats.baseWalkSpeedModifier;
+        playerStats.currentSprintSpeedModifier = playerStats.baseSprintSpeedModifier;
+        playerStats.currentDodgeSpeedModifier = playerStats.baseDodgeSpeedModifier;
+        playerStats.currentDamageModifier = playerStats.baseDamageModifier;
+        playerStats.currentHealModifier = playerStats.baseHealModifier;
+        playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
+
+        playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+
         foreach (CardData card in cards)
         {
             if (card == null) continue;
             playerStats.MaxHealth += card.healthModifier;
             playerStats.maxStamina += card.staminaModifier;
+
+            playerStats.currentLuck += card.LuckModifier;
+            playerStats.currentCritChance += card.critChance;
+
+            playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
+            playerStats.currentSprintSpeedModifier += card.sprintSpeedModifier;
+            playerStats.currentDodgeSpeedModifier += card.dodgeSpeedModifier;
+            playerStats.currentDamageModifier += card.damageModifier;
+
+
+            playerStats.currentHealModifier += card.healModifier;
+            playerStats.currentKnockbackResistance += card.knockbackModifier;
+
+            playerStats.currentWeaponSize += card.weaponSize;
         }
+
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
 
         NotifyHealthChanged();
-        onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+        NotifyStaminaChanged();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

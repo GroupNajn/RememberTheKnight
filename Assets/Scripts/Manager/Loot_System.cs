@@ -46,7 +46,6 @@ public class Loot_System : MonoBehaviour
     {
         currentSoulCount -= souls;
         canvasTextScript.SetSoulsAmount(currentSoulCount);
-        Debug.Log($"Current Soul Count: {currentSoulCount}");
     }
 
 
@@ -63,7 +62,6 @@ public class Loot_System : MonoBehaviour
         {
             currentSoulCount += 1;
             canvasTextScript.SetSoulsAmount(currentSoulCount);
-            Debug.Log($"Souls Collected: {currentSoulCount}");
         }
     }
 }

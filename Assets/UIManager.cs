@@ -297,10 +297,8 @@ public class UIManager : MonoBehaviour
     // CARD SELECT UI
     public void OpenCardSelectUI()
     {
-        Debug.Log("Opening Card Select UI");
         CloseInteractiveUI();
         cardSelectUI.SetActive(true);
-        Debug.Log($"Card Select UI active: {cardSelectUI.activeInHierarchy}");
 
         UIMenuActive = true;
         CheckUIState();

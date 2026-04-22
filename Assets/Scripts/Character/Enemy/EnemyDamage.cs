@@ -28,7 +28,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         if (CanTakeDamage && Health > 0)
         {
-            Debug.Log($"Taking damage{damage}");
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damage);
             Health -= damage;
 
@@ -38,7 +37,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
-            Debug.Log($"Health {Health}/{MaxHealth}");
             CanTakeDamage = false;
             if (Health <= 0)
             {
@@ -49,9 +47,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        Debug.Log("Enemy died");
         onDeath?.Trigger();
-        Debug.Log("Invoking OnEnemyKilled");
         Event_System.instance.OnEnemyKilled?.Invoke(this);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
 

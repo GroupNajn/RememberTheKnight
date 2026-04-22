@@ -8,8 +8,8 @@ public class WeaponData : ScriptableObject
     public string WeaponName;
 
     [Header("Weapon Stats")]
-    [SerializeField] public float BaseDamage = 1f;
-    [SerializeField] public float ChargedDamageBonus = 1f;
+    [SerializeField] public float LightDamage = 1f;
+    [SerializeField] public float LightChargedDamageBonus = 1f;
 
     [SerializeField] public float HeavyDamage = 1f;
     [SerializeField] public float HeavyChargedDamage = 1f;
