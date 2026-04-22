@@ -39,6 +39,11 @@ public class InteractUI_Controller : MonoBehaviour
         if (interactable == null || player == null)
             return;
 
+        if (!interactable.IsLookedAt)
+        {
+            OverrideDisplayDuration();
+        }
+
         if (interactable.IsLookedAt && !coroutineRunning)
         {
             StartCoroutine(ShowUIRoutine());
@@ -55,6 +60,8 @@ public class InteractUI_Controller : MonoBehaviour
     {
         coroutineRunning = true;
         canDisplay = true;
+        isShowing = true;
+        
 
         InitializeTMPText();
         canvasObject.SetActive(true);
@@ -63,15 +70,26 @@ public class InteractUI_Controller : MonoBehaviour
 
         Vector3 direction = transform.position - player.transform.position;
 
-        if (direction.magnitude > displayDistance)
+        if (direction.magnitude > displayDistance || !canDisplay)
         {
             canDisplay = false;
+            isShowing = false;
             canvasObject.SetActive(false);
             interactable.IsLookedAt = false;
             coroutineRunning = false;
 
         }
         coroutineRunning = false;
+
+    }
+
+    private void OverrideDisplayDuration()
+    {
+        coroutineRunning = false;
+        canDisplay = false;
+        isShowing = false;
+        canvasObject.SetActive(false);
+
 
     }
 
