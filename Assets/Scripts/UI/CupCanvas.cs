@@ -6,18 +6,10 @@ public class CupCanvas : MonoBehaviour
     [SerializeField] Gradient crystalGradient;
     [SerializeField] Material cupMaterial;
 
-    GameObject fullHealingCup;
-    GameObject emptyHealingCup;
-
-    int chargesLeft;
+    int chargesLeft; // Temporary variable for testing
 
     void Start()
     { 
-        fullHealingCup = transform.Find("HealingCup").Find("Full").gameObject;
-        emptyHealingCup = transform.Find("HealingCup").Find("Empty").gameObject;
-
-        fullHealingCup.SetActive(false);
-
         gameObject.SetActive(false);
     }
 
@@ -34,19 +26,7 @@ public class CupCanvas : MonoBehaviour
         cupMaterial.SetColor("_EmissionColor", crystalGradient.Evaluate(crystalFillAmount) * 2f);
     }
 
-    public void FillealingCup()
-    {
-        fullHealingCup.SetActive(true);
-        emptyHealingCup.SetActive(false);
-    }
-
-    public void EmptyHealingCup()
-    {
-        fullHealingCup.SetActive(false);
-        emptyHealingCup.SetActive(true);
-    }
-
-    void Update()
+    void Update() // Temporary input handling for testing
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
