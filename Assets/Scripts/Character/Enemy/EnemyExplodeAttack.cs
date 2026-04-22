@@ -34,14 +34,12 @@ public class EnemyExplodeAttack : MonoBehaviour
 
     public void OnExplode()
     {
-
-
+        bool exploded = false;
         foreach (var damageable in damageables)
         {
-            if(damageable == null || barrel == null) continue;
+            if (damageable == null || barrel == null) continue;
             bool damageableHit = false;
             float distanceToDamageable = Vector3.Distance(barrel.transform.position, damageable.transform.position);
-            //explosion.Play();
 
             for (int i = 0; i < hitchecks.Length; i++)
             {
@@ -60,17 +58,17 @@ public class EnemyExplodeAttack : MonoBehaviour
                         {
                             knockbackeble.ApplyKnockback(explosionForce, explotionRadius, transform.position);
                         }
-                        if (knockbackeble == null) Debug.Log("Explotion: could not find knockbackeble");
                         break;
                     }
-                    Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.red, DebugRay_DrawTime);
+                    // Debug.DrawRay(barrel.transform.position, hitchecks[i].transform.position - barrel.transform.position, Color.red, DebugRay_DrawTime);
                 }
             }
-            if (barrel != null)
+            if (exploded == false)
             {
+                exploded = true;
                 Destroy(barrel);
-                var boom = Instantiate(explosion, barrel.transform.position, Quaternion.identity);
-                boom.Play();
+                ParticleSystem explosion = Instantiate(this.explosion, barrel.transform.position, Quaternion.identity);
+                // explosion.Play();
                 enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
             }
             if (damageableHit)
@@ -79,5 +77,6 @@ public class EnemyExplodeAttack : MonoBehaviour
                 damageable.GetComponent<IDamageable>().TakeDamage(damage, Vector3.zero);
             }
         }
+
     }
 }
