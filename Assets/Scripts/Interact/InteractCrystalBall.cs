@@ -5,7 +5,11 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 {
     [SerializeField] int sceneToLoadIndex;
 
+    public bool IsLookedAt { get; set; } = false;
+
     string sceneName;
+
+    public InteractableUIData UIData { get => UIData; private set => UIData = value;}
 
     private void Start()
     {
@@ -13,6 +17,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         {
             return;
         }
+
+
 
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
@@ -40,5 +46,28 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         GlobalSceneManager.Instance.LoadScene(sceneName);
 
         Event_System.instance.OnLoadScenes -= OnLoadScenes;
+    }
+
+    public InteractableUIData GetUIData()
+    {
+        var UIData = new InteractableUIData();
+        
+        if(sceneToLoadIndex < 0)
+        {
+            UIData = null;
+        }
+        else if (sceneToLoadIndex == 2)
+        {
+            UIData.InfoText = "Touch the crystal ball to return return to lobby.";
+        }
+        else if (sceneToLoadIndex == 3)
+        {
+            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
+        }
+        else
+        {
+            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
+        }
+        return UIData;
     }
 }

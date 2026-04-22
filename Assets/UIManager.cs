@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -35,6 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject soulUI;
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject staminaBar;
+    [SerializeField] private GameObject cupUI;
 
 
 
@@ -72,6 +72,8 @@ public class UIManager : MonoBehaviour
         //    else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
         //});
 
+        HideActiveUI();
+
         playerInput.enabled = false;
         //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
@@ -79,6 +81,8 @@ public class UIManager : MonoBehaviour
 
         backgrundUI.gameObject.SetActive(true);
         backButtonUI.gameObject.SetActive(false);
+
+        UIMenuActive = true;
     }
 
     void OnPauseGame()
@@ -98,28 +102,28 @@ public class UIManager : MonoBehaviour
             if (characterSelectUI.activeSelf)
                 return;
 
-            if(gameDeathScreenUI.activeSelf)
+            if (gameDeathScreenUI.activeSelf)
                 return;
 
-            if(optionMenuUI.activeSelf)
+            if (optionMenuUI.activeSelf)
             {
                 GoBackFromOptions();
                 return;
             }
 
-            if(controllsUI.activeSelf)
+            if (controllsUI.activeSelf)
             {
                 GoBackFromControlls();
                 return;
             }
 
-            if(audioUI.activeSelf)
+            if (audioUI.activeSelf)
             {
                 GoBackFromAudio();
                 return;
             }
 
-            if(videoUI.activeSelf)
+            if (videoUI.activeSelf)
             {
                 GoBackFromVideo();
                 return;
@@ -218,7 +222,7 @@ public class UIManager : MonoBehaviour
     public void ClosePauseMenu()
     {
         if (pauseMenuUI)
-        {   
+        {
             UIMenuActive = false;
             pauseMenuUI.SetActive(false); // Hide the pause menu
         }
@@ -371,6 +375,16 @@ public class UIManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
+    public void OpenCupUI()
+    {
+        cupUI.SetActive(true);
+    }
+
+    public void CloseCupUI()
+    {
+        cupUI.SetActive(false);
+    }
+
     //private void OnEnable()
     //{
     //    SceneManager.sceneLoaded += OnSceneLoaded;
@@ -405,8 +419,8 @@ public class UIManager : MonoBehaviour
     }
     public void GoBackFromAudio()
     {
-       CloseAudioUI();
-       OpenOptionMenu();
+        CloseAudioUI();
+        OpenOptionMenu();
     }
     public void GoBackFromVideo()
     {

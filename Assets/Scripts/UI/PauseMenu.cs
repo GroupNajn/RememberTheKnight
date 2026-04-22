@@ -24,8 +24,6 @@ public class PauseMenu : MonoBehaviour
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GetComponentInParent<UIManager>();
-
-        gameObject.SetActive(false); // Ensure the pause menu is initially inactive 
     }
 
     void GetText()
