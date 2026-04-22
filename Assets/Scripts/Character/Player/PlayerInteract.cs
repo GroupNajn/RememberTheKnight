@@ -8,6 +8,7 @@ public class PlayerInteract : MonoBehaviour
     public float InteractDistance = 8f;
     PlayerController playerController;
 
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -18,6 +19,7 @@ public class PlayerInteract : MonoBehaviour
     void Update()
     {
         CheckInteractable();
+        CheckInteractUI();
     }
 
     public void OnInteract()
@@ -38,6 +40,29 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
+    public void CheckInteractUI()
+    {
+        camera = playerController._playerCamera.GetComponent<Camera>();
+
+        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit,InteractDistance, 3))
+        {
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+
+            if(interactable != null && Physics.Raycast(ray, out hit, InteractDistance, 3))
+            {
+                interactable.IsLookedAt = true;
+                return;
+            }
+           
+         
+        }
+
+
+    }
+
     public void CheckInteractable()
     {
         camera = playerController._playerCamera.GetComponent<Camera>();
@@ -53,7 +78,8 @@ public class PlayerInteract : MonoBehaviour
             {
                 if (!UIManager.Instance.UIMenuActive)
                 {
-                    UIManager.Instance.OpenInteractiveUI();
+                     
+                        UIManager.Instance.OpenInteractiveUI();
                 }
                 return;
             }

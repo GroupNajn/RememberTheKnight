@@ -5,7 +5,11 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 {
     [SerializeField] int sceneToLoadIndex;
 
+    public bool IsLookedAt { get; set; } = false;
+
     string sceneName;
+
+    public InteractableUIData UIData { get => UIData; private set => UIData = value;}
 
     private void Start()
     {
@@ -13,6 +17,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         {
             return;
         }
+
+
 
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
@@ -40,5 +46,11 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         GlobalSceneManager.Instance.LoadScene(sceneName);
 
         Event_System.instance.OnLoadScenes -= OnLoadScenes;
+    }
+
+    public InteractableUIData GetUIData()
+    {
+        var UIData = new InteractableUIData();
+        return UIData;
     }
 }
