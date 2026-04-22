@@ -14,7 +14,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
 
     private int currentSoulCollect;
 
-    public bool IsInteractable { get; set; } = false;
+    public bool IsLookedAt { get; set; } = false;
 
     void Start()
     {

@@ -4,7 +4,7 @@ public interface IInteractable
 {
     void Interact();
 
-    public bool IsInteractable { get; set; }
+    public bool IsLookedAt { get; set; }
 
     InteractableUIData GetUIData();
 

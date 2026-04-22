@@ -51,11 +51,16 @@ public class PlayerInteract : MonoBehaviour
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
-            if(interactable != null)
+            if(interactable != null && Physics.Raycast(ray, out hit, InteractDistance, 3))
             {
-                interactable.IsInteractable = true;
+                interactable.IsLookedAt = true;
+                return;
             }
+           
+         
         }
+
+
     }
 
     public void CheckInteractable()

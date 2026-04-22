@@ -4,7 +4,7 @@ public class InteractCardSelect: MonoBehaviour, IInteractable
 {
     UIManager playerUIManager;
 
-    public bool IsInteractable { get; set; } = false;
+    public bool IsLookedAt { get; set; } = false;
 
     void Start()
     {

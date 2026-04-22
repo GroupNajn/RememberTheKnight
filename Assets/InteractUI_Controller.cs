@@ -8,6 +8,7 @@ public class InteractUI_Controller : MonoBehaviour
     private TextMeshProUGUI tmp;
     private GameObject canvasObject;
     private GameObject player;
+    private float displayDistance;
 
     private bool canDisplay;
     private bool isShowing;
@@ -17,6 +18,8 @@ public class InteractUI_Controller : MonoBehaviour
 
     void Start()
     {
+
+        displayDistance = 4;
         canvas = GetComponentInChildren<Canvas>();
         tmp = GetComponentInChildren<TextMeshProUGUI>();
 
@@ -36,7 +39,7 @@ public class InteractUI_Controller : MonoBehaviour
         if (interactable == null || player == null)
             return;
 
-        if (interactable.IsInteractable && !coroutineRunning)
+        if (interactable.IsLookedAt && !coroutineRunning)
         {
             StartCoroutine(ShowUIRoutine());
         }
@@ -58,11 +61,18 @@ public class InteractUI_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        canDisplay = false;
-        canvasObject.SetActive(false);
-        interactable.IsInteractable = false;
+        Vector3 direction = transform.position - player.transform.position;
 
+        if (direction.magnitude > displayDistance)
+        {
+            canDisplay = false;
+            canvasObject.SetActive(false);
+            interactable.IsLookedAt = false;
+            coroutineRunning = false;
+
+        }
         coroutineRunning = false;
+
     }
 
     private void InitializeTMPText()

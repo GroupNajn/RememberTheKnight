@@ -5,7 +5,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
 {
     [SerializeField] int sceneToLoadIndex;
 
-    public bool IsInteractable { get; set; } = false;
+    public bool IsLookedAt { get; set; } = false;
 
     string sceneName;
 
