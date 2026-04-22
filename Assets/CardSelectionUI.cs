@@ -38,7 +38,6 @@ public class CardSelectionUI : MonoBehaviour
 
         errorText.gameObject.SetActive(false);
         RebuildSelectionState();
-        uiManager.CloseCardSelectUI();
         Debug.Log($"SelectedCards Count:::::::::::: {selectedCards.Count}");
 
     }

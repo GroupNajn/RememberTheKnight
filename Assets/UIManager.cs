@@ -72,6 +72,8 @@ public class UIManager : MonoBehaviour
         //    else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
         //});
 
+        HideActiveUI();
+
         playerInput.enabled = false;
         //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
@@ -79,6 +81,8 @@ public class UIManager : MonoBehaviour
 
         backgrundUI.gameObject.SetActive(true);
         backButtonUI.gameObject.SetActive(false);
+
+        UIMenuActive = true;
     }
 
     void OnPauseGame()
