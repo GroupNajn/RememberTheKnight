@@ -134,6 +134,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5554015106985034764}
+  - component: {fileID: 1135070217562431694}
+  - component: {fileID: 6081340567810714408}
+  - component: {fileID: 2697235051034590670}
   m_Layer: 0
   m_Name: HealingFountain
   m_TagString: Untagged
@@ -157,6 +160,56 @@ Transform:
   - {fileID: 2453581566489882694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135070217562431694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222253158668563246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50757597c407a724998624ac42f61d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightObject: {fileID: 5434801468452981728}
+  healingCost: 5
+  isExpended: 0
+--- !u!136 &6081340567810714408
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222253158668563246}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.56
+  m_Height: 2.2
+  m_Direction: 1
+  m_Center: {x: -0.22, y: 0, z: -1.12}
+--- !u!114 &2697235051034590670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222253158668563246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed8b48d96cc94540b3c3e912cc7acdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1886176662791785286
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,11 +221,8 @@ GameObject:
   - component: {fileID: 2453581566489882694}
   - component: {fileID: 1193867117126767294}
   - component: {fileID: 1544462394548800502}
-  - component: {fileID: 8589233484831749026}
   - component: {fileID: 2993106592611926058}
   - component: {fileID: 1508099855748595080}
-  - component: {fileID: 9182792902786058345}
-  - component: {fileID: 1378436210122574545}
   m_Layer: 9
   m_Name: HealingFountain
   m_TagString: Untagged
@@ -189,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 1886176662791785286}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.9977524, z: -0, w: 0.067008495}
-  m_LocalPosition: {x: -1.0261059, y: -1.4430083, z: 2.5198367}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -251,29 +301,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8589233484831749026
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886176662791785286}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.56
-  m_Height: 2.25
-  m_Direction: 1
-  m_Center: {x: 0.06, y: 0, z: 1.11}
 --- !u!64 &2993106592611926058
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -312,33 +339,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.143, y: 0.874, z: 0.16100001}
   m_TimeToStationary: 0.5
---- !u!114 &9182792902786058345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886176662791785286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50757597c407a724998624ac42f61d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightObject: {fileID: 0}
-  healingCost: 5
-  isExpended: 0
---- !u!114 &1378436210122574545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886176662791785286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed8b48d96cc94540b3c3e912cc7acdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2223215282448787566
 GameObject:
   m_ObjectHideFlags: 0
