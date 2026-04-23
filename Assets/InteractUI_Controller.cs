@@ -61,7 +61,7 @@ public class InteractUI_Controller : MonoBehaviour
     public void EnableCanvasObject()
     {
         isShowing = true;
-        if (canvasObject.activeInHierarchy || forceDisabled) return;
+        if (canvasObject.activeInHierarchy || forceDisabled && tmp.text == string.Empty) return;
         canvasObject.SetActive(true);
 
     }
@@ -75,6 +75,7 @@ public class InteractUI_Controller : MonoBehaviour
 
     public void DisableCanvas()
     {
+        if (canvasObject == null) return;
         canvasObject.SetActive(false);
         isShowing = false;
         return;
@@ -93,6 +94,7 @@ public class InteractUI_Controller : MonoBehaviour
 
     public void InitializeTMPText(InteractableUIData UIData)
     {
+     
         tmp.text = UIData.InfoText;
     }
 }

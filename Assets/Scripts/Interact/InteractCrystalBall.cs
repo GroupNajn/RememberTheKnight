@@ -51,7 +51,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         
         if(sceneToLoadIndex < 0)
         {
-            UIData = null;
+            UIData.InfoText = string.Empty;
         }
         else if (sceneToLoadIndex == 2)
         {
