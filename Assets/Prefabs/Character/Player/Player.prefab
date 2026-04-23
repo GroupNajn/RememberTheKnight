@@ -518,6 +518,7 @@ GameObject:
   - component: {fileID: 9075057407305647986}
   - component: {fileID: 333612495369372603}
   - component: {fileID: 8548886817526811005}
+  - component: {fileID: 4187262473237783389}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -708,24 +709,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b7a125d6f8c7a4099e0bf3056ede6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 50
-  <Health>k__BackingField: 50
-  walkSpeedMultiplier: 0
-  sprintSpeedMultiplier: 0
-  gravity: 25
-  normalRotationSpeed: 10
-  attackRotationSpeed: 1.5
-  dodgeSpeedMultiplier: 0
-  dodgeCoolDown: 0.5
-  dodgeDuration: 0.6
-  knockbackResistance: 5
+  MaxHealth: 100
+  CurrentHealth: 0
+  healthRegenRate: 0
   maxStamina: 100
   currentStamina: 0
   staminaRegenRate: 33
-  healMultiplier: 1
+  currentLuck: 1
+  currentCritChance: 1
+  maxWeaponSize: {x: 2, y: 4, z: 2}
+  currentWeaponSize: {x: 0, y: 0, z: 0}
+  currentDamageModifier: 1
+  currentWalkSpeedModifier: 0
+  currentSprintSpeedModifier: 0
+  currentDodgeSpeedModifier: 0
+  currentHealModifier: 1
+  currentKnockbackResistance: 5
+  gravity: 25
+  normalRotationSpeed: 10
+  attackRotationSpeed: 1.5
+  dodgeCoolDown: 0.5
+  dodgeDuration: 0.6
   isDead: 0
+  maxHealingCharges: 100
+  currentHealingCharges: 0
   baseHealth: 0
   baseStamina: 0
+  baseLuck: 0
+  baseCritChance: 0
+  baseWalkSpeedModifier: 0
+  baseSprintSpeedModifier: 0
+  baseDodgeSpeedModifier: 0
+  baseDamageModifier: 0
+  baseHealModifier: 0
+  baseKnockbackResistance: 0
+  baseWeaponSize: {x: 0, y: 0, z: 0}
 --- !u!114 &2045710683252585095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -789,7 +807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8f6a1c18d4dee43a2dde3a2fbc3f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodSplatterVFX: {fileID: 8168637187360933013, guid: 109b82fe017a2d54ab2831f54faa0790, type: 3}
+  bloodSplatterVFX: {fileID: 4545752516965069178, guid: dcc699067f2e32e4eaefd49a65965d2c, type: 3}
+  SlamVFX: {fileID: 1971782994008408158, guid: 75ed3eeea3766c646bc8d7392733f6bb, type: 3}
+  ForwardOffset: 1
+  HealVFX: {fileID: 3139263980467573834, guid: 367e1e493942028409bdab28b945609b, type: 3}
 --- !u!114 &25966239622868066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,6 +953,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 5975988676632444868}
   currentLeftHandWeapon: {fileID: 5665364493379170740}
+  currentActiveWeaponData: {fileID: 0}
+--- !u!114 &4187262473237783389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1e7ceb8089d5e42a38b8577b3ab520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,6 +1160,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4610607065675880509, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dc0ae109c81e7a74fafba5dfe7577c2c, type: 2}
     - target: {fileID: 6030414680109792853, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_Name
       value: StraightSwordWeapon
@@ -1142,8 +1181,12 @@ PrefabInstance:
       value: 1.0366234
       objectReference: {fileID: 0}
     - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
+      propertyPath: m_Radius
+      value: 0.12124617
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_Center.x
-      value: 0.00000015650781
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_Center.y
@@ -1151,7 +1194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8390920631166758820, guid: 4f2542156d3815548ab32e0c73d02c23, type: 3}
       propertyPath: m_Center.z
-      value: -0.00000003041591
+      value: -0.00000009719122
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
