@@ -12017,7 +12017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 791567975248566530, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: sceneToLoadIndex
-      value: 2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2146819385334565228, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
@@ -46575,7 +46575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 791567975248566530, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: sceneToLoadIndex
-      value: 2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2146819385334565228, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
@@ -47297,7 +47297,6 @@ GameObject:
   - component: {fileID: 344063814}
   - component: {fileID: 344063817}
   - component: {fileID: 344063816}
-  - component: {fileID: 344063815}
   m_Layer: 0
   m_Name: WaterPool
   m_TagString: Untagged
@@ -47320,29 +47319,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 811378782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &344063815
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 344063813}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &344063816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -221206,6 +221182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
 --- !u!114 &1601712181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251564,7 +251541,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 626760348378404622, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 737896370187227666, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_LocalScale.x
@@ -251628,31 +251605,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2146819385334565228, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2677207812225128494, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2895815732111077352, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3608203295815742485, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4633122377140313560, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4818678585257847349, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6368319485799863321, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6899775657649815708, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Name
@@ -251660,15 +251637,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6899775657649815708, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7369207040168657217, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8886805775410286623, guid: 36177f3598596f94f9ba9b06c76a13eb, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

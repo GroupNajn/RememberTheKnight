@@ -117,7 +117,7 @@ public class GlobalSceneManager : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     IEnumerator WaitForSceneLoad(string sceneName)
@@ -177,22 +177,26 @@ public class GlobalSceneManager : MonoBehaviour
             {
                 LoadSceneMode loadMode = SceneManager.sceneCount > 1 ? LoadSceneMode.Single : LoadSceneMode.Additive;
 
-                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadMode);
-                asyncLoad.allowSceneActivation = true;
-                while (!asyncLoad.isDone)
+                if (isPreloaded)
                 {
-                    yield return null;
-                }
+                    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadMode);
+                    asyncLoad.allowSceneActivation = true;
+                    while (!asyncLoad.isDone)
+                    {
+                        yield return null;
+                    }
 
-                targetScene = SceneManager.GetSceneByName(sceneName);
-                while (!targetScene.isLoaded)
-                {
-                    yield return null;
-                }
+                    targetScene = SceneManager.GetSceneByName(sceneName);
+                    while (!targetScene.isLoaded)
+                    {
+                        yield return null;
+                    }
 
-                if (loadMode == LoadSceneMode.Additive)
-                {
                     SceneManager.SetActiveScene(targetScene);
+                }
+                else
+                {
+                    SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
                 }
             }
             else

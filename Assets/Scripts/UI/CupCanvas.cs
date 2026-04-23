@@ -23,7 +23,15 @@ public class CupCanvas : MonoBehaviour
         float crystalFillAmount = (float)chargestToNextUse / chargesPerUse;
 
         cupMaterial.SetColor("_BaseColor", cupGradient.Evaluate(cupFillAmount));
-        cupMaterial.SetColor("_EmissionColor", crystalGradient.Evaluate(crystalFillAmount) * 2f);
+
+        if (chargesLeft == maxCharges)
+        {
+            cupMaterial.SetColor("_EmissionColor", crystalGradient.Evaluate(1) * 2f);
+        }
+        else
+        {
+            cupMaterial.SetColor("_EmissionColor", crystalGradient.Evaluate(crystalFillAmount) * 2f);
+        }        
     }
 
     void Update() // Temporary input handling for testing
@@ -42,6 +50,15 @@ public class CupCanvas : MonoBehaviour
             if (chargesLeft > 0 && chargesLeft <= 100)
             {
                 chargesLeft--;
+                UpdateCup(chargesLeft, 100, 10);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (chargesLeft > 9 && chargesLeft <= 100)
+            {
+                chargesLeft -= 10;
                 UpdateCup(chargesLeft, 100, 10);
             }
         }

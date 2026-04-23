@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SceneData : MonoBehaviour
 {
-    int staticSceneCount = 2;
+    int staticSceneCount = 7;
     int runSceneCount = 3;
 
     public string this[int sceneIndex]
@@ -19,6 +19,12 @@ public class SceneData : MonoBehaviour
                     return "LobbyMap";
                 case 3:
                     return "First_Level";
+                case 4:
+                    return "Shop_Level";
+                case 5:
+                    return "Healing_Level";
+                case 6:
+                    return "CupBoss_Level";
                 case int runSceneIndex when (runSceneIndex > staticSceneCount && runSceneIndex <= staticSceneCount + runSceneCount):
                     return $"Run_{runSceneIndex - staticSceneCount}";
                 default:
