@@ -10,11 +10,10 @@ public class InteractUI_Controller : MonoBehaviour
     private GameObject player;
     private float displayDistance;
 
-    private bool canDisplay;
+    private bool forceDisabled;
     private bool isShowing;
-    private bool coroutineRunning;
 
-    private IInteractable interactable;
+    private IInteractableUI interactableUI;
 
     void Start()
     {
@@ -29,73 +28,71 @@ public class InteractUI_Controller : MonoBehaviour
         canvas.worldCamera = Camera.main;
 
         player = GameObject.FindWithTag("Player");
-        interactable = GetComponent<IInteractable>();
+        interactableUI = GetComponent<IInteractableUI>();
+        InitializeTMPText(interactableUI.GetUIData());
 
-        InitializeTMPText();
+
     }
 
     void Update()
     {
-        if (interactable == null || player == null)
-            return;
-
-        if (!interactable.IsLookedAt)
-        {
-            OverrideDisplayDuration();
-        }
-
-        if (interactable.IsLookedAt && !coroutineRunning)
-        {
-            StartCoroutine(ShowUIRoutine());
-        }
-
-        if (canvasObject.activeInHierarchy)
-        {
-            Vector3 direction = transform.position - player.transform.position;
-            canvas.transform.rotation = Quaternion.LookRotation(direction);
-        }
-    }
-
-    private IEnumerator ShowUIRoutine()
-    {
-        coroutineRunning = true;
-        canDisplay = true;
-        isShowing = true;
-        
-
-        InitializeTMPText();
-        canvasObject.SetActive(true);
-
-        yield return new WaitForSeconds(5f);
 
         Vector3 direction = transform.position - player.transform.position;
 
-        if (direction.magnitude > displayDistance || !canDisplay)
+        ForceDisable();
+        if (direction.magnitude > displayDistance && isShowing)
         {
-            canDisplay = false;
+            StartCoroutine(StopShowRoutine());
+        }
+
+
+
+        if (canvasObject.activeInHierarchy)
+        {
+            Vector3 cameraDirection = Camera.main.transform.position - canvas.transform.position;
+            cameraDirection.y = 0;
+
+            canvas.transform.rotation = Quaternion.LookRotation(cameraDirection) * Quaternion.Euler(0, 180, 0);
+        }
+    }
+
+    // A coroutine to start the display duration, which currently is 5 seconds. 
+    // After 5 seconds the canvasObject should exit gracefully. Props to Farid. 
+    public void EnableCanvasObject()
+    {
+        isShowing = true;
+        if (canvasObject.activeInHierarchy || forceDisabled) return;
+        canvasObject.SetActive(true);
+
+    }
+
+    public IEnumerator StopShowRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        canvasObject.SetActive(false);
+    }
+
+    public void DisableCanvas()
+    {
+        canvasObject.SetActive(false);
+        isShowing = false;
+        return;
+    }
+
+
+    private void ForceDisable()
+    {
+        if (forceDisabled)
+        {
             isShowing = false;
             canvasObject.SetActive(false);
-            interactable.IsLookedAt = false;
-            coroutineRunning = false;
-
         }
-        coroutineRunning = false;
-
     }
 
-    private void OverrideDisplayDuration()
+
+    public void InitializeTMPText(InteractableUIData UIData)
     {
-        coroutineRunning = false;
-        canDisplay = false;
-        isShowing = false;
-        canvasObject.SetActive(false);
-
-
-    }
-
-    private void InitializeTMPText()
-    {
-        var data = interactable.GetUIData();
-        tmp.text = data.InfoText;
+        tmp.text = UIData.InfoText;
     }
 }

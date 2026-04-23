@@ -1,15 +1,13 @@
 using System;
 using UnityEngine;
 
-public class InteractCrystalBall : MonoBehaviour, IInteractable
+public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 {
     [SerializeField] int sceneToLoadIndex;
+    private InteractUI_Controller interactUI_Controller;
 
-    public bool IsLookedAt { get; set; } = false;
-
+    private bool canShowUI = false;
     string sceneName;
-
-    public InteractableUIData UIData { get => UIData; private set => UIData = value;}
 
     private void Start()
     {
@@ -17,7 +15,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         {
             return;
         }
-
+        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
 
         sceneName = SceneData.Instance[sceneToLoadIndex];
@@ -69,4 +67,27 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         }
         return UIData;
     }
+
+    public void ShowUI()
+    {
+        if (!canShowUI && interactUI_Controller != null) return;
+
+        interactUI_Controller.EnableCanvasObject();
+
+    }
+
+    public void HideUI()
+    {
+
+        interactUI_Controller.DisableCanvas();
+    }
+
+    public void SetLookedAt(bool value)
+    {
+        canShowUI = value;
+
+
+    }
+
+
 }
