@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class InteractHealingFountain : MonoBehaviour, IInteractable
+public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUI
 {
     private GameObject player;
     private PlayerManager playerManager;
@@ -13,9 +13,11 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
     private Collider interactCollider;
     [SerializeField] bool isExpended;
 
+    private bool canShowUI = false;
+
     private int currentSoulCollect;
 
-    public bool IsLookedAt { get; set; } = false;
+    private InteractUI_Controller interactUI_Controller;
 
     void Start()
     {
@@ -23,6 +25,8 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
         playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
+        interactUI_Controller = GetComponent<InteractUI_Controller>();
+
         
     }
     // The cost to heal is currently hard coded to the value 5. 
@@ -71,6 +75,28 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
 
             return data;
     }
+
+    public void ShowUI()
+    {
+        if (!canShowUI && interactUI_Controller != null) return;
+
+        interactUI_Controller.EnableCanvasObject();
+
+    }
+
+    public void HideUI()
+    {
+        
+        interactUI_Controller.DisableCanvas();
+    }
+
+    public void SetLookedAt(bool value)
+    {
+        canShowUI = value;
+
+
+    }
+
 
 
 }

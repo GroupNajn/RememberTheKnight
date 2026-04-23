@@ -22,8 +22,6 @@ public class Event_System : MonoBehaviour
     public Action<List<CardData>> OnStatsApplied;
     public Action<int> OnSoulsSpent;
 
-    public Action<InteractableUIData> OnInteractUI;
-
     public Action OnLoadScenes;
 
     /*

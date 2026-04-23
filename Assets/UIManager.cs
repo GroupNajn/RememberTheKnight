@@ -2,6 +2,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 public class UIManager : MonoBehaviour
 {
@@ -35,7 +37,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject staminaBar;
     [SerializeField] private GameObject cupUI;
-
 
 
     public bool UIMenuActive = true;
@@ -144,7 +145,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
         Cursor.visible = false; // Hide the cursor when resuming
         playerInput.enabled = true; // Enable player input when resuming
-
+         
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseInteractiveUI(); // Hide the interact UI
@@ -385,6 +386,11 @@ public class UIManager : MonoBehaviour
         cupUI.SetActive(false);
     }
 
+    //public void DisableAllWorldCanvas(bool value)
+    //{
+    //    Event_System.instance?.OnForceCloseUI.Invoke(value);
+    //}
+
     //private void OnEnable()
     //{
     //    SceneManager.sceneLoaded += OnSceneLoaded;
@@ -428,6 +434,8 @@ public class UIManager : MonoBehaviour
         OpenOptionMenu(); ;
 
     }
+
+   
 
     private void OnDestroy()
     {

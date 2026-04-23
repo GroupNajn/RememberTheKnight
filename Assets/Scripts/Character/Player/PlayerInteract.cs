@@ -7,8 +7,8 @@ public class PlayerInteract : MonoBehaviour
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    private IInteractable currentInteractable;
-    private IInteractable previousInteractable;
+    private IInteractableUI currentUI;
+    private IInteractableUI previousUI;
 
 
     void Start()
@@ -48,27 +48,39 @@ public class PlayerInteract : MonoBehaviour
 
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit hit;
-
+        if(Time.timeScale <= 0 && currentUI != null && previousUI != null)
+        {
+            currentUI.SetLookedAt(false);
+            currentUI.HideUI();
+            previousUI.SetLookedAt(false);
+            previousUI.HideUI();
+            return;
+        }
         
 
         if (Physics.Raycast(ray, out hit, InteractDistance, 3))
         {
+            
+            IInteractableUI interactableUI = hit.collider.GetComponentInParent<IInteractableUI>();
 
-            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+            if (interactableUI == null) return;
 
-            if (interactable == null) return;
+            currentUI = interactableUI;
 
-            currentInteractable = interactable;
-
-            if (currentInteractable != previousInteractable)
+            if (currentUI != previousUI)
             {
-                if (previousInteractable != null)
-                    previousInteractable.IsLookedAt = false;
+                if (previousUI != null)
+                {
+                    previousUI.SetLookedAt(false);
+                    previousUI.HideUI();
+                    
+                }
 
-                previousInteractable = currentInteractable;
+                previousUI = currentUI;
             }
-
-            currentInteractable.IsLookedAt = true;
+            if (Time.timeScale <= 0) return;
+            currentUI.SetLookedAt(true);
+            currentUI.ShowUI();
             return;
         }
 
