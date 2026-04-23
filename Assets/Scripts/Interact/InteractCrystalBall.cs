@@ -32,7 +32,6 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable
         {
             return;
         }
-
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
     }
 
