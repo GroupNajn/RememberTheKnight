@@ -58,7 +58,7 @@ public class Loot_System : MonoBehaviour
         soulsCollected.Add(id, loot);
         id++;
 
-        if (loot.lootData == null)
+        if (loot is Soul)
         {
             currentSoulCount += 1;
             canvasTextScript.SetSoulsAmount(currentSoulCount);

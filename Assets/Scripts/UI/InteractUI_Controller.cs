@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+
+// Script made by Henric
 public class InteractUI_Controller : MonoBehaviour
 {
     private Canvas canvas;

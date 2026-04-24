@@ -12,6 +12,20 @@ public class CardData : ScriptableObject
      * 
      */
 
+    public enum CardFamily
+    {
+        Cups,
+        Swords,
+        Pentacles,
+        Wands
+    }
+
+    public enum CardUnlockType
+    {
+        Permanent, 
+        Temporary
+    }
+
 
     public string CardName;
 
@@ -34,4 +48,8 @@ public class CardData : ScriptableObject
     [SerializeField] public float knockbackModifier = 0f;
 
     [SerializeField] public Vector3 weaponSize = Vector3.zero;
+
+    [Header("Card States")]
+    [SerializeField] public CardFamily cardFamily;
+    [SerializeField] public CardUnlockType unlockType;
 }

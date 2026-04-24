@@ -87,7 +87,7 @@ public class Loot_Follow : MonoBehaviour
 
         if (Event_System.instance != null)
         {
-            Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
+            Event_System.instance.OnPullAllSouls += OverWriteFollowEnum;
             Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
         }
     }
@@ -96,7 +96,7 @@ public class Loot_Follow : MonoBehaviour
     {
         if (Event_System.instance != null)
         {
-            Event_System.instance.OnPullAllLoot -= OverWriteFollowEnum;
+            Event_System.instance.OnPullAllSouls -= OverWriteFollowEnum;
             Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
         }
     }
