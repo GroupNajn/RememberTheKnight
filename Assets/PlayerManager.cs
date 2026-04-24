@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        //Debug.Log("DIE!");
+        Debug.Log("DIE!");
         playerAnimator.SetBool("IsDead", true);
     }
 

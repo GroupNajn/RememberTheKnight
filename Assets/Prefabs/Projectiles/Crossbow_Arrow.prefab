@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1370314625345763813}
   - component: {fileID: 2642362224450909760}
   - component: {fileID: 238542589221814922}
-  - component: {fileID: 778190378991381474}
+  - component: {fileID: 8228586634377890616}
   - component: {fileID: 2452477697918351436}
   - component: {fileID: 6825843364255154833}
   - component: {fileID: 256599362628247697}
@@ -90,8 +90,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &778190378991381474
-SphereCollider:
+--- !u!136 &8228586634377890616
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,9 +108,11 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0.19}
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Height: 0.4
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.09}
 --- !u!114 &2452477697918351436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,3 +152,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
