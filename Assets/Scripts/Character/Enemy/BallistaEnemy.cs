@@ -12,6 +12,7 @@ public class BallistaEnemy : MonoBehaviour
     [Header("Ballista Specifics")]
     private HashSet<GameObject> barrels = new HashSet<GameObject>();
     [SerializeField] private GameObject destroyedBallista;
+    [SerializeField] private bool IsDestroyed = false;
 
     private void Start()
     {
@@ -21,11 +22,11 @@ public class BallistaEnemy : MonoBehaviour
         {
             if (child.name.Contains("ExplosiveBarrel")) barrels.Add(child.gameObject);
         }
-
     }
 
     private void OnEnemyKilled(EnemyDamage damage)
     {
+        if (IsDestroyed) return;
 
         if (requiredEnemies.Contains(damage.gameObject))
         {
@@ -35,10 +36,7 @@ public class BallistaEnemy : MonoBehaviour
         if (requiredEnemies.Count == 0)
         {
             StartCoroutine(ExplodeBarrels());
-
-
         }
-
     }
 
     IEnumerator ExplodeBarrels()
@@ -50,6 +48,7 @@ public class BallistaEnemy : MonoBehaviour
         }
 
         Instantiate(destroyedBallista, transform.position, Quaternion.identity);
+        IsDestroyed = true;
         Destroy(gameObject);
     }
 }
