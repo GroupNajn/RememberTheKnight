@@ -85,8 +85,9 @@ public class DamageTrigger : MonoBehaviour
         {
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
-            if (playerController != null) // stamina gain if hit with a charged attack
+            if (playerController != null) // if player
             {
+
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);

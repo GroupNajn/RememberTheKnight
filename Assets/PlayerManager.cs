@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerStats playerStats;
 
     public float MaxHealth => playerStats.MaxHealth;
-    public float Health  => playerStats.CurrentHealth;
+    public float Health => playerStats.CurrentHealth;
     public Action<float, float> OnHealthChanged { get; set; }
     public Action<float, float> onStaminaChanged;
 
@@ -56,7 +56,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         if (CanTakeDamage && !isDead)
         {
             playerVFX.PlayBloodSplatter(contactPoint);
-
             playerStats.CurrentHealth -= damage;
             NotifyHealthChanged();
             if (isDead)

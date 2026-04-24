@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private bool collided;
-
+    GameObject Arrow_VFX;
     public float speed;
     public Vector3 direction;
     List<ParticleSystem> projectiles = new();
@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
     {
         //Destroy(gameObject, 5f);
         projectiles.AddRange(GetComponentsInChildren<ParticleSystem>());
-        projectileCollider = GetComponent<SphereCollider>();
+        projectileCollider = GetComponent<Collider>();
     }
 
     private void Start()
@@ -36,7 +36,8 @@ public class Projectile : MonoBehaviour
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
-
+            Vector3 contactPoint = other.ClosestPoint(transform.position);
+            GameObject.FindWithTag("Player").GetComponent<PlayerVFX>().PlayArrowVFX(contactPoint);
             StartCoroutine(Collide());
         }
     }
