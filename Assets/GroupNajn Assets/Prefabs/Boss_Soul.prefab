@@ -125,8 +125,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8318615278074776259}
   - component: {fileID: 5683300193081050257}
-  - component: {fileID: 4251097540268861949}
   - component: {fileID: -6488114877606157554}
+  - component: {fileID: 3856253980031088469}
   - component: {fileID: -7480633617958417653}
   - component: {fileID: -2309114969217535760}
   m_Layer: 13
@@ -179,24 +179,6 @@ MonoBehaviour:
   blendToHoverDuration: 1
   liftSpeed: 1.5
   boostSpeed: 50
---- !u!114 &4251097540268861949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2801271075908865460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 026d9f1036aafe642bf99a032ba448e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weight: 5
-  pickUpDelay: 2
-  <itemName>k__BackingField: 
-  tier: 1
-  pickable: 0
-  <lootData>k__BackingField: {fileID: 0}
 --- !u!135 &-6488114877606157554
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -218,6 +200,23 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.2
   m_Center: {x: 0, y: 2.32, z: 0}
+--- !u!114 &3856253980031088469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801271075908865460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8682200e9a246148b387b0bb95cf462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weight: 5
+  pickUpDelay: 0
+  <itemName>k__BackingField: 
+  tier: 0
+  pickable: 0
 --- !u!54 &-7480633617958417653
 Rigidbody:
   m_ObjectHideFlags: 0

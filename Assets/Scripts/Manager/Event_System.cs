@@ -15,7 +15,7 @@ public class Event_System : MonoBehaviour
     public Action<Loot> OnGetLoot;
     public Action<Transform, float> OnEnemyDamage;
     public Action<Loot> OnLootPickedUp;
-    public Action OnPullAllLoot;
+    public Action OnPullAllSouls;
     public Action OnResetPullAllLoot;
     public Action OnPlayerDeath;
     public Action OnWin;
