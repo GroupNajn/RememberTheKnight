@@ -10,6 +10,8 @@ public class PlayerVFX : CharacterVFX
 
     [Header("Heal VFX")]
     public GameObject HealVFX;
+    [Header("Arrow VFX")]
+    public GameObject Arrow_VFX;
     // public float ForwardOffset;
 
     public void PlaySlamVFX()
@@ -21,5 +23,11 @@ public class PlayerVFX : CharacterVFX
     {
         GameObject VFX = Instantiate(HealVFX, this.gameObject.transform.position + this.gameObject.transform.forward * ForwardOffset, Quaternion.identity);
         Destroy(VFX, 3f);
+    }
+
+    public void PlayArrowVFX(Vector3 contactPoint)
+    {   GameObject root = GameObject.FindWithTag("Root");
+        GameObject VFX = Instantiate(Arrow_VFX, contactPoint, Quaternion.LookRotation(contactPoint - root.transform.position) * Quaternion.Euler(0, 180, 0), root.transform);
+        Destroy(VFX, 10f);
     }
 }

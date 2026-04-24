@@ -414,13 +414,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         ExplotionInfront = Vector3.Dot(knockbackDirection, transform.forward.normalized) > 0;
         PlayerAnimator.SetBool("ExplotionInfront", ExplotionInfront);
         knockbackForce = knockbackDirection * calculatedForce;
-        Debug.Log($"Applied  calculated knockbackforce {knockbackForce.magnitude}");
+        //Debug.Log($"Applied  calculated knockbackforce {knockbackForce.magnitude}");
 
         if (knockbackForce.magnitude < playerStats.currentKnockbackResistance)
         {
             knockbackForce = Vector3.zero;
         }
-        Debug.Log($"Applied knockback with force {knockbackForce.magnitude} Current resitance: {playerStats.currentKnockbackResistance}");
+        //Debug.Log($"Applied knockback with force {knockbackForce.magnitude} Current resitance: {playerStats.currentKnockbackResistance}");
     }
 
     private void GroundedCheck()
