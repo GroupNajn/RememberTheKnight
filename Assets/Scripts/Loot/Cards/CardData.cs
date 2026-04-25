@@ -12,21 +12,6 @@ public class CardData : ScriptableObject
      * 
      */
 
-    public enum CardFamily
-    {
-        Cups,
-        Swords,
-        Pentacles,
-        Wands
-    }
-
-    public enum CardUnlockType
-    {
-        Permanent, 
-        Temporary
-    }
-
-
     public string CardName;
 
     public GameObject CardPrefab;
@@ -52,4 +37,5 @@ public class CardData : ScriptableObject
     [Header("Card States")]
     [SerializeField] public CardFamily cardFamily;
     [SerializeField] public CardUnlockType unlockType;
+    [SerializeField] public Tier cardTier;
 }

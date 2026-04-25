@@ -3,7 +3,8 @@ using UnityEngine;
 public class Card : Loot, IPickupable
 {
     [Header("Card Data")]
-    [field: SerializeField] protected ScriptableObject lootData { get; private set; }
+    [field: SerializeField] protected CardData cardData { get; private set; }
+    public CardData CardData => cardData;
 
     void Update()
     {
