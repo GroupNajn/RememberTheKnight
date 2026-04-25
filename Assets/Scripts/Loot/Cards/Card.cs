@@ -6,6 +6,14 @@ public class Card : Loot, IPickupable
     [field: SerializeField] protected CardData cardData { get; private set; }
     public CardData CardData => cardData;
 
+    private CardUnlockType cardUnlockType = CardUnlockType.Permanent;
+
+    public CardUnlockType CardUnlockType
+    {
+        get => cardUnlockType;
+        set => cardUnlockType = value;
+    }
+
     void Update()
     {
         

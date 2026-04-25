@@ -36,6 +36,5 @@ public class CardData : ScriptableObject
 
     [Header("Card States")]
     [SerializeField] public CardFamily cardFamily;
-    [SerializeField] public CardUnlockType unlockType;
     [SerializeField] public Tier cardTier;
 }

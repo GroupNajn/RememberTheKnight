@@ -24,10 +24,11 @@ public enum Tier
 
 public enum CardFamily
 {
-    Cups,
-    Swords,
-    Pentacles,
-    Wands
+    None = 0,
+    Cups = 1,
+    Swords = 2,
+    Pentacles = 3,
+    Wands = 4
 }
 
 public enum CardUnlockType

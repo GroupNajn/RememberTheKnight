@@ -1,12 +1,21 @@
 using System.Collections.Generic;
+using System.Security;
 using UnityEngine;
+
 
 public class CardCollection : MonoBehaviour
 {
-    private List<Card> temporaryCards = new List<Card>();
-    private HashSet<Card> permanentCards = new HashSet<Card>();
-    // HashSet to only one copy of a permanent cards.
-    // No duplicates. 
+    [SerializeField] private List<Card> temporaryCards = new List<Card>();
+    [SerializeField] private List<Card> permanentCards = new List<Card>();
+
+    public List<Card> TemporaryCards
+    {
+        get => temporaryCards;
+    }
+    public List<Card> PermanentPermanentCards
+    {
+        get => permanentCards;
+    }
     void Start()
     {
 
@@ -19,8 +28,8 @@ public class CardCollection : MonoBehaviour
 
     public void AddToCollection(Card card)
     {
-        CardData cardData = card.CardData;
-        if (card.CardData.unlockType == CardUnlockType.Permanent && !(permanentCards.Contains(card)))
+        if (card == null) return;
+        if (card.CardUnlockType == CardUnlockType.Permanent && !(permanentCards.Contains(card)))
         {
             permanentCards.Add(card);
         }
@@ -41,6 +50,16 @@ public class CardCollection : MonoBehaviour
         {
             permanentCards.Remove(card);
         }
+    }
+
+    public List<Card> GetTempCardCollection()
+    {
+        return temporaryCards;
+    }
+
+    public List<Card> GetPermanentCardCollection()
+    {
+        return permanentCards;
     }
 
     public void ResetTemporaryCards()
