@@ -6,6 +6,8 @@ public class CardSystem : MonoBehaviour
     [SerializeField] private List<CardData> allCards = new();
     [SerializeField] private List<CardData> unlockedCards = new();
 
+    private int unlockedTier = (int)Tier.I;
+
     void Start()
     {
         
@@ -19,18 +21,18 @@ public class CardSystem : MonoBehaviour
         return unlockedCards;
     }
 
-    //public List <CardData> GetDroppableCards()
+    //public List<CardData> GetDroppableCards()
     //{
     //    List<CardData> droppableCards = new List<CardData>();
 
     //    foreach (CardData card in unlockedCards)
     //    {
-            
+
     //    }
 
     //}
 
-    
+
 
 
 }
