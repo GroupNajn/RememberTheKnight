@@ -474,6 +474,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenBook"",
+                    ""type"": ""Button"",
+                    ""id"": ""17e3b1dc-12f6-48af-b84e-bc0e5674eee6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -485,6 +494,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b27b1375-4647-4c80-a777-74a5f3a89b0b"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenBook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -513,6 +533,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // UIMap
         m_UIMap = asset.FindActionMap("UIMap", throwIfNotFound: true);
         m_UIMap_PauseGame = m_UIMap.FindAction("PauseGame", throwIfNotFound: true);
+        m_UIMap_OpenBook = m_UIMap.FindAction("OpenBook", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -909,6 +930,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UIMap;
     private List<IUIMapActions> m_UIMapActionsCallbackInterfaces = new List<IUIMapActions>();
     private readonly InputAction m_UIMap_PauseGame;
+    private readonly InputAction m_UIMap_OpenBook;
     /// <summary>
     /// Provides access to input actions defined in input action map "UIMap".
     /// </summary>
@@ -924,6 +946,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UIMap/PauseGame".
         /// </summary>
         public InputAction @PauseGame => m_Wrapper.m_UIMap_PauseGame;
+        /// <summary>
+        /// Provides access to the underlying input action "UIMap/OpenBook".
+        /// </summary>
+        public InputAction @OpenBook => m_Wrapper.m_UIMap_OpenBook;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -953,6 +979,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PauseGame.started += instance.OnPauseGame;
             @PauseGame.performed += instance.OnPauseGame;
             @PauseGame.canceled += instance.OnPauseGame;
+            @OpenBook.started += instance.OnOpenBook;
+            @OpenBook.performed += instance.OnOpenBook;
+            @OpenBook.canceled += instance.OnOpenBook;
         }
 
         /// <summary>
@@ -967,6 +996,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PauseGame.started -= instance.OnPauseGame;
             @PauseGame.performed -= instance.OnPauseGame;
             @PauseGame.canceled -= instance.OnPauseGame;
+            @OpenBook.started -= instance.OnOpenBook;
+            @OpenBook.performed -= instance.OnOpenBook;
+            @OpenBook.canceled -= instance.OnOpenBook;
         }
 
         /// <summary>
@@ -1121,5 +1153,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPauseGame(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenBook" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenBook(InputAction.CallbackContext context);
     }
 }

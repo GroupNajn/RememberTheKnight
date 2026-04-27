@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     [Header("in game UI")]
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject interactUI;
+    [SerializeField] private GameObject bookUI;
 
     [Header("static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -138,6 +139,21 @@ public class UIManager : MonoBehaviour
 
     }
 
+    void OnOpenBook()
+    {
+        if (!UIMenuActive)
+        {
+            OpenBookUI();
+        }
+        else
+        {
+            if (bookUI.activeSelf)
+            {
+                CloseBookUI();
+            }
+        }
+    }
+
     public void HideActiveUI()
     {
         UIMenuActive = false;
@@ -151,6 +167,7 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
+        CloseBookUI(); // Hide the book UI
 
         CheckUIState();
     }
@@ -312,6 +329,24 @@ public class UIManager : MonoBehaviour
     public void CloseCardSelectUI()
     {
         cardSelectUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
+    }
+
+    public void OpenBookUI()
+    {
+        CloseInteractiveUI();
+        bookUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+
+    public void CloseBookUI()
+    {
+        Debug.Log("Closing Book UI");
+        bookUI.SetActive(false);
 
         UIMenuActive = false;
         CheckUIState();
