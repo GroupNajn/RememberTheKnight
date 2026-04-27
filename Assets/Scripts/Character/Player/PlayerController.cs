@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [SerializeField] public GameObject _playerCamera;
     PlayerStats playerStats;
     PlayerCombatManager playerCombatManager;
+    PlayerManager playerManager;
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
@@ -78,13 +79,15 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         PlayerAnimator = GetComponent<Animator>();
         playerState = GetComponent<PlayerStates>();
         playerCombatManager = PlayerCombatManager.Instance;
+        playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
+
     }
 
     private void Update()
     {
-        if (playerStats.isDead)
+        if (playerManager.isDead)
         {
             if (knockbackForce != Vector3.zero)
             {
@@ -391,7 +394,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
         bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
 
-        if (playerState.CurrentMoveState != MoveState.Dodging && !isKnockedBack)
+        if (playerState.CurrentMoveState != MoveState.Dodging && !isKnockedBack && !playerManager.isDead)
         {
             if (inputDir != Vector2.zero && !lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting) // calculates rotation for player depending input (8D movement)
             {

@@ -231,7 +231,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void GainStamina(float amount)
     {
-        Debug.Log($"Gained {amount} stamina.");
+       // Debug.Log($"Gained {amount} stamina.");
         playerStats.currentStamina += amount;
         if (playerStats.currentStamina > playerStats.maxStamina)
             playerStats.currentStamina = playerStats.maxStamina;
