@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FamilySelectUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private UIManager uiManager;
+    private PlayerInput playerInput;
+
     void Start()
     {
-        
+        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        uiManager = GetComponentInParent<UIManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
