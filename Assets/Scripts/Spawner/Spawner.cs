@@ -5,6 +5,8 @@ public class Spawner : MonoBehaviour
 {
     // Made by Lukas 2026-03-24
     // Updated by Lukas 2026-04-24
+    [SerializeField] bool drawGizmos = true;
+    [SerializeField] Color gizmoColor = Color.red;
     [SerializeField] List<GameObject> spawnObjects = new List<GameObject>();
     [SerializeField] float spawnRadius = 10f; // Used if spawnPoints is empty
     [SerializeField] List<Transform> spawnPoints = new List<Transform>();
@@ -12,18 +14,51 @@ public class Spawner : MonoBehaviour
 
     bool randomSpawnPoints;
     int currentSpawnIndex = 0;
+    bool spawnAtStart = true;
 
-    void Start()
+    private void Awake()
     {
-        randomSpawnPoints = spawnPoints.Count == 0;
+        // Subscribe to the OnLoadScenes event to trigger spawning when scenes are loaded
+        if (Event_System.instance)
+        {
+            Event_System.instance.OnLoadScenes += () =>
+            {
+                randomSpawnPoints = spawnPoints.Count == 0;
 
-        if (randomObjectSpawns)
-        {
-            RandomSpawn();
+                if (randomSpawnPoints)
+                {
+                    Spawn();
+                }
+                else if (randomObjectSpawns)
+                {
+                    RandomSpawn();
+                }
+                else
+                {
+                    Spawn();
+                }
+            };
+
+            spawnAtStart = false;
         }
-        else
+    }
+
+    private void Start()
+    {
+        if (spawnAtStart)
         {
-            Spawn();
+            if (randomSpawnPoints)
+            {
+                Spawn();
+            }
+            else if (randomObjectSpawns)
+            {
+                RandomSpawn();
+            }
+            else
+            {
+                Spawn();
+            }
         }
     }
 
@@ -31,7 +66,13 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < spawnObjects.Count; i++)
         {
+            if (spawnObjects[i] == null)
+            {
+                continue;
+            }
+
             Vector3 spawnPosition;
+            Quaternion spawnRotation = Quaternion.identity;
 
             if (randomSpawnPoints)
             {
@@ -43,34 +84,50 @@ public class Spawner : MonoBehaviour
             else
             {
                 spawnPosition = spawnPoints[currentSpawnIndex].position;
+                spawnRotation = spawnPoints[currentSpawnIndex].rotation;
                 currentSpawnIndex = (currentSpawnIndex + 1) % spawnPoints.Count;
             }
 
-            Instantiate(spawnObjects[i], spawnPosition, Quaternion.identity);
+            Instantiate(spawnObjects[i], spawnPosition, spawnRotation);
         }
     }
 
     public void RandomSpawn()
     {
-        for (int i = 0; i < spawnPoints.Count; i++)
+        foreach (Transform spawnPosition in spawnPoints)
         {
-            Vector3 spawnPosition;
-
             GameObject randomObject = spawnObjects[Random.Range(0, spawnObjects.Count)];
 
-            if (randomSpawnPoints)
+            if (randomObject == null)
             {
-                float randomX = Random.Range(-spawnRadius, spawnRadius);
-                float randomZ = Random.Range(-spawnRadius, spawnRadius);
-
-                spawnPosition = transform.position + new Vector3(randomX, 0, randomZ);
-            }
-            else
-            {
-                spawnPosition = spawnPoints[i].position;
+                continue;
             }
 
-            Instantiate(randomObject, spawnPosition, Quaternion.identity);
+            Instantiate(randomObject, spawnPosition.position, spawnPosition.rotation);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmos)
+        {
+            return;
+        }
+
+        Gizmos.color = gizmoColor;
+        if (spawnPoints.Count > 0)
+        {
+            foreach (Transform spawnPoint in spawnPoints)
+            {
+                if (spawnPoint != null)
+                {
+                    Gizmos.DrawSphere(spawnPoint.position, 0.1f);
+                }
+            }
+        }
+        else
+        {
+            Gizmos.DrawWireCube(transform.position, new Vector3(spawnRadius * 2, 0f, spawnRadius * 2));
         }
     }
 }
