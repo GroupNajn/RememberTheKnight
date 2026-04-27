@@ -7,7 +7,9 @@ public class PlayerInteract : MonoBehaviour
     private Camera camera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    [SerializeField] UIManager playerUIManager;
+    private IInteractableUI currentUI;
+    private IInteractableUI previousUI;
+
 
     void Start()
     {
@@ -19,6 +21,7 @@ public class PlayerInteract : MonoBehaviour
     void Update()
     {
         CheckInteractable();
+        CheckInteractUI();
     }
 
     public void OnInteract()
@@ -34,11 +37,56 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                Debug.Log("TJO KING");
                 interactable.Interact();
             }
         }
     }
+
+    public void CheckInteractUI()
+    {
+        camera = playerController._playerCamera.GetComponent<Camera>();
+
+        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        RaycastHit hit;
+        if(Time.timeScale <= 0 && currentUI != null && previousUI != null)
+        {
+            currentUI.SetLookedAt(false);
+            currentUI.HideUI();
+            previousUI.SetLookedAt(false);
+            previousUI.HideUI();
+            return;
+        }
+        
+
+        if (Physics.Raycast(ray, out hit, InteractDistance, 3))
+        {
+            
+            IInteractableUI interactableUI = hit.collider.GetComponentInParent<IInteractableUI>();
+
+            if (interactableUI == null) return;
+
+            currentUI = interactableUI;
+
+            if (currentUI != previousUI)
+            {
+                if (previousUI != null)
+                {
+                    previousUI.SetLookedAt(false);
+                    previousUI.HideUI();
+                    
+                }
+
+                previousUI = currentUI;
+            }
+            if (Time.timeScale <= 0) return;
+            currentUI.SetLookedAt(true);
+            currentUI.ShowUI();
+            return;
+        }
+
+    }
+
+
 
     public void CheckInteractable()
     {
@@ -53,34 +101,15 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
-                if (!playerUIManager.UIMenuActive)
+                if (!UIManager.Instance.UIMenuActive)
                 {
-                    playerUIManager.OpenInteractiveUI();
+
+                    UIManager.Instance.OpenInteractiveUI();
                 }
                 return;
             }
         }
 
-        playerUIManager.CloseInteractiveUI();
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-
-        if (playerUIManager == null)
-        {
-            playerUIManager = FindFirstObjectByType<UIManager>();
-            Debug.Log("PlayerUIManager not found in the scene after loading. Please ensure there is a PlayerUIManager in the scene.");
-        }
+        UIManager.Instance.CloseInteractiveUI();
     }
 }

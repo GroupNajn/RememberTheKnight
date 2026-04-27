@@ -1,45 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BallistaEnemy : MonoBehaviour
 {
-    [SerializeField] private Transform target;
 
-    [Header("Parts")]
-    [SerializeField] private Transform crossbowRoot;
-    [SerializeField] private Transform crossbow;
+    // Condition for destroying ballista
+    [Header("Enemies")]
+    [SerializeField] private List<GameObject> requiredEnemies = new List<GameObject>();
 
-    [Header("Settings")]
-    [SerializeField] private float rotationSpeed = 5f;  
-    [SerializeField] private float attackRange = 10f;
+    [Header("Ballista Specifics")]
+    private HashSet<GameObject> barrels = new HashSet<GameObject>();
+    [SerializeField] private GameObject destroyedBallista;
+    [SerializeField] private bool IsDestroyed = false;
 
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+        Event_System.instance.OnEnemyKilled += OnEnemyKilled;
 
-    void Update()
-    {
-        float distance = Vector3.Distance(transform.position, target.position);
-
-        if (distance <= attackRange)
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
-            AimAtPlayer();
+            if (child.name.Contains("ExplosiveBarrel")) barrels.Add(child.gameObject);
         }
     }
-    private void AimAtPlayer()
+
+    private void OnEnemyKilled(EnemyDamage damage)
     {
-        Vector3 direction = target.position - crossbowRoot.position;
+        if (IsDestroyed) return;
 
-        Vector3 flatDirection = new Vector3(direction.x, 0f, direction.z);
-        Quaternion yawRotation = Quaternion.LookRotation(flatDirection);
-        crossbowRoot.rotation = Quaternion.Slerp(crossbowRoot.rotation, yawRotation, rotationSpeed * Time.deltaTime);
+        if (requiredEnemies.Contains(damage.gameObject))
+        {
+            requiredEnemies.Remove(damage.gameObject);
+        }
 
-        Vector3 localDir = crossbowRoot.InverseTransformDirection(direction);
+        if (requiredEnemies.Count == 0)
+        {
+            StartCoroutine(ExplodeBarrels());
+        }
+    }
 
-        float pitchAngle = Mathf.Atan2(localDir.y, localDir.z) * Mathf.Rad2Deg;
+    IEnumerator ExplodeBarrels()
+    {
+        foreach (GameObject barrel in barrels)
+        {
+            barrel.GetComponent<ExplodingBarrel>().Explode();
+            yield return new WaitForSeconds(0.1f);
+        }
 
-        Quaternion pitchRotation = Quaternion.Euler(-pitchAngle, 0f, 0f);
-
-        crossbow.localRotation = Quaternion.Slerp(crossbow.localRotation, pitchRotation, rotationSpeed * Time.deltaTime);
+        Instantiate(destroyedBallista, transform.position, Quaternion.identity);
+        IsDestroyed = true;
+        Destroy(gameObject);
     }
 }

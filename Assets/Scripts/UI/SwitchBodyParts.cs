@@ -106,10 +106,6 @@ public class SwitchBodyParts : MonoBehaviour
             if (child.name == "Male_Parts") maleParts = child;
             if (child.name == "Female_Parts") femaleParts = child;
         }
-
-        Debug.Log(allGenderParts == null ? "allGenderParts NULL" : $"found: {allGenderParts.name}");
-        Debug.Log(maleParts == null ? "maleParts NULL" : $"found: {maleParts.name}");
-        Debug.Log(femaleParts == null ? "femaleParts NULL" : $"found: {femaleParts.name}");
     }
 
     Transform FindDeep(Transform root, string name)
@@ -486,9 +482,10 @@ public class SwitchBodyParts : MonoBehaviour
         // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
         uiManager.OpenSoulUI();
         uiManager.ShowPlayerBars();
+        uiManager.OpenCupUI();
 
         // LOAD NEXT SCENE
-        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
 
 
     }

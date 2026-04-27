@@ -3,18 +3,20 @@ using UnityEngine.UI;
 
 public class StaminaBar : MonoBehaviour
 {
-    StaminaController staminaController;
     PlayerStats playerStats;
+    PlayerManager playerManager;
     [SerializeField] Slider staminaBar;
     [SerializeField] float lerpSpeed = 2f;
+    [SerializeField] private RectTransform staminaBarTransform;
+    [SerializeField] private float widthPerStamina = 2f;
     public RectTransform lerpingRectTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
-        staminaController = GetComponent<StaminaController>();
         if (playerStats == null)
         {
             Debug.LogError("StaminaBar: playerStats is missing!");
@@ -27,7 +29,7 @@ public class StaminaBar : MonoBehaviour
             return;
         }
 
-        playerStats.onStaminaChange += UpdateStaminaBar;
+        playerManager.onStaminaChanged += UpdateStaminaBar;
 
         // Uppdatera UI direkt
         UpdateStaminaBar(playerStats.currentStamina, playerStats.maxStamina);
@@ -51,7 +53,14 @@ public class StaminaBar : MonoBehaviour
 
     void UpdateStaminaBar(float current, float max)
     {
+
+       // Debug.Log("STAMINA BAR UPDATED");
         staminaBar.maxValue = max;
         staminaBar.value = current;
+
+        // Resize based on max Stamina
+        Vector2 size = staminaBarTransform.sizeDelta;
+        size.x = max * widthPerStamina;
+        staminaBarTransform.sizeDelta = size;
     }
 }

@@ -6,6 +6,8 @@ public class PlayerKeepBetweenScene : MonoBehaviour
 {
     public static PlayerKeepBetweenScene Instance { get; private set; }
 
+    CharacterController characterController;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -17,6 +19,7 @@ public class PlayerKeepBetweenScene : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
+            characterController = GetComponent<CharacterController>();
         }
     }
 
@@ -27,8 +30,12 @@ public class PlayerKeepBetweenScene : MonoBehaviour
 
     public void Teleport(Transform targetTransform)
     {
+        characterController.enabled = false;
+
         transform.position = targetTransform.position;
         transform.rotation = targetTransform.rotation;
+        
+        characterController.enabled = true;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

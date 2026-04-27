@@ -1,9 +1,10 @@
+using System.Transactions;
 using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-    [SerializeField] GameObject currentRightHandWeapon;
-    [SerializeField] GameObject currentLeftHandWeapon;
+    [SerializeField] protected GameObject currentRightHandWeapon;
+    [SerializeField] protected GameObject currentLeftHandWeapon;
 
     protected bool Holsterd = false;
     protected DamageTrigger rightDamageTrigger;
@@ -11,8 +12,13 @@ public class CharacterWeaponManager : MonoBehaviour
 
     protected WeaponData currentRightWeaponData;
     protected WeaponData currentLeftWeaponData;
-    
+
+    public WeaponData currentActiveWeaponData;
+
     protected CharacterSoundFXManager characterSoundFXManager;
+    protected float finalDamage;
+
+
 
     public virtual void Start()
     {
@@ -22,6 +28,8 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             rightDamageTrigger = currentRightHandWeapon.GetComponent<DamageTrigger>();
             currentRightWeaponData = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData;
+
+            currentActiveWeaponData = currentRightWeaponData;
         }
         else
         {
@@ -40,7 +48,7 @@ public class CharacterWeaponManager : MonoBehaviour
     }
 
     public virtual void Update()
-    {  
+    {
 
     }
     public virtual void HolsterCheck()
@@ -56,7 +64,7 @@ public class CharacterWeaponManager : MonoBehaviour
             currentRightHandWeapon.SetActive(true);
         }
 
-            
+
     }
 
     public virtual void ActivateRightDamageCollider()
@@ -66,6 +74,8 @@ public class CharacterWeaponManager : MonoBehaviour
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
             rightDamageTrigger.ResetDamage();
             characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes));
+
+            currentActiveWeaponData = currentRightWeaponData;
         }
     }
 
@@ -73,7 +83,6 @@ public class CharacterWeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
-
             currentRightHandWeapon.GetComponent<Collider>().enabled = false;
 
         }
@@ -86,6 +95,8 @@ public class CharacterWeaponManager : MonoBehaviour
             currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
             leftDamageTrigger.ResetDamage();
             characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes));
+
+            currentActiveWeaponData = currentLeftWeaponData;
         }
     }
 
@@ -94,6 +105,12 @@ public class CharacterWeaponManager : MonoBehaviour
         if (currentLeftHandWeapon != null)
         {
             currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
+
         }
+    }
+
+    public virtual float CalculateFinalDamage(WeaponData weaponData)
+    {
+        return finalDamage;
     }
 }

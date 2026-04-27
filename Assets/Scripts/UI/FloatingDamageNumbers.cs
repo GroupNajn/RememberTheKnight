@@ -30,7 +30,6 @@ public class FloatingDamageNumbers : MonoBehaviour
     {
 
         spawnPos = transform.Find("EnemyHealthBar/Numbers_Spawn_Position");
-        Debug.Log(spawnPos);
         Event_System.instance.OnEnemyDamage += SpawnFloatingNumbers;
     }
 

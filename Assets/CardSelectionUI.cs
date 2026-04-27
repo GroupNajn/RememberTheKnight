@@ -19,8 +19,9 @@ public class CardSelectionUI : MonoBehaviour
     [SerializeField] private int maxCardsSelected = 4;
     [SerializeField] private TextMeshProUGUI errorText;
 
-    public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
-    public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
+
+    [field: SerializeField] public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
+    [field: SerializeField] public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
@@ -36,8 +37,9 @@ public class CardSelectionUI : MonoBehaviour
             cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
 
         errorText.gameObject.SetActive(false);
-
+        RebuildSelectionState();
         uiManager.CloseCardSelectUI();
+
     }
 
     private void OnEnable()
@@ -84,6 +86,8 @@ public class CardSelectionUI : MonoBehaviour
 
     public void OnArrowUp()
     {
+        
+
         cardScrollRect.verticalNormalizedPosition += scrollAmount;
     }
 
@@ -109,7 +113,7 @@ public class CardSelectionUI : MonoBehaviour
             return;
         }
 
-        if (selectedCards.Count >= maxCardsSelected)
+        if (selectedCards.Count > maxCardsSelected)
         {
             if (!errorActive)
                 ShowError($"You can only select {maxCardsSelected} cards!", 5f);
@@ -126,14 +130,6 @@ public class CardSelectionUI : MonoBehaviour
     // With the cardData list as a parameter. 
     public void OnConfirmSelection()
     {
-        if (selectedCards.Count == 0)
-        {
-            if (!errorActive)
-                ShowError("You must select at least one card!", 5f);
-            uiManager.CloseCardSelectUI();
-            return;
-        }
-
         Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
         uiManager.CloseCardSelectUI();
     }

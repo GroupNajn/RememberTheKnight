@@ -24,13 +24,10 @@ public class PauseMenu : MonoBehaviour
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GetComponentInParent<UIManager>();
-
-        gameObject.SetActive(false); // Ensure the pause menu is initially inactive 
     }
 
     void GetText()
     {
-        Debug.Log("Searching for ReturnToLobbyButtonText (TMP) in children of " + gameObject.name);
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name == "ReturnToLobbyButtonText (TMP)")
@@ -45,9 +42,10 @@ public class PauseMenu : MonoBehaviour
             returnButtonText.text = returnButtonLobbyText; // Update the return button text for the lobby scene
 
             // Change to call revive method in PlayerStats
+            PlayerManager playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
             PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-            playerStats.Health = playerStats.MaxHealth; // Reset player's health to max
-            playerStats.Heal(playerStats.MaxHealth); // Notify health change to update UI and other systems
+            playerStats.CurrentHealth = playerManager.MaxHealth; // Reset player's health to max
+            playerManager.Heal(playerManager.MaxHealth); // Notify health change to update UI and other systems
         }
         else
         {
@@ -79,7 +77,7 @@ public class PauseMenu : MonoBehaviour
             return; // Not sure if needed, but just to be safe, we return after quitting
         }
 
-        GlobalSceneManager.Instance.LoadSceneTransition(SceneData.Instance[2]);
+        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
 
         UIManager.Instance.HideActiveUI();
         UIManager.Instance.CheckUIState();

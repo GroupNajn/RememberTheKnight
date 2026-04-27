@@ -1,8 +1,9 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 public class UIManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject soulUI;
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject staminaBar;
-
+    [SerializeField] private GameObject cupUI;
 
 
     public bool UIMenuActive = true;
@@ -72,6 +73,8 @@ public class UIManager : MonoBehaviour
         //    else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
         //});
 
+        HideActiveUI();
+
         playerInput.enabled = false;
         //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
@@ -79,6 +82,8 @@ public class UIManager : MonoBehaviour
 
         backgrundUI.gameObject.SetActive(true);
         backButtonUI.gameObject.SetActive(false);
+
+        UIMenuActive = true;
     }
 
     void OnPauseGame()
@@ -98,28 +103,28 @@ public class UIManager : MonoBehaviour
             if (characterSelectUI.activeSelf)
                 return;
 
-            if(gameDeathScreenUI.activeSelf)
+            if (gameDeathScreenUI.activeSelf)
                 return;
 
-            if(optionMenuUI.activeSelf)
+            if (optionMenuUI.activeSelf)
             {
                 GoBackFromOptions();
                 return;
             }
 
-            if(controllsUI.activeSelf)
+            if (controllsUI.activeSelf)
             {
                 GoBackFromControlls();
                 return;
             }
 
-            if(audioUI.activeSelf)
+            if (audioUI.activeSelf)
             {
                 GoBackFromAudio();
                 return;
             }
 
-            if(videoUI.activeSelf)
+            if (videoUI.activeSelf)
             {
                 GoBackFromVideo();
                 return;
@@ -140,7 +145,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
         Cursor.visible = false; // Hide the cursor when resuming
         playerInput.enabled = true; // Enable player input when resuming
-
+         
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseInteractiveUI(); // Hide the interact UI
@@ -218,7 +223,7 @@ public class UIManager : MonoBehaviour
     public void ClosePauseMenu()
     {
         if (pauseMenuUI)
-        {   
+        {
             UIMenuActive = false;
             pauseMenuUI.SetActive(false); // Hide the pause menu
         }
@@ -297,10 +302,8 @@ public class UIManager : MonoBehaviour
     // CARD SELECT UI
     public void OpenCardSelectUI()
     {
-        Debug.Log("Opening Card Select UI");
         CloseInteractiveUI();
         cardSelectUI.SetActive(true);
-        Debug.Log($"Card Select UI active: {cardSelectUI.activeInHierarchy}");
 
         UIMenuActive = true;
         CheckUIState();
@@ -373,6 +376,21 @@ public class UIManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
+    public void OpenCupUI()
+    {
+        cupUI.SetActive(true);
+    }
+
+    public void CloseCupUI()
+    {
+        cupUI.SetActive(false);
+    }
+
+    //public void DisableAllWorldCanvas(bool value)
+    //{
+    //    Event_System.instance?.OnForceCloseUI.Invoke(value);
+    //}
+
     //private void OnEnable()
     //{
     //    SceneManager.sceneLoaded += OnSceneLoaded;
@@ -407,8 +425,8 @@ public class UIManager : MonoBehaviour
     }
     public void GoBackFromAudio()
     {
-       CloseAudioUI();
-       OpenOptionMenu();
+        CloseAudioUI();
+        OpenOptionMenu();
     }
     public void GoBackFromVideo()
     {
@@ -416,6 +434,8 @@ public class UIManager : MonoBehaviour
         OpenOptionMenu(); ;
 
     }
+
+   
 
     private void OnDestroy()
     {

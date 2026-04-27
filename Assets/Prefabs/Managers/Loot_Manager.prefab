@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: -6.070165, y: 1.1000004, z: 15.365939}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2894251912156410228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4337509229596958121
@@ -47,14 +48,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CommonLootTable:
-  - {fileID: 2596782702831970450, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+  - {fileID: 3387264412718830002, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
   UncommonLootTable:
-  - {fileID: 4251097540268861949, guid: 126f39760d130bb4e90a7603802c3684, type: 3}
+  - {fileID: 694142256003041624, guid: c1750df881a1a37459b89441a4fbc726, type: 3}
+  - {fileID: 3856253980031088469, guid: 126f39760d130bb4e90a7603802c3684, type: 3}
+  - {fileID: 4195814208359026868, guid: 0409524f953bc7247afceb176b8c3e06, type: 3}
+  - {fileID: 652082765779295663, guid: 5231e9efdfb40a54da892a888c691dda, type: 3}
+  - {fileID: 717923687201081879, guid: 5b5bdf94feaa1be4fa89d40e667dfd0c, type: 3}
   rareLootTable: []
   EpicLootTable: []
   LegendaryLootTable: []
-  soulPrefab: {fileID: 4251097540268861949, guid: 126f39760d130bb4e90a7603802c3684, type: 3}
+  soulPrefab: {fileID: 0}
   amountChanceTable: []
+  cardSystem: {fileID: 4221795815547489861}
 --- !u!114 &6189389314983097616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,9 +86,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663d10d7326f4cc46a0f4c047f014c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Souls_Collected: 0
+  <currentSoulCount>k__BackingField: 0
   selectedCards:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!1001 &4095613491516909721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3622046198903195141}
+    m_Modifications:
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281647944771072887, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+      propertyPath: m_Name
+      value: CardSystem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+--- !u!4 &2894251912156410228 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1224125890401294829, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+  m_PrefabInstance: {fileID: 4095613491516909721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4221795815547489861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 162233114504586972, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+  m_PrefabInstance: {fileID: 4095613491516909721}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a22f4a6f06e42364aadda5de51600341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

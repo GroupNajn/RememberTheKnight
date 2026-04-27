@@ -1,30 +1,46 @@
 using System.Collections;
 using UnityEngine;
 
-public class InteractHealingFountain : MonoBehaviour, IInteractable
+public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUI
 {
-    private PlayerStats playerStats;
+    private GameObject player;
+    private PlayerManager playerManager;
 
     [SerializeField] GameObject lightObject;
+    [SerializeField] private int healingCost = 5;
     private Light lightSource;
 
     private Collider interactCollider;
     [SerializeField] bool isExpended;
+
+    private bool canShowUI = false;
+
+    private int currentSoulCollect;
+
+    private InteractUI_Controller interactUI_Controller;
+
     void Start()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
-    }
+        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
+        
+    }
+    // The cost to heal is currently hard coded to the value 5. 
     public void Interact()
     {
-        if (!isExpended)
-        { 
-            playerStats.Heal(25f);
+        currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
+        if (!isExpended && currentSoulCollect >= healingCost)
+        {
+            playerManager.Heal(25f);
             interactCollider.enabled = false;
             isExpended = true;
             StartCoroutine(FadeOut());
+            Event_System.instance?.OnSoulsSpent.Invoke(healingCost);
+            player.GetComponent<PlayerVFX>().PlayHealVFX();
         }
     }
 
@@ -40,5 +56,47 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable
         lightObject.SetActive(false);
         yield return null;
     }
+
+    public InteractableUIData GetUIData()
+    {
+        var data = new InteractableUIData();
+
+        if (!isExpended)
+        {
+            data.InfoText = $"Let me consume {healingCost} souls to replenish a " +
+            $"portion of your former self.";
+            data.CanInteract = true;
+        }
+        else
+        {
+            data.InfoText = $"My well's essence is depleted.";
+            data.CanInteract = false;
+        }
+
+            return data;
+    }
+
+    public void ShowUI()
+    {
+        if (!canShowUI && interactUI_Controller != null) return;
+
+        interactUI_Controller.EnableCanvasObject();
+
+    }
+
+    public void HideUI()
+    {
+        
+        interactUI_Controller.DisableCanvas();
+    }
+
+    public void SetLookedAt(bool value)
+    {
+        canShowUI = value;
+
+
+    }
+
+
 
 }

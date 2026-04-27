@@ -1,5 +1,4 @@
 using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +12,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [SerializeField] public GameObject _playerCamera;
     PlayerStats playerStats;
     PlayerCombatManager playerCombatManager;
+    PlayerManager playerManager;
 
     [Header("Movement Settings")]
     public float walkAcceleration = 0.25f;
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private int dodgeHash = Animator.StringToHash("Dodgeing");
     private int knockbackHash = Animator.StringToHash("Knockback");
 
-    public bool AttackCharged { get; set; } = false;
+    public bool AttackCharged = false;
 
     [Header("Dodge")]
     public float dodgeAcceleration = 1f;
@@ -62,17 +62,14 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private PlayerLocomotion playerLocomotionInput;
     private PlayerStates playerState;
     [SerializeField]
-    private TargetLockHandler lockHandler;
+    private TargetLockHandler lockHandler;   
     private PlayerLockRotation playerLockRotation;
-
+     
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     public bool isKnockedback { get; private set; } = false;
     public Vector3 knockbackForce = Vector3.zero;
     private bool ExplotionInfront;
-
-    [Header("Stamina")]
-    StaminaController staminaController;
     #endregion
 
 
@@ -82,14 +79,15 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         PlayerAnimator = GetComponent<Animator>();
         playerState = GetComponent<PlayerStates>();
         playerCombatManager = PlayerCombatManager.Instance;
+        playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
-        staminaController = GetComponent<StaminaController>();
+
     }
 
     private void Update()
     {
-        if (playerStats.isDead)
+        if (playerManager.isDead)
         {
             if (knockbackForce != Vector3.zero)
             {
@@ -118,6 +116,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         PlayerAnimator.ResetTrigger("Dodge");
         PlayerAnimator.ResetTrigger("BackStep");
         PlayerAnimator.ResetTrigger("LightAttack");
+        PlayerAnimator.ResetTrigger("HeavyAttack");
 
         if (playerState.CurrentMoveState != MoveState.Knockedback) // if not knockedBack, allow normal movement
             HandleLateralMovement();
@@ -140,7 +139,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             if (playerStats.currentStamina <= 0)
                 return;
-
             if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
             {
                 PlayerAnimator.SetTrigger("BackStep");
@@ -175,20 +173,19 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void Dodge()
     {
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
-
         Vector3 movementDelta = dodgeDirection * dodgeAcceleration;
         Vector3 newVelocity = _characterController.velocity + movementDelta;
 
-        newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.dodgeSpeedMultiplier);
+        newVelocity = Vector3.ClampMagnitude(newVelocity, playerStats.currentDodgeSpeedModifier);
         newVelocity.y = _verticalVelocity;
 
         // un comment for frontflip
-        _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
-        _characterController.Move(dodgeDirection * playerStats.dodgeSpeedMultiplier * Time.deltaTime);
+        _characterController.Move(transform.rotation.eulerAngles.normalized * playerStats.currentDodgeSpeedModifier * Time.deltaTime);
+        _characterController.Move(dodgeDirection * playerStats.currentDodgeSpeedModifier * Time.deltaTime);
 
         if (!PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != dodgeHash)
         {
-
+      
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");
@@ -215,7 +212,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
         RotatePlayerToTarget();
     }
-
+   
     private void HandleAttack()
     {
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -224,10 +221,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             playerState.SetMoveState(MoveState.Idling);
             playerCombatManager.SetAnimationCancelebleTrue();
-            if (AttackCharged)
-            {
-                AttackCharged = false;
-            }
         }
 
         if (playerCombatManager.canCharge && playerCombatManager.fullyCharged) // if you can charge attack and you are fully charged, do a charge attack
@@ -237,27 +230,29 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerCombatManager.DisableCanCharge();
             playerCombatManager.FullyChargedFalse();
             AttackCharged = true;
+            playerState.SetMoveState(MoveState.Attacking);
         }
         else if (playerCombatManager.canCharge && !playerLocomotionInput.AttackCharging) // if you can charge attack, and you are not charging, but you can charge, do a charge attack but not fully charged
         {
             PlayerAnimator.SetBool("IsCharged", false);
             PlayerAnimator.SetTrigger("ChargeAttack");
-            playerCombatManager.fullyCharged = false;
             playerCombatManager.DisableCanCharge();
             playerCombatManager.FullyChargedFalse();
+
+            playerState.SetMoveState(MoveState.Attacking);
         }
         else if (playerLocomotionInput.AttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            playerCombatManager.SetStaminaState(StaminaAction.lightAttack);
-
-
             if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
             {
-                PlayerAnimator.SetTrigger("IsCombo");
                 playerCombatManager.canCombo = false;
+                PlayerAnimator.SetTrigger("IsCombo");
+                playerState.SetMoveState(MoveState.Attacking);
             }
             else if (animCancelable) // otherwise if you can do a normal attack, do a normal attack
             {
+                playerCombatManager.canCombo = false;
+                PlayerAnimator.ResetTrigger("IsCombo");
                 playerState.SetMoveState(MoveState.Attacking);
                 PlayerAnimator.SetTrigger("LightAttack");
             }
@@ -265,19 +260,14 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (playerLocomotionInput.HeavyAttackPressed && playerStats.currentStamina > 0) // if you can attack 
         {
-            playerCombatManager.SetStaminaState(StaminaAction.heavyAttack);
-
-            if (playerCombatManager.canCombo == true) // if you can combo, do a combo attack
-            {
-                PlayerAnimator.SetTrigger("IsCombo");
-                playerCombatManager.canCombo = false;
-            }
-            else if (animCancelable) // otherwise if you can do a normal attack, do a normal attack
+            if (animCancelable || playerCombatManager.canCombo == true) // otherwise if you can do a normal attack, do a normal attack    
             {
                 playerState.SetMoveState(MoveState.Attacking);
-                PlayerAnimator.SetTrigger("HeavyAttack");  
+                PlayerAnimator.SetTrigger("HeavyAttack");
             }
+
         }
+
     }
 
     private void HandleKnockback()
@@ -287,16 +277,18 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             if (playerState.CurrentMoveState != MoveState.Knockedback)
             {
                 playerState.SetMoveState(MoveState.Knockedback);
+                playerCombatManager.ResetValues();
                 isKnockedback = true;
             }
 
             _characterController.Move(knockbackForce * Time.deltaTime);
-            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.knockbackResistance);
+            knockbackForce = Vector3.Lerp(knockbackForce, Vector3.zero, Time.deltaTime * playerStats.currentKnockbackResistance);
         }
         else if (knockbackForce.magnitude <= 0.1 && isKnockedback)
         {
             isKnockedback = false;
             knockbackForce = Vector3.zero;
+            
             playerState.SetMoveState(MoveState.Idling);
         }
         PlayerAnimator.SetBool("IsKnockedbacked", playerState.CurrentMoveState == MoveState.Knockedback);
@@ -338,13 +330,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleLateralMovement() //(Horizontal)
     {
-        //float lateralAcceleration = playerLocomotionInput.SprintToggledOn ? sprintAcceleration : walkAcceleration;
-        //float clampedLateralMagnitude = playerLocomotionInput.SprintToggledOn ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
 
         bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
 
         float lateralAcceleration = isSprinting ? sprintAcceleration : walkAcceleration;
-        float clampedLateralMagnitude = isSprinting ? playerStats.sprintSpeedMultiplier : playerStats.walkSpeedMultiplier;
+        float clampedLateralMagnitude = isSprinting ? playerStats.currentSprintSpeedModifier : playerStats.currentWalkSpeedModifier;
 
         Vector3 cameraForwardXZ = new Vector3(_playerCamera.transform.forward.x, 0, _playerCamera.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(_playerCamera.transform.right.x, 0, _playerCamera.transform.right.z).normalized;
@@ -361,10 +351,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         _characterController.Move(newVelocity * Time.deltaTime);
 
-        //    if (!playerState.InActionState()) // if not dodging or attacking, change movement state to change depending on input, walking, sprinting or idling
-        //        playerState.SetMoveState(playerLocomotionInput.MovementInput.magnitude > MovingThreshold ? (playerLocomotionInput.SprintToggledOn ? MoveState.Sprinting : MoveState.Walking) : MoveState.Idling);
-
-        if (animCancelable)
+        
+        if (animCancelable && !playerState.InActionState())
         {
             bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
 
@@ -406,7 +394,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
         bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
 
-        if (playerState.CurrentMoveState != MoveState.Dodging && !isKnockedBack)
+        if (playerState.CurrentMoveState != MoveState.Dodging && !isKnockedBack && !playerManager.isDead)
         {
             if (inputDir != Vector2.zero && !lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting) // calculates rotation for player depending input (8D movement)
             {
@@ -424,12 +412,18 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     public void ApplyKnockback(float force, float radius, Vector3 pos)
     {
-        //Debug.Log($"Applying knockback with force {force} and radius {radius} from position {pos}");
         float calculatedForce = (force * 3) * (1 - Vector3.Distance(knockbackCalculationPos.position, pos) / radius);
         Vector3 knockbackDirection = (knockbackCalculationPos.position - pos).normalized;
         ExplotionInfront = Vector3.Dot(knockbackDirection, transform.forward.normalized) > 0;
         PlayerAnimator.SetBool("ExplotionInfront", ExplotionInfront);
         knockbackForce = knockbackDirection * calculatedForce;
+        //Debug.Log($"Applied  calculated knockbackforce {knockbackForce.magnitude}");
+
+        if (knockbackForce.magnitude < playerStats.currentKnockbackResistance)
+        {
+            knockbackForce = Vector3.zero;
+        }
+        //Debug.Log($"Applied knockback with force {knockbackForce.magnitude} Current resitance: {playerStats.currentKnockbackResistance}");
     }
 
     private void GroundedCheck()

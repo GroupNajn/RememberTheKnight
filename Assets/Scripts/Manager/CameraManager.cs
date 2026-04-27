@@ -34,13 +34,11 @@ public class CameraManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
-        Debug.Log("CameraManager: OnSceneLoaded called for scene " + scene.name);
         FindThings();
     }
 
     void FindThings()
     {
-        Debug.Log("CameraManager: FindThings called");
+
     }
 }

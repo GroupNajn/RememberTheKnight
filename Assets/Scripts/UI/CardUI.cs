@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 
 
 // Script Updated by Henric 2026-04-17
@@ -8,6 +8,8 @@ public class CardUI : MonoBehaviour
     [field: SerializeField] public bool IsSelected { get; private set; }
 
     [SerializeField] public CardData cardData;
+    [SerializeField] private Image cardImage;
+
     public float angle = 5f;
     public float speed = 0.4f;
     public float offset = 0f;
@@ -18,15 +20,25 @@ public class CardUI : MonoBehaviour
     private RectTransform rectTransform;
     private float baseRotationZ;
 
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        baseRotationZ = rectTransform.localEulerAngles.z;
+        baseRotationZ = rectTransform.localEulerAngles.z; 
+        IsSelected = false;
+
+
+        cardImage = GetComponent<Image>();
     }
     void Start()
     {
         startRotation = transform.localRotation;
         IsSelected = false;
+
+        if(cardData != null && cardImage != null)
+        {
+            cardImage.sprite = cardData.cardImage;
+        }
     }
     // Added IsSelected = false becuase the first time the card is started via 
     // UIManager it is set to false to default to that, once it's state has been updated once during the game.
@@ -53,6 +65,5 @@ public class CardUI : MonoBehaviour
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
-        Debug.Log($"Card {(selected ? "Selected" : "Deselected")}");
     }
 }
