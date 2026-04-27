@@ -4,7 +4,7 @@ public class CardContract : MonoBehaviour
 {
     private CardFamily cardFamily = CardFamily.None;
 
-    public CardFamily CardFamilty => cardFamily;
+    public CardFamily CardFamily => cardFamily;
 
     public enum Signed { Not, Signed }
     public Signed signed

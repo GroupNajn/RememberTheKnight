@@ -5,6 +5,7 @@ public class CardSystem : MonoBehaviour
 {
     [SerializeField] private List<CardData> allCards = new();
     [SerializeField] private List<CardData> unlockedCards = new();
+    
 
     private int unlockedTier = (int)Tier.I;
 
@@ -19,6 +20,18 @@ public class CardSystem : MonoBehaviour
     public IReadOnlyList<CardData> GetUnlockedCards()
     {
         return unlockedCards;
+    }
+
+
+    public void UnlockCardsAfterSigningContract(CardContract contract)
+    {
+        foreach(CardData cardData in allCards)
+        {
+            if (cardData.cardFamily == contract.CardFamily && unlockedTier == (int)cardData.cardTier)
+                unlockedCards.Add(cardData);
+        }
+
+
     }
 
     //public List<CardData> GetDroppableCards()
