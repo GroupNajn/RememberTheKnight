@@ -19,6 +19,9 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
 
     private InteractUI_Controller interactUI_Controller;
 
+    [Header("Charges")]
+    [SerializeField] int chargesPerHeal = 10;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -26,8 +29,6 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
         interactUI_Controller = GetComponent<InteractUI_Controller>();
-
-        
     }
     // The cost to heal is currently hard coded to the value 5. 
     public void Interact()
@@ -35,12 +36,14 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
         if (!isExpended && currentSoulCollect >= healingCost)
         {
-            playerManager.Heal(25f);
+            playerManager.GetCharges(chargesPerHeal);
+
+            //playerManager.Heal(25f);
             interactCollider.enabled = false;
             isExpended = true;
             StartCoroutine(FadeOut());
             Event_System.instance?.OnSoulsSpent.Invoke(healingCost);
-            player.GetComponent<PlayerVFX>().PlayHealVFX();
+            //player.GetComponent<PlayerVFX>().PlayHealVFX();
         }
     }
 
