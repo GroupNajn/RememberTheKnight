@@ -56,8 +56,8 @@ public class PlayerStats : MonoBehaviour
 
 
 
-    [Header("Flags")]
-    [SerializeField] public bool isDead = false;
+    //[Header("Flags")]
+    //[SerializeField] public bool isDead = false;
 
     [Header("Healing Cup")]
     public int maxHealingCharges = 100;
