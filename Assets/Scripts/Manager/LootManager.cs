@@ -20,6 +20,16 @@ public class LootManager : MonoBehaviour
     HashSet<Loot> droppedLoot;
     [SerializeField] Loot soulPrefab;
     [SerializeField] List<float> amountChanceTable;
+
+    [Header("CardSystem")]
+    [SerializeField] private CardSystem cardSystem;
+
+    public CardSystem CardSystem
+    {
+        get => cardSystem;
+    }
+
+
     //[SerializeField] float oneItemDropChance;
     //[SerializeField] float twoItemDropChance;
     //[SerializeField] float threeItemDropChance;
@@ -123,19 +133,19 @@ public class LootManager : MonoBehaviour
         }
     }
 
-    private List<Loot> SwitchLootTable(Tier tier)
+    private List<Loot> SwitchLootTable(RarityTier tier)
     {
         switch (tier)
         {
-            case Tier.Common:
+            case RarityTier.Common:
                 return CommonLootTable;
-            case Tier.Uncommon:
+            case RarityTier.Uncommon:
                 return UncommonLootTable;
-            case Tier.Rare:
+            case RarityTier.Rare:
                 return rareLootTable;
-            case Tier.Epic:
+            case RarityTier.Epic:
                 return EpicLootTable;
-            case Tier.Legendary:
+            case RarityTier.Legendary:
                 return LegendaryLootTable;
             default:
                 return CommonLootTable;
@@ -187,6 +197,25 @@ public class LootManager : MonoBehaviour
     {
         float percent = (itemW / SumOfW) * 100;
         Debug.Log("%" + percent);
+    }
+
+    public void ReDesributeWeight(List<Loot> table)
+    {
+        float totalWeight = 0;
+        int itemsInTable = 0;
+        foreach (var item in table)
+        {
+            itemsInTable++;
+            totalWeight += item.Weight;
+        }
+        if(totalWeight < 100)
+        {
+            float missingWeight = (totalWeight - 100);
+            float allocatWeight = Mathf.Abs(missingWeight) / itemsInTable;
+
+        }
+
+
     }
 
 

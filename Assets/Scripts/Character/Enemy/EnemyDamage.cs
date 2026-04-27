@@ -20,7 +20,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer;
     [SerializeField] float damageCooldown = 1;
 
-    public Tier tier;
+    public RarityTier tier;
     private EnemyVFX enemyVFX;
     private List<Transform> childObjects;
 
