@@ -1,12 +1,27 @@
 using UnityEngine;
+using TMPro;
 
 public class CupCanvas : MonoBehaviour
 {
+    public static CupCanvas Instance { get; private set; }
+
     [SerializeField] Gradient cupGradient;
     [SerializeField] Gradient crystalGradient;
     [SerializeField] Material cupMaterial;
+    [SerializeField] TMP_Text usesText;
 
-    int chargesLeft; // Temporary variable for testing
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     { 
@@ -31,36 +46,8 @@ public class CupCanvas : MonoBehaviour
         else
         {
             cupMaterial.SetColor("_EmissionColor", crystalGradient.Evaluate(crystalFillAmount) * 2f);
-        }        
-    }
-
-    void Update() // Temporary input handling for testing
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (chargesLeft >= 0 && chargesLeft < 100)
-            {
-                chargesLeft++;
-                UpdateCup(chargesLeft, 100, 10);
-            }
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (chargesLeft > 0 && chargesLeft <= 100)
-            {
-                chargesLeft--;
-                UpdateCup(chargesLeft, 100, 10);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            if (chargesLeft > 9 && chargesLeft <= 100)
-            {
-                chargesLeft -= 10;
-                UpdateCup(chargesLeft, 100, 10);
-            }
-        }
+        usesText.text = $"{usesLeft}";
     }
 }

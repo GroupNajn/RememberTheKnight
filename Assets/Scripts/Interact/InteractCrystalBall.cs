@@ -4,8 +4,9 @@ using UnityEngine;
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 {
     [SerializeField] int sceneToLoadIndex;
+    [SerializeField] bool preLoadScene = false;
+    
     private InteractUI_Controller interactUI_Controller;
-
     private bool canShowUI = false;
     string sceneName;
 
@@ -15,13 +16,12 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         {
             return;
         }
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
+        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
         Event_System.instance.OnLoadScenes += OnLoadScenes;
-        //GlobalSceneManager.Instance.LoadScene(sceneName);
     }
 
     public void Interact()
@@ -30,6 +30,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         {
             return;
         }
+
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
     }
 
@@ -40,7 +41,10 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
             return;
         }
 
-        GlobalSceneManager.Instance.LoadScene(sceneName);
+        if (preLoadScene)
+        {
+            GlobalSceneManager.Instance.LoadScene(sceneName);
+        }
 
         Event_System.instance.OnLoadScenes -= OnLoadScenes;
     }
@@ -73,21 +77,15 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         if (!canShowUI && interactUI_Controller != null) return;
 
         interactUI_Controller.EnableCanvasObject();
-
     }
 
     public void HideUI()
     {
-
         interactUI_Controller.DisableCanvas();
     }
 
     public void SetLookedAt(bool value)
     {
         canShowUI = value;
-
-
     }
-
-
 }

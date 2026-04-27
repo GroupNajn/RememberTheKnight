@@ -26,16 +26,10 @@ public class DamagebleWall : MonoBehaviour, IDamageable
     {
         if (CanTakeDamage && Health > 0)
         {
-            Debug.Log($"Taking damage{damage}");
-            Event_System.instance.OnEnemyDamage?.Invoke(this.transform, damage);
             Health -= damage;
 
             enemyVFX.PlayBloodSplatter(contactPoint);
 
-            OnHealthChanged?.Invoke(Health, MaxHealth);
-
-            Debug.Log($"Health {Health}/{MaxHealth}");
-            CanTakeDamage = false;
             if (Health <= 0)
             {
                 Death();
@@ -46,20 +40,5 @@ public class DamagebleWall : MonoBehaviour, IDamageable
     public void Death()
     {
         Destroy(gameObject);
-    }
-
-    // TO BE REMOVED OR CHANGED
-    void Update()
-    {
-        if (!CanTakeDamage)
-        {
-
-            damageCooldownTimer -= Time.deltaTime;
-            if (damageCooldownTimer <= 0)
-            {
-                CanTakeDamage = true;
-                damageCooldownTimer = damageCooldown;
-            }
-        }
     }
 }
