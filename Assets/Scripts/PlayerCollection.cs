@@ -6,7 +6,7 @@ using UnityEditor.Rendering.Universal.ShaderGUI;
 public class PlayerCollection : MonoBehaviour
 {
     [SerializeField] private CardCollection cardCollection;
-    
+
     private CardContract cardContract;
 
     public CardContract playerContract
