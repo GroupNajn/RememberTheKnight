@@ -79,7 +79,6 @@ public class PlayerWeaponManager : CharacterWeaponManager
         else
             finalDamage = damageAmount * playerStats.currentDamageModifier;
 
-
         return finalDamage;
     }
 }
