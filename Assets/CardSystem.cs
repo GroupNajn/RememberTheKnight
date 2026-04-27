@@ -17,6 +17,7 @@ public class CardSystem : MonoBehaviour
     {
         
     }
+
     public IReadOnlyList<CardData> GetUnlockedCards()
     {
         return unlockedCards;
@@ -33,15 +34,24 @@ public class CardSystem : MonoBehaviour
         }
     }
 
-    // Need the reference on the presumed created and signed contract.
+    // Need the reference on the presumed created and signed contract Object.
+    // Adds a new cardData to unlocked cards list.
+    //And increases the unlockedTier condition variable. 
     public void UnlockDroppedCardInSignedFamily(CardData card)
     {
-
         if((int)card.cardTier == unlockedTier + 1 && card.cardFamily == cardContract.CardFamily)
         {
-
+            unlockedCards.Add(card);
+            unlockedTier++;
+            Mathf.Clamp(unlockedTier, (int)Tier.I, (int)Tier.XIII);
         }
 
+    }
+
+    // Checks if a card is unlocked. 
+    public bool CheckUnlocked(CardData card)
+    {
+        return unlockedCards.Contains(card);
     }
 
 

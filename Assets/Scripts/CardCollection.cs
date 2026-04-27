@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class CardCollection : MonoBehaviour
 {
-    [SerializeField] private List<Card> temporaryCards = new List<Card>();
-    [SerializeField] private List<Card> permanentCards = new List<Card>();
+    [SerializeField] private List<CardData> temporaryCards = new List<CardData>();
+    [SerializeField] private List<CardData> permanentCards = new List<CardData>();
 
-    public List<Card> TemporaryCards
+    public List<CardData> TemporaryCards
     {
         get => temporaryCards;
     }
-    public List<Card> PermanentPermanentCards
+    public List<CardData> PermanentPermanentCards
     {
         get => permanentCards;
     }
@@ -26,10 +26,10 @@ public class CardCollection : MonoBehaviour
 
     }
 
-    public void AddToCollection(Card card)
+    public void AddToCollection(CardData card)
     {
         if (card == null) return;
-        if (card.CardUnlockType == CardUnlockType.Permanent && !(permanentCards.Contains(card)))
+        if (card)
         {
             permanentCards.Add(card);
         }
@@ -41,23 +41,23 @@ public class CardCollection : MonoBehaviour
 
     public void RemoveFromTemporaryCollection(Card card)
     {
-        temporaryCards.Remove(card);
+        temporaryCards.Remove(card.CardData);
     }
 
     public void RemoveFromPermanentCollection(Card card)
     {
-        if (permanentCards.Contains(card))
+        if (permanentCards.Contains(card.CardData))
         {
-            permanentCards.Remove(card);
+            permanentCards.Remove(card.CardData);
         }
     }
 
-    public List<Card> GetTempCardCollection()
+    public List<CardData> GetTempCardCollection()
     {
         return temporaryCards;
     }
 
-    public List<Card> GetPermanentCardCollection()
+    public List<CardData> GetPermanentCardCollection()
     {
         return permanentCards;
     }

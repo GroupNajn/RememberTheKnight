@@ -7,6 +7,11 @@ public class PlayerCollection : MonoBehaviour
 {
     [SerializeField] private CardCollection cardCollection;
 
+    public CardCollection CardCollection
+    {
+        get => cardCollection;
+    }
+
     private CardContract cardContract;
 
     public CardContract playerContract
@@ -20,14 +25,14 @@ public class PlayerCollection : MonoBehaviour
 
     public void InsertIntoCardSelectin(Card card)
     {
-        cardCollection.AddToCollection(card);
+        cardCollection.AddToCollection(card.CardData);
     }
-    public List<Card> ReturnTempCardCollection()
+    public List<CardData> ReturnTempCardCollection()
     {
         return cardCollection.GetTempCardCollection();
     }
 
-    public List<Card> ReturnPermanentCardCollection()
+    public List<CardData> ReturnPermanentCardCollection()
     {
         return cardCollection.GetPermanentCardCollection();
     }
