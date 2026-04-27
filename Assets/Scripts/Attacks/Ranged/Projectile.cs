@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private bool collided;
-    GameObject Arrow_VFX;
+    private bool isArrow;
     public float speed;
     public Vector3 direction;
     List<ParticleSystem> projectiles = new();
@@ -17,7 +16,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        //Destroy(gameObject, 5f);
+        isArrow = this.gameObject.name.Contains("Arrow");
         projectiles.AddRange(GetComponentsInChildren<ParticleSystem>());
         projectileCollider = GetComponent<Collider>();
     }
@@ -36,8 +35,11 @@ public class Projectile : MonoBehaviour
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
-            Vector3 contactPoint = other.ClosestPoint(transform.position);
-            GameObject.FindWithTag("Player").GetComponent<PlayerVFX>().PlayArrowVFX(contactPoint);
+            if(isArrow)
+            {
+                Vector3 contactPoint = other.ClosestPoint(transform.position);
+                GameObject.FindWithTag("Player").GetComponent<PlayerVFX>().PlayArrowVFX(contactPoint);
+            }
             StartCoroutine(Collide());
         }
     }
