@@ -6,6 +6,10 @@ public class BookUi : MonoBehaviour
     [SerializeField] private BookPageUI leftPage;
     [SerializeField] private BookPageUI rightPage;
 
+    [Header("Text Book Input")]
+    [SerializeField] private string bookText;
+    [SerializeField] private int charsPerPage = 300;
+
     private List<PageData> pages = new List<PageData>();
     private int currentIndex = 0;
 
@@ -29,6 +33,20 @@ public class BookUi : MonoBehaviour
                 type = PageData.PageType.Cards,
                 cards = allCards.GetRange(i, Mathf.Min(4, allCards.Count - i))
             });
+        }
+
+        if (!string.IsNullOrEmpty(bookText))
+        {
+            var chunks = SplitTextWords(bookText, 300); // adjust size
+
+            foreach (var chunk in chunks)
+            {
+                pages.Add(new PageData
+                {
+                    type = PageData.PageType.Text,
+                    text = chunk
+                });
+            }
         }
 
         currentIndex = 0;
@@ -78,5 +96,29 @@ public class BookUi : MonoBehaviour
             currentIndex -= 2;
             ShowPages();
         }
+    }
+
+    private List<string> SplitTextWords(string text, int maxChars)
+    {
+        List<string> pages = new List<string>();
+        string[] words = text.Split(' ');
+
+        string current = "";
+
+        foreach (var word in words)
+        {
+            if ((current + word).Length > maxChars)
+            {
+                pages.Add(current);
+                current = "";
+            }
+
+            current += word + " ";
+        }
+
+        if (!string.IsNullOrWhiteSpace(current))
+            pages.Add(current);
+
+        return pages;
     }
 }

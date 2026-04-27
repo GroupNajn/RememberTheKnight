@@ -16,6 +16,9 @@ public class BookPageUI : MonoBehaviour
     [Header("Cards")]
     [SerializeField] private Transform cardContainer;
     [SerializeField] private CardUI cardPrefab;
+    [SerializeField] private PlayerCollection playerCollection;
+    [SerializeField] private CardSelectionUI cardSelectionUI;
+    [SerializeField] private bool useTestCards = true;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI pageText;
@@ -34,9 +37,35 @@ public class BookPageUI : MonoBehaviour
                 ShowStats(data.stats);
                 break;
 
-            case PageData.PageType.Cards:
+            /*case PageData.PageType.Cards:
                 cardPanel.SetActive(true);
+                if (data.cards == null || data.cards.Count == 0)
+                {
+                    data.cards = new List<CardData>();
+
+                    data.cards.AddRange(playerCollection.ReturnPermanentCardCollection());
+                    data.cards.AddRange(playerCollection.ReturnTempCardCollection());
+                }
+
                 ShowCards(data.cards);
+                break;
+            */
+            case PageData.PageType.Cards: 
+                cardPanel.SetActive(true);
+
+                List<CardData> cardsToShow = new List<CardData>();
+
+                // TEMP TEST SYSTEM
+                if (useTestCards && cardSelectionUI != null)
+                {
+                    cardsToShow.AddRange(cardSelectionUI.selectedCardData);
+                }
+                else
+                {
+                    cardsToShow.AddRange(data.cards);
+                }
+
+                ShowCardsTemp(cardsToShow);
                 break;
 
             case PageData.PageType.Text:
@@ -56,17 +85,44 @@ public class BookPageUI : MonoBehaviour
             $"Mana: ";
     }
 
-    private void ShowCards(List<CardData> cards)
+   
+    
+        private void ShowCards(List<CardData> cards)
     {
+        // Safety check
+        if (cards == null)
+        {
+            Debug.LogWarning("ShowCards called with null list!");
+            return;
+        }
+
         // Clear old cards
         foreach (Transform child in cardContainer)
             Destroy(child.gameObject);
 
-        // Add new cards
+        // Spawn new cards
         foreach (var card in cards)
         {
             var ui = Instantiate(cardPrefab, cardContainer);
-           // ui.SetData(card);
+
+            // You can't modify CardUI → assign directly
+            ui.cardData = card;
+        }
+    }
+
+    private void ShowCardsTemp(List<CardData> cards)
+    {
+        if (cards == null) return;
+
+        foreach (Transform child in cardContainer)
+            Destroy(child.gameObject);
+
+        foreach (var card in cards)
+        {
+            var ui = Instantiate(cardPrefab, cardContainer);
+            ui.cardData = card;
         }
     }
 }
+
+
