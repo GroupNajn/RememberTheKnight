@@ -9,8 +9,8 @@ public abstract class Loot : MonoBehaviour, IPickupable
     [SerializeField] protected float pickUpDelay;
     [field: SerializeField] public string itemName { get;  private set;}
 
-    [SerializeField] protected Tier tier = Tier.Common;
-    public Tier Tier => tier;
+    [SerializeField] protected RarityTier tier = RarityTier.Common;
+    public RarityTier Tier => tier;
 
     [SerializeField] protected PickableState pickable = PickableState.NotPickable;
 
