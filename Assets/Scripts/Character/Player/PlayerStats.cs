@@ -62,6 +62,7 @@ public class PlayerStats : MonoBehaviour
     [Header("Healing Cup")]
     public int maxHealingCharges = 100;
     public int currentHealingCharges;
+    public int healingChargeCost = 10;
 
     // Base Values used for Applying Stats
     [Header("Base Values")]

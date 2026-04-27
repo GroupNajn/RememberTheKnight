@@ -35,6 +35,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+
+        GetCharges(0); // Update the material of the cup at the start of the game with the initial healing charges
     }
 
     private void Update()
@@ -98,6 +100,13 @@ public class PlayerManager : MonoBehaviour, IDamageable
         float totalHeal = amount * playerStats.currentHealModifier;
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
+    }
+
+    public void GetCharges(int amount)
+    {
+        playerStats.currentHealingCharges += amount;
+        playerStats.currentHealingCharges = Mathf.Clamp(playerStats.currentHealingCharges, 0, playerStats.maxHealingCharges);
+        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
     }
 
     public void NotifyStaminaChanged()
