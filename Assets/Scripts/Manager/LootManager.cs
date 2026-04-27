@@ -20,6 +20,16 @@ public class LootManager : MonoBehaviour
     HashSet<Loot> droppedLoot;
     [SerializeField] Loot soulPrefab;
     [SerializeField] List<float> amountChanceTable;
+
+    [Header("CardSystem")]
+    [SerializeField] private CardSystem cardSystem;
+
+    public CardSystem CardSystem
+    {
+        get => cardSystem;
+    }
+
+
     //[SerializeField] float oneItemDropChance;
     //[SerializeField] float twoItemDropChance;
     //[SerializeField] float threeItemDropChance;
