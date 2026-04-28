@@ -1137,6 +1137,8 @@ GameObject:
   - component: {fileID: 4435027409138346732}
   - component: {fileID: 4852675796085478844}
   - component: {fileID: 6129968890605674238}
+  - component: {fileID: 3442522953305961543}
+  - component: {fileID: 3189754594843471412}
   m_Layer: 8
   m_Name: BossOfCups
   m_TagString: Enemy
@@ -1234,7 +1236,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2.02
+  m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1449,7 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1852d45d08153414bb9aaca348080c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 10
+  <MaxHealth>k__BackingField: 200
   damageCooldown: 0
   tier: 4
 --- !u!114 &6129968890605674238
@@ -1465,6 +1467,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayDuration: 2
+--- !u!114 &3442522953305961543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339039169789421763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7042e3a57bed0a543945efc8e68678d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRightHandWeapon: {fileID: 4356212746641267590}
+  currentLeftHandWeapon: {fileID: 0}
+  rightDamageTrigger: {fileID: 0}
+  leftDamageTrigger: {fileID: 0}
+  currentRightWeaponData: {fileID: 0}
+  currentLeftWeaponData: {fileID: 0}
+  currentActiveWeaponData: {fileID: 0}
+--- !u!114 &3189754594843471412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339039169789421763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9f9781cefe57b45b823c8f238b6c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodSplatterVFX: {fileID: 1870066848782411549, guid: baa7bf940b111f3468dfc2ab18be0bed, type: 3}
 --- !u!1 &2341542869942172244
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,19 +5661,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 89846205873519914, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 89846205873519914, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 310131940771779675, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4565870402855886969, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: m_Name
       value: HealthBarCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4565870402855886969, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4565870402855886969, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 8782170257363758465, guid: f975ff82d5f9c3643b548b7f4506e855, type: 3}
       propertyPath: m_Pivot.x
@@ -5785,7 +5827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4887594647964575205, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4887594647964575205, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
       propertyPath: m_TagString
@@ -5793,7 +5835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5166790958465586530, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7019888278801921917, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
       propertyPath: m_Enabled
@@ -5806,8 +5848,43 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4887594647964575205, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8604217563797720303}
   m_SourcePrefab: {fileID: 100100000, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
+--- !u!1 &4356212746641267590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4887594647964575205, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
+  m_PrefabInstance: {fileID: 9196448323535617635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &8604217563797720303
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356212746641267590}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &8578284583039361520 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 624990337619124115, guid: b2c496515c0b12585ab8333d1fcdb2bf, type: 3}
