@@ -328,7 +328,6 @@ MonoBehaviour:
   - rid: 4680590414493778359
   - rid: 4680590414493778360
   - rid: 4680590414493778361
-  - rid: 4680590414493778362
   - rid: 4680590584804802988
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
@@ -350,22 +349,14 @@ MonoBehaviour:
         GUID:
           m_Value0: 424389198254072288
           m_Value1: 15845654370886051948
-        Name: animationName
-        m_Value: Hug Attack
+        Name: attackTriggerName
+        m_Value: Attack
     - rid: 4680590414493778361
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: chaseRadius
-        m_Value: 10
-    - rid: 4680590414493778362
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5146480717081897350
-          m_Value1: 13461439846945536860
         Name: threatRadius
         m_Value: 20
     - rid: 4680590584804802988
@@ -391,7 +382,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
@@ -441,7 +432,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1

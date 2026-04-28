@@ -24,8 +24,8 @@ public partial class SlerpAtAction : Action
             return Status.Failure;
         }
 
-        ProcessSlerpAt();
-        return Status.Running;
+        if (ProcessSlerpAt()) return Status.Running;
+        return Status.Success;
     }
     protected override Status OnUpdate()
     {
@@ -49,10 +49,10 @@ public partial class SlerpAtAction : Action
         direction = direction.normalized;
         if (direction != Vector3.zero)
         {
+            float dot = Vector3.Dot(Transform.Value.forward, direction);
+            if (dot >= 0.99f) return true;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             Transform.Value.rotation = Quaternion.Slerp(Transform.Value.rotation, targetRotation, SlerpSpeed.Value * Time.deltaTime);
-            float dot = Vector3.Dot(Transform.Value.forward, direction);
-            return dot >= 0.99f;
         }
         return false;
     }

@@ -11,11 +11,11 @@ using System.Collections.Generic;
 [NodeDescription(name: "RootMotionNavigate", story: "[Self] navigates to [Target] using root motion", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
 public partial class RootMotionNavigateAction : Action
 {
+    private static readonly int MovementSpeedHash = Animator.StringToHash("MovementSpeed");
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
     [SerializeReference] public BlackboardVariable<bool> IsNavigating = new(false);
 
-    [SerializeReference] public BlackboardVariable<bool> ShouldCancel = new(false);
     [SerializeReference] public BlackboardVariable<List<string>> BreakingEmotes = new(new());
     private Animator animator;
     private NavMeshAgent navMeshAgent;
@@ -40,7 +40,6 @@ public partial class RootMotionNavigateAction : Action
 
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
-        //Self.Value.transform.position = navMeshAgent.nextPosition;
 
         navMeshAgent.SetDestination(Target.Value.transform.position);
         lastTargetPos = Target.Value.transform.position;
@@ -55,15 +54,6 @@ public partial class RootMotionNavigateAction : Action
         if (navMeshAgent.hasPath && navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid) return Status.Failure;
 
         navMeshAgent.nextPosition = Self.Value.transform.position;
-
-        if (ShouldCancel.Value)
-        {
-            if (navMeshAgent.hasPath) navMeshAgent.ResetPath();
-            float currentSpeed = animator.GetFloat("MovementSpeed");
-            animator.SetFloat("MovementSpeed", MathF.Round(Mathf.Lerp(currentSpeed, 0, navMeshAgent.acceleration * Time.deltaTime), 2));
-            if (animator.deltaPosition.magnitude > 0.01f) navMeshAgent.velocity = animator.deltaPosition / (Time.deltaTime + 0.00001f);
-            if (Mathf.Approximately(navMeshAgent.velocity.magnitude, 0)) return Status.Failure;
-        }
 
         bool shouldUpdateDestination =
             !Mathf.Approximately(lastTargetPos.x, Target.Value.transform.position.x) ||
@@ -90,18 +80,16 @@ public partial class RootMotionNavigateAction : Action
         {
 
             float desiredSpeed = Mathf.Max(navMeshAgent.desiredVelocity.magnitude, minSpeed);
-            float currentSpeed = animator.GetFloat("MovementSpeed");
-            animator.SetFloat("MovementSpeed", MathF.Round(Mathf.Lerp(currentSpeed, desiredSpeed, navMeshAgent.acceleration * Time.deltaTime), 2));
+            float currentSpeed = animator.GetFloat(MovementSpeedHash);
+            animator.SetFloat(MovementSpeedHash, MathF.Round(Mathf.Lerp(currentSpeed, desiredSpeed, navMeshAgent.acceleration * Time.deltaTime), 2));
             if (animator.deltaPosition.magnitude > 0.01f) navMeshAgent.velocity = animator.deltaPosition / (Time.deltaTime + 0.00001f);
         }
         else
         {
-            animator.SetFloat("MovementSpeed", 0f);
+            animator.SetFloat(MovementSpeedHash, 0f);
             navMeshAgent.velocity = Vector3.zero;
 
         }
-
-
 
         Vector3 direction = navMeshAgent.steeringTarget - navMeshAgent.nextPosition;
         if (direction != Vector3.zero)
@@ -115,10 +103,7 @@ public partial class RootMotionNavigateAction : Action
             );
         }
 
-
-
-
-        if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
         {
             return Status.Success;
         }
@@ -134,7 +119,7 @@ public partial class RootMotionNavigateAction : Action
         }
         if (animator != null)
         {
-            animator.SetFloat("MovementSpeed", 0);
+            animator.SetFloat(MovementSpeedHash, 0);
         }
         IsNavigating.Value = false;
     }
