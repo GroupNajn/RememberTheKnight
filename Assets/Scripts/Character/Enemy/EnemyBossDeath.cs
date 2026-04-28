@@ -13,7 +13,8 @@ public class EnemyBossDeath : MonoBehaviour, ITriggerable
     IEnumerator DeleteCorpse(ParticleSystem particles)
     {
         particles.Play();
-        yield return new WaitUntil(() => !particles.isPlaying);
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => particles.IsAlive(true));
         Destroy(particles);
         Destroy(gameObject);
     }
