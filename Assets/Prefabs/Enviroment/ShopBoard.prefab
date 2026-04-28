@@ -280,6 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 35475855649291473}
   - component: {fileID: 469234448908047886}
+  - component: {fileID: 9050108297341585226}
   m_Layer: 0
   m_Name: ShopBoard
   m_TagString: Untagged
@@ -318,6 +319,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699612b82ac053b449157d3aa893bff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &9050108297341585226
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5320738525063796369}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 5, z: 2}
+  m_Center: {x: 0, y: 2.4, z: 0}
 --- !u!1 &6400572758150001711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,6 +1219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831fd4f84ee4d1844a94636d369fec26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightToControl: {fileID: 0}
   minIntensity: 5
   maxIntensity: 15
   intensityChangeSpeed: 0.75
@@ -1996,6 +2019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831fd4f84ee4d1844a94636d369fec26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightToControl: {fileID: 0}
   minIntensity: 5
   maxIntensity: 15
   intensityChangeSpeed: 0.75
