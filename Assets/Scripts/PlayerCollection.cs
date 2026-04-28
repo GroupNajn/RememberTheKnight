@@ -19,7 +19,7 @@ public class PlayerCollection : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
 
     public void InsertIntoCardSelectin(Card card)
