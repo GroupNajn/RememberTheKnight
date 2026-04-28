@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopSlotCard : MonoBehaviour
 {
     [SerializeField] private bool unlocked;
+    [SerializeField] private Image cardImage;
 
     private ShopBoard board;
 
+    void Awake()
+    {
+        cardImage = GetComponent<Image>();
+    }
     void Start()
     {
         board = GetComponentInParent<ShopBoard>();
@@ -23,6 +29,13 @@ public class ShopSlotCard : MonoBehaviour
 
         Debug.Log($"Slot {name} card {card.name}");
 
-        Instantiate(card, this.transform);
+        if (card != null && cardImage != null)
+        {
+            cardImage.sprite = card.cardImage;
+        }
+
+        // Will instantiate prefab cars later on
+
+        //Instantiate(card, this.transform);
     }
 }
