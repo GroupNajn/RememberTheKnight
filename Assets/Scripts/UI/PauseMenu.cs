@@ -65,8 +65,8 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenPauseOptions()
     {
-        //uiManager.OpenPauseOptionMenu();
-        uiManager.ClosePauseMenu();
+        //uiManager.OpenOptionMenu();
+        //uiManager.ClosePauseMenu();
     }
 
     public void LoadLobby()

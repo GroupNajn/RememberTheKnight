@@ -246,8 +246,12 @@ public class UIManager : MonoBehaviour
     {
         if (optionMenuUI)
         {
+            CloseInteractiveUI();
             optionMenuUI.SetActive(true);
             backButtonUI.SetActive(true);
+
+            UIMenuActive = true;
+            CheckUIState();
         }
     }
 
@@ -255,8 +259,8 @@ public class UIManager : MonoBehaviour
     {
         if (optionMenuUI)
         {
+            UIMenuActive = false;
             optionMenuUI.SetActive(false);
-
         }
     }
 
@@ -264,6 +268,9 @@ public class UIManager : MonoBehaviour
     public void OpenControllsUI()
     {
         controllsUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void CloseControllsUI()
