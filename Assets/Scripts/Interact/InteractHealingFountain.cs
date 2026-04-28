@@ -33,7 +33,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
     // The cost to heal is currently hard coded to the value 5. 
     public void Interact()
     {
-        currentSoulCollect = LootManager.instance.GetComponent<lootManager>().currentSoulCount;
+        currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
         if (!isExpended && currentSoulCollect >= healingCost)
         {
             playerManager.GetCharges(chargesPerHeal);

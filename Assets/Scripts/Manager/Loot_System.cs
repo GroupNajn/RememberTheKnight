@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 // Script made by Henric 2026-04-16
-public class lootManager : MonoBehaviour
+public class Loot_System : MonoBehaviour
 {
     [field: SerializeField] public int currentSoulCount { get; private set; } = 0;
     [SerializeField] CardData[] selectedCards = new CardData[4];
