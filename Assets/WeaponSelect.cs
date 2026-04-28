@@ -28,11 +28,13 @@ public class WeaponSelect : MonoBehaviour
         {
             weapon.SetActive(false);
         }
-        // Activate the selected weapon
-        Weapons[currentWeaponIndex].SetActive(true);
-        playerWeaponManager.currentRightHandWeapon = Weapons[currentWeaponIndex];
-        playerWeaponManager.currentActiveWeaponData = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData;
-        playerWeaponManager.currentRightWeaponData = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData;
+        Weapons[currentWeaponIndex].SetActive(true); // activate the current weapon
+        playerWeaponManager.currentRightHandWeapon = Weapons[currentWeaponIndex]; // weapon gameobject
+        playerWeaponManager.currentActiveWeaponData = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData; // active weapon data
+        playerWeaponManager.currentRightWeaponData = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData; // weapon data
+
+        playerWeaponManager.rightDamageTrigger = Weapons[currentWeaponIndex].GetComponent<DamageTrigger>(); // Damage trigger
+
         currentWeaponIndex++;
     }
 }

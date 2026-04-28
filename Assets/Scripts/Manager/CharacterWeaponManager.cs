@@ -7,8 +7,8 @@ public class CharacterWeaponManager : MonoBehaviour
     [SerializeField] public GameObject currentLeftHandWeapon;
 
     protected bool Holsterd = false;
-    protected DamageTrigger rightDamageTrigger;
-    protected DamageTrigger leftDamageTrigger;
+    public DamageTrigger rightDamageTrigger;
+    public DamageTrigger leftDamageTrigger;
 
     public WeaponData currentRightWeaponData;
     public WeaponData currentLeftWeaponData;

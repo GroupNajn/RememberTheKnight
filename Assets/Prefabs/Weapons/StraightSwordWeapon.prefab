@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3833202269244107968
 Transform:
   m_ObjectHideFlags: 0
@@ -67,10 +67,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.12124617
   m_Height: 1.0366234
   m_Direction: 1
-  m_Center: {x: 0.00000015650781, y: 0.5016883, z: -0.00000003041591}
+  m_Center: {x: 0, y: 0.5016883, z: -0.00000009719122}
 --- !u!114 &-685104313974388154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
 --- !u!1001 &5463457976426134233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +140,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8371682253404840676, guid: 2d1b288c4815e28498d754a794475903, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dc0ae109c81e7a74fafba5dfe7577c2c, type: 2}
     m_RemovedComponents:
     - {fileID: 881773383, guid: 2d1b288c4815e28498d754a794475903, type: 3}
     m_RemovedGameObjects: []
