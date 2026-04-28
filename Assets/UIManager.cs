@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 
     [Header("in game UI")]
     [SerializeField] private GameObject cardSelectUI;
+    [SerializeField] private GameObject familySelectUI;
     [SerializeField] private GameObject interactUI;
 
     [Header("static UI")]
@@ -62,16 +63,6 @@ public class UIManager : MonoBehaviour
         //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
-
-        //GetComponentsInChildren<Transform>().ToList().ForEach(t =>
-        //{
-        //    if (t.gameObject.name == "PauseMenu") pauseMenuUI = t.gameObject;
-        //    else if (t.gameObject.name == "CardSelectUI") cardSelectUI = t.gameObject;
-        //    else if (t.gameObject.name == "StartOptionMenuUI") optionMenuUI = t.gameObject;
-        //    else if (t.gameObject.name == "InteractUI") interactUI = t.gameObject;
-        //    else if (t.gameObject.name == "WinMenu") winMenuUI = t.gameObject;
-        //    else if (t.gameObject.name == "GameDeathScreen") gameDeathScreenUI = t.gameObject;
-        //});
 
         HideActiveUI();
 
@@ -148,6 +139,7 @@ public class UIManager : MonoBehaviour
          
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
+        CloseFamilySelectUI(); // Hide the Family selection UI
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
@@ -317,6 +309,24 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    // FAMILY SELECT UI
+    public void OpenFamilySelectUI()
+    {
+        CloseInteractiveUI();
+        familySelectUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+
+    public void CloseFamilySelectUI()
+    {
+        familySelectUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
+    }
+
     //DEATH UI
     public void ShowDeathScreen()
     {
@@ -434,9 +444,6 @@ public class UIManager : MonoBehaviour
         OpenOptionMenu(); ;
 
     }
-
-   
-
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;

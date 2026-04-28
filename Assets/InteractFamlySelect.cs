@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
+public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
 {
     UIManager playerUIManager;
 
@@ -15,19 +15,19 @@ public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
     }
     public void Interact()
     {
-        playerUIManager.OpenCardSelectUI();
+        playerUIManager.OpenFamilySelectUI();
     }
 
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Choose your Minor Arcana.";
+        UIData.InfoText = "Choose your faith";
         return UIData;
 
     }
 
-    public void ShowUI()
+    public void ShowUI() 
     {
         if (!canShowUI && interactUI_Controller != null) return;
 
