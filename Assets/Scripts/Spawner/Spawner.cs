@@ -83,6 +83,11 @@ public class Spawner : MonoBehaviour
             }
             else
             {
+                if (!spawnPoints[currentSpawnIndex])
+                {
+                    continue;
+                }
+
                 spawnPosition = spawnPoints[currentSpawnIndex].position;
                 spawnRotation = spawnPoints[currentSpawnIndex].rotation;
                 currentSpawnIndex = (currentSpawnIndex + 1) % spawnPoints.Count;
@@ -96,6 +101,11 @@ public class Spawner : MonoBehaviour
     {
         foreach (Transform spawnPosition in spawnPoints)
         {
+            if (!spawnPosition)
+            {
+                continue;
+            }
+
             GameObject randomObject = spawnObjects[Random.Range(0, spawnObjects.Count)];
 
             if (randomObject == null)

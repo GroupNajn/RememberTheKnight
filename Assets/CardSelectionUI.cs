@@ -113,7 +113,7 @@ public class CardSelectionUI : MonoBehaviour
             return;
         }
 
-        if (selectedCards.Count > maxCardsSelected)
+        if (selectedCards.Count >= maxCardsSelected)
         {
             if (!errorActive)
                 ShowError($"You can only select {maxCardsSelected} cards!", 5f);

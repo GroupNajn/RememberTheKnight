@@ -92,6 +92,11 @@ public class PlayerCombatManager : MonoBehaviour
        
         foreach (GameObject enemy in enemies)
         {
+            if (!enemy)
+            {
+                continue;
+            }
+
             if (enemy.GetComponent<NavmeshBehaviourSync>().InCombat && enemy.GetComponent<NavMeshAgent>().isActiveAndEnabled)
             {
                 InCombat = true;
