@@ -15,6 +15,7 @@ public partial class ExecuteAnimationAction : Action
     [SerializeReference] public BlackboardVariable<bool> IsWaiting = new(false);
 
     private bool isWaiting = false;
+    private bool isAttacking = false;
     private AnimatorStateInfo originState;
     private AnimatorStateInfo currentState;
     private AnimatorStateInfo nextState;
@@ -25,7 +26,7 @@ public partial class ExecuteAnimationAction : Action
         originState = Self.Value.GetCurrentAnimatorStateInfo(0);
         if (OriginName.Value.Length > 0)
         {
-            if (!originState.IsName(OriginName.Value)) return Status.Failure;
+            if (!originState.IsName(OriginName.Value)) return Status.Success;
         }
         originState = Self.Value.GetCurrentAnimatorStateInfo(0);
         Self.Value.SetTrigger(TriggerName.Value);

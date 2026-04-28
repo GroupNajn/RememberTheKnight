@@ -2392,7 +2392,7 @@ NavMeshAgent:
   m_Acceleration: 2
   avoidancePriority: 50
   m_AngularSpeed: 180
-  m_StoppingDistance: 10
+  m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2418,7 +2418,6 @@ MonoBehaviour:
   - rid: 4680590414493778376
   - rid: 4680590414493778377
   - rid: 4680590414493778378
-  - rid: 4680590414493778379
   - rid: 4680590584804802986
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
@@ -2441,29 +2440,21 @@ MonoBehaviour:
           m_Value0: 5384484207346578971
           m_Value1: 7703358295934630559
         Name: attackDelay
-        m_Value: 0.25
+        m_Value: 0.7
     - rid: 4680590414493778377
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 424389198254072288
           m_Value1: 15845654370886051948
-        Name: animationName
-        m_Value: Ranged Attack
+        Name: attackTriggerName
+        m_Value: Attack
     - rid: 4680590414493778378
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: chaseRadius
-        m_Value: 10
-    - rid: 4680590414493778379
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5146480717081897350
-          m_Value1: 13461439846945536860
         Name: threatRadius
         m_Value: 20
     - rid: 4680590584804802986
@@ -2488,7 +2479,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
@@ -2538,7 +2529,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
