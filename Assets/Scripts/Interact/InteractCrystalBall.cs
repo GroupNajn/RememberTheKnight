@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 {
@@ -43,6 +44,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 
         if (preLoadScene)
         {
+            Debug.Log($"Preloading scene: {sceneName} in active scene {SceneManager.GetActiveScene().name}");
             GlobalSceneManager.Instance.LoadScene(sceneName);
         }
 
@@ -74,14 +76,18 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 
     public void ShowUI()
     {
-        if (!canShowUI && interactUI_Controller != null) return;
+        if (canShowUI && interactUI_Controller)
+        { interactUI_Controller.EnableCanvasObject(); }
+            //{ return; }
 
-        interactUI_Controller.EnableCanvasObject();
     }
 
     public void HideUI()
     {
-        interactUI_Controller.DisableCanvas();
+        if (interactUI_Controller)
+        {
+            interactUI_Controller.DisableCanvas();
+        }
     }
 
     public void SetLookedAt(bool value)

@@ -57,7 +57,7 @@ public class HealthbarScrip : MonoBehaviour
     void UpdateHealthBar(float current, float max)
     {
         healthbar.maxValue = max;
-        healthbar.value = current;
+        healthbar.value = current; 
 
         // Resize based on max health
         if (isPlayer && healthBarTransform != null)
