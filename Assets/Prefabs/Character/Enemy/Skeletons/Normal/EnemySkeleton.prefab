@@ -1965,10 +1965,9 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 4680590414493778371
   - rid: 4680590414493778372
-  - rid: 4680590414493778373
   - rid: 4680590414493778374
   - rid: 4680590584804802816
-  m_OriginalGraph: {fileID: -8159058737499799650, guid: 2866ea73f1446d23694003feecc4b198, type: 2}
+  m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -1989,14 +1988,6 @@ MonoBehaviour:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
         Name: chaseRadius
-        m_Value: 10
-    - rid: 4680590414493778373
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5146480717081897350
-          m_Value1: 13461439846945536860
-        Name: threatRadius
         m_Value: 20
     - rid: 4680590414493778374
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
@@ -2029,7 +2020,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
@@ -2079,7 +2070,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
