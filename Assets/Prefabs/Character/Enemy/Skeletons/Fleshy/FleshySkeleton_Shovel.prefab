@@ -2953,7 +2953,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8309259830369655643}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.75
   m_Speed: 4
   m_Acceleration: 2
   avoidancePriority: 50
@@ -2982,7 +2982,6 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 4680590414493778371
   - rid: 4680590414493778372
-  - rid: 4680590414493778373
   - rid: 4680590414493778374
   - rid: 4680590584804802816
   m_OriginalGraph: {fileID: -8159058737499799650, guid: 2866ea73f1446d23694003feecc4b198, type: 2}
@@ -3005,23 +3004,15 @@ MonoBehaviour:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: chaseRadius
-        m_Value: 10
-    - rid: 4680590414493778373
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5146480717081897350
-          m_Value1: 13461439846945536860
         Name: threatRadius
-        m_Value: 20
+        m_Value: 10
     - rid: 4680590414493778374
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 424389198254072288
           m_Value1: 15845654370886051948
-        Name: animationName
+        Name: attackTriggerName
         m_Value: Attack
     - rid: 4680590584804802816
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
@@ -3305,6 +3296,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 6030414680109792853, guid: 9299243a91a6bc644b09906e5431d3ac, type: 3}
   currentLeftHandWeapon: {fileID: 2803956719223003002}
+  rightDamageTrigger: {fileID: 0}
+  leftDamageTrigger: {fileID: 0}
+  currentRightWeaponData: {fileID: 0}
+  currentLeftWeaponData: {fileID: 0}
   currentActiveWeaponData: {fileID: 0}
 --- !u!1 &8385848344985286467
 GameObject:
