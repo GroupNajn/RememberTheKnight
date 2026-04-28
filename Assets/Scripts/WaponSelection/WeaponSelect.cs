@@ -17,9 +17,9 @@ public class WeaponSelect : MonoBehaviour
 
     public void OnCycle()
     {
-        SelectWeapon();
+       // SelectWeapon();
     }
-    private void SelectWeapon()
+    public void SelectWeapon()
     {
         currentWeaponIndex = currentWeaponIndex % Weapons.Count; // Wrap around the index
        
