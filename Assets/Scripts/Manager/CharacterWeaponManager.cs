@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-    [SerializeField] protected GameObject currentRightHandWeapon;
-    [SerializeField] protected GameObject currentLeftHandWeapon;
+    [SerializeField] public GameObject currentRightHandWeapon;
+    [SerializeField] public GameObject currentLeftHandWeapon;
 
     protected bool Holsterd = false;
-    protected DamageTrigger rightDamageTrigger;
-    protected DamageTrigger leftDamageTrigger;
+    public DamageTrigger rightDamageTrigger;
+    public DamageTrigger leftDamageTrigger;
 
-    protected WeaponData currentRightWeaponData;
-    protected WeaponData currentLeftWeaponData;
+    public WeaponData currentRightWeaponData;
+    public WeaponData currentLeftWeaponData;
 
     public WeaponData currentActiveWeaponData;
 

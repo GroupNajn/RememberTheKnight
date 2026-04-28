@@ -18,7 +18,8 @@ public class EnemySkeletonDeath : MonoBehaviour, ITriggerable
     IEnumerator CrumbleAfter(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        Instantiate(prefab, transform.position, Quaternion.identity);
+        var bonePile = Instantiate(prefab, transform.position, Quaternion.identity);
+        bonePile.layer = gameObject.layer;
         Destroy(gameObject);
     }
     [SerializeField] EnemyRagdoll ragdoll;
