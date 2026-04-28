@@ -1,22 +1,17 @@
 using UnityEngine;
 
-public class InteractWeaponSelect : MonoBehaviour , IInteractable/*, IInteractableUI*/
+public class InteractWeaponSelect : MonoBehaviour , IInteractable, IInteractableUI
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     WeaponSelect weaponSelect;
+    private bool canShowUI = false;
 
-    //public InteractableUIData GetUIData()
-    //{
-    //    throw new System.NotImplementedException();
-    //}
+    private InteractUI_Controller interactUI_Controller;
 
-    //public void HideUI()
-    //{
-    //    throw new System.NotImplementedException();
-    //}
     void Start()
     {
         weaponSelect = GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponSelect>();
+        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
     }
     public void Interact()
@@ -24,18 +19,28 @@ public class InteractWeaponSelect : MonoBehaviour , IInteractable/*, IInteractab
         weaponSelect.SelectWeapon();
     }
 
-    //public void SetLookedAt(bool value)
-    //{
-    //    throw new System.NotImplementedException();
-    //}
+    public void SetLookedAt(bool value)
+    {
+        canShowUI = value;
+    }
 
-    //public void ShowUI()
-    //{
-    //    throw new System.NotImplementedException();
-    //}
+    public void ShowUI()
+    {
+        if (!canShowUI && interactUI_Controller != null) return;
 
-   
+        interactUI_Controller.EnableCanvasObject();
+    }
+    public InteractableUIData GetUIData()
+    {
+        var UIData = new InteractableUIData();
 
-    // Update is called once per frame
-   
+        UIData.InfoText = "Interact to switch weapon";
+        return UIData;
+    }
+
+    public void HideUI()
+    {
+        interactUI_Controller.DisableCanvas();
+    }
+
 }
