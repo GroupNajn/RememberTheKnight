@@ -20,18 +20,13 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
 
     public void SetSoulsAmount(int souls)
     {
-        if (!canIncreaseSouls) return;
+       
         tmp.text = souls.ToString();
-        canIncreaseSouls = false;
+      
     }
 
 
 
-    void Update()
-    {
-        
-        if(!canIncreaseSouls) canIncreaseSouls = true;
-    }
-
+    
 
 }
