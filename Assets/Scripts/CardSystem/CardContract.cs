@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class CardContract : MonoBehaviour
@@ -28,6 +29,12 @@ public class CardContract : MonoBehaviour
         signed = Signed.Signed;
     }
 
+    public CardContract GetCardContract()
+    {
+        if (this == null) return null;
+        return this;
+    }
+    
 
 
     void Start()

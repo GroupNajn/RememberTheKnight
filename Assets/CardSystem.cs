@@ -36,7 +36,7 @@ public class CardSystem : MonoBehaviour
 
     // Need the reference on the presumed created and signed contract Object.
     // Adds a new cardData to unlocked cards list.
-    //And increases the unlockedTier condition variable. 
+    // And increases the unlocked-Tier condition variable. 
     public void UnlockDroppedCardInSignedFamily(CardData card)
     {
         if((int)card.cardTier == unlockedTier + 1 && card.cardFamily == cardContract.CardFamily)

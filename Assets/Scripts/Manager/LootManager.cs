@@ -30,12 +30,14 @@ public class LootManager : MonoBehaviour
     }
 
 
-    //[SerializeField] float oneItemDropChance;
-    //[SerializeField] float twoItemDropChance;
-    //[SerializeField] float threeItemDropChance;
+   
+    /* TODO: Need to a way to add logic to instantiate a normal soul or a healing/charged soul.
+     Logic to faouvrly drop more of the signed Contract-Family.
 
 
 
+
+    */
     /*
      * Managers need to be initialized via Awake to get priority,
      * before all other GameObjects call and Subscribe to their Actions/Events, 
