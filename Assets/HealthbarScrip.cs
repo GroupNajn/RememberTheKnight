@@ -60,7 +60,7 @@ public class HealthbarScrip : MonoBehaviour
         healthbar.value = current; 
 
         // Resize based on max health
-        if (isPlayer)
+        if (isPlayer && healthBarTransform != null)
         {
             Vector2 size = healthBarTransform.sizeDelta;
             size.x = max * widthPerHealth;

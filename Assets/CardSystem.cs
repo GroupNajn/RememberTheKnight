@@ -11,6 +11,8 @@ public class CardSystem : MonoBehaviour
 
     void Start()
     {
+        UnlockAllTierOneToThreeTemporary();
+        
         
     }
     void Update()
@@ -52,6 +54,26 @@ public class CardSystem : MonoBehaviour
     public bool CheckUnlocked(CardData card)
     {
         return unlockedCards.Contains(card);
+    }
+
+
+    /*<summary> Method is a test method used for the GameHabitat game show.
+     *  It is to be removed later when the proper implementation of the the card signing contract is finished
+     * and this test method is no longer valid. 
+     * 
+     * 
+     * 
+     */
+    public void UnlockAllTierOneToThreeTemporary()
+    {
+        foreach(CardData card in allCards)
+        {
+            if ((int)card.cardTier > 4) continue;
+
+            unlockedCards.Add(card);
+
+        }
+        Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
     }
 
 
