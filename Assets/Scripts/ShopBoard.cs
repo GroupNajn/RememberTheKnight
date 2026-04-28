@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ShopBoard : MonoBehaviour
 {
-    private Loot_System lootSystem;
-    private CardSystem cardSystem;
+    private LootManager lootManager;
+    [SerializeField] private CardSystem cardSystem;
 
     private List<ShopSlotCard> slots = new List<ShopSlotCard>();
 
@@ -12,12 +12,12 @@ public class ShopBoard : MonoBehaviour
 
     void Awake()
     {
-        slots.AddRange(GetComponentsInChildren<ShopSlotCard>());
+        lootManager = GetComponent<LootManager>();
+        slots.AddRange(GetComponentsInChildren<ShopSlotCard>(true));
     }
 
     void Start()
     {
-        cardSystem = lootSystem.GetComponentInChildren<CardSystem>();
         PopulateSlots();
     }
 

@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject familySelectUI;
     [SerializeField] private GameObject interactUI;
+    [SerializeField] private GameObject cardShopUI;
 
     [Header("static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -140,6 +141,7 @@ public class UIManager : MonoBehaviour
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseFamilySelectUI(); // Hide the Family selection UI
+        CloseCardShopUI(); // Hide the Card Shop UI
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
@@ -322,6 +324,24 @@ public class UIManager : MonoBehaviour
     public void CloseFamilySelectUI()
     {
         familySelectUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
+    }
+    
+    // CARD SHOP UI
+    public void OpenCardShopUI()
+    {
+        CloseInteractiveUI();
+        cardShopUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+
+    public void CloseCardShopUI()
+    {
+        cardShopUI.SetActive(false);
 
         UIMenuActive = false;
         CheckUIState();
