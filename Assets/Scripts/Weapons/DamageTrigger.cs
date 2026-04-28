@@ -43,7 +43,7 @@ public class DamageTrigger : MonoBehaviour
 
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
 
-    private void Start()
+    private void Awake()
     {
         weaponData = GetComponent<WeaponStats>().WeaponData;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -102,6 +102,7 @@ public class DamageTrigger : MonoBehaviour
 
     public void ResetDamage()
     {
+        Debug.Log("Damage reset for " + gameObject.name);
         damagedObjects.Clear();
     }
 }
