@@ -3,21 +3,25 @@ using UnityEngine;
 
 public class ShopBoard : MonoBehaviour
 {
-    private LootManager lootManager;
-    [SerializeField] private CardSystem cardSystem;
+    private GameObject lootManager;
+    private CardSystem cardSystem;
+    public CardBuilder CardBuilder { get; private set; }
 
     private List<ShopSlotCard> slots = new List<ShopSlotCard>();
+    private List<CardData> randomizedCards = new List<CardData>();
 
     [SerializeField] public List<GameObject> randomPosters { get; private set; } = new();
 
     void Awake()
     {
-        lootManager = GetComponent<LootManager>();
         slots.AddRange(GetComponentsInChildren<ShopSlotCard>(true));
     }
 
     void Start()
     {
+        lootManager = GameObject.FindWithTag("LootManager");
+        cardSystem = lootManager.GetComponentInChildren<CardSystem>(true);
+        CardBuilder = lootManager.GetComponentInChildren<CardBuilder>(true);
         PopulateSlots();
     }
 
@@ -33,6 +37,7 @@ public class ShopBoard : MonoBehaviour
             int randomIndex = Random.Range(0, unlockedCards.Count);
             CardData randomCard = unlockedCards[randomIndex];
 
+            randomizedCards.Add(randomCard);
             slot.SetCard(randomCard);
         }
     }

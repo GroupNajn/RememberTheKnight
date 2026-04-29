@@ -16,7 +16,7 @@ public class SceneData : MonoBehaviour
                 case 1:
                     return "CharacterSelectScreen";
                 case 2:
-                    return "LobbyMap";
+                    return "LobbyMapNew";
                 case 3:
                     return "Shop_Level";
                 case 4:

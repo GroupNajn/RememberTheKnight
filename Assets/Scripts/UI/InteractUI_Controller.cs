@@ -70,7 +70,7 @@ public class InteractUI_Controller : MonoBehaviour
 
     public IEnumerator StopShowRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
 
         canvasObject.SetActive(false);
     }
