@@ -24,10 +24,14 @@ public class LootManager : MonoBehaviour
     [Header("CardSystem")]
     [SerializeField] private CardSystem cardSystem;
 
+    private PlayerStats playerStats;
+
     public CardSystem CardSystem
     {
         get => cardSystem;
     }
+
+    private float multipleLootModifier = 0.2f;
 
 
    
@@ -85,6 +89,58 @@ public class LootManager : MonoBehaviour
             Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
+    private bool RollForTierUpgrade()
+    {
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        if (playerStats == null) return false;
+        // Hidden Base luck for player 100%. 
+        float baseLuck = 100f;
+        float playerLuck = playerStats.currentLuck;
+        float rollRange = baseLuck + playerLuck;
+        float roll = Random.Range(0, rollRange);
+
+        if(roll > baseLuck)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private Tier RollTierUpgrade(Tier currentTier)
+    {
+        // To Drop loot In the Higher Tier. 
+        if (RollForTierUpgrade()) 
+        {
+            return currentTier + 1;
+        }
+        return currentTier;
+    }
+
+    private int RollForMultipuleLoot()
+    {
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        if (playerStats == null) return 1;
+
+        float baseLuck = 100f; 
+        float playerLuck = playerStats.currentLuck;
+        float rollRange = baseLuck * (1 + multipleLootModifier * playerLuck);
+
+        float roll = Random.Range(0f, rollRange);
+
+        if (roll > 100f || roll < 100f)
+        {
+            return 1;
+        }
+        else if (roll > 200f)
+        {
+            return 2;
+        }
+        else if (roll > 300f)
+        {
+            return 3;
+        }
+        else return 1;
+    }
 
 
 

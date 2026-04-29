@@ -26,8 +26,8 @@ public class PlayerStats : MonoBehaviour
     public float staminaRegenRate = 1.5f;
 
     [Header("Chance")]
-    public float currentLuck = 1;
-    public float currentCritChance = 1;
+    public float currentLuck = 0;
+    public float currentCritChance = 0;
 
     [Header("Weapon Size")]
     public Vector3 maxWeaponSize = new Vector3(2, 4, 2);
