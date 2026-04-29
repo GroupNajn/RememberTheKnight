@@ -44,7 +44,6 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 
         if (preLoadScene)
         {
-            Debug.Log($"Preloading scene: {sceneName} in active scene {SceneManager.GetActiveScene().name}");
             GlobalSceneManager.Instance.LoadScene(sceneName);
         }
 

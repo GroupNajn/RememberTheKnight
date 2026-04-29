@@ -10,6 +10,9 @@ public class CharacterSoundFXManager : MonoBehaviour
     [Header("Attack Grunts")]
     [SerializeField] protected AudioClip[] attackGrunts;
 
+    [Header("Death Sounds")]
+    [SerializeField] protected AudioClip[] deathSounds;
+
 
     [Header("FootSteps")]
     [SerializeField] protected AudioClip[] footSteps;
@@ -51,15 +54,22 @@ public class CharacterSoundFXManager : MonoBehaviour
     public virtual void PlayDamageGrunt()
     {
         if (damageGrunts.Length > 0)
-        {  
-            audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(damageGrunts));
+        {
+            audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(damageGrunts), 0.6f);
         }
     }
     public virtual void PlayAttackGrunt()
     {
         if (damageGrunts.Length > 0)
         {  
-            audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(attackGrunts));
+            audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(attackGrunts), 0.7f);
+        }
+    }
+    public virtual void PlayDeathSoundFX()
+    {
+        if (deathSounds.Length > 0)
+        {
+            audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(deathSounds), 0.3f);
         }
     }
 

@@ -33,15 +33,13 @@ public class PlayerCombatManager : MonoBehaviour
     public Dictionary<StaminaAction, float> StaminaCostBasedOnAction = new Dictionary<StaminaAction, float>()
     {
         {StaminaAction.Sprint, 5 },
-        {StaminaAction.Dodge, 20 },
+        {StaminaAction.Dodge, 10 },
         {StaminaAction.lightAttack, 5 },
         {StaminaAction.heavyAttack, 25 }
 
     };
 
-    [SerializeField] private float staminaRegenDelay = 2f;
     [SerializeField] private float staminaRegenTime = 0f;
-    private float lastStaminaUseTime;
 
     private void Awake()
     {
@@ -213,11 +211,15 @@ public class PlayerCombatManager : MonoBehaviour
 
             staminaRegenTime = 0;
         }
+        else if(!CheckInCombat()) // If not in combat and stamina is depleted, regenerate stamina
+        {
+            RegenerateStamina();
+        }
     }
 
     public void RegenerateStamina()
     {
-        if (staminaRegenTime <= staminaRegenDelay)
+        if (staminaRegenTime <= playerStats.staminaRegenDelay)
         {
             staminaRegenTime += Time.deltaTime;
             return;

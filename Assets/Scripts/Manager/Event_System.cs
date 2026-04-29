@@ -21,6 +21,7 @@ public class Event_System : MonoBehaviour
     public Action OnWin;
     public Action<List<CardData>> OnStatsApplied;
     public Action<int> OnSoulsSpent;
+    public Action OnSceneTransitionDone;
 
     public Action OnLoadScenes;
 

@@ -6,4 +6,10 @@ public class PlayerSpawn : MonoBehaviour
     {
         PlayerKeepBetweenScene.Instance?.Teleport(transform);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position, 0.1f);
+    }
 }

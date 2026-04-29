@@ -24,6 +24,7 @@ public class PlayerStats : MonoBehaviour
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRegenRate = 1.5f;
+    public float staminaRegenDelay = 0.5f;
 
     [Header("Chance")]
     public float currentLuck = 0;

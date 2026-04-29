@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 
 public class WeaponSelect : MonoBehaviour
 {
@@ -9,9 +9,11 @@ public class WeaponSelect : MonoBehaviour
    
     int currentWeaponIndex = 0;
     PlayerWeaponManager playerWeaponManager;
+    Animator playerAnimator;
     void Start()
     {
         playerWeaponManager = GetComponent<PlayerWeaponManager>();
+        playerAnimator = GetComponent<Animator>();
         SelectWeapon();
     }
 
@@ -35,6 +37,8 @@ public class WeaponSelect : MonoBehaviour
 
         playerWeaponManager.rightDamageTrigger = Weapons[currentWeaponIndex].GetComponent<DamageTrigger>(); // Damage trigger
 
+        playerAnimator.runtimeAnimatorController = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData.WeaponAnimator; // animator override controller
+        playerAnimator.speed = Weapons[currentWeaponIndex].GetComponent<WeaponStats>().WeaponData.AnimatorSpeed;
         currentWeaponIndex++;
     }
 }
