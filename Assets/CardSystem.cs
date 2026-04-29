@@ -25,6 +25,13 @@ public class CardSystem : MonoBehaviour
         return unlockedCards;
     }
 
+    //Temporary Method to return a randomCardData in the allcards list. 
+    public CardData ReturnRandomCard()
+    {
+        int index =  Random.Range(0, allCards.Count);
+        return allCards[index];
+    }
+
     //Method to be called after a contract is signed and is no longer null.
     // To set the Unlocked Cards at start. 
     public void UnlockCardsAfterSigningContract(CardContract contract)
