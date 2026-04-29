@@ -19,7 +19,11 @@ public class PlayerCollection : MonoBehaviour
     }
     void Start()
     {
-
+        Event_System.instance.OnCardSign += SignContract;
+    }
+    private void OnDestroy()
+    {
+        Event_System.instance.OnCardSign -= SignContract;
     }
 
     public void InsertIntoCardSelectin(Card card)
@@ -38,6 +42,9 @@ public class PlayerCollection : MonoBehaviour
 
     public void SignContract(CardFamily cardFamily)
     {
+        if (cardContract.CardFamily == cardFamily) return;
+
+
         cardContract = new CardContract(cardFamily);
         if (cardContract != null)
             cardContract.SignContract();

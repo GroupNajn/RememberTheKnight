@@ -7,6 +7,7 @@ public class FamilySelectUI : MonoBehaviour
 
     private UIManager uiManager;
     private PlayerInput playerInput;
+    CardFamily confirmedFamily;
 
     void Start()
     {
@@ -28,6 +29,19 @@ public class FamilySelectUI : MonoBehaviour
 
         selected.infoBox.SetActive(true);
         selectedFamily = selected.familyData.cardFamily;
+        confirmedFamily = selectedFamily;
 
     }
+
+    public void OnSignContract()
+    {
+        PlayerCollection playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>(); 
+        if(playerCollection != null)
+        {
+            playerCollection.SignContract(confirmedFamily);
+        }
+
+    }
+
+    
 }
