@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum RarityTier { Common, Uncommon, Rare, Epic, Legendary }
+public enum RarityTier { Common = 1, Uncommon = 2, Rare = 3, Epic = 4, Legendary  = 5}
 public enum PickableState { NotPickable, Pickable }
 
 public enum Tier

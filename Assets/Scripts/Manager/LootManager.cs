@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices;
 
 
 // Script made by Henric some random date
@@ -30,8 +31,11 @@ public class LootManager : MonoBehaviour
     {
         get => cardSystem;
     }
-
-    private float multipleLootModifier = 0.2f;
+    [Header("Loot Drop Modifiers")]
+    [SerializeField] private float multipleLootModifier = 2f;
+    [SerializeField] private float tierUpgradeModifier = 2f; 
+    [SerializeField] private float luckChanceScaler = 1f; // It will multiply the current player % chance. If 2, double. If 3 tripple it etc...
+    [SerializeField] private int maxLootAmount = 3;
 
 
    
@@ -53,6 +57,21 @@ public class LootManager : MonoBehaviour
      * before all other GameObjects call and Subscribe to their Actions/Events, 
      */
 
+    /*                        |Luck Threshhold for Tier Upgrade. 
+     * Tier 1-3  =>  Common   | Luck > 5 %
+     * Tier 4-5  =>  Uncommon | Luck > 8 %
+     * Tier 6-7  =>  Rare     | Luck > 11 %
+     * Tier 8-9  =>  Epic     | Luck > 15 %
+     * Tier 10+  => Legendary | Luck > 20 %
+     *  
+     * 
+     */
+
+
+
+
+
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -69,9 +88,7 @@ public class LootManager : MonoBehaviour
 
     private void Start()
     {
-        //oneItemDropChance = 80.0f;
-        //twoItemDropChance = 15.0f;
-        //threeItemDropChance = 5.0f;
+      
 
         if (Event_System.instance == null)
         {
@@ -89,58 +106,61 @@ public class LootManager : MonoBehaviour
             Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
+    private float GetScaledLuckChance()
+    {
+        if (playerStats == null)
+            playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+
+        if (playerStats == null)
+            return 0f;
+
+        return playerStats.currentLuck * (luckChanceScaler / 100f);
+        // Exempel : 5f * (2f / 100f) = 0.1f = 10% 
+    }
+
     private bool RollForTierUpgrade()
     {
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
-        if (playerStats == null) return false;
-        // Hidden Base luck for player 100%. 
-        float baseLuck = 100f;
-        float playerLuck = playerStats.currentLuck;
-        float rollRange = baseLuck + playerLuck;
-        float roll = Random.Range(0, rollRange);
+        float chance = GetScaledLuckChance();
 
-        if(roll > baseLuck)
-        {
-            return true;
-        }
-        return false;
+        // Roll between 1.0 - 0.0.
+        // 
+
+        return Random.value < chance;
     }
 
     private Tier RollTierUpgrade(Tier currentTier)
     {
-        // To Drop loot In the Higher Tier. 
-        if (RollForTierUpgrade()) 
-        {
-            return currentTier + 1;
-        }
-        return currentTier;
+        if (!RollForTierUpgrade())
+            return currentTier;
+
+        int nextTier = (int)currentTier + 1;
+        int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
+
+        nextTier = Mathf.Clamp(nextTier, 1, maxTier);
+
+        return (Tier)nextTier;
     }
 
-    private int RollForMultipuleLoot()
+    private int RollForMultipleLoot()
     {
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
-        if (playerStats == null) return 1;
+        float chance = GetScaledLuckChance() * multipleLootModifier;
 
-        float baseLuck = 100f; 
-        float playerLuck = playerStats.currentLuck;
-        float rollRange = baseLuck * (1 + multipleLootModifier * playerLuck);
+        int amount = 1;
 
-        float roll = Random.Range(0f, rollRange);
+        while (Random.value < chance) // Between [0.0 - 1.0] 
+        {
+            amount++;
 
-        if (roll > 100f || roll < 100f)
-        {
-            return 1;
+            if (amount >= maxLootAmount)
+                break;
+
+            chance *= 0.5f; // will divide the chance by 2 for each successful increase drop amount.
         }
-        else if (roll > 200f)
-        {
-            return 2;
-        }
-        else if (roll > 300f)
-        {
-            return 3;
-        }
-        else return 1;
+
+        return amount;
     }
+
+ 
 
 
 
