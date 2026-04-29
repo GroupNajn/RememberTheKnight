@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 
 public class SwitchBodyParts : MonoBehaviour
@@ -90,11 +92,15 @@ public class SwitchBodyParts : MonoBehaviour
 
     [HideInInspector] public bool hasSaved = false;
 
+    bool canStartGame = false;
+    bool startGame = false;
+
     private void Awake()
     {
         uiManager = FindFirstObjectByType<UIManager>();
         FindRoots();
         RebuildParts();
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
 
     private void FindRoots()
@@ -471,23 +477,51 @@ public class SwitchBodyParts : MonoBehaviour
         SwitchPart(leftLeg, ref currentLeftLeg, -1);
     }
 
+    private void OnLoadScenes()
+    {
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            Event_System.instance.OnSceneTransitionDone += OnBlackFadeDone;
+        }
+        else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
+        {
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+
+            // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
+            uiManager.OpenSoulUI();
+            uiManager.ShowPlayerBars();
+            uiManager.OpenCupUI();
+        }
+    }
+
+    private void OnBlackFadeDone()
+    {
+        canStartGame = true;
+
+        if (startGame)
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+        }
+
+        Event_System.instance.OnSceneTransitionDone -= OnBlackFadeDone;
+    }
+
     public void StartGame()
     {
         uiManager.CloseCharacterSelectUI();
-        uiManager.UIMenuActive = false;
-        uiManager.CheckUIState();
 
         gameObject.SetActive(false);
 
-        // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
-        uiManager.OpenSoulUI();
-        uiManager.ShowPlayerBars();
-        uiManager.OpenCupUI();
-
         // LOAD NEXT SCENE
-        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
-
-
+        if (canStartGame)
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+        }
+        else
+        {
+            startGame = true;
+        }
     }
 
     public void OnClick()
@@ -495,5 +529,3 @@ public class SwitchBodyParts : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 }
-
-

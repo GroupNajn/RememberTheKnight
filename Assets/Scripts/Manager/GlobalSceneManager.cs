@@ -95,7 +95,6 @@ public class GlobalSceneManager : MonoBehaviour
 
         if (pendingLoads.TryGetValue(sceneName, out AsyncOperation asyncLoad))
         {
-            Debug.Log("Activating pending load for scene: " + sceneName);
             if (useTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, asyncLoad, true));
@@ -152,12 +151,9 @@ public class GlobalSceneManager : MonoBehaviour
 
         isTransitioning = true;
 
-        Debug.Log($"Transitioning to scene: {sceneName} with transition: {useTransition} and preloaded: {isPreloaded}");
         yield return StartCoroutine(FadeToBlack());
-        Debug.Log("Fade to black completed");
 
         Scene targetScene = SceneManager.GetSceneByName(sceneName);
-        Debug.Log($"Target scene: {targetScene.name}, loaded: {targetScene.isLoaded}, valid: {targetScene.IsValid()}");
 
         if (pendingAsyncOp != null)
         {
@@ -214,17 +210,17 @@ public class GlobalSceneManager : MonoBehaviour
             yield return StartCoroutine(UnloadOtherScenes(targetScene));
         }
 
-        Debug.Log("Scene transition complete, invoking OnLoadScenes event");
         Event_System.instance.OnLoadScenes.Invoke();
 
         yield return StartCoroutine(FadeFromBlack());
 
         isTransitioning = false;
+
+        Event_System.instance.OnSceneTransitionDone?.Invoke();
     }
 
     IEnumerator UnloadOtherScenes(Scene activeScene)
     {
-
         List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
         foreach (var item in pendingLoads)
         {
@@ -270,7 +266,6 @@ public class GlobalSceneManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("Activating pending load in coroutine for scene: " + sceneName);
         if (useTransition)
         {
             StartCoroutine(FadeToBlack());
@@ -322,7 +317,6 @@ public class GlobalSceneManager : MonoBehaviour
 
     IEnumerator FadeToBlack()
     {
-        Debug.Log("Fading to black");
         transitionAnimator.SetTrigger("FadeToBlack");
         yield return null;
         Time.timeScale = 1.0f;
@@ -331,11 +325,9 @@ public class GlobalSceneManager : MonoBehaviour
 
     IEnumerator FadeFromBlack()
     {
-        Debug.Log("Fading from black");
         transitionAnimator.SetTrigger("FadeFromBlack");
         yield return null;
         Time.timeScale = 1.0f;
         yield return new WaitForSecondsRealtime(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
-        // Add event to trigger when the fade-out animation is complete if needed
     }
 }
