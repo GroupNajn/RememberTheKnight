@@ -34,7 +34,7 @@ public class CardBuilder : MonoBehaviour
     public GameObject InstantiateCardWithoutScripts(CardData cardData)
     {
 
-        cardPrefab = Instantiate(cardPrefab, parentSpawnPosTrans.position, Quaternion.identity);
+        Instantiate(cardPrefab, parentSpawnPosTrans.position, Quaternion.identity);
         SetCardMaterial(cardData, cardScript);
         TurnOffScriptsOnCard(cardPrefab);
 
