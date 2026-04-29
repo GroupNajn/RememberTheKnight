@@ -17,24 +17,24 @@ public class CardBuilder : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.P))
-        {
-            if (!keyPressed)
-            {
-                parentSpawnPosTrans = playerTrans;
-                InstantiateCardWithoutScripts(cardSystem.ReturnRandomCard());
-            }
-            keyPressed = true;
-        }
+        //if (Input.GetKey(KeyCode.P))
+        //{
+        //    if (!keyPressed)
+        //    {
+        //        parentSpawnPosTrans = playerTrans;
+        //        InstantiateCardWithoutScripts(cardSystem.ReturnRandomCard());
+        //    }
+        //    keyPressed = true;
+        //}
 
-        keyPressed = false;
+        //keyPressed = false;
     }
 
 
-    public GameObject InstantiateCardWithoutScripts(CardData cardData)
+    public GameObject InstantiateCardWithoutScripts(CardData cardData, Transform parentTransform)
     {
 
-        Instantiate(cardPrefab, parentSpawnPosTrans.position, Quaternion.identity);
+        Instantiate(cardPrefab, parentTransform.position, Quaternion.identity);
         SetCardMaterial(cardData, cardScript);
         TurnOffScriptsOnCard(cardPrefab);
 
