@@ -27,15 +27,11 @@ public class ShopSlotCard : MonoBehaviour
             Instantiate(randomPoster, this.transform);
         }
 
-        Debug.Log($"Slot {name} card {card.name}");
+        //board.CardBuilder.InstantiateCardWithoutScripts(card);
 
         if (card != null && cardImage != null)
         {
             cardImage.sprite = card.cardImage;
         }
-
-        // Will instantiate prefab cars later on
-
-        //Instantiate(card, this.transform);
     }
 }
