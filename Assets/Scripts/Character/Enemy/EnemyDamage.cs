@@ -22,6 +22,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public RarityTier tier;
     private EnemyVFX enemyVFX;
+    private CharacterSoundFXManager enemySFX;
     private List<Transform> childObjects;
 
     public void TakeDamage(float damage, Vector3 contactPoint)
@@ -33,13 +34,14 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
 
             enemyVFX.PlayBloodSplatter(contactPoint);
-
+            enemySFX.PlayDamageGrunt();
 
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
             CanTakeDamage = false;
             if (Health <= 0)
             {
+                enemySFX.PlayDeathSoundFX();
                 Death();
             }
         }
@@ -71,9 +73,10 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     private void Start()
     {
         enemyVFX = GetComponent<EnemyVFX>();
+        enemySFX = GetComponent<CharacterSoundFXManager>();
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         childObjects = GetComponentsInChildren<Transform>().ToList();
-       
+
     }
 }

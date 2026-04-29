@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerCombatManager playerCombatManager;
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
+    private PlayerSoundFXManager playerSFX;
     private PlayerStats playerStats;
 
     public float MaxHealth => playerStats.MaxHealth;
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerCombatManager = PlayerCombatManager.Instance;
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
+        playerSFX = GetComponent<PlayerSoundFXManager>();
 
         playerStats = GetComponent<PlayerStats>();
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -58,10 +60,13 @@ public class PlayerManager : MonoBehaviour, IDamageable
         if (CanTakeDamage && !isDead)
         {
             playerVFX.PlayBloodSplatter(contactPoint);
+            playerSFX.PlayDamageGrunt();
+
             playerStats.CurrentHealth -= damage;
             NotifyHealthChanged();
             if (isDead)
             {
+                // MAYBE PLAY DEATH SOUND FX
                 Death();
             }
         }
