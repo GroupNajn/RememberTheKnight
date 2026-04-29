@@ -23,7 +23,7 @@ public abstract class Loot : MonoBehaviour, IPickupable
     protected bool followLogicOverritten = false;
     public bool FollowLogicOverritten => followLogicOverritten;
 
-    private Transform playerTransform;
+    protected Transform playerTransform;
 
     public float Weight => weight;
     public string Name
@@ -32,7 +32,7 @@ public abstract class Loot : MonoBehaviour, IPickupable
         set => itemName = value;
     }
 
-    protected void Start()
+    protected virtual void  Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
         

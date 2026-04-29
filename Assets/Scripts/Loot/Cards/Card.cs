@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Card : Loot, IPickupable
@@ -6,7 +7,36 @@ public class Card : Loot, IPickupable
     [field: SerializeField] protected CardData cardData { get; private set; }
     public CardData CardData => cardData;
 
+    [SerializeField] private GameObject cardFront;
+    [SerializeField] private GameObject cardBack;
+    public GameObject CardFront
+    {
+        get => cardFront;
+        set => cardFront = value;
+    }
+    public GameObject CardBack
+    {
+        get => cardBack;
+        set => cardBack = value;
+    }
+
     private CardUnlockType cardUnlockType = CardUnlockType.Permanent;
+
+
+    protected override void  Start()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+
+        if (player != null)
+            playerTransform = player.transform;
+
+        StartCoroutine(WaitForInitialization(pickUpDelay));
+        if (LootManager.instance != null)
+            LootManager.instance.RegisterLoot(this);
+
+    }
+
+
 
     public CardUnlockType CardUnlockType
     {

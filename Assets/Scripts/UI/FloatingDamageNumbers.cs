@@ -57,7 +57,8 @@ public class FloatingDamageNumbers : MonoBehaviour
         var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, transform);
        
         textMesh = popup.GetComponentInChildren<TextMeshProUGUI>();
-        textMesh.text = damage.ToString();
+        int castedInt = (int)damage; 
+        textMesh.text = castedInt.ToString();
         
         StartCoroutine(DisableAfterTime(popup, 3f));
     }
