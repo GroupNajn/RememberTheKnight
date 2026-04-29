@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.Rendering.Universal.ShaderGUI;
 
 public class PlayerCollection : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public class PlayerCollection : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
 
     public void InsertIntoCardSelectin(Card card)

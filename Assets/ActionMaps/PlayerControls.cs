@@ -173,18 +173,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cycle"",
-                    ""type"": ""Button"",
-                    ""id"": ""375a05f1-7b0b-47a5-a153-f0b7443a2209"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Heal"",
                     ""type"": ""Button"",
-                    ""id"": ""3aaeadc0-697d-406a-9cb5-f1a4f72a6ada"",
+                    ""id"": ""2d3cf98c-53e4-4cb5-990c-ec6c81500836"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -392,18 +383,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""14f3e381-8c07-4ba6-8b9f-f0c31cbd629a"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cycle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""67633e9e-a522-4ca0-b3ac-4c6e1f19d90c"",
+                    ""id"": ""f9cc2027-15dd-4074-aa31-bf622eed02a1"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -544,7 +524,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_ScrollCamera = m_PlayerLocomotionMap.FindAction("ScrollCamera", throwIfNotFound: true);
         m_PlayerLocomotionMap_Holster = m_PlayerLocomotionMap.FindAction("Holster", throwIfNotFound: true);
         m_PlayerLocomotionMap_HeavyAttack = m_PlayerLocomotionMap.FindAction("HeavyAttack", throwIfNotFound: true);
-        m_PlayerLocomotionMap_Cycle = m_PlayerLocomotionMap.FindAction("Cycle", throwIfNotFound: true);
         m_PlayerLocomotionMap_Heal = m_PlayerLocomotionMap.FindAction("Heal", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
@@ -646,7 +625,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_ScrollCamera;
     private readonly InputAction m_PlayerLocomotionMap_Holster;
     private readonly InputAction m_PlayerLocomotionMap_HeavyAttack;
-    private readonly InputAction m_PlayerLocomotionMap_Cycle;
     private readonly InputAction m_PlayerLocomotionMap_Heal;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
@@ -695,10 +673,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerLocomotionMap/HeavyAttack".
         /// </summary>
         public InputAction @HeavyAttack => m_Wrapper.m_PlayerLocomotionMap_HeavyAttack;
-        /// <summary>
-        /// Provides access to the underlying input action "PlayerLocomotionMap/Cycle".
-        /// </summary>
-        public InputAction @Cycle => m_Wrapper.m_PlayerLocomotionMap_Cycle;
         /// <summary>
         /// Provides access to the underlying input action "PlayerLocomotionMap/Heal".
         /// </summary>
@@ -756,9 +730,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @HeavyAttack.started += instance.OnHeavyAttack;
             @HeavyAttack.performed += instance.OnHeavyAttack;
             @HeavyAttack.canceled += instance.OnHeavyAttack;
-            @Cycle.started += instance.OnCycle;
-            @Cycle.performed += instance.OnCycle;
-            @Cycle.canceled += instance.OnCycle;
             @Heal.started += instance.OnHeal;
             @Heal.performed += instance.OnHeal;
             @Heal.canceled += instance.OnHeal;
@@ -800,9 +771,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @HeavyAttack.started -= instance.OnHeavyAttack;
             @HeavyAttack.performed -= instance.OnHeavyAttack;
             @HeavyAttack.canceled -= instance.OnHeavyAttack;
-            @Cycle.started -= instance.OnCycle;
-            @Cycle.performed -= instance.OnCycle;
-            @Cycle.canceled -= instance.OnCycle;
             @Heal.started -= instance.OnHeal;
             @Heal.performed -= instance.OnHeal;
             @Heal.canceled -= instance.OnHeal;
@@ -1134,13 +1102,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHeavyAttack(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Cycle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCycle(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Heal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

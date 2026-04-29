@@ -18,15 +18,15 @@ public class SceneData : MonoBehaviour
                 case 2:
                     return "LobbyMap";
                 case 3:
-                    return "First_Level";
-                case 4:
                     return "Shop_Level";
-                case 5:
+                case 4:
                     return "Healing_Level";
+                case 5:
+                    return "First_Level";
                 case 6:
-                    return "CupBoss_Level";
-                case 7:
                     return "Second_Level";
+                case 7:
+                    return "CupBoss_Level";
                 case int runSceneIndex when (runSceneIndex > staticSceneCount && runSceneIndex <= staticSceneCount + runSceneCount):
                     return $"Run_{runSceneIndex - staticSceneCount}";
                 default:

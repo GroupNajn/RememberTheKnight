@@ -47,5 +47,4 @@ public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
 
 
     }
-
 }

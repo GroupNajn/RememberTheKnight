@@ -80,7 +80,7 @@ public class CardSystem : MonoBehaviour
             unlockedCards.Add(card);
 
         }
-        //Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
+        Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
     }
 
 
