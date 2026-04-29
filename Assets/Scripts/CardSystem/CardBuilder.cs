@@ -33,8 +33,9 @@ public class CardBuilder : MonoBehaviour
 
     public GameObject InstantiateCardWithoutScripts(CardData cardData, Transform parentTransform)
     {
+        Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y + 180, parentTransform.rotation.eulerAngles.z);
 
-        Instantiate(cardPrefab, parentTransform.position, Quaternion.identity);
+        Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
         SetCardMaterial(cardData, cardScript);
         TurnOffScriptsOnCard(cardPrefab);
 
