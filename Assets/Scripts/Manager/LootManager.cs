@@ -35,6 +35,12 @@ public class LootManager : MonoBehaviour
      Logic to faouvrly drop more of the signed Contract-Family.
 
 
+    Loot-Calculation => Enemy-Killed => Take Enemy Tier => Make A roll on CardFamily perferability =>
+    Make a roll on which Item it will drop.
+    Souls is garunteed. 
+
+    Change Items Drop chance accordingly with the Luck Stat.  
+
 
 
     */
