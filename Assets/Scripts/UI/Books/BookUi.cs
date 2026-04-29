@@ -10,34 +10,57 @@ public class BookUi : MonoBehaviour
     [SerializeField] private string bookText;
     [SerializeField] private int charsPerPage = 300;
 
+    [SerializeField] private UnityEngine.UI.Button statsButton;
+    [SerializeField] private UnityEngine.UI.Button cardsButton;
+    [SerializeField] private UnityEngine.UI.Button loreButton;
+
     private List<PageData> pages = new List<PageData>();
     private int currentIndex = 0;
+    private int statsPageIndex = -1;
+    private int cardsPageIndex = -1;
+    private int lorePageIndex = -1;
+
+
 
     // Build inventory book
     public void BuildInventory(List<CardData> allCards, PlayerStats stats)
     {
         pages.Clear();
 
+        statsPageIndex = pages.Count;
         // First page = stats
         pages.Add(new PageData
         {
             type = PageData.PageType.Stats,
             stats = stats
         });
+        cardsPageIndex = pages.Count;
 
         // Cards (4 per page)
-        for (int i = 0; i < allCards.Count; i += 4)
+        if (allCards != null && allCards.Count > 0)
         {
-            pages.Add(new PageData
+            cardsPageIndex = pages.Count;
+
+            for (int i = 0; i < allCards.Count; i += 4)
             {
-                type = PageData.PageType.Cards,
-                cards = allCards.GetRange(i, Mathf.Min(4, allCards.Count - i))
-            });
+                pages.Add(new PageData
+                {
+                    type = PageData.PageType.Cards,
+                    cards = allCards.GetRange(i, Mathf.Min(4, allCards.Count - i))
+                });
+            }
+        }
+        else
+        {
+            cardsPageIndex = -1;
         }
 
+        // Lore
         if (!string.IsNullOrEmpty(bookText))
         {
-            var chunks = SplitTextWords(bookText, 300); // adjust size
+            lorePageIndex = pages.Count;
+
+            var chunks = SplitTextWords(bookText, charsPerPage);
 
             foreach (var chunk in chunks)
             {
@@ -48,10 +71,20 @@ public class BookUi : MonoBehaviour
                 });
             }
         }
-
+        else
+        {
+            lorePageIndex = -1;
+        } 
+        
         currentIndex = 0;
         ShowPages();
+        UpdateTabButtons();
+        Debug.Log("BuildInventory called. Pages: " + pages.Count);
     }
+
+
+       
+    
 
     public void ShowPages()
     {
@@ -76,6 +109,7 @@ public class BookUi : MonoBehaviour
         {
             rightPage.gameObject.SetActive(false);
         }
+        Debug.Log($"Index: {currentIndex}, Total Pages: {pages.Count}");
     }
 
     // Flip forward
@@ -120,5 +154,47 @@ public class BookUi : MonoBehaviour
             pages.Add(current);
 
         return pages;
+    }
+
+    public void GoToStats()
+    {
+        if (statsPageIndex >= 0 && statsPageIndex < pages.Count)
+        {
+            currentIndex = statsPageIndex;
+            ShowPages();
+        }
+    }
+
+    public void GoToCards()
+    {
+        if (cardsPageIndex >= 0 && cardsPageIndex < pages.Count)
+        {
+            currentIndex = cardsPageIndex;
+            ShowPages();
+        }
+        else
+        {
+            //Debug.Log("No card pages exist");
+        }
+    }
+
+    public void GoToLore()
+    {
+        if (lorePageIndex >= 0 && lorePageIndex < pages.Count)
+        {
+            currentIndex = lorePageIndex;
+            ShowPages();
+        }
+        else
+        {
+           // Debug.Log("No lore pages exist");
+        }
+    }
+
+    private void UpdateTabButtons()
+    {
+        statsButton.interactable = statsPageIndex != -1;
+        cardsButton.interactable = cardsPageIndex != -1;
+        loreButton.interactable = lorePageIndex != -1;
     }
 }

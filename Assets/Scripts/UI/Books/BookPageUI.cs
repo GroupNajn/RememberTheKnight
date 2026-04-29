@@ -50,17 +50,16 @@ public class BookPageUI : MonoBehaviour
                 ShowCards(data.cards);
                 break;
             */
-            case PageData.PageType.Cards: 
+            case PageData.PageType.Cards:
                 cardPanel.SetActive(true);
 
                 List<CardData> cardsToShow = new List<CardData>();
 
-                // TEMP TEST SYSTEM
-                if (useTestCards && cardSelectionUI != null)
+                if (useTestCards && cardSelectionUI != null && cardSelectionUI.selectedCardData != null)
                 {
                     cardsToShow.AddRange(cardSelectionUI.selectedCardData);
                 }
-                else
+                else if (data.cards != null)
                 {
                     cardsToShow.AddRange(data.cards);
                 }
@@ -70,7 +69,12 @@ public class BookPageUI : MonoBehaviour
 
             case PageData.PageType.Text:
                 textPanel.SetActive(true);
-                pageText.text = data.text;
+
+                if (data.text != null)
+                    pageText.text = data.text;
+                else
+                    pageText.text = ""; // or "No text"
+
                 break;
         }
     }
@@ -78,11 +82,27 @@ public class BookPageUI : MonoBehaviour
     private void ShowStats(PlayerStats stats)
     {
         if (stats == null) return;
+        //LightDamage, heavyDamage, CombodamageModifier
+        // MaxHP, HealthRegen, TotalHeal
+        //Stamina, StaminaRegen 
+        //Luck , CritRate
+        //dodgeCoolCown
+
+
 
         statsText.text =
-            $"HP: \n" +
-            $"Damage: \n" +
-            $"Mana: ";
+          // $"Light Damage: {stats.LightDamage}\n" +
+          // $"Heavy Damage: {stats.HeavyDamage}\n" +
+          // $"Combo Damage Modifier: {stats.ComboDamageModifier}";
+          $"Max HP: {stats.MaxHealth}\n" +
+          $"Health Regen: {stats.healthRegenRate}\n" +
+          //$"Total Heal: {stats.TotalHeal}\n" +
+          $"Stamina: {stats.maxStamina}\n" +
+          $"Stamina Regen: {stats.staminaRegenRate}\n" +
+          $"Luck: {stats.currentLuck}\n" +
+          $"Crit Rate: {stats.currentCritChance}\n" +
+          $"Dodge Cooldown: {stats.dodgeCoolDown}\n";
+         
     }
 
    

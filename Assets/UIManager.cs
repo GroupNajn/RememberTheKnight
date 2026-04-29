@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
+    [SerializeField] private BookUi bookUi; // Meike tbc
+    [SerializeField] private PlayerCollection playerCollection; //meike tbc
+    [SerializeField] private PlayerStats playerStats; //meike tbc
 
     [SerializeField] private GameObject backButtonUI;
 
@@ -337,6 +340,8 @@ public class UIManager : MonoBehaviour
     public void OpenBookUI()
     {
         CloseInteractiveUI();
+
+        bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
         bookUI.SetActive(true);
 
         UIMenuActive = true;
