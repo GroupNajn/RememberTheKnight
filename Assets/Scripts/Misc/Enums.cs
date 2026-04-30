@@ -20,6 +20,20 @@ public enum Tier
     XIII = 13,
 }
 
+public enum LootTables { 
+    None = 0,
+    Swords = 1 << 1,
+    Cups = 1 << 2,
+    Wands = 1 << 3,
+    Pentacles = 1 << 4,
+    Page = 1 << 5,
+    Knight = 1 << 6,
+    Queen = 1 << 7,
+    King = 1 << 8,
+    CourtOnly = 1 << 9
+
+}
+
 
 
 public enum CardFamily
