@@ -7,7 +7,7 @@ public class ShopSlotCard : MonoBehaviour
     [SerializeField] private bool unlocked;
     [SerializeField] private Image cardImage;
 
-    private ShopBoard board;
+    [SerializeField] private ShopBoard board;
 
     void Awake()
     {
@@ -15,19 +15,23 @@ public class ShopSlotCard : MonoBehaviour
     }
     void Start()
     {
-        board = GetComponentInParent<ShopBoard>();
+        
     }
     public void SetCard(CardData card)
     {
         if (!unlocked)
         {
-            int randomIndex = Random.Range(0, board.randomPosters.Count);
-            GameObject randomPoster = board.randomPosters[randomIndex];
+            int randomIndex = Random.Range(0, board.RandomPosters.Count);
+            GameObject randomPoster = board.RandomPosters[randomIndex];
 
-            Instantiate(randomPoster, this.transform);
+            Vector3 positionOffset = randomPoster.transform.position;
+            
+            Instantiate(randomPoster, this.transform.position + positionOffset, this.transform.rotation, this.transform);
+
+            return;
         }
 
-        //board.CardBuilder.InstantiateCardWithoutScripts(card);
+        board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
 
         if (card != null && cardImage != null)
         {

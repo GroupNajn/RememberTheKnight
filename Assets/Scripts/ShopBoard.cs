@@ -10,7 +10,7 @@ public class ShopBoard : MonoBehaviour
     private List<ShopSlotCard> slots = new List<ShopSlotCard>();
     private List<CardData> randomizedCards = new List<CardData>();
 
-    [SerializeField] public List<GameObject> randomPosters { get; private set; } = new();
+    [field: SerializeField] public List<GameObject> RandomPosters { get; private set; } = new List<GameObject>();
 
     void Awake()
     {
