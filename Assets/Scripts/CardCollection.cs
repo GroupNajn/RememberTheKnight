@@ -7,6 +7,11 @@ public class CardCollection : MonoBehaviour
 {
     [SerializeField] private List<CardData> temporaryCards = new List<CardData>();
     [SerializeField] private List<CardData> permanentCards = new List<CardData>();
+    private CardContract cardContract;
+    public CardContract PlayersCardContract
+    {
+        set => cardContract = value;
+    }
 
     public List<CardData> TemporaryCards
     {

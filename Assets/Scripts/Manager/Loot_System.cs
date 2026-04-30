@@ -8,7 +8,6 @@ using UnityEngine;
 public class Loot_System : MonoBehaviour
 {
     [field: SerializeField] public int currentSoulCount { get; private set; } = 0;
-    [SerializeField] CardData[] selectedCards = new CardData[4];
     private Soul_Canvas_Text_Script canvasTextScript;
     private readonly Dictionary<int, Loot> soulsCollected = new Dictionary<int, Loot>();
     // Dictonary used to see if a souls has been collected before, to prevent a double event invoke from,

@@ -7,16 +7,13 @@ public class CardContract : MonoBehaviour
 
     public CardFamily CardFamily => cardFamily;
 
-    public enum Signed { Not, Signed }
-    public Signed signed
-    {
-        get => signed;
-        private set => signed = value;
-    }
+   public enum Signed { Not, Signed}
+
+    public Signed signed { get; set; }
     public CardContract(CardFamily cardFamily)
     {
         this.cardFamily = cardFamily;
-        signed = Signed.Signed;
+        
     }
 
     public void BreakContract()

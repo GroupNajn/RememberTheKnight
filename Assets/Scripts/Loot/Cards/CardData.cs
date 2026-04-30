@@ -1,3 +1,4 @@
+using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,10 @@ public class CardData : ScriptableObject
      * 
      */
 
-    public string CardName;
+    
+
+
+    public string cardID;
 
     public GameObject CardPrefab;
     public Sprite cardImage;

@@ -140,45 +140,45 @@ public class LootManager : MonoBehaviour
         return Random.value < chance;
     }
 
-    private Tier RollTierUpgrade(Tier currentTier)
-    {
-        if (!RollForTierUpgrade())
-            return currentTier;
+    //private Tier RollTierUpgrade(Tier currentTier)
+    //{
+    //    if (!RollForTierUpgrade())
+    //        return currentTier;
 
-        float chance = GetScaledLuckChance();
-        int nextTier = (int)currentTier;
+    //    float chance = GetScaledLuckChance();
+    //    int nextTier = (int)currentTier;
 
-        nextTier += 1;
-        float roll = Random.value;
+    //    nextTier += 1;
+    //    float roll = Random.value;
 
-        if(roll < chance && chance <= 5 && chance >= 0)
-        {
+    //    if(roll < chance && chance <= 5 && chance >= 0)
+    //    {
 
-        }
-        else if(roll < chance && chance <= 8 && chance > 5)
-        {
+    //    }
+    //    else if(roll < chance && chance <= 8 && chance > 5)
+    //    {
 
-        }
+    //    }
         
 
 
-            int nextTier = (int)currentTier + 1;
-        int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
+    //        int nextTier = (int)currentTier + 1;
+    //    int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
 
-        nextTier = Mathf.Clamp(nextTier, 1, maxTier);
+    //    nextTier = Mathf.Clamp(nextTier, 1, maxTier);
 
-        return (Tier)nextTier;
-    }
+    //    return (Tier)nextTier;
+    //}
 
-    private float ReturnChanceRange(float chance, int currentTier)
-    {
-        if (chance <= 5 && chance >= 0) return currentTier;
-        else if (chance <= 8 && chance > 5) currentTier += 2;
-        else if (chance <= 11 && chance > 8) currentTier += 3;
-        else if (chance <= 15 && chance > 11) return currentTier += 4;
-        else if (chance <= 20 && chance > 15) return true;
-        else return Random.value < chance;
-    }
+    //private float ReturnChanceRange(float chance, int currentTier)
+    //{
+    //    if (chance <= 5 && chance >= 0) return currentTier;
+    //    else if (chance <= 8 && chance > 5) currentTier += 2;
+    //    else if (chance <= 11 && chance > 8) currentTier += 3;
+    //    else if (chance <= 15 && chance > 11) return currentTier += 4;
+    //    else if (chance <= 20 && chance > 15) return true;
+    //    else return Random.value < chance;
+    //}
 
     private int RollForMultipleLoot()
     {
