@@ -7,7 +7,7 @@ public class BookUi : MonoBehaviour
     [SerializeField] private BookPageUI rightPage;
 
     [Header("Text Book Input")]
-    [SerializeField] private string bookText;
+    private string bookText;
     [SerializeField] private int charsPerPage = 300;
 
     [SerializeField] private UnityEngine.UI.Button statsButton;
@@ -15,17 +15,25 @@ public class BookUi : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button loreButton;
 
     private List<PageData> pages = new List<PageData>();
+    [SerializeField] private List<LoreEntry> allLoreEntries;
+    private HashSet<string> unlockedLore = new HashSet<string>();
+    [SerializeField] private CardSelectionUI cardSelectionUI;
+
     private int currentIndex = 0;
     private int statsPageIndex = -1;
     private int cardsPageIndex = -1;
     private int lorePageIndex = -1;
 
 
-
+    public void SetBookText(string text)
+    {
+        bookText = text;
+    }
     // Build inventory book
-    public void BuildInventory(List<CardData> allCards, PlayerStats stats)
+    public void BuildInventory(PlayerStats stats)
     {
         pages.Clear();
+        List<CardData> allCards = new List<CardData>();
 
         statsPageIndex = pages.Count;
         // First page = stats
@@ -37,6 +45,11 @@ public class BookUi : MonoBehaviour
         cardsPageIndex = pages.Count;
 
         // Cards (4 per page)
+
+        if (cardSelectionUI != null && cardSelectionUI.selectedCardData != null)
+        {
+            allCards.AddRange(cardSelectionUI.selectedCardData);
+        }
         if (allCards != null && allCards.Count > 0)
         {
             cardsPageIndex = pages.Count;
@@ -56,35 +69,104 @@ public class BookUi : MonoBehaviour
         }
 
         // Lore
-        if (!string.IsNullOrEmpty(bookText))
+        UnlockLore("1");
+        if (unlockedLore.Count > 0)
         {
             lorePageIndex = pages.Count;
 
-            var chunks = SplitTextWords(bookText, charsPerPage);
-
-            foreach (var chunk in chunks)
+            foreach (var entry in allLoreEntries)
             {
-                pages.Add(new PageData
+                if (!unlockedLore.Contains(entry.id))
+                    continue;
+
+                var entryPages = entry.GetPages(charsPerPage);
+
+                foreach (var page in entryPages)
                 {
-                    type = PageData.PageType.Text,
-                    text = chunk
-                });
+                    pages.Add(new PageData
+                    {
+                        type = PageData.PageType.Text,
+                        text = page
+                    });
+                }
             }
         }
         else
         {
             lorePageIndex = -1;
-        } 
-        
-        currentIndex = 0;
+        }
+            currentIndex = 0;
         ShowPages();
         UpdateTabButtons();
         Debug.Log("BuildInventory called. Pages: " + pages.Count);
     }
 
+    //public void BuildInventory(List<CardData> allCards, PlayerStats stats)
+    //{
+    //    pages.Clear();
 
-       
-    
+    //    statsPageIndex = pages.Count;
+    //    // First page = stats
+    //    pages.Add(new PageData
+    //    {
+    //        type = PageData.PageType.Stats,
+    //        stats = stats
+    //    });
+    //    cardsPageIndex = pages.Count;
+
+    //    // Cards (4 per page)
+    //    if (allCards != null && allCards.Count > 0)
+    //    {
+    //        cardsPageIndex = pages.Count;
+
+    //        for (int i = 0; i < allCards.Count; i += 4)
+    //        {
+    //            pages.Add(new PageData
+    //            {
+    //                type = PageData.PageType.Cards,
+    //                cards = allCards.GetRange(i, Mathf.Min(4, allCards.Count - i))
+    //            });
+    //        }
+    //    }
+    //    else
+    //    {
+    //        cardsPageIndex = -1;
+    //    }
+
+    //    // Lore
+    //    UnlockLore("1");
+    //    if (unlockedLore.Count > 0)
+    //    {
+    //        lorePageIndex = pages.Count;
+
+    //        foreach (var entry in allLoreEntries)
+    //        {
+    //            if (!unlockedLore.Contains(entry.id))
+    //                continue;
+
+    //            var entryPages = entry.GetPages(charsPerPage);
+
+    //            foreach (var page in entryPages)
+    //            {
+    //                pages.Add(new PageData
+    //                {
+    //                    type = PageData.PageType.Text,
+    //                    text = page
+    //                });
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        lorePageIndex = -1;
+    //    }
+    //    currentIndex = 0;
+    //    ShowPages();
+    //    UpdateTabButtons();
+    //    Debug.Log("BuildInventory called. Pages: " + pages.Count);
+    //}
+
+
 
     public void ShowPages()
     {
@@ -196,5 +278,15 @@ public class BookUi : MonoBehaviour
         statsButton.interactable = statsPageIndex != -1;
         cardsButton.interactable = cardsPageIndex != -1;
         loreButton.interactable = lorePageIndex != -1;
+    }
+
+   
+    public void UnlockLore(string id)
+    {
+        if (unlockedLore.Contains(id))
+            return;
+
+        unlockedLore.Add(id);
+        Debug.Log("Unlocked lore: " + id);
     }
 }

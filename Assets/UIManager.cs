@@ -340,8 +340,8 @@ public class UIManager : MonoBehaviour
     public void OpenBookUI()
     {
         CloseInteractiveUI();
-
-        bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
+       // bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
+        bookUi.BuildInventory(playerStats);
         bookUI.SetActive(true);
 
         UIMenuActive = true;

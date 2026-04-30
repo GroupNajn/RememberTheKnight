@@ -53,18 +53,9 @@ public class BookPageUI : MonoBehaviour
             case PageData.PageType.Cards:
                 cardPanel.SetActive(true);
 
-                List<CardData> cardsToShow = new List<CardData>();
+                if (data.cards != null)
+                    ShowCardsTemp(data.cards);
 
-                if (useTestCards && cardSelectionUI != null && cardSelectionUI.selectedCardData != null)
-                {
-                    cardsToShow.AddRange(cardSelectionUI.selectedCardData);
-                }
-                else if (data.cards != null)
-                {
-                    cardsToShow.AddRange(data.cards);
-                }
-
-                ShowCardsTemp(cardsToShow);
                 break;
 
             case PageData.PageType.Text:
