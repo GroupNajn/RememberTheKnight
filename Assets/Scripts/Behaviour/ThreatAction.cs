@@ -11,9 +11,11 @@ public partial class ThreatAction : Action
     [SerializeReference] public BlackboardVariable<float> ThreatValue = new(0);
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
+    [SerializeReference] public BlackboardVariable<Transform> NavTarget;
     [SerializeReference] public BlackboardVariable<float> Radius;
 
     [SerializeReference] public BlackboardVariable<float> AttackRadius = new(1);
+
     protected override Status OnStart()
     {
         if (Target.Value == null || Self.Value == null) return Status.Failure;
@@ -26,6 +28,20 @@ public partial class ThreatAction : Action
         }
         else
         { ThreatValue.Value = MathF.Round(1 - (dist / (Radius.Value + AttackRadius)), 2); /*Debug.Log($"current threat{ThreatValue.Value}");*/ }
+
+        if (NavTarget.Value != null)
+        {
+            bool isNotInSight =
+                !Mathf.Approximately(Target.Value.transform.position.x, Target.Value.transform.position.x) &&
+                !Mathf.Approximately(Target.Value.transform.position.z, Target.Value.transform.position.z);
+            if (isNotInSight)
+            {
+                bool isAggro = ThreatValue.Value > 0.4f;
+                bool isAlert = ThreatValue.Value > 0.2f;
+                ThreatValue.Value = isAggro ? 0.4f : ThreatValue.Value;
+                ThreatValue.Value = isAlert ? 0.2f : ThreatValue.Value;
+            }
+        }
         return Status.Success;
     }
 
