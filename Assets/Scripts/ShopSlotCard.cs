@@ -23,10 +23,11 @@ public class ShopSlotCard : MonoBehaviour
         {
             int randomIndex = Random.Range(0, board.RandomPosters.Count);
             GameObject randomPoster = board.RandomPosters[randomIndex];
-
-            Vector3 positionOffset = randomPoster.transform.position;
             
-            Instantiate(randomPoster, this.transform.position + positionOffset, this.transform.rotation, this.transform);
+            Vector3 positionOffset = randomPoster.transform.localPosition;
+
+            GameObject instance = Instantiate(randomPoster, this.transform.position, this.transform.rotation, this.transform);
+            instance.transform.localPosition = randomPoster.transform.localPosition;
 
             return;
         }
