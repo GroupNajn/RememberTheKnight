@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 [RequireComponent(typeof(EnemyDamage))]
+
+[RequireComponent(typeof(Animator))]
 public class EnemyExplodeAttack : MonoBehaviour
 {
+    private static readonly int BoomTimeHash = Animator.StringToHash("BoomTime");
     public float DebugRay_DrawTime = 5f;
     public float explotionRadius = 5.0f;
     public float explosionForce = 10f;
@@ -14,12 +16,14 @@ public class EnemyExplodeAttack : MonoBehaviour
     GameObject[] hitchecks;
 
     EnemyDamage enemyDamage;
+    Animator animator;
     [SerializeField] GameObject barrel;
     [SerializeField] ParticleSystem explosion;
     [SerializeField] float explosionMaxDamage = 30f;
     void Start()
     {
         enemyDamage = GetComponent<EnemyDamage>();
+        animator = GetComponent<Animator>();
 
         damageables.Add(GameObject.FindGameObjectWithTag("Player"));
         damageables.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
@@ -30,6 +34,14 @@ public class EnemyExplodeAttack : MonoBehaviour
             if (transform.name == "SM_Prop_Barrel_01") barrel = transform.gameObject;
             if (transform.name == "SM_Prop_Barrel_Open_01") barrel = transform.gameObject;
         });
+    }
+
+    void Update()
+    {
+        if (enemyDamage.Health / enemyDamage.MaxHealth < 0.5f && !animator.GetBool(BoomTimeHash))
+        {
+            animator.SetBool(BoomTimeHash, true);
+        }
     }
 
     public void OnExplode()
