@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
+using UnityEditor.UIElements;
 
 
 // Script made by Henric some random date
@@ -12,6 +13,7 @@ public class LootManager : MonoBehaviour
     public static LootManager instance;
 
     [Header("Loot_Table")]
+    [SerializeField] List<Loot> soulTable;
     [SerializeField] List<Loot> CommonLootTable;
     [SerializeField] List<Loot> UncommonLootTable;
     [SerializeField] List<Loot> rareLootTable;
@@ -106,7 +108,9 @@ public class LootManager : MonoBehaviour
             Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
-    private float GetScaledLuckChance()
+    // Transforms whole float values to actual procentage. 
+    // E.G 3 float will become 0.03, 3% 
+    private float GetScaledLuckChance() 
     {
         if (playerStats == null)
             playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
@@ -158,6 +162,14 @@ public class LootManager : MonoBehaviour
         }
 
         return amount;
+    }
+
+    public void TryToDropLoot()
+    {
+        float chance = GetScaledLuckChance();
+
+
+
     }
 
  
@@ -212,6 +224,7 @@ public class LootManager : MonoBehaviour
             {
                 PrintPercentOnSelectedItem(current, totalWeight);
                 DropLoot(item, enemy);
+               
                 return;
             }
         }
