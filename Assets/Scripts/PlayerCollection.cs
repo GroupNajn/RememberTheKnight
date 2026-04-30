@@ -19,11 +19,11 @@ public class PlayerCollection : MonoBehaviour
     }
     void Start()
     {
-        Event_System.instance.OnCardSign += SignContract;
+        Event_System.instance.OnContractSign += SignContract;
     }
     private void OnDestroy()
     {
-        Event_System.instance.OnCardSign -= SignContract;
+        Event_System.instance.OnContractSign -= SignContract;
     }
 
     public void InsertIntoCardSelectin(Card card)
@@ -42,12 +42,19 @@ public class PlayerCollection : MonoBehaviour
 
     public void SignContract(CardFamily cardFamily)
     {
-        if (cardContract.CardFamily == cardFamily) return;
+
+        if (cardContract != null) return; 
 
 
         cardContract = new CardContract(cardFamily);
         if (cardContract != null)
+        {
             cardContract.SignContract();
+            cardCollection.PlayersCardContract = cardContract;
+            CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+            cardSystem.PlayerConract = cardContract;
+
+        }
     }
 
     public void BreakContract()

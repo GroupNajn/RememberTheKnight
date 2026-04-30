@@ -68,8 +68,10 @@ public class CardSelectionUI : MonoBehaviour
             CardUI card = button.GetComponent<CardUI>();
             if (card == null || card.cardData == null)
                 continue;
+            SetUnlockable(card.cardData, card);
 
-            if (card.IsSelected)
+
+            if (card.IsSelected && card.IsUnlockable)
             {
                 if (selectedCards.Count < maxCardsSelected)
                 {
@@ -82,6 +84,28 @@ public class CardSelectionUI : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void SetUnlockable(CardData cardData, CardUI cardUI)
+    {
+        CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        if(cardData == null)
+        {
+            cardUI.SetUnlockable(false);
+            return;
+        }
+
+        if (cardSystem.CheckUnlocked(cardData))
+        {
+            cardUI.SetUnlockable(true);
+        }
+        else
+        {
+            cardUI.SetUnlockable(false);
+        }
+        
+
+
     }
 
     public void OnArrowUp()
@@ -103,8 +127,9 @@ public class CardSelectionUI : MonoBehaviour
         CardUI card = button.GetComponent<CardUI>();
         if (card == null || card.cardData == null)
             return;
+        
 
-        if (card.IsSelected)
+        if (card.IsSelected && card.IsUnlockable)
         {
             card.SetSelected(false);
             selectedCards.Remove(card);
@@ -112,11 +137,17 @@ public class CardSelectionUI : MonoBehaviour
             Debug.Log("Card Deselected");
             return;
         }
+        if (!card.IsUnlockable)
+        {
+            if (!errorActive)
+                ShowError($"This card is not unlocked!" ,3f);
+            return ;
+        }
 
         if (selectedCards.Count >= maxCardsSelected)
         {
             if (!errorActive)
-                ShowError($"You can only select {maxCardsSelected} cards!", 5f);
+                ShowError($"You can only select {maxCardsSelected} cards!", 3f);
 
             return;
         }

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
 using UnityEditor.UIElements;
+using Unity.Collections;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 
 
 // Script made by Henric some random date
@@ -35,12 +38,17 @@ public class LootManager : MonoBehaviour
     }
     [Header("Loot Drop Modifiers")]
     [SerializeField] private float multipleLootModifier = 2f;
-    [SerializeField] private float tierUpgradeModifier = 2f; 
     [SerializeField] private float luckChanceScaler = 1f; // It will multiply the current player % chance. If 2, double. If 3 tripple it etc...
     [SerializeField] private int maxLootAmount = 3;
 
+    [Header("Upgrae Tier Modifiers")]
+    [SerializeField] private float tierUpgradeModifier = 2f;
+    [SerializeField] private float UncommonUpgradeTierModifier = 2f;
+    [SerializeField] private float RareTierUpgradeModifier = 2f;
+    [SerializeField] private float EpicTierUpgradeModifier = 2f;
+    [SerializeField] private float LegendaryTierUpgradeModifier = 2f;
 
-   
+
     /* TODO: Need to a way to add logic to instantiate a normal soul or a healing/charged soul.
      Logic to faouvrly drop more of the signed Contract-Family.
 
@@ -108,7 +116,7 @@ public class LootManager : MonoBehaviour
             Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
     }
 
-    // Transforms whole float values to actual procentage. 
+    // Transforms the players luck float values to actual procentage. 
     // E.G 3 float will become 0.03, 3% 
     private float GetScaledLuckChance() 
     {
@@ -132,18 +140,45 @@ public class LootManager : MonoBehaviour
         return Random.value < chance;
     }
 
-    private Tier RollTierUpgrade(Tier currentTier)
-    {
-        if (!RollForTierUpgrade())
-            return currentTier;
+    //private Tier RollTierUpgrade(Tier currentTier)
+    //{
+    //    if (!RollForTierUpgrade())
+    //        return currentTier;
 
-        int nextTier = (int)currentTier + 1;
-        int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
+    //    float chance = GetScaledLuckChance();
+    //    int nextTier = (int)currentTier;
 
-        nextTier = Mathf.Clamp(nextTier, 1, maxTier);
+    //    nextTier += 1;
+    //    float roll = Random.value;
 
-        return (Tier)nextTier;
-    }
+    //    if(roll < chance && chance <= 5 && chance >= 0)
+    //    {
+
+    //    }
+    //    else if(roll < chance && chance <= 8 && chance > 5)
+    //    {
+
+    //    }
+        
+
+
+    //        int nextTier = (int)currentTier + 1;
+    //    int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
+
+    //    nextTier = Mathf.Clamp(nextTier, 1, maxTier);
+
+    //    return (Tier)nextTier;
+    //}
+
+    //private float ReturnChanceRange(float chance, int currentTier)
+    //{
+    //    if (chance <= 5 && chance >= 0) return currentTier;
+    //    else if (chance <= 8 && chance > 5) currentTier += 2;
+    //    else if (chance <= 11 && chance > 8) currentTier += 3;
+    //    else if (chance <= 15 && chance > 11) return currentTier += 4;
+    //    else if (chance <= 20 && chance > 15) return true;
+    //    else return Random.value < chance;
+    //}
 
     private int RollForMultipleLoot()
     {
@@ -314,6 +349,8 @@ public class LootManager : MonoBehaviour
 
 
     }
+
+   
 
 
 

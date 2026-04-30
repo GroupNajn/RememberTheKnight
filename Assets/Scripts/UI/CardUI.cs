@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class CardUI : MonoBehaviour
 {
     [field: SerializeField] public bool IsSelected { get; private set; }
+    [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
+    [field: SerializeField] public bool OverrideLockState { get; private set; } = false;
+
+    [SerializeField] private Color lockedColor = Color.gray;
+    [SerializeField] private Color unlockedColor = Color.white;
+
 
     [SerializeField] public CardData cardData;
     [SerializeField] private Image cardImage;
@@ -47,23 +53,41 @@ public class CardUI : MonoBehaviour
 
     private void Update()
     {
+        if (OverrideLockState)
+        {
+            IsUnlockable = true;
+        }
+
+        if (!IsUnlockable)
+        {
+            cardImage.color = lockedColor;
+        }
+        else
+        {
+            cardImage.color = unlockedColor;
+        }
 
         if (IsSelected)
         {
             time++;
 
             float wiggle = Mathf.Sin((time + offset) * speed) * angle;
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x,rectTransform.localEulerAngles.y,baseRotationZ + wiggle);
+            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ + wiggle);
 
         }
         else
         {
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x,rectTransform.localEulerAngles.y, baseRotationZ);
+            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ);
         }
     }
 
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
+    }
+
+    public void SetUnlockable(bool unlockable)
+    {
+        this.IsUnlockable = unlockable;
     }
 }
