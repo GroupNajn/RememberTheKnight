@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class LoreEntry 
 {
+    // Made by Michaëla 2026-04-30
     public string id;
 
     [TextArea(10, 30)]
@@ -16,6 +17,7 @@ public class LoreEntry
         if (string.IsNullOrEmpty(fullText))
             return pages;
 
+        // Split the full text into words to avoid breaking words across pages
         string[] words = fullText.Split(' ');
         string current = "";
 

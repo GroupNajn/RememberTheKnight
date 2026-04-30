@@ -343,6 +343,17 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &394773685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 563853613518580988, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+  m_PrefabInstance: {fileID: 5948922962214133380}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &513429982 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5865120009607000131, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
@@ -1859,6 +1870,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6999031407394342740, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: maxCardsSelected
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7197796146903644089, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2491,6 +2506,17 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: efde94451c3699148a415bb6e956dcf9, type: 2}
+--- !u!114 &1949568449 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6999031407394342740, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+  m_PrefabInstance: {fileID: 1685251477}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d38a536f3ac6c4d823eea212b5c109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5948922962214133380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2499,6 +2525,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1685251478}
     m_Modifications:
+    - target: {fileID: 455239426571565476, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -169
+      objectReference: {fileID: 0}
+    - target: {fileID: 455239426571565476, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -554
+      objectReference: {fileID: 0}
+    - target: {fileID: 455239426571565476, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 288
+      objectReference: {fileID: 0}
     - target: {fileID: 563853613518580988, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_text
       value: 
@@ -2506,6 +2544,42 @@ PrefabInstance:
     - target: {fileID: 676610415104138514, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448699397221378268, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_Spacing.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448699397221378268, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_Spacing.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448699397221378268, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_CellSize.x
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 1448699397221378268, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_CellSize.y
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409084873393952017, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_Spacing.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409084873393952017, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_Spacing.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409084873393952017, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_CellSize.x
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409084873393952017, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_CellSize.y
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2409084873393952017, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_Constraint
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3303260358487735935, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: bookText
@@ -2523,6 +2597,42 @@ PrefabInstance:
       propertyPath: statsButton
       value: 
       objectReference: {fileID: 119762553}
+    - target: {fileID: 3303260358487735935, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: cardSelectionUI
+      value: 
+      objectReference: {fileID: 1949568449}
+    - target: {fileID: 3303260358487735935, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: allLoreEntries.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303260358487735935, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: allLoreEntries.Array.data[0].id
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303260358487735935, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: allLoreEntries.Array.data[0].fullText
+      value: Mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmeikemmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmeikemmmmmmmmmmmmmmmmmmmmmmmmmmmm
+        mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+        eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkee
+        eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720527281285126283, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: pageText
+      value: 
+      objectReference: {fileID: 394773685}
+    - target: {fileID: 3720527281285126283, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 7467381525261165259, guid: c1b3b6ddea379354c8f0a05f06a5c141, type: 3}
+    - target: {fileID: 3720527281285126283, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: cardSelectionUI
+      value: 
+      objectReference: {fileID: 1949568449}
+    - target: {fileID: 3720527281285126283, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: playerCollection
+      value: 
+      objectReference: {fileID: 1723349149}
     - target: {fileID: 4810012774795793345, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_Name
       value: BookCanvas
@@ -2538,6 +2648,10 @@ PrefabInstance:
     - target: {fileID: 5318034986938911821, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 414
+      objectReference: {fileID: 0}
+    - target: {fileID: 5852714347355247654, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -171
       objectReference: {fileID: 0}
     - target: {fileID: 6085761174033702199, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2639,6 +2753,18 @@ PrefabInstance:
       propertyPath: pageText
       value: 
       objectReference: {fileID: 1849311742}
+    - target: {fileID: 8823299324863318413, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: cardPrefab
+      value: 
+      objectReference: {fileID: 7467381525261165259, guid: c1b3b6ddea379354c8f0a05f06a5c141, type: 3}
+    - target: {fileID: 8823299324863318413, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: cardSelectionUI
+      value: 
+      objectReference: {fileID: 1949568449}
+    - target: {fileID: 8823299324863318413, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
+      propertyPath: playerCollection
+      value: 
+      objectReference: {fileID: 1723349149}
     - target: {fileID: 9213361194484299416, guid: a11dbae8762c914488ab1de4fb082091, type: 3}
       propertyPath: m_text
       value: 

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 public class BookPageUI : MonoBehaviour
 {
-
+    //made by Michaëla 2026-04-19
 
     [Header("Panels")]
     [SerializeField] private GameObject statsPanel;
@@ -30,6 +30,7 @@ public class BookPageUI : MonoBehaviour
         cardPanel.SetActive(false);
         textPanel.SetActive(false);
 
+        // Then enable the relevant panel based on the page type
         switch (data.type)
         {
             case PageData.PageType.Stats:
@@ -121,6 +122,7 @@ public class BookPageUI : MonoBehaviour
         }
     }
 
+    // Temporary method to show cards, since the original ShowCards is not working as intended. This method will only show the cards that are passed to it, without trying to access the player's collection or card selection UI.
     private void ShowCardsTemp(List<CardData> cards)
     {
         if (cards == null) return;

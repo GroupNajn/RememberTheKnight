@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 public class BookUi : MonoBehaviour
 {
+    //made by Michaëla 2026-04-19
+
+    // Todo - make when pressing tab buttons keep pages on same page as now back does not work if pressed tab if pages stats has only one page.
     [Header("Pages")]
     [SerializeField] private BookPageUI leftPage;
     [SerializeField] private BookPageUI rightPage;
@@ -25,10 +28,12 @@ public class BookUi : MonoBehaviour
     private int lorePageIndex = -1;
 
 
-    public void SetBookText(string text)
-    {
-        bookText = text;
-    }
+    //public void SetBookText(string text)
+    //{
+    //    bookText = text;
+    //}
+
+
     // Build inventory book
     public void BuildInventory(PlayerStats stats)
     {
@@ -69,7 +74,7 @@ public class BookUi : MonoBehaviour
         }
 
         // Lore
-        UnlockLore("1");
+        UnlockLore("1"); // For testing, unlock the first lore entry. In a real game, this would be based on player actions.
         if (unlockedLore.Count > 0)
         {
             lorePageIndex = pages.Count;
@@ -167,7 +172,7 @@ public class BookUi : MonoBehaviour
     //}
 
 
-
+    // Display current pages
     public void ShowPages()
     {
         // left 
@@ -214,30 +219,32 @@ public class BookUi : MonoBehaviour
         }
     }
 
-    private List<string> SplitTextWords(string text, int maxChars)
-    {
-        List<string> pages = new List<string>();
-        string[] words = text.Split(' ');
+    //private List<string> SplitTextWords(string text, int maxChars)
+    //{
+    //    List<string> pages = new List<string>();
+    //    string[] words = text.Split(' ');
 
-        string current = "";
+    //    string current = "";
 
-        foreach (var word in words)
-        {
-            if ((current + word).Length > maxChars)
-            {
-                pages.Add(current);
-                current = "";
-            }
+    //    foreach (var word in words)
+    //    {
+    //        if ((current + word).Length > maxChars)
+    //        {
+    //            pages.Add(current);
+    //            current = "";
+    //        }
 
-            current += word + " ";
-        }
+    //        current += word + " ";
+    //    }
 
-        if (!string.IsNullOrWhiteSpace(current))
-            pages.Add(current);
+    //    if (!string.IsNullOrWhiteSpace(current))
+    //        pages.Add(current);
 
-        return pages;
-    }
+    //    return pages;
+    //}
 
+    // Tab buttons
+    // go to the first page of the respective section, if it exists. If not, do nothing (or show a message)
     public void GoToStats()
     {
         if (statsPageIndex >= 0 && statsPageIndex < pages.Count)
@@ -273,6 +280,7 @@ public class BookUi : MonoBehaviour
         }
     }
 
+    // Enable or disable tab buttons based on whether their respective pages exist
     private void UpdateTabButtons()
     {
         statsButton.interactable = statsPageIndex != -1;
@@ -280,13 +288,13 @@ public class BookUi : MonoBehaviour
         loreButton.interactable = lorePageIndex != -1;
     }
 
-   
+    //unlcok lore by id, if not already unlocked. In a real game, this would be called when the player discovers new lore.
     public void UnlockLore(string id)
     {
         if (unlockedLore.Contains(id))
             return;
 
         unlockedLore.Add(id);
-        Debug.Log("Unlocked lore: " + id);
+        //Debug.Log("Unlocked lore: " + id);
     }
 }
