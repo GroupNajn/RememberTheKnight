@@ -1,4 +1,6 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -20,6 +22,7 @@ public class Loot_System : MonoBehaviour
         if (Event_System.instance != null)
         {
             Event_System.instance.OnLootPickedUp += IncreaseSouls;
+           
             Event_System.instance.OnSoulsSpent += ConsumeSouls;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
@@ -31,6 +34,7 @@ public class Loot_System : MonoBehaviour
         {
             Event_System.instance.OnLootPickedUp -= IncreaseSouls;
             Event_System.instance.OnSoulsSpent -= ConsumeSouls;
+           
         }
         soulsCollected.Clear();
     }
@@ -62,6 +66,18 @@ public class Loot_System : MonoBehaviour
         {
             currentSoulCount += 1;
             canvasTextScript.SetSoulsAmount(currentSoulCount);
+        }
+        IncreaseCupCharges(loot);
+    }
+
+    private void IncreaseCupCharges(Loot loot)
+    {
+        if (loot.TryGetComponent<ChargedSoul>(out ChargedSoul chargedSoul))
+        {
+
+            PlayerManager p = GameObject.Find("Player").GetComponent<PlayerManager>();
+            p.GetCharges(chargedSoul.ChargeAmount);
+            Debug.Log("HEALING SOUL GOT COLLECTED!");
         }
     }
 }
