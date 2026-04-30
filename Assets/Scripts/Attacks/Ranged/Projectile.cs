@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
-            if(isArrow)
+            if(isArrow && other.gameObject.CompareTag("Player"))
             {
                 Vector3 contactPoint = other.ClosestPoint(transform.position);
                 GameObject.FindWithTag("Player").GetComponent<PlayerVFX>().PlayArrowVFX(contactPoint);
