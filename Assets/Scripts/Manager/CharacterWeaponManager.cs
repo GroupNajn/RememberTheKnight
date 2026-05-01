@@ -6,7 +6,7 @@ public class CharacterWeaponManager : MonoBehaviour
     [SerializeField] public GameObject currentRightHandWeapon;
     [SerializeField] public GameObject currentLeftHandWeapon;
 
-    protected bool Holsterd = false;
+    protected bool holsterd = false;
     public DamageTrigger rightDamageTrigger;
     public DamageTrigger leftDamageTrigger;
 
@@ -18,7 +18,7 @@ public class CharacterWeaponManager : MonoBehaviour
     protected CharacterSoundFXManager characterSoundFXManager;
     protected float finalDamage;
 
-
+    public bool Holsterd => holsterd;
 
     public virtual void Start()
     {
@@ -53,7 +53,7 @@ public class CharacterWeaponManager : MonoBehaviour
     }
     public virtual void HolsterCheck()
     {
-        if (Holsterd)
+        if (holsterd)
         {
             currentLeftHandWeapon.SetActive(false);
             currentRightHandWeapon.SetActive(false);
@@ -71,7 +71,9 @@ public class CharacterWeaponManager : MonoBehaviour
     {
         if (currentRightHandWeapon != null)
         {
+            Debug.Log($"Activating right damage collider on object {currentRightHandWeapon.name}");
             currentRightHandWeapon.GetComponent<Collider>().enabled = true;
+            Debug.Log(currentRightHandWeapon.GetComponent<Collider>().gameObject.name);
             rightDamageTrigger.ResetDamage();
 
             characterSoundFXManager.PlayAttackGrunt();
