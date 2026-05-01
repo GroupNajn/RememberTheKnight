@@ -492,6 +492,7 @@ public class SwitchBodyParts : MonoBehaviour
             uiManager.OpenSoulUI();
             uiManager.ShowPlayerBars();
             uiManager.OpenCupUI();
+            uiManager.OpenWeaponIconUI();
         }
     }
 

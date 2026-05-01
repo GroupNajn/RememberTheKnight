@@ -2,8 +2,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using NUnit.Framework;
 
 public class UIManager : MonoBehaviour
 {
@@ -26,19 +24,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject audioUI;
     [SerializeField] public GameObject videoUI;
 
-    [Header("in game UI")]
+    [Header("In game UI")]
     [SerializeField] private GameObject cardSelectUI;
     [SerializeField] private GameObject familySelectUI;
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject cardShopUI;
 
-    [Header("static UI")]
+    [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
     [SerializeField] private GameObject gameDeathScreenUI;
     [SerializeField] private GameObject soulUI;
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject staminaBar;
     [SerializeField] private GameObject cupUI;
+    [SerializeField] private GameObject weaponIconUI;
 
 
     public bool UIMenuActive = true;
@@ -413,6 +412,7 @@ public class UIManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
+    // CUP UI
     public void OpenCupUI()
     {
         cupUI.SetActive(true);
@@ -421,6 +421,17 @@ public class UIManager : MonoBehaviour
     public void CloseCupUI()
     {
         cupUI.SetActive(false);
+    }
+
+    // WEAPON ICON UI
+    public void OpenWeaponIconUI()
+    {
+        weaponIconUI.SetActive(true);
+    }
+
+    public void CloseWeaponIconUI()
+    {
+        weaponIconUI.SetActive(false);
     }
 
     //public void DisableAllWorldCanvas(bool value)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerWeaponManager : CharacterWeaponManager
 {
@@ -9,6 +10,9 @@ public class PlayerWeaponManager : CharacterWeaponManager
     Animator playerAnimator;
     PlayerCombatManager playerCombatManager;
     PlayerStats playerStats;
+
+    [SerializeField] GameObject unarmedWeapon;
+    Image weaponIconImage;
 
     float damageAmount
     {
@@ -41,10 +45,32 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator = GetComponent<Animator>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
+
+        weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage")?.GetComponent<Image>();
     }
-    private void OnHolster(InputValue action)
+    public void OnHolster(InputValue action)
     {
-        Holsterd = !Holsterd;
+        holsterd = !holsterd;
+
+        if (holsterd)
+        {
+            if (!weaponIconImage)
+            {
+                weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage").GetComponent<Image>();
+            }
+
+            weaponIconImage.sprite = unarmedWeapon.GetComponent<WeaponStats>().WeaponData.WeaponIcon;
+        }
+        else
+        {
+            if (!weaponIconImage)
+            {
+                weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage").GetComponent<Image>();
+            }
+
+            weaponIconImage.sprite = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData.WeaponIcon;
+        }
+
         HolsterCheck();
     }
 
