@@ -27,15 +27,15 @@ public class ShopBoard : MonoBehaviour
 
     void PopulateSlots()
     {
-        var unlockedCards = cardSystem.GetUnlockedCards();
+        var allCards = cardSystem.GetAllCards();
 
-        if (unlockedCards == null || unlockedCards.Count == 0)
+        if (allCards == null || allCards.Count == 0)
             return;
 
         foreach (var slot in slots)
         {
-            int randomIndex = Random.Range(0, unlockedCards.Count);
-            CardData randomCard = unlockedCards[randomIndex];
+            int randomIndex = Random.Range(0, allCards.Count);
+            CardData randomCard = allCards[randomIndex];
 
             randomizedCards.Add(randomCard);
             slot.SetCard(randomCard);
