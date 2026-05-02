@@ -1,23 +1,24 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security;
 using UnityEngine;
 
 
 public class CardCollection : MonoBehaviour
 {
-    [SerializeField] private List<CardData> temporaryCards = new List<CardData>();
-    [SerializeField] private List<CardData> permanentCards = new List<CardData>();
+    [SerializeField] private HashSet<CardData> temporaryCards = new HashSet<CardData>();
+    [SerializeField] private HashSet<CardData> permanentCards = new HashSet<CardData>();
     private CardContract cardContract;
     public CardContract PlayersCardContract
     {
         set => cardContract = value;
     }
 
-    public List<CardData> TemporaryCards
+    public HashSet<CardData> TemporaryCards
     {
         get => temporaryCards;
     }
-    public List<CardData> PermanentPermanentCards
+    public HashSet<CardData> PermanentPermanentCards
     {
         get => permanentCards;
     }
@@ -59,12 +60,12 @@ public class CardCollection : MonoBehaviour
 
     public List<CardData> GetTempCardCollection()
     {
-        return temporaryCards;
+        return temporaryCards.ToList();
     }
 
     public List<CardData> GetPermanentCardCollection()
     {
-        return permanentCards;
+        return permanentCards.ToList();
     }
 
     public void ResetTemporaryCards()

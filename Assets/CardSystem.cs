@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 public class CardSystem : MonoBehaviour
 {
+    // Only to show in inspectorn and to store all the cards at start. 
     [SerializeField] private List<CardData> allCards = new();
     [SerializeField] private List<CardData> unlockedCards = new();
-    // Only to show in inspectorn and to store all the cards at start. 
-
-
-    // To remove potential dupelettes. 
+    // Hashsets to not have Duplicates.  
     private HashSet<CardData> hashUnlocked = new HashSet<CardData>();
     private HashSet<CardData> hashAllCards = new HashSet<CardData>();
-    private CardContract cardContract;
+
+
     public CardContract PlayerConract
     {
         set => cardContract = value;
     }
+    private CardContract cardContract;
+
 
     private int unlockedTier = (int)Tier.I;
     private int unlockableTier = (int)Tier.III;
@@ -31,16 +32,6 @@ public class CardSystem : MonoBehaviour
     void Update()
     {
 
-    }
-
-    public IReadOnlyList<CardData> GetUnlockedCards()
-    {
-        return unlockedCards;
-    }
-
-    public IReadOnlyList<CardData> GetAllCards()
-    {
-        return allCards;
     }
 
     //Temporary Method to return a randomCardData in the allcards list. 
@@ -87,6 +78,31 @@ public class CardSystem : MonoBehaviour
 
     }
 
+
+    //Method is to be used in unison when a card is picked up, to check if the 
+    //The condition to increase the unlockableTier, it checks if the card level is 1 above
+    // the current unlockableTier, and also if the card is the same family as the cardContract. 
+    public bool CheckIncreaseUnlockTier(CardData card)
+    {
+        if ((int)card.cardTier == unlockableTier + 1 && card.cardFamily == cardContract.CardFamily)
+        {
+            unlockableTier++;
+            return true;
+        }
+        else return false;
+    }
+
+
+    //Basic Method to increment unlockableTier with an int amount.
+    //Clamps it between the Min and Max Tiers.
+    public void IncreaseUnlockTier(int levelIncrease)
+    {
+        unlockableTier += levelIncrease;
+        Mathf.Clamp(unlockableTier, (int)Tier.I, (int)Tier.XIII);
+    }
+
+
+
     // Checks if a card is unlocked. 
     public bool CheckUnlocked(CardData card)
     {
@@ -113,6 +129,8 @@ public class CardSystem : MonoBehaviour
         Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
     }
 
+    //Initializes the The HashSet that is to be used outside of the Class itself.
+    // To avoide duplicates in other algorithms, to prevent unwanted behavior. 
     private void InitializeHashSets()
     {
         foreach (CardData card in allCards)
@@ -120,6 +138,17 @@ public class CardSystem : MonoBehaviour
             hashAllCards.Add(card);
         }
     }
+
+    public IReadOnlyList<CardData> GetUnlockedCards()
+    {
+        return unlockedCards;
+    }
+
+    public IReadOnlyList<CardData> GetAllCards()
+    {
+        return allCards;
+    }
+
 
 
 
