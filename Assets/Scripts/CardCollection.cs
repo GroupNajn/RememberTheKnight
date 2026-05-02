@@ -34,15 +34,24 @@ public class CardCollection : MonoBehaviour
 
     public void AddToCollection(CardData card)
     {
+        CardSystem system = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+
         if (card == null) return;
-        if (card)
+        if (system.CheckUnlocked(card) && !(permanentCards.Contains(card)))
         {
             permanentCards.Add(card);
         }
-        else
+        else if(!temporaryCards.Contains(card)) 
         {
             temporaryCards.Add(card);
         }
+        else
+        {
+            Event_System.instance?.OnDroopMultipleSouls.Invoke();
+            // If the player already has that card. Invoke the delegate to Listerns(LootManager)
+            //To tell the manager to drop multiple souls, to give the player something else.
+        }
+       
     }
 
     public void RemoveFromTemporaryCollection(Card card)

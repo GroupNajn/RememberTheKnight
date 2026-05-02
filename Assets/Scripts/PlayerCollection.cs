@@ -20,11 +20,13 @@ public class PlayerCollection : MonoBehaviour
     void Start()
     {
         Event_System.instance.OnContractSign += SignContract;
+        Event_System.instance.OnStatsApplied += ReciveSelectedCardList;
         Event_System.instance.OnLootPickedUp += PickupLoot;
     }
     private void OnDestroy()
     {
         Event_System.instance.OnContractSign -= SignContract;
+        Event_System.instance.OnStatsApplied -= ReciveSelectedCardList;
         Event_System.instance.OnLootPickedUp -= PickupLoot;
     }
 

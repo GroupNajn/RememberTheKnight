@@ -104,7 +104,7 @@ public class CardSystem : MonoBehaviour
 
 
     // Checks if a card is unlocked. 
-    public bool CheckUnlocked(CardData card)
+    public  bool CheckUnlocked(CardData card)
     {
         return hashUnlocked.Contains(card);
     }

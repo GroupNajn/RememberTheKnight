@@ -9,20 +9,35 @@ using UnityEngine;
 public class Event_System : MonoBehaviour
 {
     public static Event_System instance;
-    public Action<EnemyDamage> OnEnemyKilled;
-    public Action<EnemyDamage> OnEnemySpawn;
-    public Action<int> OnPlayerDamaged;
-    public Action<Loot> OnGetLoot;
-    public Action<Transform, float> OnEnemyDamage;
-    public Action<Loot> OnLootPickedUp;
-    public Action OnPullAllSouls;
-    public Action OnResetPullAllLoot;
-    public Action OnPlayerDeath;
-    public Action OnWin;
-    public Action<List<CardData>> OnStatsApplied;
-    public Action<int> OnSoulsSpent;
     public Action OnSceneTransitionDone;
     public Action <CardFamily> OnContractSign;
+
+
+
+    //Events 
+    public Action OnWin;
+
+    //Player Related
+    public Action OnPlayerDeath;
+    public Action<int> OnPlayerDamaged;
+    public Action<List<CardData>> OnStatsApplied;
+
+    //Enemy Related
+    public Action<Transform, float> OnEnemyDamage;
+    public Action<EnemyDamage> OnEnemySpawn;
+    public Action<EnemyDamage> OnEnemyKilled;
+
+
+    //Loot related
+    public Action OnDroopMultipleSouls;
+    public Action OnResetPullAllLoot;
+    public Action<Loot> OnLootPickedUp;
+    public Action<Loot> OnGetLoot;
+
+
+    //Souls Related
+    public Action<int> OnSoulsSpent;
+    public Action OnPullAllSouls;
 
     public Action OnLoadScenes;
 
