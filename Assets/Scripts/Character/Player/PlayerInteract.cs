@@ -110,6 +110,6 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        UIManager.Instance.CloseInteractiveUI();
+        UIManager.Instance.CloseInteractiveUI(); 
     }
 }
