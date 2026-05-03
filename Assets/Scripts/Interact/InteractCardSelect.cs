@@ -2,20 +2,23 @@ using UnityEngine;
 
 public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
 {
-    UIManager playerUIManager;
+    [SerializeField] private InteractCameraPreset preset;
+    private UIManager playerUIManager;
 
     private bool canShowUI = false;
 
     private InteractUI_Controller interactUI_Controller;
+    private InteractCameraHandler interactCameraHandler;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
         interactUI_Controller = GetComponent<InteractUI_Controller>();
-
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
     }
     public void Interact()
     {
         playerUIManager.OpenCardSelectUI();
+        interactCameraHandler.InteractCamSwitch(transform, preset);
     }
 
     public InteractableUIData GetUIData()
