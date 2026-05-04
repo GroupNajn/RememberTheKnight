@@ -7,7 +7,7 @@ using UnityEngine;
 public class CardCollection : MonoBehaviour
 {
     [SerializeField] private HashSet<CardData> temporaryCards = new HashSet<CardData>();
-    [SerializeField] private HashSet<CardData> permanentCards = new HashSet<CardData>();
+    [SerializeField] private HashSet<CardData> equippedCards = new HashSet<CardData>();
     private CardContract cardContract;
     public CardContract PlayersCardContract
     {
@@ -18,9 +18,9 @@ public class CardCollection : MonoBehaviour
     {
         get => temporaryCards;
     }
-    public HashSet<CardData> PermanentPermanentCards
+    public HashSet<CardData> EquippedCards
     {
-        get => permanentCards;
+        get => equippedCards;
     }
     void Start()
     {
@@ -32,14 +32,30 @@ public class CardCollection : MonoBehaviour
 
     }
 
-    public void AddToCollection(CardData card)
+
+    public void EquipCards(CardData card)
+    {
+        equippedCards.Clear();
+        CardSystem system = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        if (card == null) return;
+
+        if (!equippedCards.Contains(card) && equippedCards.Count < 4 && system.CheckUnlocked(card)) 
+        {
+            equippedCards.Add(card);
+        }
+
+    }
+
+
+    // Logisk fel. Behöver fixas. !!!!!!
+    public void AddToTempCollection(CardData card)
     {
         CardSystem system = GameObject.Find("CardSystem").GetComponent<CardSystem>();
 
         if (card == null) return;
-        if (system.CheckUnlocked(card) && !(permanentCards.Contains(card)))
+        if (system.CheckUnlocked(card))
         {
-            permanentCards.Add(card);
+            
         }
         else if(!temporaryCards.Contains(card)) 
         {
@@ -61,9 +77,9 @@ public class CardCollection : MonoBehaviour
 
     public void RemoveFromPermanentCollection(Card card)
     {
-        if (permanentCards.Contains(card.CardData))
+        if (equippedCards.Contains(card.CardData))
         {
-            permanentCards.Remove(card.CardData);
+            equippedCards.Remove(card.CardData);
         }
     }
 
@@ -72,12 +88,12 @@ public class CardCollection : MonoBehaviour
         return temporaryCards.ToList();
     }
 
-    public List<CardData> GetPermanentCardCollection()
+    public List<CardData> GetEquippedCards()
     {
-        return permanentCards.ToList();
+        return equippedCards.ToList();
     }
 
-    public void ResetTemporaryCards()
+    public void ClearTemporaryCards()
     {
         temporaryCards.Clear();
 
