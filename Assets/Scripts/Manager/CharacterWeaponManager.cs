@@ -5,15 +5,19 @@ public class CharacterWeaponManager : MonoBehaviour
 {
     [SerializeField] public GameObject currentRightHandWeapon;
     [SerializeField] public GameObject currentLeftHandWeapon;
+    [SerializeField] public WeaponData equippedWeapon;
+
+    [SerializeField] public WeaponData currentActiveWeaponData;
+    [SerializeField] public WeaponData lastActiveWeaponData; 
+
+    [SerializeField] public WeaponData unarmedWeaponData;
+
+    [HideInInspector] public DamageTrigger rightDamageTrigger;
+    [HideInInspector] public DamageTrigger leftDamageTrigger;
+    [HideInInspector] public WeaponData currentRightWeaponData;
+    [HideInInspector] public WeaponData currentLeftWeaponData;
 
     protected bool holsterd = false;
-    public DamageTrigger rightDamageTrigger;
-    public DamageTrigger leftDamageTrigger;
-
-    public WeaponData currentRightWeaponData;
-    public WeaponData currentLeftWeaponData;
-
-    public WeaponData currentActiveWeaponData;
 
     protected CharacterSoundFXManager characterSoundFXManager;
     protected float finalDamage;
@@ -28,7 +32,6 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             rightDamageTrigger = currentRightHandWeapon.GetComponent<DamageTrigger>();
             currentRightWeaponData = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData;
-
             currentActiveWeaponData = currentRightWeaponData;
         }
         else
@@ -45,6 +48,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             Debug.Log("Current left hand weapon is not assigned in the inspector.");
         }
+
     }
 
     public virtual void Update()
@@ -57,11 +61,17 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             currentLeftHandWeapon.SetActive(false);
             currentRightHandWeapon.SetActive(false);
+
+            lastActiveWeaponData = currentActiveWeaponData;
+            currentActiveWeaponData = unarmedWeaponData;
         }
         else
         {
             currentLeftHandWeapon.SetActive(true);
             currentRightHandWeapon.SetActive(true);
+
+            currentActiveWeaponData = lastActiveWeaponData;
+            lastActiveWeaponData = unarmedWeaponData;
         }
 
 
