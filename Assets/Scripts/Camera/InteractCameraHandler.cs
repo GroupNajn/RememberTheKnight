@@ -18,16 +18,15 @@ public class InteractCameraHandler : MonoBehaviour
     {
         cameraAnimator = GetComponentInChildren<Animator>();
 
-        interactCam = GameObject.FindGameObjectWithTag("InteractCamera");
+        interactCam = GameObject.FindGameObjectWithTag("ShopCamera");
         cinemachineInteractCam = interactCam.GetComponent<CinemachineCamera>();
         cinemachinePositionComposer = cinemachineInteractCam.GetComponent<CinemachinePositionComposer>();
-
-        Debug.Log($"interactCam {interactCam.name}, cinemachineInteractCam {cinemachineInteractCam.name}");
     }
 
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             InteractCamReset();
@@ -42,11 +41,8 @@ public class InteractCameraHandler : MonoBehaviour
             return;
         }
 
-        this.target = target; 
+        this.target = target;
 
-        Debug.Log($"{cinemachineInteractCam.transform}");
-        Debug.Log($"{cinemachineInteractCam.transform.rotation}");
-        Debug.Log($"{preset.rotation}");
         cinemachineInteractCam.Follow = this.target;
         cinemachineInteractCam.transform.rotation = Quaternion.Euler(preset.rotation);
         cinemachinePositionComposer.Composition.ScreenPosition = preset.screenPosition;
