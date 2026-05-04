@@ -10,38 +10,29 @@ public partial class ThreatAction : Action
 {
     [SerializeReference] public BlackboardVariable<float> ThreatValue = new(0);
     [SerializeReference] public BlackboardVariable<GameObject> Self;
-    [SerializeReference] public BlackboardVariable<GameObject> Target;
-    [SerializeReference] public BlackboardVariable<Transform> NavTarget;
+    [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<float> Radius;
 
     [SerializeReference] public BlackboardVariable<float> AttackRadius = new(1);
+    [SerializeReference] public BlackboardVariable<float> DecaySeconds = new(1);
 
     protected override Status OnStart()
     {
         if (Target.Value == null || Self.Value == null) return Status.Failure;
 
-        var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.transform.position);
+        var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.position);
+        dist -= AttackRadius.Value;
 
-        if (dist > Radius)
-        {
-            ThreatValue.Value = 0;
-        }
-        else
-        { ThreatValue.Value = MathF.Round(1 - (dist / (Radius.Value + AttackRadius)), 2); /*Debug.Log($"current threat{ThreatValue.Value}");*/ }
+        float newThreat = dist <= Radius
+            ? Mathf.Min(1, MathF.Round(1 - (dist / Radius.Value), 2))
+            : 0;
 
-        if (NavTarget.Value != null)
-        {
-            bool isNotInSight =
-                !Mathf.Approximately(Target.Value.transform.position.x, Target.Value.transform.position.x) &&
-                !Mathf.Approximately(Target.Value.transform.position.z, Target.Value.transform.position.z);
-            if (isNotInSight)
-            {
-                bool isAggro = ThreatValue.Value > 0.4f;
-                bool isAlert = ThreatValue.Value > 0.2f;
-                ThreatValue.Value = isAggro ? 0.4f : ThreatValue.Value;
-                ThreatValue.Value = isAlert ? 0.2f : ThreatValue.Value;
-            }
-        }
+
+        ThreatValue.Value = newThreat >= ThreatValue.Value
+            ? newThreat
+            : Mathf.Lerp(ThreatValue.Value, newThreat, Time.deltaTime / DecaySeconds.Value);
+
+        ThreatValue.Value = MathF.Round(ThreatValue.Value, 2);
         return Status.Success;
     }
 
