@@ -60,7 +60,7 @@ public class CharacterSoundFXManager : MonoBehaviour
     }
     public virtual void PlayAttackGrunt()
     {
-        if (damageGrunts.Length > 0)
+        if (attackGrunts.Length > 0)
         {  
             audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(attackGrunts), 0.7f);
         }

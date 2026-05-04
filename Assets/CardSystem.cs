@@ -18,6 +18,8 @@ public class CardSystem : MonoBehaviour
     }
     private CardContract cardContract;
 
+    public int UnlockedTier { get => unlockedTier; }
+
 
     private int unlockedTier = (int)Tier.I;
     private int unlockableTier = (int)Tier.III;
@@ -25,6 +27,7 @@ public class CardSystem : MonoBehaviour
     void Start()
     {
         InitializeHashSets();
+        InitializeLockCards();
         //UnlockAllTierOneToThreeTemporary();
 
 
@@ -44,14 +47,23 @@ public class CardSystem : MonoBehaviour
 
     //Method to be called after a contract is signed and is no longer null.
     // To set the Unlocked Cards at start. 
+    // INFO AFTER VERTICAL SLICE 2. METHOD SHOULD NO LONGER UNLOCK UP TO A TIER.
     public void UnlockCardsAfterSigningContract(CardContract contract)
     {
+        unlockedCards.Clear();
+        hashUnlocked.Clear();
+        InitializeLockCards();
+
         foreach (CardData cardData in allCards)
         {
             if (cardData.cardFamily == contract.CardFamily && (int)cardData.cardTier <= unlockableTier)
             {
-                unlockedCards.Add(cardData);
-                hashUnlocked.Add(cardData);
+                if (!unlockedCards.Contains(cardData) && !hashUnlocked.Contains(cardData))
+                {
+                    unlockedCards.Add(cardData);
+                    hashUnlocked.Add(cardData);
+
+                }
 
             }
         }
@@ -64,90 +76,123 @@ public class CardSystem : MonoBehaviour
         }
     }
 
-    // Need the reference on the presumed created and signed contract Object.
-    // Adds a new cardData to unlocked cards list.
-    // And increases the unlocked-Tier condition variable. 
-    public void UnlockDroppedCardInSignedFamily(CardData card)
+    public void InitializeLockCards()
     {
-        if ((int)card.cardTier == unlockedTier + 1 && card.cardFamily == cardContract.CardFamily)
+        foreach (CardData cardData in allCards)
         {
-            unlockedCards.Add(card);
-            unlockedTier++;
-            Mathf.Clamp(unlockedTier, (int)Tier.I, (int)Tier.XIII);
-        }
+            if (cardData.cardTier == Tier.I)
+            {
+                if (!unlockedCards.Contains(cardData) && !hashUnlocked.Add(cardData))
+                {
+                    unlockedCards.Add(cardData);
+                    hashUnlocked.Add(cardData);
 
-    }
-
-
-    //Method is to be used in unison when a card is picked up, to check if the 
-    //The condition to increase the unlockableTier, it checks if the card level is 1 above
-    // the current unlockableTier, and also if the card is the same family as the cardContract. 
-    public bool CheckIncreaseUnlockTier(CardData card)
-    {
-        if ((int)card.cardTier == unlockableTier + 1 && card.cardFamily == cardContract.CardFamily)
-        {
-            unlockableTier++;
-            return true;
-        }
-        else return false;
-    }
-
-
-    //Basic Method to increment unlockableTier with an int amount.
-    //Clamps it between the Min and Max Tiers.
-    public void IncreaseUnlockTier(int levelIncrease)
-    {
-        unlockableTier += levelIncrease;
-        Mathf.Clamp(unlockableTier, (int)Tier.I, (int)Tier.XIII);
-    }
-
-
-
-    // Checks if a card is unlocked. 
-    public  bool CheckUnlocked(CardData card)
-    {
-        return hashUnlocked.Contains(card);
-    }
-
-
-    /*<summary> Method is a test method used for the GameHabitat game show.
-     *  It is to be removed later when the proper implementation of the the card signing contract is finished
-     * and this test method is no longer valid. 
-     * 
-     * 
-     * 
-     */
-    public void UnlockAllTierOneToThreeTemporary()
-    {
-        foreach (CardData card in allCards)
-        {
-            if ((int)card.cardTier > 4) continue;
-
-            unlockedCards.Add(card);
-
-        }
-        Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
-    }
-
-    //Initializes the The HashSet that is to be used outside of the Class itself.
-    // To avoide duplicates in other algorithms, to prevent unwanted behavior. 
-    private void InitializeHashSets()
-    {
-        foreach (CardData card in allCards)
-        {
-            hashAllCards.Add(card);
+                }
+            }
         }
     }
 
-    public IReadOnlyList<CardData> GetUnlockedCards()
+    public List <CardData> ReturnAllCardsOneTierAbove()
     {
-        return unlockedCards;
+        List<CardData> tempList = new List <CardData>();
+
+        foreach(CardData card in allCards)
+        {
+            if((int)card.cardTier == unlockedTier + 1)
+            {
+                tempList.Add(card);
+            }
+        } 
+        return tempList;
     }
 
-    public IReadOnlyList<CardData> GetAllCards()
+
+// Need the reference on the presumed created and signed contract Object.
+// Adds a new cardData to unlocked cards list.
+// And increases the unlocked-Tier condition variable. 
+public void UnlockDroppedCardInSignedFamily(CardData card)
+{
+    if ((int)card.cardTier == unlockedTier + 1 && card.cardFamily == cardContract.CardFamily)
     {
-        return allCards;
+        unlockedCards.Add(card);
+        unlockedTier++;
+        Mathf.Clamp(unlockedTier, (int)Tier.I, (int)Tier.XIII);
     }
+
+}
+
+
+//Method is to be used in unison when a card is picked up, to check if the 
+//The condition to increase the unlockableTier, it checks if the card level is 1 above
+// the current unlockableTier, and also if the card is the same family as the cardContract. 
+public bool CheckIncreaseUnlockTier(CardData card)
+{
+    if ((int)card.cardTier == unlockableTier + 1 && card.cardFamily == cardContract.CardFamily)
+    {
+        unlockableTier++;
+        return true;
+    }
+    else return false;
+}
+
+
+//Basic Method to increment unlockableTier with an int amount.
+//Clamps it between the Min and Max Tiers.
+public void IncreaseUnlockTier(int levelIncrease)
+{
+    unlockableTier += levelIncrease;
+    Mathf.Clamp(unlockableTier, (int)Tier.I, (int)Tier.XIII);
+}
+
+
+
+// Checks if a card is unlocked. 
+public bool CheckUnlocked(CardData card)
+{
+    return hashUnlocked.Contains(card);
+}
+
+
+/*<summary> Method is a test method used for the GameHabitat game show.
+ *  It is to be removed later when the proper implementation of the the card signing contract is finished
+ * and this test method is no longer valid. 
+ * 
+ * 
+ * 
+ */
+public void UnlockAllTierOneToThreeTemporary()
+{
+    foreach (CardData card in allCards)
+    {
+        if ((int)card.cardTier > 4) continue;
+
+        unlockedCards.Add(card);
+
+    }
+    Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
+}
+
+//Initializes the The HashSet that is to be used outside of the Class itself.
+// To avoide duplicates in other algorithms, to prevent unwanted behavior. 
+private void InitializeHashSets()
+{
+    foreach (CardData card in allCards)
+    {
+        hashAllCards.Add(card);
+    }
+}
+
+public IReadOnlyList<CardData> GetUnlockedCards()
+{
+    return unlockedCards;
+}
+
+public IReadOnlyList<CardData> GetAllCards()
+{
+    return allCards;
+}
+
+
 
 
 

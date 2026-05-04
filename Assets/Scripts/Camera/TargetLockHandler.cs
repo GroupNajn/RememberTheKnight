@@ -22,6 +22,8 @@ public class TargetLockHandler : MonoBehaviour
     private float lostSightTimer = 0f;
     public float loseSightDelay = 0.1f;
 
+    public bool AutomaticlyFindNewTarget = true;
+
     [Range(0f, 1f)]
     public float minDotProduct = 0.5f;
 
@@ -94,7 +96,10 @@ public class TargetLockHandler : MonoBehaviour
             }
             if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
             {
-                Unlock();
+                if (AutomaticlyFindNewTarget)
+                    FindTarget();
+                else
+                    Unlock();
             }
             if (currentTarget == null) { Unlock(); }
         }

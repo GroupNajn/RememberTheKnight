@@ -19,18 +19,19 @@ public enum Tier
     XII = 12,
     XIII = 13,
 }
+[System.Flags]
 
 public enum LootTables { 
     None = 0,
-    Swords = 1 << 1,
-    Cups = 1 << 2,
-    Wands = 1 << 3,
-    Pentacles = 1 << 4,
-    Page = 1 << 5,
-    Knight = 1 << 6,
-    Queen = 1 << 7,
-    King = 1 << 8,
-    CourtOnly = 1 << 9
+    Swords = 1 << 0,
+    Cups = 1 << 1,
+    Wands = 1 << 2,
+    Pentacles = 1 << 3,
+    Page = 1 << 4,
+    Knight = 1 << 5,
+    Queen = 1 << 6,
+    King = 1 << 7,
+    CourtOnly = 1 << 8
 
 }
 

@@ -42,6 +42,9 @@ public class CardData : ScriptableObject
 
     [SerializeField] public Vector3 weaponSize = Vector3.zero;
 
+    [Header("Drop Weight")]
+    [SerializeField] public float weight = 5f;
+
     [Header("Card States")]
     [SerializeField] public CardFamily cardFamily;
     [SerializeField] public Tier cardTier;

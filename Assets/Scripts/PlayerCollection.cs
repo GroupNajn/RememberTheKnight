@@ -20,23 +20,33 @@ public class PlayerCollection : MonoBehaviour
     void Start()
     {
         Event_System.instance.OnContractSign += SignContract;
-        Event_System.instance.OnStatsApplied += ReciveSelectedCardList;
+        Event_System.instance.OnStatsApplied += EquipCard;
         Event_System.instance.OnLootPickedUp += PickupLoot;
+        Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
     }
     private void OnDestroy()
     {
         Event_System.instance.OnContractSign -= SignContract;
-        Event_System.instance.OnStatsApplied -= ReciveSelectedCardList;
+        Event_System.instance.OnStatsApplied -= EquipCard;
         Event_System.instance.OnLootPickedUp -= PickupLoot;
+        Event_System.instance.OnPlayerDeath -= ClearTemporaryCards;
     }
 
     public void InsertIntoCardCollection(CardData card)
     {
-        cardCollection.AddToCollection(card);
+        cardCollection.AddToTempCollection(card);
+    }
+
+    public void EquipCard(List<CardData> cards)
+    {
+        foreach (CardData cardData in cards)
+        {
+            cardCollection.EquipCards(cardData);
+        }
     }
     public void ReciveSelectedCardList(List<CardData> cards)
     {
-        foreach(CardData card in cards)
+        foreach (CardData card in cards)
         {
             InsertIntoCardCollection(card);
         }
@@ -48,13 +58,13 @@ public class PlayerCollection : MonoBehaviour
 
     public List<CardData> ReturnPermanentCardCollection()
     {
-        return cardCollection.GetPermanentCardCollection();
+        return cardCollection.GetEquippedCards();
     }
 
     public void SignContract(CardFamily cardFamily)
     {
 
-        if (cardContract != null) return; 
+        if (cardContract != null) return;
 
 
         cardContract = new CardContract(cardFamily);
@@ -70,12 +80,18 @@ public class PlayerCollection : MonoBehaviour
 
     public void PickupLoot(Loot loot)
     {
-        if(loot is Card card)
+        if (loot is Card card)
         {
             InsertIntoCardCollection(card.CardData);
 
-        } 
+        }
 
+    }
+
+
+    public void ClearTemporaryCards()
+    {
+        cardCollection.ClearTemporaryCards();
     }
 
     public void BreakContract()
