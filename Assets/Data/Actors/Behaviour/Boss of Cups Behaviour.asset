@@ -31,6 +31,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4680590836918649247
       type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -141,6 +143,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4680590836918649248
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -253,7 +257,7 @@ MonoBehaviour:
   - rid: 4680590860534154082
   - rid: 4680590860534154165
   - rid: 4680590860651855896
-  m_VersionTimestamp: 639129894140685820
+  m_VersionTimestamp: 639135040926162679
   m_SerializedVersion: 2
   m_DebugInfo: {fileID: -2234858250445009814}
   m_RuntimeGraph: {fileID: 8778428599279342641}
@@ -323,6 +327,11 @@ MonoBehaviour:
         m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
+    - Name: ShouldCancel
+      Type:
+        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
     - Name: BreakingEmotes
       Type:
         m_SerializableType: System.Collections.Generic.List`1[[System.String, mscorlib,
@@ -346,15 +355,21 @@ MonoBehaviour:
       Tooltip: 
     NamedChildren: []
     IsPlaceholder: 0
-  - Name: Execute Attack
-    Story: Executes [AttackName] in [Self] and waits until attack is finished
-    RuntimeTypeString: AttackAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+  - Name: Execute Animation
+    Story: Sets animation trigger [triggerName] in [Self] and waits until animation
+      [stateName] is finished
+    RuntimeTypeString: ExecuteAnimationAction, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 10383968662664896981
       m_Value1: 11643276066104144830
     Variables:
-    - Name: AttackName
+    - Name: TriggerName
+      Type:
+        m_SerializableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: StateName
       Type:
         m_SerializableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
@@ -364,14 +379,14 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Animator, UnityEngine.AnimationModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Tooltip: 
-    - Name: IsAttacking
+    - Name: OriginName
       Type:
-        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        m_SerializableType: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
-    - Name: SecondsTimeout
+    - Name: IsWaiting
       Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        m_SerializableType: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
     NamedChildren: []
@@ -491,9 +506,9 @@ MonoBehaviour:
   m_CommandBuffer:
     m_Commands: []
   m_SubgraphsInfo: []
-  m_BlackboardMissingManagedRef: 0
-  m_GraphMissingManagedRef: 0
-  m_HasMissingTypeInManagedRef: 0
+  m_BlackboardMissingManagedRef: 1
+  m_GraphMissingManagedRef: 1
+  m_HasMissingTypeInManagedRef: 1
   references:
     version: 2
     RefIds:
@@ -2141,22 +2156,6 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: []
-    - rid: 4680590860534154111
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: 20
-    - rid: 4680590860534154113
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: 20
     - rid: 4680590860534154129
       type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2326,6 +2325,8 @@ MonoBehaviour:
           rid: 4680590860534153738
         IsNavigating:
           rid: 4680590860534153809
+        ShouldCancel:
+          rid: 6476584285533634704
         BreakingEmotes:
           rid: 4680590860534153810
     - rid: 4680590860651856015
@@ -2397,7 +2398,7 @@ MonoBehaviour:
         m_Parent:
           rid: 4680590860651856017
         m_Children:
-        - rid: 4680590860651856023
+        - rid: -2
         - rid: 4680590860651856024
         m_RegisteredObservers: []
     - rid: 4680590860651856020
@@ -2411,7 +2412,7 @@ MonoBehaviour:
         m_Parent:
           rid: 4680590860651856017
         m_Children:
-        - rid: 4680590860651856025
+        - rid: -2
         - rid: 4680590860651856024
         m_RegisteredObservers: []
     - rid: 4680590860651856021
@@ -2443,24 +2444,6 @@ MonoBehaviour:
           rid: 4680590860651855996
         ComparisonValue:
           rid: 4680590860651856028
-    - rid: 4680590860651856023
-      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 3169445344491217090
-          m_Value1: 17372003887534588071
-        Graph:
-          rid: 4680590836918649251
-        m_Parent:
-          rid: 4680590860651856019
-        AttackName:
-          rid: 4680590860534153742
-        Self:
-          rid: 4680590860651856029
-        IsAttacking:
-          rid: 4680590860534153741
-        SecondsTimeout:
-          rid: 4680590860534154111
     - rid: 4680590860651856024
       type: {class: WaitForAnyComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2474,24 +2457,6 @@ MonoBehaviour:
         - rid: 4680590860651856020
         m_Child:
           rid: 4680590860651856030
-    - rid: 4680590860651856025
-      type: {class: AttackAction, ns: , asm: Assembly-CSharp}
-      data:
-        ID:
-          m_Value0: 11604631467613452097
-          m_Value1: 10789956358547598730
-        Graph:
-          rid: 4680590836918649251
-        m_Parent:
-          rid: 4680590860651856020
-        AttackName:
-          rid: 4680590860534153743
-        Self:
-          rid: 4680590860651856031
-        IsAttacking:
-          rid: 4680590860534153741
-        SecondsTimeout:
-          rid: 4680590860534154113
     - rid: 4680590860651856026
       type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2520,16 +2485,6 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 0
-    - rid: 4680590860651856029
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 4680590860534153737
     - rid: 4680590860651856030
       type: {class: SetVariableValueAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2544,13 +2499,11 @@ MonoBehaviour:
           rid: 4680590860534153744
         Value:
           rid: 4680590860534154219
-    - rid: 4680590860651856031
-      type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 6476584285533634704
+      type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 0
           m_Value1: 0
         Name: 
-        m_Value: {fileID: 0}
-        m_LinkedVariable:
-          rid: 4680590860534153737
+        m_Value: 0
