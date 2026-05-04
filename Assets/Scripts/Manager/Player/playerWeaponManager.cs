@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -5,14 +6,15 @@ using UnityEngine.UI;
 public class PlayerWeaponManager : CharacterWeaponManager
 {
     public GameObject CurrentRightHandWeapon => currentRightHandWeapon;
+    public System.Action<WeaponData> OnWeaponChanged;
 
     PlayerController playerController;
     Animator playerAnimator;
     PlayerCombatManager playerCombatManager;
     PlayerStats playerStats;
 
-    [SerializeField] GameObject unarmedWeapon;
-    Image weaponIconImage;
+    [SerializeField] public List<GameObject> Weapons;
+    int currentWeaponIndex = 0;
 
     float damageAmount
     {
@@ -45,33 +47,49 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator = GetComponent<Animator>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
-
-        weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage")?.GetComponent<Image>();
     }
     public void OnHolster(InputValue action)
     {
         holsterd = !holsterd;
 
-        if (holsterd)
-        {
-            if (!weaponIconImage)
-            {
-                weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage").GetComponent<Image>();
-            }
-
-            weaponIconImage.sprite = unarmedWeapon.GetComponent<WeaponStats>().WeaponData.WeaponIcon;
-        }
-        else
-        {
-            if (!weaponIconImage)
-            {
-                weaponIconImage = GameObject.FindGameObjectWithTag("WeaponIconImage").GetComponent<Image>();
-            }
-
-            weaponIconImage.sprite = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData.WeaponIcon;
-        }
-
         HolsterCheck();
+    }
+
+    public void SwitchWeapon()
+    {
+        if (Weapons.Count == 0) return;
+
+        if (Holsterd)
+        {
+            OnHolster(null);
+        }
+
+        currentWeaponIndex %= Weapons.Count;
+
+        // Stäng av alla
+        foreach (var weapon in Weapons)
+        {
+            weapon.SetActive(false);
+        }
+
+        GameObject currentWeapon = Weapons[currentWeaponIndex];
+        currentWeapon.SetActive(true);
+
+        var stats = currentWeapon.GetComponent<WeaponStats>();
+
+        currentRightHandWeapon = currentWeapon;
+        currentActiveWeaponData = stats.WeaponData;
+        currentRightWeaponData = stats.WeaponData;
+        rightDamageTrigger = currentWeapon.GetComponent<DamageTrigger>();
+
+        playerAnimator.runtimeAnimatorController = stats.WeaponData.WeaponAnimator;
+        playerAnimator.speed = stats.WeaponData.AnimatorSpeed;
+
+        equippedWeapon = stats.WeaponData;
+        OnWeaponChanged?.Invoke(equippedWeapon);
+
+        // gå vidare till nästa för nästa interaction
+        currentWeaponIndex = (currentWeaponIndex + 1) % Weapons.Count;
     }
 
     public override void DeactivateRightDamageCollider()
