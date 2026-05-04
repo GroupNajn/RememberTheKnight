@@ -1,9 +1,12 @@
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
 {
     [SerializeField] private InteractCameraPreset preset;
     private UIManager playerUIManager;
+    [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
 
     private bool canShowUI = false;
 
@@ -14,11 +17,19 @@ public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
         playerUIManager = FindFirstObjectByType<UIManager>();
         interactUI_Controller = GetComponent<InteractUI_Controller>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+        stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
     }
     public void Interact()
     {
-        playerUIManager.OpenCardSelectUI();
         interactCameraHandler.InteractCamSwitch(transform, preset);
+        StartCoroutine(OpenUI());
+    }
+
+   IEnumerator OpenUI()
+    {
+        yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
+
+        playerUIManager.OpenCardSelectUI();
     }
 
     public InteractableUIData GetUIData()
