@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class InteractCameraHandler : MonoBehaviour
 {
+
     private Animator cameraAnimator;
 
     private Transform target;
-    private Transform playerTransform;
 
     [Header(header: "Cameras")]
     private GameObject interactCam;
@@ -23,13 +23,6 @@ public class InteractCameraHandler : MonoBehaviour
         cinemachinePositionComposer = cinemachineInteractCam.GetComponent<CinemachinePositionComposer>();
 <<<<<<< HEAD
 =======
-
-        if (playerTransform == null)
-        {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerLookAt");
-
-            cinemachineInteractCam.Follow = playerTransform;
-        }
 
         Debug.Log($"interactCam {interactCam.name}, cinemachineInteractCam {cinemachineInteractCam.name}");
 >>>>>>> parent of d7d584f6 (Reverted last changes!)
@@ -65,9 +58,7 @@ public class InteractCameraHandler : MonoBehaviour
 
     public void InteractCamReset()
     {
-        target = playerTransform;
-        cinemachineInteractCam.Follow = playerTransform;
-        cinemachineInteractCam.transform.position = playerTransform.position;
+        target = null;
         cinemachinePositionComposer.Composition.ScreenPosition = Vector2.zero;
         cinemachinePositionComposer.transform.rotation = Quaternion.identity;
         cameraAnimator.Play(stateName: "FreeLookCamera");
