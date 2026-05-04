@@ -18,6 +18,8 @@ public class CardSystem : MonoBehaviour
     }
     private CardContract cardContract;
 
+    public int UnlockedTier { get => unlockedTier; }
+
 
     private int unlockedTier = (int)Tier.I;
     private int unlockableTier = (int)Tier.III;
@@ -48,6 +50,10 @@ public class CardSystem : MonoBehaviour
     // INFO AFTER VERTICAL SLICE 2. METHOD SHOULD NO LONGER UNLOCK UP TO A TIER.
     public void UnlockCardsAfterSigningContract(CardContract contract)
     {
+        unlockedCards.Clear();
+        hashUnlocked.Clear();
+        InitializeLockCards();
+
         foreach (CardData cardData in allCards)
         {
             if (cardData.cardFamily == contract.CardFamily && (int)cardData.cardTier <= unlockableTier)

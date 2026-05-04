@@ -1,13 +1,6 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
-using System.Runtime.InteropServices;
-using UnityEditor.UIElements;
-using Unity.Collections;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
-
 
 // Script made by Henric some random date
 
@@ -22,7 +15,21 @@ public class LootManager : MonoBehaviour
     [SerializeField] List<Loot> rareLootTable;
     [SerializeField] List<Loot> EpicLootTable;
     [SerializeField] List<Loot> LegendaryLootTable;
-    public HashSet<Loot> DroppedLoot {get {return droppedLoot;}}
+
+    [Header("New Loot Table")]
+
+    [SerializeField] List<Soul> newSoulTable;
+    [SerializeField] List<CardData> newCommonLootTable;
+    [SerializeField] List<CardData> newUncommonLootTable;
+    [SerializeField] List<CardData> newrareLootTable;
+    [SerializeField] List<CardData> newEpicLootTable;
+    [SerializeField] List<CardData> newLegendaryLootTable;
+
+
+
+
+
+    public HashSet<Loot> DroppedLoot { get { return droppedLoot; } }
     HashSet<Loot> droppedLoot;
     [SerializeField] Loot soulPrefab;
     [SerializeField] List<float> amountChanceTable;
@@ -42,11 +49,11 @@ public class LootManager : MonoBehaviour
     [SerializeField] private int maxLootAmount = 3;
 
     [Header("Upgrae Tier Modifiers")]
-    [SerializeField] private float tierUpgradeModifier = 2f;
-    [SerializeField] private float UncommonUpgradeTierModifier = 2f;
-    [SerializeField] private float RareTierUpgradeModifier = 2f;
-    [SerializeField] private float EpicTierUpgradeModifier = 2f;
-    [SerializeField] private float LegendaryTierUpgradeModifier = 2f;
+    [SerializeField] private float tierUpgradeModifier = 2.0f;
+    [SerializeField] private float UncommonUpgradeTierModifier = 1.5f;
+    [SerializeField] private float RareTierUpgradeModifier = 1.0f;
+    [SerializeField] private float EpicTierUpgradeModifier = 0.5f;
+    [SerializeField] private float LegendaryTierUpgradeModifier = 0.25f;
 
 
     /* TODO: Need to a way to add logic to instantiate a normal soul or a healing/charged soul.
@@ -98,7 +105,7 @@ public class LootManager : MonoBehaviour
 
     private void Start()
     {
-      
+
 
         if (Event_System.instance == null)
         {
@@ -118,7 +125,7 @@ public class LootManager : MonoBehaviour
 
     // Transforms the players luck float values to actual procentage. 
     // E.G 3 float will become 0.03, 3% 
-    private float GetScaledLuckChance() 
+    private float GetScaledLuckChance()
     {
         if (playerStats == null)
             playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
@@ -130,57 +137,7 @@ public class LootManager : MonoBehaviour
         // Exempel : 5f * (2f / 100f) = 0.1f = 10% 
     }
 
-    private bool RollForRarityUpgrade()
-    {
-        float chance = GetScaledLuckChance();
 
-        // Roll between 1.0 - 0.0.
-        // 
-
-        return Random.value < chance;
-    }
-
-    private RarityTier RollRarityTierUpgrade(RarityTier currentTier)
-    {
-        // if false, no upgrade at all
-        if (!RollForRarityUpgrade())
-            return currentTier;
-
-        // if successful atleast one RarityTier upgrade
-        int upgradeAmount = 1;
-
-        float chance = GetScaledLuckChance();
-        float roll = Random.Range(0f, 100f);
-
-        // Extra chance for RarityUpgrade
-        if (roll < chance)
-        {
-            upgradeAmount += 1;
-        }
-
-        // Another roll if luck is really high. 500%
-        if (chance > 5f)
-        {
-            float secondRoll = Random.Range(0f, 100f);
-
-            if (secondRoll < chance - 5f)
-            {
-                upgradeAmount += 1;
-            }
-        }
-
-        // The tier upgrade. 
-        int currentTierValue = (int)currentTier;
-        int newTierValue = currentTierValue + upgradeAmount;
-
-        int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
-
-        newTierValue = Mathf.Clamp(newTierValue, 1, maxTier);
-
-        return (RarityTier)newTierValue;
-    }
-
-    
     private int RollForMultipleLoot()
     {
         float chance = GetScaledLuckChance() * multipleLootModifier;
@@ -200,15 +157,101 @@ public class LootManager : MonoBehaviour
         return amount;
     }
 
-    public void TryToDropLoot(RarityTier rarityTier)
+    private List<CardData> FilterLoot(LootTables LootProfile)
     {
-        RarityTier newTier = RollRarityTierUpgrade(rarityTier);
+        var result = new List<CardData>();
+        var cards = cardSystem.GetAllCards();
 
+        foreach (CardData card in cards)
+        {
+            if (IsFamilyAllowed(card.cardFamily, LootProfile))
+            {
+                result.Add(card);
+            }
+        }
 
+        return result;
 
     }
 
- 
+    private bool IsFamilyAllowed(CardFamily family, LootTables profile)
+    {
+        switch (family)
+        {
+            case CardFamily.Cups:
+                return (profile & LootTables.Cups) != 0;
+
+            case CardFamily.Swords:
+                return (profile & LootTables.Swords) != 0;
+
+            case CardFamily.Wands:
+                return (profile & LootTables.Wands) != 0;
+
+            case CardFamily.Pentacles:
+                return (profile & LootTables.Pentacles) != 0;
+
+            default:
+                return false;
+        }
+
+    }
+
+    private RarityTier RollRarityUpgrade(RarityTier baseRarity)
+    {
+        if (baseRarity == RarityTier.Legendary)
+            return RarityTier.Legendary;
+
+        float upgradeChance = GetUpgradeChance(baseRarity);
+
+        if (Random.value <= upgradeChance)
+        {
+            return baseRarity + 1;
+        }
+
+        return baseRarity;
+    }
+
+    private bool IsTierInsideRarity(Tier tier, RarityTier rarity)
+    {
+        return rarity switch
+        {
+            RarityTier.Common =>
+                tier >= Tier.I && tier <= Tier.III,
+
+            RarityTier.Uncommon =>
+                tier >= Tier.IV && tier <= Tier.V,
+
+            RarityTier.Rare =>
+                tier >= Tier.VI && tier <= Tier.VII,
+
+            RarityTier.Epic =>
+                tier >= Tier.VIII && tier <= Tier.IX,
+
+            RarityTier.Legendary =>
+            tier >= Tier.X,
+
+            _ => false
+        };
+    }
+
+
+    private float GetUpgradeChance(RarityTier rarity)
+    {
+        float luckChance = GetScaledLuckChance();
+
+        (float baseChance, float modifier) = rarity switch
+        {
+            RarityTier.Common => (0.20f, tierUpgradeModifier),
+            RarityTier.Uncommon => (0.15f, UncommonUpgradeTierModifier),
+            RarityTier.Rare => (0.11f, RareTierUpgradeModifier),
+            RarityTier.Epic => (0.08f, EpicTierUpgradeModifier),
+            RarityTier.Legendary => (0f, 0f),
+
+            _ => (0f, 0f)
+        };
+
+        return Mathf.Clamp01(baseChance + (luckChance * modifier));
+    }
 
 
 
@@ -260,7 +303,7 @@ public class LootManager : MonoBehaviour
             {
                 PrintPercentOnSelectedItem(current, totalWeight);
                 DropLoot(item, enemy);
-               
+
                 return;
             }
         }
@@ -322,7 +365,7 @@ public class LootManager : MonoBehaviour
     public void DropLoot(Loot item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
-        Instantiate(item, pos + new Vector3(0,0.5f,0), Quaternion.identity);
+        Instantiate(item, pos + new Vector3(0, 0.5f, 0), Quaternion.identity);
 
     }
 
@@ -341,7 +384,7 @@ public class LootManager : MonoBehaviour
             itemsInTable++;
             totalWeight += item.Weight;
         }
-        if(totalWeight < 100)
+        if (totalWeight < 100)
         {
             float missingWeight = (totalWeight - 100);
             float allocatWeight = Mathf.Abs(missingWeight) / itemsInTable;
@@ -351,7 +394,7 @@ public class LootManager : MonoBehaviour
 
     }
 
-   
+
 
 
 
