@@ -333,6 +333,7 @@ public class UIManager : MonoBehaviour
     public void CloseCardSelectUI()
     {
         cardSelectUI.SetActive(false);
+        interactCameraHandler.InteractCamReset();
 
         UIMenuActive = false;
         CheckUIState();
@@ -369,6 +370,7 @@ public class UIManager : MonoBehaviour
     public void CloseCardShopUI()
     {
         cardShopUI.SetActive(false);
+        interactCameraHandler.InteractCamReset();
 
         UIMenuActive = false;
         CheckUIState();

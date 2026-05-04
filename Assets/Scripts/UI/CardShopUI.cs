@@ -20,7 +20,6 @@ public class CardShopUI : MonoBehaviour
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
 
-
     void Awake()
     {
         uiSlots.AddRange(GetComponentsInChildren<CardSlotShopUI>(true));
@@ -87,6 +86,7 @@ public class CardShopUI : MonoBehaviour
 
         slot.SetSelected(true);
         purchasedCardData.Add(card);
+        Debug.Log($"Selected card: {card.name}");
     }
 
     public void OnConfirmSelection()
