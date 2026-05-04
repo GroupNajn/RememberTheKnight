@@ -130,7 +130,7 @@ public class LootManager : MonoBehaviour
         // Exempel : 5f * (2f / 100f) = 0.1f = 10% 
     }
 
-    private bool RollForTierUpgrade()
+    private bool RollForRarityUpgrade()
     {
         float chance = GetScaledLuckChance();
 
@@ -140,46 +140,47 @@ public class LootManager : MonoBehaviour
         return Random.value < chance;
     }
 
-    //private Tier RollTierUpgrade(Tier currentTier)
-    //{
-    //    if (!RollForTierUpgrade())
-    //        return currentTier;
+    private RarityTier RollRarityTierUpgrade(RarityTier currentTier)
+    {
+        // if false, no upgrade at all
+        if (!RollForRarityUpgrade())
+            return currentTier;
 
-    //    float chance = GetScaledLuckChance();
-    //    int nextTier = (int)currentTier;
+        // if successful atleast one RarityTier upgrade
+        int upgradeAmount = 1;
 
-    //    nextTier += 1;
-    //    float roll = Random.value;
+        float chance = GetScaledLuckChance();
+        float roll = Random.Range(0f, 100f);
 
-    //    if(roll < chance && chance <= 5 && chance >= 0)
-    //    {
+        // Extra chance for RarityUpgrade
+        if (roll < chance)
+        {
+            upgradeAmount += 1;
+        }
 
-    //    }
-    //    else if(roll < chance && chance <= 8 && chance > 5)
-    //    {
+        // Another roll if luck is really high. 500%
+        if (chance > 5f)
+        {
+            float secondRoll = Random.Range(0f, 100f);
 
-    //    }
-        
+            if (secondRoll < chance - 5f)
+            {
+                upgradeAmount += 1;
+            }
+        }
 
+        // The tier upgrade. 
+        int currentTierValue = (int)currentTier;
+        int newTierValue = currentTierValue + upgradeAmount;
 
-    //        int nextTier = (int)currentTier + 1;
-    //    int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
+        int maxTier = System.Enum.GetValues(typeof(Tier)).Length;
 
-    //    nextTier = Mathf.Clamp(nextTier, 1, maxTier);
+        newTierValue = Mathf.Clamp(newTierValue, 1, maxTier);
 
-    //    return (Tier)nextTier;
-    //}
+        return (RarityTier)newTierValue;
+    }
 
-    //private float ReturnChanceRange(float chance, int currentTier)
-    //{
-    //    if (chance <= 5 && chance >= 0) return currentTier;
-    //    else if (chance <= 8 && chance > 5) currentTier += 2;
-    //    else if (chance <= 11 && chance > 8) currentTier += 3;
-    //    else if (chance <= 15 && chance > 11) return currentTier += 4;
-    //    else if (chance <= 20 && chance > 15) return true;
-    //    else return Random.value < chance;
-    //}
-
+    
     private int RollForMultipleLoot()
     {
         float chance = GetScaledLuckChance() * multipleLootModifier;
@@ -199,9 +200,9 @@ public class LootManager : MonoBehaviour
         return amount;
     }
 
-    public void TryToDropLoot()
+    public void TryToDropLoot(RarityTier rarityTier)
     {
-        float chance = GetScaledLuckChance();
+        RarityTier newTier = RollRarityTierUpgrade(rarityTier);
 
 
 
