@@ -2383,7 +2383,7 @@ NavMeshAgent:
   m_Acceleration: 2
   avoidancePriority: 50
   m_AngularSpeed: 180
-  m_StoppingDistance: 3
+  m_StoppingDistance: 1.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2410,6 +2410,7 @@ MonoBehaviour:
   - rid: 4680590414493778374
   - rid: 4680590584804802816
   - rid: 4680590836336427159
+  - rid: 6699910492161573661
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -2431,7 +2432,7 @@ MonoBehaviour:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
         Name: threatRadius
-        m_Value: 10
+        m_Value: 20
     - rid: 4680590414493778374
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2458,6 +2459,14 @@ MonoBehaviour:
           m_Value1: 7703358295934630559
         Name: attackDelay
         m_Value: 0.1
+    - rid: 6699910492161573661
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 4042726441812549289
+          m_Value1: 3200433524896484858
+        Name: View Origin
+        m_Value: {fileID: 5225243620726015864}
 --- !u!136 &1294823646022744045
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2471,7 +2480,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 4352
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
@@ -2527,7 +2536,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.2
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
