@@ -13,7 +13,7 @@ public partial class RootMotionNavigateAction : Action
 {
     private static readonly int MovementSpeedHash = Animator.StringToHash("MovementSpeed");
     [SerializeReference] public BlackboardVariable<GameObject> Self;
-    [SerializeReference] public BlackboardVariable<GameObject> Target;
+    [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<bool> IsNavigating = new(false);
 
     [SerializeReference] public BlackboardVariable<List<string>> BreakingEmotes = new(new());
@@ -35,14 +35,14 @@ public partial class RootMotionNavigateAction : Action
 
         if (!navMeshAgent.isOnNavMesh) return Status.Failure;
 
-        var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.transform.position);
+        var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.position);
         if (dist <= navMeshAgent.stoppingDistance) return Status.Success;
 
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
 
-        navMeshAgent.SetDestination(Target.Value.transform.position);
-        lastTargetPos = Target.Value.transform.position;
+        navMeshAgent.SetDestination(Target.Value.position);
+        lastTargetPos = Target.Value.position;
         IsNavigating.Value = true;
         return Status.Running;
     }
@@ -56,13 +56,13 @@ public partial class RootMotionNavigateAction : Action
         navMeshAgent.nextPosition = Self.Value.transform.position;
 
         bool shouldUpdateDestination =
-            !Mathf.Approximately(lastTargetPos.x, Target.Value.transform.position.x) ||
-            !Mathf.Approximately(lastTargetPos.y, Target.Value.transform.position.y) ||
-            !Mathf.Approximately(lastTargetPos.z, Target.Value.transform.position.z);
+            !Mathf.Approximately(lastTargetPos.x, Target.Value.position.x) ||
+            !Mathf.Approximately(lastTargetPos.y, Target.Value.position.y) ||
+            !Mathf.Approximately(lastTargetPos.z, Target.Value.position.z);
 
 
-        if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.transform.position);
-        lastTargetPos = Target.Value.transform.position;
+        if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.position);
+        lastTargetPos = Target.Value.position;
 
 
         bool isEmoting = false;
@@ -92,10 +92,11 @@ public partial class RootMotionNavigateAction : Action
         }
 
         Vector3 direction = navMeshAgent.steeringTarget - navMeshAgent.nextPosition;
-        if (direction != Vector3.zero)
+        direction.Normalize();
+        Quaternion desiredRotation = Quaternion.LookRotation(direction);
+
+        if (Quaternion.Angle(Self.Value.transform.rotation, desiredRotation) > 5)
         {
-            direction.Normalize();
-            Quaternion desiredRotation = Quaternion.LookRotation(direction);
             Self.Value.transform.rotation = Quaternion.RotateTowards(
                 Self.Value.transform.rotation,
                 desiredRotation,

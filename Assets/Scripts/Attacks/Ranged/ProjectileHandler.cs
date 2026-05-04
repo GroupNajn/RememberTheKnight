@@ -25,12 +25,10 @@ public class ProjectileHandler : MonoBehaviour
 
         if (target != null)
         {
-            var firePointForwardXZ = new Vector2(transform.forward.x, transform.forward.z).normalized;
-            var targetDir = target.position - firePoint.position;
-            var targetXZ = new Vector2(targetDir.x, targetDir.z).normalized;
-            var angle = Mathf.Acos(Vector2.Dot(firePointForwardXZ, targetXZ));
+            var targetDir = (target.position - firePoint.position).normalized;
+            var angle = Mathf.Acos(Vector3.Dot(transform.forward, targetDir));
 
-            if (angle < Mathf.PI / 4)
+            if (angle < Mathf.Deg2Rad * 20)
             {
                 targetPosition = target.transform.position;
             }
@@ -50,7 +48,7 @@ public class ProjectileHandler : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
 
 
-        GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation, gameObject.transform);
+        GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation);
 
 
         projectileObject.GetComponent<Projectile>().direction = direction;
