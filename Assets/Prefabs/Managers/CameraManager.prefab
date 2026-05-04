@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2810024899164284025}
   - component: {fileID: 1300240723322709067}
   - component: {fileID: 7248184512295826886}
+  - component: {fileID: 6771474531113318718}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: Untagged
@@ -71,8 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006228b8ba2483b4c84c11ea342a5686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 0}
-  interactCam: {fileID: 0}
 --- !u!114 &2810024899164284025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +127,18 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerActionsMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6771474531113318718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296989383303517345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9691d47d569cc40a7e3fef465e2a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2067064291678456364
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,7 +643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7881062340228967127, guid: a9f798db1046b144b8aee69b191181e9, type: 3}
       propertyPath: HashOfParent.Array.data[2].Hash
-      value: 166128926
+      value: -875324363
       objectReference: {fileID: 0}
     - target: {fileID: 7881062340228967127, guid: a9f798db1046b144b8aee69b191181e9, type: 3}
       propertyPath: Instructions.Array.data[2].Camera
