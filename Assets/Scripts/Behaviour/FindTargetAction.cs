@@ -15,6 +15,29 @@ public partial class FindTargetAction : Action
     protected override Status OnStart()
     {
         if (Target.Value != null) { return Status.Success; }
+        var gameObjects = GameObject.FindGameObjectsWithTag(Tagname.Value);
+        if (gameObjects.Length > 0)
+        {
+            if (gameObjects.Length == 1)
+            {
+                Target.Value = gameObjects[0];
+                return Status.Success;
+            }
+            int shortestIndex = 0;
+            float shortestDistance = float.MaxValue;
+
+            for (int i = 0; i < gameObjects.Length; i++)
+            {
+                float distance = Vector3.Distance(Self.Value.transform.position, gameObjects[i].transform.position);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    shortestIndex = i;
+                }
+            }
+            Target.Value = gameObjects[shortestIndex];
+            return Status.Success;
+        }
         return Status.Running;
     }
 
