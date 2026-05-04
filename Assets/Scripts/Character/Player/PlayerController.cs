@@ -195,6 +195,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleAnimationInputs(bool isIdling)
     {
+        
         if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
         {
             PlayerAnimator.SetFloat("Y", currentInputMagnitude);
@@ -296,15 +297,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void CalculateInputMagnitude()
     {
-        bool isDodgeing = playerState.CurrentMoveState == MoveState.Dodging;
+        bool isDodgeingAndIdle = playerState.CurrentMoveState == MoveState.Dodging && playerLocomotionInput.MovementInput.magnitude == 0;
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
+        bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0;
         //==========================X + Y=========================
 
         float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
         if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn)
             targetMagnitude = 1.5f;
 
-        if (isIdling)
+
+        if (isIdling || isAttackingAndIdle || isDodgeingAndIdle)
         {
             targetMagnitude = 0f;
         }
@@ -313,7 +316,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (isIdling && playerLocomotionInput.MovementInput.x == 0)
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isAttackingAndIdle || isDodgeingAndIdle)
         {
             targetMagnitudeX = 0f;
         }
@@ -322,7 +325,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0)
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle )
         {
             targetMagnitudeY = 0f;
         }
