@@ -50,4 +50,9 @@ public class CupCanvas : MonoBehaviour
 
         usesText.text = $"{usesLeft}";
     }
+
+    private void OnDestroy()
+    {
+        UpdateCup(0, 100, 10);
+    }
 }

@@ -1,12 +1,10 @@
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 {
     [SerializeField] int sceneToLoadIndex;
     [SerializeField] bool preLoadScene = false;
-    
+
     private InteractUI_Controller interactUI_Controller;
     private bool canShowUI = false;
     string sceneName;
@@ -53,23 +51,23 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
-        
-        if(sceneToLoadIndex < 0)
+
+        switch (sceneToLoadIndex)
         {
-            UIData.InfoText = string.Empty;
+            case < 0:
+                UIData.InfoText = string.Empty;
+                break;
+            case 2:
+                UIData.InfoText = "Touch the crystal ball to return return to lobby.";
+                break;
+            case 3:
+                UIData.InfoText = "Touch the crystal ball to go to the shop.";
+                break;
+            default:
+                UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
+                break;
         }
-        else if (sceneToLoadIndex == 2)
-        {
-            UIData.InfoText = "Touch the crystal ball to return return to lobby.";
-        }
-        else if (sceneToLoadIndex == 3)
-        {
-            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
-        }
-        else
-        {
-            UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
-        }
+
         return UIData;
     }
 
@@ -77,7 +75,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     {
         if (canShowUI && interactUI_Controller)
         { interactUI_Controller.EnableCanvasObject(); }
-            //{ return; }
+        //{ return; }
 
     }
 
