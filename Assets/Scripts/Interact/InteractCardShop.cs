@@ -1,9 +1,15 @@
+using System.Collections;
+using System.Runtime.InteropServices;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
 {
     [SerializeField] private InteractCameraPreset preset;
+    [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
     private UIManager playerUIManager;
+    private CardShopUI cardShopUI;
+    private ShopBoard board;
 
     private bool canShowUI = false;
 
@@ -12,14 +18,25 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
+        cardShopUI = FindFirstObjectByType<CardShopUI>(FindObjectsInactive.Include);
+        board = GetComponent<ShopBoard>();
         interactUI_Controller = GetComponent<InteractUI_Controller>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+        stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
     }
     public void Interact()
     {
-        //playerUIManager.OpenCardShopUI();
-
         interactCameraHandler.InteractCamSwitch(transform, preset);
+        cardShopUI.shopBoard = board;
+        StartCoroutine(OpenUI());
+    }
+
+    IEnumerator OpenUI()
+    {
+        yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
+
+        playerUIManager.OpenCardShopUI();
+        cardShopUI.PopulateSlots();
     }
 
     public InteractableUIData GetUIData()
