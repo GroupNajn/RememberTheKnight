@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    private InteractCameraHandler interactCameraHandler;
 
     PlayerInput playerInput;
     //PlayerInput UIInput;
@@ -67,6 +68,7 @@ public class UIManager : MonoBehaviour
         //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
         HideActiveUI();
 
