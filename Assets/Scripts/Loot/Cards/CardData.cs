@@ -13,9 +13,6 @@ public class CardData : ScriptableObject
      * 
      */
 
-    
-
-
     public string cardID;
 
     public GameObject CardPrefab;
@@ -41,6 +38,9 @@ public class CardData : ScriptableObject
     [SerializeField] public float knockbackModifier = 0f;
 
     [SerializeField] public Vector3 weaponSize = Vector3.zero;
+
+    [Header("Card Prices")]
+    [SerializeField] public float soulCardCost = 0f;
 
     [Header("Card States")]
     [SerializeField] public CardFamily cardFamily;

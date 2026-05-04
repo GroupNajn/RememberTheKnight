@@ -35,11 +35,12 @@ public class CardBuilder : MonoBehaviour
     {
         Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y + 180, parentTransform.rotation.eulerAngles.z);
 
-        Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
+        GameObject cardInstance = Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
+        Card cardScript = cardInstance.GetComponent<Card>();
         SetCardMaterial(cardData, cardScript);
-        TurnOffScriptsOnCard(cardPrefab);
+        TurnOffScriptsOnCard(cardInstance);
 
-        return cardPrefab;
+        return cardInstance; 
     }
 
     private void SetCardMaterial(CardData cardData, Card cardScript)
