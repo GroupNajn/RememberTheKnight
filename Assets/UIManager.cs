@@ -11,7 +11,10 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
-
+    [SerializeField] private BookUi bookUi; // Meike tbc
+    [SerializeField] private PlayerCollection playerCollection; //meike tbc
+    [SerializeField] private PlayerStats playerStats; //meike tbc
+    
     [SerializeField] private GameObject backButtonUI;
 
     [Header("Menu UI")]
@@ -29,6 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject familySelectUI;
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject cardShopUI;
+    [SerializeField] private GameObject bookUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -127,6 +131,21 @@ public class UIManager : MonoBehaviour
 
         }
 
+    }
+
+    void OnOpenBook()
+    {
+        if (!UIMenuActive)
+        {
+            OpenBookUI();
+        }
+        else
+        {
+            if (bookUI.activeSelf)
+            {
+                CloseBookUI();
+            }
+        }
     }
 
     public void HideActiveUI()
@@ -352,6 +371,26 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
+    public void OpenBookUI()
+    {
+        CloseInteractiveUI();
+        // bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
+        bookUi.BuildInventory(playerStats);
+        bookUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+
+    public void CloseBookUI()
+    {
+        Debug.Log("Closing Book UI");
+        bookUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
+    }
+
 
     //DEATH UI
     public void ShowDeathScreen()
