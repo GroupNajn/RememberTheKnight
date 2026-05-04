@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Splines.ExtrusionShapes;
 
 public class ShopBoard : MonoBehaviour
 {
@@ -8,23 +7,21 @@ public class ShopBoard : MonoBehaviour
     private CardSystem cardSystem;
     public CardBuilder CardBuilder { get; private set; }
 
-    private List<ShopBoardCardSlot> slots = new List<ShopBoardCardSlot>();
-    public List<ShopBoardCardSlot> Slots => slots;
+    private List<ShopSlotCard> slots = new List<ShopSlotCard>();
+    private List<CardData> randomizedCards = new List<CardData>();
 
     [field: SerializeField] public List<GameObject> RandomPosters { get; private set; } = new List<GameObject>();
 
-
     void Awake()
     {
-        slots.AddRange(GetComponentsInChildren<ShopBoardCardSlot>(true));
+        slots.AddRange(GetComponentsInChildren<ShopSlotCard>(true));
     }
 
     void Start()
     {
         lootManager = GameObject.FindWithTag("LootManager");
-        cardSystem = lootManager.GetComponentInChildren<CardSystem>(true); 
+        cardSystem = lootManager.GetComponentInChildren<CardSystem>(true);
         CardBuilder = lootManager.GetComponentInChildren<CardBuilder>(true);
-
         PopulateSlots();
     }
 
@@ -37,17 +34,11 @@ public class ShopBoard : MonoBehaviour
 
         foreach (var slot in slots)
         {
+            int randomIndex = Random.Range(0, allCards.Count);
+            CardData randomCard = allCards[randomIndex];
 
-            if (slot.isLocked)
-            {
-                slot.SetCard(null);
-            }
-            else
-            {
-                int randomIndex = Random.Range(0, allCards.Count);
-                CardData randomCard = allCards[randomIndex];
-                slot.SetCard(randomCard);
-            }
+            randomizedCards.Add(randomCard);
+            slot.SetCard(randomCard);
         }
     }
 }
