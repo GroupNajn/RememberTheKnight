@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,63 +7,94 @@ using UnityEngine.UI;
 
 public class CardShopUI : MonoBehaviour
 {
+    private PlayerCollection playerCollection;
     private PlayerInput playerInput;
     private UIManager uiManager;
+    public ShopBoard shopBoard; 
 
     [SerializeField] private TextMeshProUGUI errorText;
 
-    private float cardCost;
-    [field: SerializeField] public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
-    [field: SerializeField] public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
+    [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
+    [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
+    [SerializeField] private int maxPurchased = 1;
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
 
-    private void Start()
+    
+    void Awake()
     {
+        uiSlots.AddRange(GetComponentsInChildren<CardSlotShopUI>(true));
+    }
+    private void Start() 
+    {
+        playerCollection = GameObject.FindWithTag("Player").GetComponent<PlayerCollection>();
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        uiManager = GetComponentInParent<UIManager>();
-
-        uiManager.CloseCardSelectUI();
+        uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
     }
 
-    // If a button is pressed and is active, set to to false, otherwise set it to active.
-    // Some if statements inside of the method to check if the selectedCard list is not at its 4 card select limit.
-    public void OnCardSelect(Button button)
+    public void PopulateSlots()
     {
-        CardUI card = button.GetComponent<CardUI>();
-        if (card == null || card.cardData == null)
+        var cards = shopBoard.Slots;
+
+        if (cards == null || cards.Count == 0)
             return;
 
-        //if (card.IsSelected)
-        //{
-        //    card.SetSelected(false);
-        //    selectedCards.Remove(card);
-        //    selectedCardData.Remove(card.cardData);
-        //    Debug.Log("Card Deselected");
-        //    return;
-        //}
-
-        //if (selectedCards.Count > maxCardsSelected)
-        //{
-        //    if (!errorActive)
-        //        ShowError($"You can only select {maxCardsSelected} cards!", 5f);
-
-        //    return;
-        //}
-
-        card.SetSelected(true);
-        selectedCards.Add(card);
-        selectedCardData.Add(card.cardData);
+        for (int i = 0; i < uiSlots.Count; i++)
+        {
+            if (i < cards.Count)
+            {
+                uiSlots[i].SetCard(cards[i].CurrentCard);
+            }
+            else
+            {
+                uiSlots[i].SetCard(null);
+            }
+        }
     }
 
-    // Confirm the selected cards and send a delegate event to the Event_System of which selectes cards
-    // With the cardData list as a parameter. 
+    private bool CanAfford(CardData card)
+    {
+        float currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
+
+        return (currentSoulCollect >= card.soulCardCost);
+    }
+
+    public void OnCardSelect(CardSlotShopUI slot)
+    {
+        if (slot == null || slot.CardData == null)
+            return;
+
+        CardData card = slot.CardData;
+
+        if (slot.IsSelected)
+        {
+            slot.SetSelected(false);
+            purchasedCardData.Remove(card);
+            return;
+        }
+
+        if (purchasedCardData.Count >= maxPurchased)
+        {
+            ShowError($"Max {maxPurchased} cards!", 2f);
+            return;
+        }
+
+        if (!CanAfford(card))
+        {
+            ShowError("Not enough souls!", 2f);
+            return;
+        }
+
+        slot.SetSelected(true);
+        purchasedCardData.Add(card);
+    }
+
     public void OnConfirmSelection()
     {
-        Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
-        uiManager.CloseCardSelectUI();
+        Event_System.instance.OnStatsApplied?.Invoke(purchasedCardData);
+        uiManager.CloseCardShopUI();
     }
 
     private void Update()
