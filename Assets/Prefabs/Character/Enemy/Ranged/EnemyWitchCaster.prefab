@@ -2311,6 +2311,7 @@ GameObject:
   - component: {fileID: -4482788256033454406}
   - component: {fileID: -6362200048511867953}
   - component: {fileID: 6817891939070019127}
+  - component: {fileID: 8204932613426564533}
   m_Layer: 8
   m_Name: EnemyWitchCaster
   m_TagString: Enemy
@@ -2575,6 +2576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
+  SneakMultiplier: 1.3
   damageCooldown: 0
   tier: 4
 --- !u!114 &7255731434245421946
@@ -2786,11 +2788,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 290804174469268257}
   currentLeftHandWeapon: {fileID: 5541311494386907629}
+  equippedWeapon: {fileID: 0}
+  currentActiveWeaponData: {fileID: 0}
+  lastActiveWeaponData: {fileID: 0}
+  unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
-  currentActiveWeaponData: {fileID: 0}
 --- !u!114 &6817891939070019127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2804,6 +2809,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 0}
+--- !u!114 &8204932613426564533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc905aa464d14840a5dde85fcb1b60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseRarity: 1
+  allowedFamiles: 15
+  canDropCards: 1
+  canDropSouls: 1
 --- !u!1 &4103938120646374376
 GameObject:
   m_ObjectHideFlags: 0

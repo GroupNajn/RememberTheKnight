@@ -61,6 +61,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         onDeath?.Trigger();
         Event_System.instance.OnEnemyKilled?.Invoke(this);
+
+        EnemyLootProfile profile = gameObject.GetComponent<EnemyLootProfile>();
+        Event_System.instance.OnEnemyKilledNew?.Invoke(profile, this.transform.position);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
 
     }

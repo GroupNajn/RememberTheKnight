@@ -26,6 +26,7 @@ public class Event_System : MonoBehaviour
     public Action<Transform, float> OnEnemyDamage;
     public Action<EnemyDamage> OnEnemySpawn;
     public Action<EnemyDamage> OnEnemyKilled;
+    public Action <EnemyLootProfile, Vector3>OnEnemyKilledNew;
 
 
     //Loot related

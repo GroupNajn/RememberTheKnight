@@ -63,7 +63,7 @@ public class CardCollection : MonoBehaviour
         }
         else
         {
-            Event_System.instance?.OnDroopMultipleSouls.Invoke();
+            Event_System.instance?.OnDroopMultipleSouls?.Invoke();
             // If the player already has that card. Invoke the delegate to Listerns(LootManager)
             //To tell the manager to drop multiple souls, to give the player something else.
         }
