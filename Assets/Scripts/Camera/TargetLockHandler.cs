@@ -36,7 +36,7 @@ public class TargetLockHandler : MonoBehaviour
     private GameObject freeLookCam;
     private GameObject hardlockCam;
     private CinemachineCamera cinemachineFreeLookCam;
-    private CinemachineCamera cinemachineHardLockCam;
+    private CinemachineCamera cinemachineHardLockCam; 
 
     void Start()
     {

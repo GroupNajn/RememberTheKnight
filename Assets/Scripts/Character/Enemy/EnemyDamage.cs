@@ -1,20 +1,25 @@
 using Unity.Behavior;
 using UnityEngine;
-using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-
 [RequireComponent(typeof(ITriggerable))]
+
+
+[RequireComponent(typeof(EnemyVFX))]
+[RequireComponent(typeof(CharacterSoundFXManager))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(BehaviorGraphAgent))]
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
+    private static readonly int HitHash = Animator.StringToHash("Hit");
+
     //[SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton B 2026-03-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     public Action<float, float> OnHealthChanged { get; set; }
-
+    [SerializeField, Tooltip("When current threat is zero incoming damage is multiplied by this value")] public float SneakMultiplier = 1.3f;
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer;
@@ -23,18 +28,23 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     public RarityTier tier;
     private EnemyVFX enemyVFX;
     private CharacterSoundFXManager enemySFX;
+    private Animator animator;
+    private BlackboardVariable<float> threat;
     private List<Transform> childObjects;
 
     public void TakeDamage(float damage, Vector3 contactPoint)
     {
+        float incomingDamage = damage;
         if (CanTakeDamage && Health > 0)
         {
-            Event_System.instance.OnEnemyDamage?.Invoke(transform, damage);
-            Health -= damage;
+            if (Mathf.Approximately(threat.Value, 0)) incomingDamage *= SneakMultiplier;
+            Event_System.instance.OnEnemyDamage?.Invoke(transform, incomingDamage);
+            Health -= incomingDamage;
 
 
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();
+            animator.SetTrigger(HitHash);
 
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
@@ -80,6 +90,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         Health = MaxHealth;
         onDeath = GetComponent<ITriggerable>();
         childObjects = GetComponentsInChildren<Transform>().ToList();
+        animator = GetComponent<Animator>();
+        if (GetComponent<BehaviorGraphAgent>().BlackboardReference.GetVariable<float>("currentThreat", out threat)) { }
+
 
     }
 }

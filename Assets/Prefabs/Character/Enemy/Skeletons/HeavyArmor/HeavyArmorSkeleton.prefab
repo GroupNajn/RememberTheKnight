@@ -1737,6 +1737,7 @@ MonoBehaviour:
   - rid: 4680590414493778372
   - rid: 4680590414493778374
   - rid: 4680590584804802816
+  - rid: 9114580978588713035
   m_OriginalGraph: {fileID: -8159058737499799650, guid: 2866ea73f1446d23694003feecc4b198, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -1777,6 +1778,14 @@ MonoBehaviour:
         m_Value:
         - Awake
         - Agitate
+    - rid: 9114580978588713035
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 4042726441812549289
+          m_Value1: 3200433524896484858
+        Name: View Origin
+        m_Value: {fileID: 2515759984854474395}
 --- !u!136 &8841990284358805527
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1877,6 +1886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 45
+  SneakMultiplier: 1.3
   damageCooldown: 0
   tier: 0
 --- !u!114 &6662093310225073597
@@ -1937,6 +1947,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 397e4182f9c44c4429851ede57300b9b, type: 3}
   - {fileID: 8300000, guid: 35a217bced0da50468b38a15578adb22, type: 3}
   attackGrunts: []
+  deathSounds: []
   footSteps: []
 --- !u!82 &6063604026044157070
 AudioSource:
@@ -2049,11 +2060,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 1989697066252725023}
   currentLeftHandWeapon: {fileID: 5755393035250851932}
+  equippedWeapon: {fileID: 0}
+  currentActiveWeaponData: {fileID: 0}
+  lastActiveWeaponData: {fileID: 0}
+  unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
-  currentActiveWeaponData: {fileID: 0}
 --- !u!1 &3590948691181432035
 GameObject:
   m_ObjectHideFlags: 0
