@@ -34,7 +34,7 @@ public class Event_System : MonoBehaviour
     public Action OnResetPullAllLoot;
     public Action<Loot> OnLootPickedUp;
     public Action<Loot> OnGetLoot;
-
+    public Action OnCardPickedUp;
 
     //Souls Related
     public Action<int> OnSoulsSpent;

@@ -24,7 +24,14 @@ public class CardCollection : MonoBehaviour
     }
     void Start()
     {
+        temporaryCards.Clear();
+        equippedCards.Clear();
 
+        
+    }
+    private void OnDisable()
+    {
+        
     }
 
     void Update()
@@ -35,14 +42,14 @@ public class CardCollection : MonoBehaviour
 
     public void EquipCards(CardData card)
     {
-        equippedCards.Clear();
         CardSystem system = GameObject.Find("CardSystem").GetComponent<CardSystem>();
         if (card == null) return;
 
-        if (!equippedCards.Contains(card) && equippedCards.Count < 4 && system.CheckUnlocked(card)) 
+        if (!equippedCards.Contains(card) && equippedCards.Count < 4 && system.CheckUnlocked(card) && !temporaryCards.Contains(card)) 
         {
             equippedCards.Add(card);
         }
+        Debug.Log($"ANTAL KORT I EQUIPPED {equippedCards.Count}"); 
 
     }
 
@@ -50,16 +57,15 @@ public class CardCollection : MonoBehaviour
     // Logisk fel. Behöver fixas. !!!!!!
     public void AddToTempCollection(CardData card)
     {
-        CardSystem system = GameObject.Find("CardSystem").GetComponent<CardSystem>();
-
         if (card == null) return;
-        if (system.CheckUnlocked(card))
+        if(temporaryCards.Contains(card))
         {
-            
+            Debug.Log($"{card.cardID} Finns Redan I TemporaryCards");
         }
-        else if(!temporaryCards.Contains(card)) 
+        if (!temporaryCards.Contains(card) && !equippedCards.Contains(card))
         {
             temporaryCards.Add(card);
+            NotifyCardPickUp();
         }
         else
         {
@@ -67,7 +73,7 @@ public class CardCollection : MonoBehaviour
             // If the player already has that card. Invoke the delegate to Listerns(LootManager)
             //To tell the manager to drop multiple souls, to give the player something else.
         }
-       
+        Debug.Log($"ANTAL KORT Temporary {TemporaryCards.Count}");
     }
 
     public void RemoveFromTemporaryCollection(Card card)
@@ -92,11 +98,25 @@ public class CardCollection : MonoBehaviour
     {
         return equippedCards.ToList();
     }
+    public List<CardData> ReturnCardsForApplyingStats() // Sorts and removes the duplicates in the concatinated list to return. Sorts by 
+    {
+        return equippedCards.Concat(temporaryCards).GroupBy(card => card.cardID).Select(group => group.First()).ToList();
+    }
 
     public void ClearTemporaryCards()
     {
         temporaryCards.Clear();
 
+    }
+
+    public void ClearEquipedCards()
+    {
+        equippedCards.Clear();
+    }
+
+    private void NotifyCardPickUp()
+    {
+        Event_System.instance?.OnCardPickedUp?.Invoke();
     }
 
 
