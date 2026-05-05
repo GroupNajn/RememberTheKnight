@@ -117,7 +117,7 @@ public class LootManager : MonoBehaviour
         }
 
         //Debug.Log("LootManager subscribed");
-        Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
+        //Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
         Event_System.instance.OnEnemyKilledNew += TryToDropLoot;
         InitializeCardPools();
     }
@@ -126,7 +126,7 @@ public class LootManager : MonoBehaviour
     {
         if (Event_System.instance != null)
         {
-            Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
+            //Event_System.instance.OnEnemyKilled -= RollMultipuleLoot;
             Event_System.instance.OnEnemyKilledNew += TryToDropLoot;
 
         }
@@ -143,7 +143,7 @@ public class LootManager : MonoBehaviour
             return 0f;
 
         return playerStats.currentLuck * (luckChanceScaler / 100f);
-        // Exempel : 5f * (2f / 100f) = 0.1f = 10% 
+        // Exempel : 5f * (1f / 100f) = 0.1f = 5% 
     }
 
 
@@ -151,7 +151,8 @@ public class LootManager : MonoBehaviour
     {
         float chance = GetScaledLuckChance() * multipleLootModifier;
 
-        int amount = 1;
+        chance += 0.25f; // To make sure the player have atleast 25% to drop a loot. It will  be increase with higher luck. 
+        int amount = 0;
 
         while (Random.value < chance) // Between [0.0 - 1.0] 
         {
@@ -381,6 +382,7 @@ public class LootManager : MonoBehaviour
             }
             CardData selectedCard = GetRandomCard(cardsInRarity);
 
+            SpawnCard(selectedCard, spawnPos);
             // Add a new method inside of CardBuilder to Instantiate a new Card. After that it is finished. 
         }
 

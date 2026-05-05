@@ -68,10 +68,29 @@ public class CardBuilder : MonoBehaviour
 
     }
 
+    private void TurnOnScriptsOnCard(GameObject cardPrefab)
+    {
+
+        ObjectRotation objectRotation = cardPrefab.GetComponent<ObjectRotation>();
+        objectRotation.enabled = false;
+        Loot_Hover hover = cardPrefab.GetComponent<Loot_Hover>();
+        hover.enabled = true;
+        BoxCollider collider = cardPrefab.GetComponent<BoxCollider>();
+        collider.enabled = true;
+        BounceScript bounce = cardPrefab.GetComponent<BounceScript>();
+        bounce.enabled = true;
+        Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
+        body.useGravity = true;
+
+    }
+
     public void InstatitateCard(CardData card, Vector3 spawnPos)
     {
-        GameObject spawnedCard = Instantiate(cardPrefab, spawnPos, Quaternion.identity);
-
+        GameObject spawnedCard = Instantiate(cardPrefab, spawnPos + new Vector3(0,0.5f, 0), Quaternion.identity);
+        Card script = spawnedCard.GetComponent<Card>();
+        script.SetCardData(card);
+        SetCardMaterial(card, script);
+        TurnOnScriptsOnCard(spawnedCard);
 
     }
 
