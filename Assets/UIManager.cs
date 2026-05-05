@@ -163,6 +163,7 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
+        CloseBookUI();
 
         CheckUIState();
     }
