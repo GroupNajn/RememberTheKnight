@@ -1,4 +1,5 @@
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -420,10 +421,11 @@ public class UIManager : MonoBehaviour
     }
 
     // INTERACT UI
-    public void OpenInteractiveUI()
+    public void OpenInteractiveUI(string text)
     {
         if (interactUI)
         {
+            interactUI.GetComponentInChildren<TMP_Text>().text = text;
             interactUI.SetActive(true);
         }
     }
