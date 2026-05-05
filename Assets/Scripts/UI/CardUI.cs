@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
 // Script Updated by Henric 2026-04-17
-public class CardUI : MonoBehaviour
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
@@ -15,6 +17,10 @@ public class CardUI : MonoBehaviour
 
     [SerializeField] public CardData cardData;
     [SerializeField] private Image cardImage;
+
+    [SerializeField] private GameObject infoBox;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI statsText;
 
     public float angle = 5f;
     public float speed = 0.4f;
@@ -30,18 +36,26 @@ public class CardUI : MonoBehaviour
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        baseRotationZ = rectTransform.localEulerAngles.z; 
+        baseRotationZ = rectTransform.localEulerAngles.z;
         IsSelected = false;
 
 
         cardImage = GetComponent<Image>();
+
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
+
+        nameText = texts[0];
+        statsText = texts[1];
+
+        infoBox.SetActive(false);
+
     }
     void Start()
     {
         startRotation = transform.localRotation;
         IsSelected = false;
 
-        if(cardData != null && cardImage != null)
+        if (cardData != null && cardImage != null)
         {
             cardImage.sprite = cardData.cardImage;
         }
@@ -49,7 +63,7 @@ public class CardUI : MonoBehaviour
     // Added IsSelected = false becuase the first time the card is started via 
     // UIManager it is set to false to default to that, once it's state has been updated once during the game.
     // It will no longe be reset to false. 
-    
+
 
     private void Update()
     {
@@ -90,4 +104,18 @@ public class CardUI : MonoBehaviour
     {
         this.IsUnlockable = unlockable;
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log($"Mouse entered button {cardData.cardName}");
+        infoBox.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log($"Mouse exited button {cardData.cardName}");
+        infoBox.SetActive(false);
+    }
+
+
 }
