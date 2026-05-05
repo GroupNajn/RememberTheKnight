@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     private GameObject player;
     private PlayerManager playerManager;
 
@@ -24,10 +28,26 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
+
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
 
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
         if (!isExpended && currentSoulCollect >= healingCost)
         {
