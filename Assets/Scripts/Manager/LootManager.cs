@@ -38,7 +38,6 @@ public class LootManager : MonoBehaviour
 
     [Header("CardSystem")]
     [SerializeField] private CardSystem cardSystem;
-    [SerializeField] private CardBuilder builder;
 
     private PlayerStats playerStats;
 
@@ -118,7 +117,7 @@ public class LootManager : MonoBehaviour
         }
 
         //Debug.Log("LootManager subscribed");
-        //Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
+        Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
         Event_System.instance.OnEnemyKilledNew += TryToDropLoot;
         InitializeCardPools();
     }
@@ -382,8 +381,6 @@ public class LootManager : MonoBehaviour
             }
             CardData selectedCard = GetRandomCard(cardsInRarity);
 
-            Debug.Log($"Card ID On Drop{selectedCard.cardID}. Rarity {finalRarity}. ");
-            SpawnCard(selectedCard, spawnPos);
             // Add a new method inside of CardBuilder to Instantiate a new Card. After that it is finished. 
         }
 
@@ -497,11 +494,6 @@ public class LootManager : MonoBehaviour
     {
         Vector3 pos = enemy.transform.position;
         Instantiate(item, pos + new Vector3(0, 0.5f, 0), Quaternion.identity);
-    }
-
-    public void SpawnCard(CardData card, Vector3 spawnPos)
-    {
-        builder.InstatitateCard(card, spawnPos);
     }
 
     public void SpawnSoul(Vector3 spawnPos)
