@@ -308,7 +308,7 @@ public class LootManager : MonoBehaviour
         };
     }
 
-    private RarityTier GetRarityFromTier(Tier tier)
+    public RarityTier GetRarityFromTier(Tier tier)
     {
         if (tier >= Tier.I && tier <= Tier.III)
             return RarityTier.Common;
