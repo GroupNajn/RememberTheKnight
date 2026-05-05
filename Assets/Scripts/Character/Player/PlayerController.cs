@@ -139,13 +139,27 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             if (playerStats.currentStamina <= 0)
                 return;
-            if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
+
+            //if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
+            //{
+            //    PlayerAnimator.SetTrigger("BackStep");
+            //    playerState.SetMoveState(MoveState.Dodging);
+            //}
+            //else
+            //{
+            //    PlayerAnimator.SetTrigger("Dodge");
+            //    playerState.SetMoveState(MoveState.Dodging);
+            //}
+
+            if (playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47)
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
             }
             else
             {
+                PlayerAnimator.SetFloat("Y", playerLocomotionInput.MovementInput.y);
+                PlayerAnimator.SetFloat("X", playerLocomotionInput.MovementInput.x);
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
             }
