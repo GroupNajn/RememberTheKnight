@@ -38,7 +38,7 @@ public class LootManager : MonoBehaviour
 
     [Header("CardSystem")]
     [SerializeField] private CardSystem cardSystem;
-
+    [SerializeField] private CardBuilder builder;
     private PlayerStats playerStats;
 
     public CardSystem CardSystem
@@ -504,6 +504,12 @@ public class LootManager : MonoBehaviour
     {
         Instantiate(newSoulTable[1], spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
     }
+
+    public void SpawnCard(CardData card, Vector3 spawnPos)
+    {
+        builder.InstatitateCard(card, spawnPos);
+    }
+
 
     private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
     {

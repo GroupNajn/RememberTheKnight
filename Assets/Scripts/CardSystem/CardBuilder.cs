@@ -67,6 +67,13 @@ public class CardBuilder : MonoBehaviour
 
     }
 
+    public void InstatitateCard(CardData card, Vector3 spawnPos)
+    {
+        GameObject spawnedCard = Instantiate(cardPrefab, spawnPos, Quaternion.identity);
+
+
+    }
+
 
 
 
