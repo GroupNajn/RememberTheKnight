@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     [SerializeField] private InteractCameraPreset preset;
     private UIManager playerUIManager;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
@@ -14,10 +18,26 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
         playerUIManager = FindFirstObjectByType<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
+
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
 
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         interactCameraHandler.InteractCamSwitch(transform, preset);
         StartCoroutine(OpenUI());
     }
