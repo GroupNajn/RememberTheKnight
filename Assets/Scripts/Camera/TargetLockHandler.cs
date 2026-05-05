@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Behavior;
 using Unity.Cinemachine;
@@ -12,6 +13,7 @@ public class TargetLockHandler : MonoBehaviour
     private Animator cameraAnimator;
 
     private float mouseX;
+    private bool isCentringCamera = false;
 
     [Header(header: "TargetLock Settings")]
     public float lockRadius = 15f;
@@ -36,7 +38,7 @@ public class TargetLockHandler : MonoBehaviour
     private GameObject freeLookCam;
     private GameObject hardlockCam;
     private CinemachineCamera cinemachineFreeLookCam;
-    private CinemachineCamera cinemachineHardLockCam; 
+    private CinemachineCamera cinemachineHardLockCam;
 
     void Start()
     {
@@ -60,6 +62,9 @@ public class TargetLockHandler : MonoBehaviour
     void Update()
     {
         Mathf.MoveTowards(mouseX, 0, Time.deltaTime * 300f);
+
+        
+
         if (IsLockedOn)
         {
             if (mouseX > lockBreakMouseXThreshold || mouseX < -lockBreakMouseXThreshold)
@@ -105,6 +110,42 @@ public class TargetLockHandler : MonoBehaviour
         }
 
     }
+    void ForceCenterCamera()
+    {
+        cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
+        cinemachineHardLockCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
+    }
+    IEnumerator SmoothCenterCamera()
+    {
+        float time = 0f;
+        float lerpTime = 0.2f;
+        cinemachineFreeLookCam.GetComponent<CinemachineDeoccluder>().enabled = false;
+        while (time < lerpTime)
+        {
+            time += Time.deltaTime;
+            float t = time/ lerpTime;
+            Debug.Log("Centring camera...");
+            Transform centerdTransform = GameObject.FindGameObjectWithTag("CameraCenteredPos").transform;
+
+            cinemachineFreeLookCam.ForceCameraPosition(Vector3.Lerp(cinemachineFreeLookCam.transform.position, centerdTransform.position, t), Quaternion.Slerp(cinemachineFreeLookCam.transform.rotation, centerdTransform.rotation, t));
+
+            //if (Quaternion.Angle(cinemachineFreeLookCam.transform.rotation.normalized, centerdTransform.rotation.normalized) < 2f && Vector3.Distance(cinemachineFreeLookCam.transform.position, centerdTransform.position) < 0.9)
+            //{
+            //    cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
+            //    isCentringCamera = false;
+            //}
+            yield return null;
+
+        }
+        //cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
+        cinemachineFreeLookCam.GetComponent<CinemachineDeoccluder>().enabled = true;
+
+        // yield return null;
+    }
+    //void SmoothCenterCamera()
+    //{
+    //    isCentringCamera = true;
+    //}
     void FindTarget()
     {
         Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
@@ -128,6 +169,13 @@ public class TargetLockHandler : MonoBehaviour
             {
                 enemiesInRange.Add(hit);
             }
+        }
+
+        if (enemiesInRange.Count == 0) // No valid targets found, just center the camera and return
+        {
+            //SmoothCenterCamera();
+            StartCoroutine(SmoothCenterCamera());
+            return;
         }
 
         float closestDistance = Mathf.Infinity;
