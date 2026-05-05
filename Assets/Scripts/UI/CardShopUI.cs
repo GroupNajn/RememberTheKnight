@@ -8,6 +8,7 @@ public class CardShopUI : MonoBehaviour
     private PlayerCollection playerCollection;
     private PlayerInput playerInput;
     private UIManager uiManager;
+    private InteractCameraHandler interactCameraHandler;
     public ShopBoard shopBoard;
 
     [SerializeField] private TextMeshProUGUI errorText;
@@ -29,6 +30,7 @@ public class CardShopUI : MonoBehaviour
         playerCollection = GameObject.FindWithTag("Player").GetComponent<PlayerCollection>();
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
     }
 
     public void PopulateSlots()
@@ -93,6 +95,7 @@ public class CardShopUI : MonoBehaviour
     {
         Event_System.instance.OnStatsApplied?.Invoke(purchasedCardData);
         uiManager.CloseCardShopUI();
+        interactCameraHandler.InteractCamReset();
     }
 
     private void Update()
