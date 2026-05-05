@@ -65,7 +65,8 @@ public class CardBuilder : MonoBehaviour
         bounce.enabled = false;
         Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
         body.useGravity = false;
-
+        ParticleSystem particleSystem = cardPrefab.GetComponent<ParticleSystem>();
+        particleSystem.IsAlive(false);
     }
 
     private void TurnOnScriptsOnCard(GameObject cardPrefab)
@@ -81,6 +82,8 @@ public class CardBuilder : MonoBehaviour
         bounce.enabled = true;
         Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
         body.useGravity = true;
+       
+        
 
     }
 
