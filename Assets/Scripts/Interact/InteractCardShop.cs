@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Runtime.InteropServices;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
+public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUIText
 {
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
@@ -13,14 +12,12 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
 
     private bool canShowUI = false;
 
-    private InteractUI_Controller interactUI_Controller;
     private InteractCameraHandler interactCameraHandler;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
         cardShopUI = FindFirstObjectByType<CardShopUI>(FindObjectsInactive.Include);
         board = GetComponent<ShopBoard>();
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
     }
@@ -43,28 +40,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Buy a card.";
+        UIData.InfoText = "[F]: Buy a Card.";
         return UIData;
-
-    }
-
-    public void ShowUI()
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-
-    }
-
-    public void HideUI()
-    {
-
-        interactUI_Controller.DisableCanvas();
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-
     }
 }

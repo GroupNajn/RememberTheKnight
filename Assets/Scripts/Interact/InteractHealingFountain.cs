@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUI
+public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUIText
 {
     private GameObject player;
     private PlayerManager playerManager;
@@ -13,11 +13,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
     private Collider interactCollider;
     [SerializeField] bool isExpended;
 
-    private bool canShowUI = false;
-
     private int currentSoulCollect;
-
-    private InteractUI_Controller interactUI_Controller;
 
     [Header("Charges")]
     [SerializeField] int chargesPerHeal = 10;
@@ -28,9 +24,8 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
     }
-    // The cost to heal is currently hard coded to the value 5. 
+
     public void Interact()
     {
         currentSoulCollect = LootManager.instance.GetComponent<Loot_System>().currentSoulCount;
@@ -38,7 +33,6 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         {
             playerManager.GetCharges(chargesPerHeal);
 
-            //playerManager.Heal(25f);
             interactCollider.enabled = false;
             isExpended = true;
             StartCoroutine(FadeOut());
@@ -66,40 +60,15 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
 
         if (!isExpended)
         {
-            data.InfoText = $"Let me consume {healingCost} souls to replenish a " +
-            $"portion of your former self.";
+            data.InfoText = $"[F]: Replenish yor cup for {healingCost} souls.";
             data.CanInteract = true;
         }
         else
         {
-            data.InfoText = $"My well's essence is depleted.";
+            data.InfoText = $"My essence is depleted.";
             data.CanInteract = false;
         }
 
-            return data;
+        return data;
     }
-
-    public void ShowUI()
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-
-    }
-
-    public void HideUI()
-    {
-        
-        interactUI_Controller.DisableCanvas();
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-
-
-    }
-
-
-
 }
