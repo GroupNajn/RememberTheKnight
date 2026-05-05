@@ -63,6 +63,9 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
             case 3:
                 UIData.InfoText = "Touch the crystal ball to go to the shop.";
                 break;
+            case 4:
+                UIData.InfoText = "Touch the crystal ball to go to the healing island.";
+                break;
             default:
                 UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
                 break;
