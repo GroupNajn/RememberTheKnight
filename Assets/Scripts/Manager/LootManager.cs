@@ -52,11 +52,11 @@ public class LootManager : MonoBehaviour
     [SerializeField] private float soulDropModifier = 2.5f;
 
     [Header("Upgrae Tier Modifiers")]
-    [SerializeField] private float CommonTierUpgrade = 2.0f;
-    [SerializeField] private float UncommonUpgradeTierModifier = 1.5f;
-    [SerializeField] private float RareTierUpgradeModifier = 1.0f;
-    [SerializeField] private float EpicTierUpgradeModifier = 0.5f;
-    [SerializeField] private float LegendaryTierUpgradeModifier = 0.25f;
+    [SerializeField] private float CommonTierUpgrade = 1;
+    [SerializeField] private float UncommonUpgradeTierModifier = 0.5f;
+    [SerializeField] private float RareTierUpgradeModifier = 0.2f;
+    [SerializeField] private float EpicTierUpgradeModifier = 0.18f;
+    [SerializeField] private float LegendaryTierUpgradeModifier = 0.13f;
 
 
     /* TODO: Need to a way to add logic to instantiate a normal soul or a healing/charged soul.
@@ -149,7 +149,7 @@ public class LootManager : MonoBehaviour
 
     private int RollForMultipleLoot()
     {
-        float chance = GetScaledLuckChance() * multipleLootModifier;
+        float chance = GetScaledLuckChance() * multipleLootModifier; // * 2 
 
         chance += 0.25f; // To make sure the player have atleast 25% to drop a loot. It will  be increase with higher luck. 
         int amount = 0;
@@ -161,7 +161,7 @@ public class LootManager : MonoBehaviour
             if (amount >= maxLootAmount)
                 break;
 
-            chance *= 0.5f; // will divide the chance by 2 for each successful increase drop amount.
+            chance *= 0.35f; // will divide the chance by 2 for each successful increase drop amount.
         }
 
         return amount;
