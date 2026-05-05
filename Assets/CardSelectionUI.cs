@@ -12,6 +12,7 @@ public class CardSelectionUI : MonoBehaviour
 {
     private PlayerInput playerInput;
     private UIManager uiManager;
+    private InteractCameraHandler interactCameraHandler;
 
     [SerializeField] private ScrollRect cardScrollRect;
     [SerializeField] private float scrollAmount;
@@ -32,6 +33,7 @@ public class CardSelectionUI : MonoBehaviour
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GetComponentInParent<UIManager>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
         if (cardScrollRect == null)
             cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
@@ -162,6 +164,7 @@ public class CardSelectionUI : MonoBehaviour
     {
         Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
         uiManager.CloseCardSelectUI();
+        interactCameraHandler.InteractCamReset();
     }
 
     private void Update()

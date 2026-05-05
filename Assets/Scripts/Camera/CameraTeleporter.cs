@@ -46,7 +46,7 @@ public class CameraTeleporter : MonoBehaviour
         Camera mainCamera = Camera.main;
         if (mainCamera != null)
         {
-            mainCamera.transform.position = playerTransform.position;
+            mainCamera.transform.position = playerTransform.position + new Vector3(0, 1, 0);
         }
     }
 }

@@ -2987,6 +2987,7 @@ MonoBehaviour:
   - rid: 4680590414493778372
   - rid: 4680590414493778374
   - rid: 4680590584804802816
+  - rid: 9114580978588713042
   m_OriginalGraph: {fileID: -8159058737499799650, guid: 2866ea73f1446d23694003feecc4b198, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -3027,6 +3028,14 @@ MonoBehaviour:
         m_Value:
         - Awake
         - Agitate
+    - rid: 9114580978588713042
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 4042726441812549289
+          m_Value1: 3200433524896484858
+        Name: View Origin
+        m_Value: {fileID: 6440597338845895864}
 --- !u!136 &413464807096088487
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3127,6 +3136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 32
+  SneakMultiplier: 1.3
   damageCooldown: 0
   tier: 1
 --- !u!114 &2408376417292414136
@@ -3300,11 +3310,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentRightHandWeapon: {fileID: 6030414680109792853, guid: 63ce55d66878ded43935ba56bbd265b5, type: 3}
   currentLeftHandWeapon: {fileID: 14554261536117718}
+  equippedWeapon: {fileID: 0}
+  currentActiveWeaponData: {fileID: 0}
+  lastActiveWeaponData: {fileID: 0}
+  unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
-  currentActiveWeaponData: {fileID: 0}
 --- !u!1 &6912991095140272473
 GameObject:
   m_ObjectHideFlags: 0
