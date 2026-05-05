@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13167faaf349c646b3e177dfecfd166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soulTable: []
   CommonLootTable:
   - {fileID: 3387264412718830002, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
   UncommonLootTable:
@@ -58,9 +59,28 @@ MonoBehaviour:
   rareLootTable: []
   EpicLootTable: []
   LegendaryLootTable: []
+  newSoulTable:
+  - {fileID: 3387264412718830002, guid: bb271dc143b00fb4482f5d0c9e031de6, type: 3}
+  - {fileID: 4375872546477077339, guid: 5f96d8a94e361454db5c58c2b0abc5ab, type: 3}
+  - {fileID: 3856253980031088469, guid: 126f39760d130bb4e90a7603802c3684, type: 3}
+  newCommonLootTable: []
+  newUncommonLootTable: []
+  newRareLootTable: []
+  newEpicLootTable: []
+  newLegendaryLootTable: []
   soulPrefab: {fileID: 0}
   amountChanceTable: []
   cardSystem: {fileID: 4221795815547489861}
+  builder: {fileID: 0}
+  multipleLootModifier: 2
+  luckChanceScaler: 1
+  maxLootAmount: 3
+  soulDropModifier: 2.5
+  CommonTierUpgrade: 2
+  UncommonUpgradeTierModifier: 1.5
+  RareTierUpgradeModifier: 1
+  EpicTierUpgradeModifier: 0.5
+  LegendaryTierUpgradeModifier: 0.25
 --- !u!114 &6189389314983097616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,11 +107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <currentSoulCount>k__BackingField: 0
-  selectedCards:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1001 &4095613491516909721
 PrefabInstance:
   m_ObjectHideFlags: 0
