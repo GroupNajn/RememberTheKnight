@@ -36,6 +36,7 @@ public class Event_System : MonoBehaviour
     //Souls Related
     public Action<int> OnSoulsSpent;
     public Action OnPullAllSouls;
+    public Action OnResetSouls;
 
     //Scene Related
     public Action OnLoadScenes;

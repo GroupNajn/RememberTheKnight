@@ -58,6 +58,7 @@ public class PlayerStats : MonoBehaviour
     //[SerializeField] public bool isDead = false;
 
     [Header("Healing Cup")]
+    public int startingCharges = 30;
     public int maxHealingCharges = 100;
     public int currentHealingCharges;
     public int healingChargeCost = 10;
