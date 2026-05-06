@@ -16,6 +16,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     //[SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton B 2026-03-06
+    //Edited by Michaëla 2026-05-06
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     public Action<float, float> OnHealthChanged { get; set; }
@@ -38,15 +39,15 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         if (CanTakeDamage && Health > 0)
         {
             if (Mathf.Approximately(threat.Value, 0)) incomingDamage *= SneakMultiplier;
-            Event_System.instance.OnEnemyDamage?.Invoke(transform, incomingDamage);
+            
             Health -= incomingDamage;
-
-
+            OnHealthChanged?.Invoke(Health, MaxHealth);
+            
+            Event_System.instance.OnEnemyDamage?.Invoke(transform, incomingDamage);
+            
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();
             animator.SetTrigger(HitHash);
-
-            OnHealthChanged?.Invoke(Health, MaxHealth);
 
             CanTakeDamage = false;
             if (Health <= 0)
