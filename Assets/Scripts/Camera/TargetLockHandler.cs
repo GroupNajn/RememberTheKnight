@@ -122,7 +122,7 @@ public class TargetLockHandler : MonoBehaviour
         {
             time += Time.deltaTime;
             float t = time / lerpTime;
-            Debug.Log("Centring camera...");
+            Debug.Log("Centring camera... lerptime: " + t);
             Transform centerdTransform = GameObject.FindGameObjectWithTag("CameraCenteredPos").transform;
 
             cinemachineFreeLookCam.ForceCameraPosition(Vector3.Lerp(cinemachineFreeLookCam.transform.position, centerdTransform.position, t), Quaternion.Slerp(cinemachineFreeLookCam.transform.rotation, centerdTransform.rotation, t));
@@ -130,6 +130,7 @@ public class TargetLockHandler : MonoBehaviour
             yield return null;
 
         }
+
         cinemachineFreeLookCam.GetComponent<CinemachineDeoccluder>().enabled = true;
 
     }
@@ -283,11 +284,9 @@ public class TargetLockHandler : MonoBehaviour
             {
                 lowestDot = dotRight;
                 bestTarget = enemy;
-                //        Debug.Log("New best target: " + enemy.name);
             }
         }
 
-        //  Debug.Log("Best target: " + bestTarget.name);
 
         currentTarget = bestTarget;
         AddTargets();
@@ -329,7 +328,6 @@ public class TargetLockHandler : MonoBehaviour
         if (currentTarget == null)
         {
             StartCoroutine(SmoothCenterCamera());
-
             return;
         }
 
