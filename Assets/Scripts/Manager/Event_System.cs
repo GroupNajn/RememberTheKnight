@@ -1,8 +1,5 @@
-using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 
@@ -10,7 +7,7 @@ public class Event_System : MonoBehaviour
 {
     public static Event_System instance;
     public Action OnSceneTransitionDone;
-    public Action <CardFamily> OnContractSign;
+    public Action<CardFamily> OnContractSign;
 
 
 
@@ -26,10 +23,10 @@ public class Event_System : MonoBehaviour
     public Action<Transform, float> OnEnemyDamage;
     public Action<EnemyDamage> OnEnemySpawn;
     public Action<EnemyDamage> OnEnemyKilled;
-    public Action <EnemyLootProfile, Vector3>OnEnemyKilledNew;
+    public Action<EnemyLootProfile, Vector3> OnEnemyKilledNew;
 
 
-    //Loot related
+    //Loot Related
     public Action OnDroopMultipleSouls;
     public Action OnResetPullAllLoot;
     public Action<Loot> OnLootPickedUp;
@@ -40,7 +37,12 @@ public class Event_System : MonoBehaviour
     public Action<int> OnSoulsSpent;
     public Action OnPullAllSouls;
 
+    //Scene Related
     public Action OnLoadScenes;
+
+    //Boss Related
+    public Action OnSpawnBoss;
+    public Action OnBossDeath;
 
     /*
      * 
