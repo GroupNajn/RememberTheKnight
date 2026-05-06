@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CardShopUI : MonoBehaviour
+public class CardShopUI : AutoSelectFirstButtonOnEnable
 {
     private PlayerCollection playerCollection;
     private PlayerInput playerInput;
@@ -24,6 +24,10 @@ public class CardShopUI : MonoBehaviour
     void Awake()
     {
         uiSlots.AddRange(GetComponentsInChildren<CardSlotShopUI>(true));
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
     }
     private void Start()
     {

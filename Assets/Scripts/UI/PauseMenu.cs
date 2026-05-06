@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : AutoSelectFirstButtonOnEnable
 {
     string returnButtonDefaultText;
     [SerializeField] string returnButtonLobbyText;
@@ -20,6 +20,10 @@ public class PauseMenu : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the scene loaded event   
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
     void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();

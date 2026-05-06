@@ -1,7 +1,11 @@
 using UnityEngine;
 
-public class WinMenu : MonoBehaviour
+public class WinMenu : AutoSelectFirstButtonOnEnable
 {
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
     public void LoadStartMenu()
     {
         Time.timeScale = 1f; // Ensure the game is not paused when loading the main menu

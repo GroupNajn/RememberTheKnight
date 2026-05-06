@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class OptionMenuUI : MonoBehaviour
+public class OptionMenuUI : AutoSelectFirstButtonOnEnable
 {
     UIManager uiManager;
     //SceneData sceneData;
-    void Awake()
+    protected override void OnEnable()
     {
+        base.OnEnable();
     }
     private void Start()
     {
