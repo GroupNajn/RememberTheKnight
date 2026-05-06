@@ -173,12 +173,16 @@ MonoBehaviour:
   hoverSpeed: 3
   hoverHeight: 8
   baseHoverOffset: 0.8
-  normalHoverHeight: 0.5
-  heightSmoothTime: 0.25
-  moveToBaseDuration: 1
-  blendToHoverDuration: 1
+  moveToHoverSpeed: 0.5
+  arriveThreshold: 0.005
   liftSpeed: 1.5
   boostSpeed: 50
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 0
+  heightCheckInterval: 1
+  groundCheckDistance: 10
+  heightCorrectionSpeed: 5
 --- !u!135 &-6488114877606157554
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -192,7 +196,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4480
+    m_Bits: 29064
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -262,7 +266,8 @@ MonoBehaviour:
   environmentMask:
     serializedVersion: 2
     m_Bits: 1600
-  ignorePlayerTime: 1.5
+  physicsCollider: {fileID: -6488114877606157554}
+  pickupCollider: {fileID: 5960056119083898328}
 --- !u!1 &7739734768344367177
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5699465585999259427}
+  - component: {fileID: 5960056119083898328}
   m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
@@ -294,3 +300,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 74300141542030244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5960056119083898328
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739734768344367177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.3
+  m_Center: {x: 0, y: 0, z: 0}

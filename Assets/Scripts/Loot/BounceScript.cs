@@ -47,7 +47,7 @@ public class BounceScript : MonoBehaviour
 
         physicsCollider.isTrigger = false;
 
-        IgnorePlayer();
+        //IgnorePlayer();
 
         horizontalDir = new Vector3(Random.Range(-1f, 1f),0f,Random.Range(-1f, 1f)).normalized;
 
