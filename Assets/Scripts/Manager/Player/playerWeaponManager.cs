@@ -47,6 +47,8 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator = GetComponent<Animator>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
+
+        playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
     }
     public void OnHolster(InputValue action)
     {
@@ -86,6 +88,13 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator.speed = stats.WeaponData.AnimatorSpeed;
 
         equippedWeapon = stats.WeaponData;
+
+        // sätter vapen storleken till base när man byter vapen
+        //playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        //Debug.Log($"base är {playerStats.currentWeaponSize}");
+        // sätter sedan vapnet till den sizen spelaren stats säger
+        currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+
         OnWeaponChanged?.Invoke(equippedWeapon);
 
         // gå vidare till nästa för nästa interaction

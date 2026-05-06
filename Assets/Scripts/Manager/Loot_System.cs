@@ -23,6 +23,8 @@ public class Loot_System : MonoBehaviour
             Event_System.instance.OnLootPickedUp += IncreaseSouls;
            
             Event_System.instance.OnSoulsSpent += ConsumeSouls;
+
+            Event_System.instance.OnResetSouls += ResetSouls;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
     }
@@ -78,5 +80,11 @@ public class Loot_System : MonoBehaviour
             p.GetCharges(chargedSoul.ChargeAmount);
             Debug.Log("HEALING SOUL GOT COLLECTED!");
         }
+    }
+
+    void ResetSouls()
+    {
+        currentSoulCount = 0;
+        canvasTextScript.SetSoulsAmount(currentSoulCount);
     }
 }

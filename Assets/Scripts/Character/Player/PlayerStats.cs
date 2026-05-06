@@ -54,13 +54,11 @@ public class PlayerStats : MonoBehaviour
     public float dodgeCoolDown = 0.5f;
     public float dodgeDuration = 0.2f;
 
-
-
-
     //[Header("Flags")]
     //[SerializeField] public bool isDead = false;
 
     [Header("Healing Cup")]
+    public int startingCharges = 30;
     public int maxHealingCharges = 100;
     public int currentHealingCharges;
     public int healingChargeCost = 10;
@@ -91,7 +89,7 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         playerCombatManager = PlayerCombatManager.Instance;
-        playerWeaponManager = GetComponent<PlayerWeaponManager>();
+
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
 
@@ -110,39 +108,8 @@ public class PlayerStats : MonoBehaviour
         baseDamageModifier = currentDamageModifier;
         baseHealModifier = currentHealModifier;
         baseKnockbackResistance = currentKnockbackResistance;
-
-        currentWeaponSize = playerWeaponManager.CurrentRightHandWeapon.transform.localScale;
-        baseWeaponSize = currentWeaponSize;
-        //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        
+        baseWeaponSize = playerWeaponManager.currentRightHandWeapon.transform.localScale;
+        currentWeaponSize = baseWeaponSize;
     }
-
-    //private void OnDisable()
-    //{
-    //    if(Event_System.instance != null)
-    //    {
-    //    Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
-    //    }
-    //}
-
-    //private void OnDestroy()
-    //{
-    //    if (Event_System.instance != null)
-    //    {
-    //        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
-    //    }
-    //}
-
-    //public void ApplyStatsFromCardSelection(List<CardData> cards)
-    //{
-    //    MaxHealth = baseHealth;
-    //    maxStamina = baseStamina;
-    //    foreach (CardData card in cards)
-    //    {
-    //        if (card == null) continue;
-    //        MaxHealth += card.healthModifier;
-    //        maxStamina += card.staminaModifier;
-    //    }
-    //    Health = MaxHealth;
-    //    currentStamina = maxStamina;
-    //}
 }

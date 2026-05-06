@@ -2,13 +2,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class FamilySelectUI : MonoBehaviour
+public class FamilySelectUI : AutoSelectFirstButtonOnEnable
 {
 
     private UIManager uiManager;
     private PlayerInput playerInput;
     CardFamily confirmedFamily;
-
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
     void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();

@@ -63,8 +63,6 @@ public class TargetLockHandler : MonoBehaviour
     {
         Mathf.MoveTowards(mouseX, 0, Time.deltaTime * 300f);
 
-        
-
         if (IsLockedOn)
         {
             if (mouseX > lockBreakMouseXThreshold || mouseX < -lockBreakMouseXThreshold)
@@ -123,29 +121,20 @@ public class TargetLockHandler : MonoBehaviour
         while (time < lerpTime)
         {
             time += Time.deltaTime;
-            float t = time/ lerpTime;
-            Debug.Log("Centring camera...");
+            float t = time / lerpTime;
+            Debug.Log("Centring camera... lerptime: " + t);
             Transform centerdTransform = GameObject.FindGameObjectWithTag("CameraCenteredPos").transform;
 
             cinemachineFreeLookCam.ForceCameraPosition(Vector3.Lerp(cinemachineFreeLookCam.transform.position, centerdTransform.position, t), Quaternion.Slerp(cinemachineFreeLookCam.transform.rotation, centerdTransform.rotation, t));
 
-            //if (Quaternion.Angle(cinemachineFreeLookCam.transform.rotation.normalized, centerdTransform.rotation.normalized) < 2f && Vector3.Distance(cinemachineFreeLookCam.transform.position, centerdTransform.position) < 0.9)
-            //{
-            //    cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
-            //    isCentringCamera = false;
-            //}
             yield return null;
 
         }
-        //cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
+
         cinemachineFreeLookCam.GetComponent<CinemachineDeoccluder>().enabled = true;
 
-        // yield return null;
     }
-    //void SmoothCenterCamera()
-    //{
-    //    isCentringCamera = true;
-    //}
+
     void FindTarget()
     {
         Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
@@ -156,7 +145,7 @@ public class TargetLockHandler : MonoBehaviour
         {
             BehaviorGraphAgent agent = hit.GetComponentInParent<BehaviorGraphAgent>();
 
-            if (agent == null || !agent.enabled)
+            if (agent == null || agent.enabled == false)
                 continue;
 
             Transform enemyTransform = agent.transform;
@@ -171,13 +160,6 @@ public class TargetLockHandler : MonoBehaviour
             }
         }
 
-        if (enemiesInRange.Count == 0) // No valid targets found, just center the camera and return
-        {
-            //SmoothCenterCamera();
-            StartCoroutine(SmoothCenterCamera());
-            return;
-        }
-
         float closestDistance = Mathf.Infinity;
         Transform bestTarget = null;
 
@@ -187,12 +169,7 @@ public class TargetLockHandler : MonoBehaviour
 
             Vector3 cameraForward = Camera.main.transform.forward;
 
-            float dot = Vector3.Dot(cameraForward, directionToEnemy);
-
-            if (dot < minDotProduct)
-                continue;
-
-            if (!HasLineOfSight(enemy.transform))
+            if (Vector3.Dot(cameraForward, directionToEnemy) < minDotProduct || !HasLineOfSight(enemy.transform) || !enemy.GetComponent<BehaviorGraphAgent>().enabled)
                 continue;
 
             float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
@@ -206,8 +183,17 @@ public class TargetLockHandler : MonoBehaviour
                 //Debug.Log("Best target: " + bestTarget);
             }
         }
+        //if (enemiesInRange.Count == 0) // No valid targets found, just center the camera and return
+        //{
+        //    //SmoothCenterCamera();
+        //    return;
+        //}
+
+
         currentTarget = bestTarget;
         AddTargets();
+
+
     }
     private void FindNewTarget()
     {
@@ -298,11 +284,9 @@ public class TargetLockHandler : MonoBehaviour
             {
                 lowestDot = dotRight;
                 bestTarget = enemy;
-                //        Debug.Log("New best target: " + enemy.name);
             }
         }
 
-        //  Debug.Log("Best target: " + bestTarget.name);
 
         currentTarget = bestTarget;
         AddTargets();
@@ -342,7 +326,10 @@ public class TargetLockHandler : MonoBehaviour
     void AddTargets()
     {
         if (currentTarget == null)
+        {
+            StartCoroutine(SmoothCenterCamera());
             return;
+        }
 
         targetGroup.Targets.Clear();
 

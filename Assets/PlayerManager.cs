@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour, IDamageable
 {
     private PlayerCombatManager playerCombatManager;
+    private PlayerWeaponManager playerWeaponManager;
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
     private PlayerSoundFXManager playerSFX;
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private void Start()
     {
         playerCombatManager = PlayerCombatManager.Instance;
+        playerWeaponManager = GetComponent<PlayerWeaponManager>();
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         playerSFX = GetComponent<PlayerSoundFXManager>();
@@ -151,6 +153,23 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
+        playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.maxStamina = playerStats.baseStamina;
+
+        playerStats.currentLuck = playerStats.baseLuck;
+        playerStats.currentCritChance = playerStats.baseCritChance;
+
+        playerStats.currentWalkSpeedModifier = playerStats.baseWalkSpeedModifier;
+        playerStats.currentSprintSpeedModifier = playerStats.baseSprintSpeedModifier;
+        playerStats.currentDodgeSpeedModifier = playerStats.baseDodgeSpeedModifier;
+        playerStats.currentDamageModifier = playerStats.baseDamageModifier;
+        playerStats.currentHealModifier = playerStats.baseHealModifier;
+        playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
+
+        playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
+
+
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -175,7 +194,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyHealthChanged();
         NotifyStaminaChanged();
     }
-
     public void ReApplyStats()
     {
         InitializePlayerBaseStats();
@@ -197,6 +215,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
         if (scene.name == SceneData.Instance[2]) // Heal to max health after loading lobby
         {
             Heal(playerStats.MaxHealth);
+            playerStats.currentHealingCharges = playerStats.startingCharges;
+            CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+            Event_System.instance.OnResetSouls.Invoke();
         }
     }
 
@@ -216,6 +237,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     }
 
     public void ApplyStatsInternally(CardData card)
@@ -223,7 +245,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.MaxHealth += card.healthModifier;
         playerStats.maxStamina += card.staminaModifier;
 
-        playerStats.currentLuck += card.LuckModifier;
+        playerStats.currentLuck += card.luckModifier;
         playerStats.currentCritChance += card.critChance;
 
         playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
@@ -236,5 +258,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentKnockbackResistance += card.knockbackModifier;
 
         playerStats.currentWeaponSize += card.weaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     }
 }

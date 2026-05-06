@@ -2,16 +2,36 @@ using UnityEngine;
 
 public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     PlayerWeaponManager weaponManager;
 
     void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
         weaponManager = player.GetComponent<PlayerWeaponManager>();
+
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
 
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         weaponManager.SwitchWeapon();
     }
 
