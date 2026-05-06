@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour, IDamageable
 {
     private PlayerCombatManager playerCombatManager;
+    private PlayerWeaponManager playerWeaponManager;
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
     private PlayerSoundFXManager playerSFX;
@@ -29,6 +30,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private void Start()
     {
         playerCombatManager = PlayerCombatManager.Instance;
+        playerWeaponManager = GetComponent<PlayerWeaponManager>();
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         playerSFX = GetComponent<PlayerSoundFXManager>();
@@ -162,6 +164,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
 
         foreach (CardData card in cards)
         {
@@ -169,7 +172,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
             playerStats.MaxHealth += card.healthModifier;
             playerStats.maxStamina += card.staminaModifier;
 
-            playerStats.currentLuck += card.LuckModifier;
+            playerStats.currentLuck += card.luckModifier;
             playerStats.currentCritChance += card.critChance;
 
             playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
@@ -182,6 +185,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
             playerStats.currentKnockbackResistance += card.knockbackModifier;
 
             playerStats.currentWeaponSize += card.weaponSize;
+            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
         }
 
         playerStats.CurrentHealth = MaxHealth;

@@ -30,14 +30,14 @@ public class CardData : ScriptableObject
     [SerializeField] public float healthModifier = 0f;
     [SerializeField] public float staminaModifier = 0f;
 
-    [SerializeField] public float LuckModifier = 0f;
+    [SerializeField] public float luckModifier = 0f;
     [SerializeField] public float critChance = 0f;
 
     [SerializeField] public float walkSpeedModifier = 0f;
     [SerializeField] public float sprintSpeedModifier = 0f;
     [SerializeField] public float dodgeSpeedModifier = 0f;
     [SerializeField] public float damageModifier = 0f;
-
+ 
     [SerializeField] public float healModifier = 0f;
     [SerializeField] public float knockbackModifier = 0f;
 
