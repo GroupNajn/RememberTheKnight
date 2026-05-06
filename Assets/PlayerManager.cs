@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour, IDamageable
 {
     private PlayerCombatManager playerCombatManager;
+    private PlayerWeaponManager playerWeaponManager;
     private Animator playerAnimator;
     private PlayerVFX playerVFX;
     private PlayerSoundFXManager playerSFX;
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private void Start()
     {
         playerCombatManager = PlayerCombatManager.Instance;
+        playerWeaponManager = GetComponent<PlayerWeaponManager>();
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         playerSFX = GetComponent<PlayerSoundFXManager>();
@@ -151,6 +153,21 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
+        playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.maxStamina = playerStats.baseStamina;
+
+        playerStats.currentLuck = playerStats.baseLuck;
+        playerStats.currentCritChance = playerStats.baseCritChance;
+
+        playerStats.currentWalkSpeedModifier = playerStats.baseWalkSpeedModifier;
+        playerStats.currentSprintSpeedModifier = playerStats.baseSprintSpeedModifier;
+        playerStats.currentDodgeSpeedModifier = playerStats.baseDodgeSpeedModifier;
+        playerStats.currentDamageModifier = playerStats.baseDamageModifier;
+        playerStats.currentHealModifier = playerStats.baseHealModifier;
+        playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
+
+        playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -159,6 +176,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
            ApplyStatsInternally(card);
         }
 
+            playerStats.currentLuck += card.luckModifier;
+            playerStats.currentCritChance += card.critChance;
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
 
@@ -176,6 +195,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyStaminaChanged();
     }
 
+            playerStats.currentWeaponSize += card.weaponSize;
+            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     public void ReApplyStats()
     {
         InitializePlayerBaseStats();
