@@ -168,6 +168,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
+
+
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -176,8 +178,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
            ApplyStatsInternally(card);
         }
 
-            playerStats.currentLuck += card.luckModifier;
-            playerStats.currentCritChance += card.critChance;
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
 
@@ -194,9 +194,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyHealthChanged();
         NotifyStaminaChanged();
     }
-
-            playerStats.currentWeaponSize += card.weaponSize;
-            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     public void ReApplyStats()
     {
         InitializePlayerBaseStats();
@@ -233,6 +230,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     }
 
     public void ApplyStatsInternally(CardData card)
@@ -240,7 +238,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.MaxHealth += card.healthModifier;
         playerStats.maxStamina += card.staminaModifier;
 
-        playerStats.currentLuck += card.LuckModifier;
+        playerStats.currentLuck += card.luckModifier;
         playerStats.currentCritChance += card.critChance;
 
         playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
@@ -253,5 +251,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentKnockbackResistance += card.knockbackModifier;
 
         playerStats.currentWeaponSize += card.weaponSize;
+        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
     }
 }
