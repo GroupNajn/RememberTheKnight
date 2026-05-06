@@ -233,26 +233,7 @@ public class LootManager : MonoBehaviour
 
 
 
-    private RarityTier RollRarityUpgrade(RarityTier baseRarity)
-    {
-        RarityTier currentRarity = baseRarity;
-
-        while (currentRarity != RarityTier.Legendary)
-        {
-            float upgradeChance = GetUpgradeChance(currentRarity);
-
-            if (Random.value <= upgradeChance)
-            {
-                currentRarity = GetNextRarity(currentRarity);
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return currentRarity;
-    }
+   
 
     private RarityTier GetNextRarity(RarityTier rarity)
     {
@@ -274,6 +255,26 @@ public class LootManager : MonoBehaviour
                 return rarity;
         }
     }
+    private RarityTier RollRarityUpgrade(RarityTier baseRarity)
+    {
+        RarityTier currentRarity = baseRarity;
+
+        while (currentRarity != RarityTier.Legendary)
+        {
+            float upgradeChance = GetUpgradeChance(currentRarity);
+
+            if (Random.value <= upgradeChance)
+            {
+                currentRarity = GetNextRarity(currentRarity);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return currentRarity;
+    }
 
 
 
@@ -283,10 +284,10 @@ public class LootManager : MonoBehaviour
 
         (float baseChance, float modifier) = rarity switch
         {                   //Cases
-            RarityTier.Common => (0.20f, CommonTierUpgrade),
+            RarityTier.Common => (0.25f, CommonTierUpgrade),
             RarityTier.Uncommon => (0.15f, UncommonUpgradeTierModifier),
-            RarityTier.Rare => (0.11f, RareTierUpgradeModifier),
-            RarityTier.Epic => (0.08f, EpicTierUpgradeModifier),
+            RarityTier.Rare => (0.13f, RareTierUpgradeModifier),
+            RarityTier.Epic => (0.11f, EpicTierUpgradeModifier),
             RarityTier.Legendary => (0f, 0f),
             _ => (0f, 0f) // Default Case
         };

@@ -52,16 +52,6 @@ public class PlayerCollection : MonoBehaviour
         playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
     }
 
-
-    public void ReciveSelectedCardList(List<CardData> cards)
-    {
-         
-        foreach (CardData card in cards)
-        {
-            InsertIntoCardCollection(card);
-        }
-      
-    }
     public List<CardData> ReturnTempCardCollection()
     {
         return cardCollection.GetTempCardCollection();
