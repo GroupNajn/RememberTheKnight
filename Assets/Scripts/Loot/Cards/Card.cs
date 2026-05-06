@@ -7,6 +7,7 @@ public class Card : Loot, IPickupable
     [field: SerializeField] protected CardData cardData { get; private set; }
     public CardData CardData => cardData;
 
+
     [SerializeField] private GameObject cardFront;
     [SerializeField] private GameObject cardBack;
     public GameObject CardFront

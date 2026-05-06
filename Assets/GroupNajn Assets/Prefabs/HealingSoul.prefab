@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6351188091125285746}
-  m_Layer: 0
+  - component: {fileID: 7369875285123397025}
+  m_Layer: 14
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,14 +25,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6801080518552852214}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.326, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9178365207448283979}
-  m_Father: {fileID: 230222208452503823}
+  m_Children: []
+  m_Father: {fileID: 9178365207448283979}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7369875285123397025
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801080518552852214}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.85
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7928836156734228200
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,7 +67,8 @@ GameObject:
   - component: {fileID: 9028050743942389514}
   - component: {fileID: 7300768217044806386}
   - component: {fileID: 661917760473456594}
-  m_Layer: 0
+  - component: {fileID: 5269013278860632916}
+  m_Layer: 13
   m_Name: HealingSoul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +88,7 @@ Transform:
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6351188091125285746}
+  - {fileID: 9178365207448283979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5982336227007940116
@@ -89,13 +111,17 @@ MonoBehaviour:
   maxFollowSpeed: 10
   hoverSpeed: 3
   hoverHeight: 8
-  baseHoverOffset: 0.8
-  normalHoverHeight: 0.7
-  heightSmoothTime: 0.25
-  moveToBaseDuration: 1
-  blendToHoverDuration: 1
+  baseHoverOffset: 1
+  moveToHoverSpeed: 2
+  arriveThreshold: 0.0005
   liftSpeed: 1.5
   boostSpeed: 50
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 0
+  heightCheckInterval: 1
+  groundCheckDistance: 10
+  heightCorrectionSpeed: 5
 --- !u!114 &4375872546477077339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +152,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4480
+    m_Bits: 4488
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -173,13 +199,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4889ff3dc82d7aa46ab2cb39772a1962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 5
-  bounceDamping: 0.5
-  maxBounces: 3
+  launchForce: 3
+  bounceDamping: 0
+  maxBounces: 2
   environmentMask:
     serializedVersion: 2
-    m_Bits: 1600
-  ignorePlayerTime: 1.5
+    m_Bits: 5697
+  physicsCollider: {fileID: 9028050743942389514}
+  pickupCollider: {fileID: 7369875285123397025}
+--- !u!114 &5269013278860632916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7928836156734228200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de64e1efbffc1b41b66d9d7e3c9a707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8488486211287714517
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +230,7 @@ GameObject:
   - component: {fileID: 9178365207448283979}
   - component: {fileID: 7843643988999887434}
   - component: {fileID: 8303746524610256999}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SoulOrb_V1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,11 +246,12 @@ Transform:
   m_GameObject: {fileID: 8488486211287714517}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.326, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6351188091125285746}
+  m_Children:
+  - {fileID: 6351188091125285746}
+  m_Father: {fileID: 230222208452503823}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &7843643988999887434
 VisualEffect:

@@ -175,7 +175,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         foreach (CardData card in cards)
         {
             if (card == null) continue;
-           ApplyStatsInternally(card);
+            ApplyStatsInternally(card);
         }
 
         playerStats.CurrentHealth = MaxHealth;
@@ -187,7 +187,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     private void ApplyStatsOnCardPickUp(CardData card)
     {
-        if(card == null) return;
+        if (card == null) return;
         InitializePlayerBaseStats();
         ApplyStatsInternally(card);
 
@@ -201,7 +201,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
         foreach (CardData card in templist)
         {
             ApplyStatsInternally(card);
+
         }
+
+        playerStats.CurrentHealth = MaxHealth;
+        playerStats.currentStamina = playerStats.maxStamina;
         NotifyHealthChanged();
         NotifyStaminaChanged();
     }
