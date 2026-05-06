@@ -20,6 +20,8 @@ public class Card : Loot, IPickupable
         set => cardBack = value;
     }
 
+    public CardData SetCardData(CardData card) => cardData = card; 
+
     private CardUnlockType cardUnlockType = CardUnlockType.Permanent;
 
 
@@ -35,6 +37,8 @@ public class Card : Loot, IPickupable
             LootManager.instance.RegisterLoot(this);
 
     }
+
+    
 
 
 

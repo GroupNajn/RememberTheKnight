@@ -1,20 +1,38 @@
 using UnityEngine;
 
-public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
+public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     UIManager playerUIManager;
 
     private bool canShowUI = false;
 
-    private InteractUI_Controller interactUI_Controller;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
+
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         playerUIManager.OpenFamilySelectUI();
     }
 
@@ -22,29 +40,7 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Choose your faith";
+        UIData.InfoText = "[F]: Choose Your Faith";
         return UIData;
-
-    }
-
-    public void ShowUI() 
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-
-    }
-
-    public void HideUI()
-    {
-
-        interactUI_Controller.DisableCanvas();
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-
-
     }
 }

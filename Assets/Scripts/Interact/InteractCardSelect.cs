@@ -2,30 +2,47 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
+public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     [SerializeField] private InteractCameraPreset preset;
     private UIManager playerUIManager;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
 
-    private bool canShowUI = false;
-
-    private InteractUI_Controller interactUI_Controller;
     private InteractCameraHandler interactCameraHandler;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
+
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
+
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         interactCameraHandler.InteractCamSwitch(transform, preset);
         StartCoroutine(OpenUI());
     }
 
-   IEnumerator OpenUI()
+    IEnumerator OpenUI()
     {
         yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
 
@@ -36,29 +53,7 @@ public class InteractCardSelect: MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Choose your Minor Arcana.";
+        UIData.InfoText = "[F]: Choose Minor Arcana.";
         return UIData;
-
-    }
-
-    public void ShowUI()
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-
-    }
-
-    public void HideUI()
-    {
-
-        interactUI_Controller.DisableCanvas();
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-
-
     }
 }

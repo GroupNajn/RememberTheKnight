@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
+public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUIText
 {
     [SerializeField] int sceneToLoadIndex;
     [SerializeField] bool preLoadScene = false;
 
-    private InteractUI_Controller interactUI_Controller;
     private bool canShowUI = false;
     string sceneName;
 
@@ -15,8 +14,6 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         {
             return;
         }
-
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
 
         sceneName = SceneData.Instance[sceneToLoadIndex];
 
@@ -52,46 +49,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        switch (sceneToLoadIndex)
-        {
-            case < 0:
-                UIData.InfoText = string.Empty;
-                break;
-            case 2:
-                UIData.InfoText = "Touch the crystal ball to return return to lobby.";
-                break;
-            case 3:
-                UIData.InfoText = "Touch the crystal ball to go to the shop.";
-                break;
-            case 4:
-                UIData.InfoText = "Touch the crystal ball to go to the healing island.";
-                break;
-            default:
-                UIData.InfoText = "Touch the crystal ball to advance to the next stage.";
-                break;
-        }
+        UIData.InfoText = "[F]: Toch orb";
 
         return UIData;
-    }
-
-    public void ShowUI()
-    {
-        if (canShowUI && interactUI_Controller)
-        { interactUI_Controller.EnableCanvasObject(); }
-        //{ return; }
-
-    }
-
-    public void HideUI()
-    {
-        if (interactUI_Controller)
-        {
-            interactUI_Controller.DisableCanvas();
-        }
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
     }
 }

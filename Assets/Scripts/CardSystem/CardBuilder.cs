@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static IPickupable;
 
 public class CardBuilder : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class CardBuilder : MonoBehaviour
     [SerializeField] private Card cardScript;
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] Transform playerTrans;
+    [SerializeField] ParticleSystem[] particleSystems = new ParticleSystem[5];
     bool keyPressed = false;
     void Start()
     {
@@ -65,10 +67,51 @@ public class CardBuilder : MonoBehaviour
         bounce.enabled = false;
         Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
         body.useGravity = false;
+        //ParticleSystem particleSystem = cardPrefab.GetComponentInChildren<ParticleSystem>();
+        //particleSystem.Stop();
+    }
 
+    private void TurnOnScriptsOnCard(GameObject cardPrefab)
+    {
+        ObjectRotation objectRotation = cardPrefab.GetComponent<ObjectRotation>();
+        objectRotation.enabled = false;
+        Loot_Hover hover = cardPrefab.GetComponent<Loot_Hover>();
+        hover.enabled = true;
+        BoxCollider collider = cardPrefab.GetComponent<BoxCollider>();
+        collider.enabled = true;
+        BounceScript bounce = cardPrefab.GetComponent<BounceScript>();
+        bounce.enabled = true;
+        Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
+        body.useGravity = true;
+    }
+
+    public void InstatitateCard(CardData card, Vector3 spawnPos)
+    {
+        GameObject spawnedCard = Instantiate(cardPrefab, spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
+        Instantiate(ReturnParticleSystem(LootManager.instance.GetRarityFromTier(card.cardTier)), spawnedCard.transform.position, Quaternion.identity, spawnedCard.transform);
+        Card script = spawnedCard.GetComponent<Card>();
+        script.SetCardData(card);
+        SetCardMaterial(card, script);
+        TurnOnScriptsOnCard(spawnedCard);
     }
 
 
 
-
+    private ParticleSystem ReturnParticleSystem(RarityTier rarityTier)
+    {
+        switch (rarityTier)
+        {
+            case RarityTier.Common:
+                return particleSystems[0];
+            case RarityTier.Uncommon:
+                return particleSystems[1];
+            case RarityTier.Rare:
+                return particleSystems[2];
+            case RarityTier.Epic:
+                return particleSystems[3];
+            case RarityTier.Legendary:
+                return particleSystems[4];
+            default: return particleSystems[0];
+        }
+    }
 }

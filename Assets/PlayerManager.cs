@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerVFX playerVFX;
     private PlayerSoundFXManager playerSFX;
     private PlayerStats playerStats;
+    private PlayerCollection playerColllection;
 
     public float MaxHealth => playerStats.MaxHealth;
     public float Health => playerStats.CurrentHealth;
@@ -34,11 +35,13 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
         playerSFX = GetComponent<PlayerSoundFXManager>();
+        playerColllection = GetComponent<PlayerCollection>();
 
         playerStats = GetComponent<PlayerStats>();
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+        Event_System.instance.OnCardPickedUp += ReApplyStats;
 
         GetCharges(0); // Update the material of the cup at the start of the game with the initial healing charges
     }
@@ -165,32 +168,43 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
+        InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
         {
             if (card == null) continue;
-            playerStats.MaxHealth += card.healthModifier;
-            playerStats.maxStamina += card.staminaModifier;
+           ApplyStatsInternally(card);
+        }
 
             playerStats.currentLuck += card.luckModifier;
             playerStats.currentCritChance += card.critChance;
-
-            playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
-            playerStats.currentSprintSpeedModifier += card.sprintSpeedModifier;
-            playerStats.currentDodgeSpeedModifier += card.dodgeSpeedModifier;
-            playerStats.currentDamageModifier += card.damageModifier;
-
-
-            playerStats.currentHealModifier += card.healModifier;
-            playerStats.currentKnockbackResistance += card.knockbackModifier;
-
-            playerStats.currentWeaponSize += card.weaponSize;
-            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
-        }
-
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
 
+        NotifyHealthChanged();
+        NotifyStaminaChanged();
+    }
+
+    private void ApplyStatsOnCardPickUp(CardData card)
+    {
+        if(card == null) return;
+        InitializePlayerBaseStats();
+        ApplyStatsInternally(card);
+
+        NotifyHealthChanged();
+        NotifyStaminaChanged();
+    }
+
+            playerStats.currentWeaponSize += card.weaponSize;
+            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+    public void ReApplyStats()
+    {
+        InitializePlayerBaseStats();
+        List<CardData> templist = playerColllection.ReturnAllCards();
+        foreach (CardData card in templist)
+        {
+            ApplyStatsInternally(card);
+        }
         NotifyHealthChanged();
         NotifyStaminaChanged();
     }
@@ -201,5 +215,43 @@ public class PlayerManager : MonoBehaviour, IDamageable
         {
             Heal(playerStats.MaxHealth);
         }
+    }
+
+    private void InitializePlayerBaseStats()
+    {
+        playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.maxStamina = playerStats.baseStamina;
+
+        playerStats.currentLuck = playerStats.baseLuck;
+        playerStats.currentCritChance = playerStats.baseCritChance;
+
+        playerStats.currentWalkSpeedModifier = playerStats.baseWalkSpeedModifier;
+        playerStats.currentSprintSpeedModifier = playerStats.baseSprintSpeedModifier;
+        playerStats.currentDodgeSpeedModifier = playerStats.baseDodgeSpeedModifier;
+        playerStats.currentDamageModifier = playerStats.baseDamageModifier;
+        playerStats.currentHealModifier = playerStats.baseHealModifier;
+        playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
+
+        playerStats.currentWeaponSize = playerStats.baseWeaponSize;
+    }
+
+    public void ApplyStatsInternally(CardData card)
+    {
+        playerStats.MaxHealth += card.healthModifier;
+        playerStats.maxStamina += card.staminaModifier;
+
+        playerStats.currentLuck += card.LuckModifier;
+        playerStats.currentCritChance += card.critChance;
+
+        playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
+        playerStats.currentSprintSpeedModifier += card.sprintSpeedModifier;
+        playerStats.currentDodgeSpeedModifier += card.dodgeSpeedModifier;
+        playerStats.currentDamageModifier += card.damageModifier;
+
+
+        playerStats.currentHealModifier += card.healModifier;
+        playerStats.currentKnockbackResistance += card.knockbackModifier;
+
+        playerStats.currentWeaponSize += card.weaponSize;
     }
 }

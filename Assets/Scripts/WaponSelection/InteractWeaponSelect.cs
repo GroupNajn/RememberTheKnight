@@ -1,48 +1,45 @@
 using UnityEngine;
 
-public class InteractWeaponSelect : MonoBehaviour , IInteractable, IInteractableUI
+public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    PlayerWeaponManager weaponManager;
-    private bool canShowUI = false;
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
 
-    private InteractUI_Controller interactUI_Controller;
+    PlayerWeaponManager weaponManager;
 
     void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
         weaponManager = player.GetComponent<PlayerWeaponManager>();
 
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
+
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         weaponManager.SwitchWeapon();
     }
 
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-    }
-
-    public void ShowUI()
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-    }
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Interact to switch weapon";
+        UIData.InfoText = "[F]: Switch Weapon";
         return UIData;
     }
-
-    public void HideUI()
-    {
-        interactUI_Controller.DisableCanvas();
-    }
-
 }

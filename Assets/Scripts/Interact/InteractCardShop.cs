@@ -1,10 +1,13 @@
 using System.Collections;
-using System.Runtime.InteropServices;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
+public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    [Header("Saved Data")]
+    [SerializeField] private string interactableID;
+    [SerializeField] private GameObject firstTimeEffect;
+
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
     private UIManager playerUIManager;
@@ -13,19 +16,33 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
 
     private bool canShowUI = false;
 
-    private InteractUI_Controller interactUI_Controller;
     private InteractCameraHandler interactCameraHandler;
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
         cardShopUI = FindFirstObjectByType<CardShopUI>(FindObjectsInactive.Include);
         board = GetComponent<ShopBoard>();
-        interactUI_Controller = GetComponent<InteractUI_Controller>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
+
+        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+
+        if (InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
     }
     public void Interact()
     {
+        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        {
+            InteractableSaveSystem.SetInteracted(interactableID);
+
+            if (firstTimeEffect != null)
+                firstTimeEffect.SetActive(false);
+        }
+
         interactCameraHandler.InteractCamSwitch(transform, preset);
         cardShopUI.shopBoard = board;
         StartCoroutine(OpenUI());
@@ -43,28 +60,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "Buy a card.";
+        UIData.InfoText = "[F]: Buy a Card.";
         return UIData;
-
-    }
-
-    public void ShowUI()
-    {
-        if (!canShowUI && interactUI_Controller != null) return;
-
-        interactUI_Controller.EnableCanvasObject();
-
-    }
-
-    public void HideUI()
-    {
-
-        interactUI_Controller.DisableCanvas();
-    }
-
-    public void SetLookedAt(bool value)
-    {
-        canShowUI = value;
-
     }
 }
