@@ -2,8 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameOver : MonoBehaviour
+public class GameOver : AutoSelectFirstButtonOnEnable
 {
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
     public void LoadLobby()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;

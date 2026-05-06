@@ -1,19 +1,24 @@
+using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
-public class StartMenuUI : MonoBehaviour
+public class StartMenuUI : AutoSelectFirstButtonOnEnable
 {
     UIManager uiManager;
     //SceneData sceneData;
     bool canUseInput = true;
 
-    void Awake()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        canUseInput = true;
+
     }
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         uiManager = GetComponentInParent<UIManager>();
 
         Event_System.instance.OnLoadScenes += OnLoadScene;
@@ -42,10 +47,6 @@ public class StartMenuUI : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        canUseInput = true;
-    }
 
     public void OpenOptions()
     {

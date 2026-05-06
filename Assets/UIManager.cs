@@ -1,6 +1,7 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -80,6 +81,8 @@ public class UIManager : MonoBehaviour
         backButtonUI.gameObject.SetActive(false);
 
         UIMenuActive = true;
+        startMenuUI.gameObject.SetActive(true);
+
     }
 
     void OnPauseGame()

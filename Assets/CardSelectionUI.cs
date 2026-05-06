@@ -8,7 +8,7 @@ using System.Collections.Generic;
 // Script made by Wilmer some day in april // Henric
 // Script Updated by Henric 2026-04-17
 // Comments added during -> 2026-04-17 session.
-public class CardSelectionUI : MonoBehaviour
+public class CardSelectionUI : AutoSelectFirstButtonOnEnable
 {
     private PlayerInput playerInput;
     private UIManager uiManager;
@@ -43,9 +43,11 @@ public class CardSelectionUI : MonoBehaviour
 
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         RebuildSelectionState();
+
     }
 
     private void OnDisable()
