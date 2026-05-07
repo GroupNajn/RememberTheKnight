@@ -1,5 +1,6 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BounceScript : MonoBehaviour
 {
@@ -42,14 +43,15 @@ public class BounceScript : MonoBehaviour
             return;
         }
 
-        if (pickupCollider != null)
-            pickupCollider.enabled = false;
-
         physicsCollider.isTrigger = false;
 
-        //IgnorePlayer();
+        if (pickupCollider != null)
+        {
+            pickupCollider.enabled = false;
+            StartCoroutine(EnablePickupColliderAfterDelay(1.5f));
+        }
 
-        horizontalDir = new Vector3(Random.Range(-1f, 1f),0f,Random.Range(-1f, 1f)).normalized;
+        horizontalDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
 
         Vector3 launchVelocity = horizontalDir * launchForce;
         launchVelocity.y = launchForce;
@@ -146,9 +148,6 @@ public class BounceScript : MonoBehaviour
             if (Vector3.Distance(transform.position, newPosition) <= maxSnapDistance)
             {
                 lastBouncePosition = newPosition;
-
-                // TA BORT DENNA:
-                // transform.position = lastBouncePosition;
             }
             else
             {
@@ -172,20 +171,14 @@ public class BounceScript : MonoBehaviour
         rb.useGravity = false;
     }
 
-    private float GetColliderRadius()
+    private IEnumerator EnablePickupColliderAfterDelay(float delay)
     {
-        if (physicsCollider is SphereCollider sphere)
+        yield return new WaitForSeconds(delay);
+
+        if (pickupCollider != null)
         {
-            float maxScale = Mathf.Max(
-                transform.lossyScale.x,
-                transform.lossyScale.y,
-                transform.lossyScale.z
-            );
-
-            return sphere.radius * maxScale;
+            pickupCollider.enabled = true;
         }
-
-        return physicsCollider.bounds.extents.y;
     }
 
     private void Bounce()
