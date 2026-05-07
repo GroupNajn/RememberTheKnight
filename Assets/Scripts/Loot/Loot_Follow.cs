@@ -36,6 +36,7 @@ public class Loot_Follow : MonoBehaviour
     private bool initialized = false;
     private bool isMovingToHover = false;
     private bool isHovering = false;
+    private bool isAdjustingHeight = false;
 
     private bool hasLifted = false;
     private bool liftInitialized = false;
@@ -126,6 +127,7 @@ public class Loot_Follow : MonoBehaviour
         {
             UpdateFollowVelocity();
             UpdateBasePositionXZ();
+            MoveToNewHoverPosition();
 
             transform.position = GetHoverPosition();
         }
@@ -160,6 +162,39 @@ public class Loot_Follow : MonoBehaviour
         }
     }
 
+    private void MoveToNewHoverPosition()
+    {
+        if (centerPoint == null)
+            return;
+
+        Vector3 rayStart = centerPoint.position + Vector3.up * 1f;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 10f, bounceScript.EnvironmentMask))
+        {
+            Debug.DrawRay(rayStart, Vector3.down * 10f, Color.red);
+
+            float wantedCenterY = hit.point.y + baseHoverOffset;
+            float currentCenterY = centerPoint.position.y;
+
+            float yDifference = wantedCenterY - currentCenterY;
+
+            // Flytta basePosition mot rätt höjd i båda riktningar
+            basePosition.y += yDifference * moveToHoverSpeed * Time.deltaTime;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isHovering) return;
+        ContactPoint contact = collision.contacts[0];
+
+        Vector3 normal = contact.normal;
+
+        float pushForce = 0.40f;
+
+        transform.position += normal * pushForce;
+    }
+
     private Vector3 GetHoverPosition()
     {
         float y =Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * hoverHeight * 0.01f;
@@ -169,14 +204,8 @@ public class Loot_Follow : MonoBehaviour
 
     private void UpdateFollowVelocity()
     {
-        Vector3 playerFlat = new Vector3(
-            player.position.x,
-            transform.position.y,
-            player.position.z
-        );
-
+        Vector3 playerFlat = new Vector3(player.position.x, transform.position.y, player.position.z);
         distanceVector = playerFlat - transform.position;
-
         SetLootFollow();
     }
 
