@@ -67,6 +67,8 @@ public class CardBuilder : MonoBehaviour
         bounce.enabled = false;
         Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
         body.useGravity = false;
+        Light light = cardPrefab.GetComponentInChildren<Light>();
+        light.enabled = false;
         //ParticleSystem particleSystem = cardPrefab.GetComponentInChildren<ParticleSystem>();
         //particleSystem.Stop();
     }
