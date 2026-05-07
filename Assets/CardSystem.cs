@@ -12,6 +12,8 @@ public class CardSystem : MonoBehaviour
     private HashSet<CardData> hashAllCards = new HashSet<CardData>();
 
 
+    // Script made by Henric in the end of april 2026. 
+
     public CardContract PlayerConract
     {
         set => cardContract = value;
@@ -191,16 +193,5 @@ public IReadOnlyList<CardData> GetAllCards()
 {
     return allCards;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 }

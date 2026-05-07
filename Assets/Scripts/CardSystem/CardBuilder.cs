@@ -1,6 +1,10 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using static IPickupable;
+
+// Script made by Henric in the end of April 2026.
 
 public class CardBuilder : MonoBehaviour
 {
@@ -18,21 +22,7 @@ public class CardBuilder : MonoBehaviour
 
     void Update()
     {
-
-        //if (Input.GetKey(KeyCode.P))
-        //{
-        //    if (!keyPressed)
-        //    {
-        //        parentSpawnPosTrans = playerTrans;
-        //        InstantiateCardWithoutScripts(cardSystem.ReturnRandomCard());
-        //    }
-        //    keyPressed = true;
-        //}
-
-        //keyPressed = false;
     }
-
-
     public GameObject InstantiateCardWithoutScripts(CardData cardData, Transform parentTransform)
     {
         Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y + 180, parentTransform.rotation.eulerAngles.z);
@@ -67,6 +57,8 @@ public class CardBuilder : MonoBehaviour
         bounce.enabled = false;
         Rigidbody body = cardPrefab.GetComponent<Rigidbody>();
         body.useGravity = false;
+        Light light = cardPrefab.GetComponentInChildren<Light>();
+        light.enabled = false;
         //ParticleSystem particleSystem = cardPrefab.GetComponentInChildren<ParticleSystem>();
         //particleSystem.Stop();
     }
@@ -94,13 +86,16 @@ public class CardBuilder : MonoBehaviour
         SetCardMaterial(card, script);
         TurnOnScriptsOnCard(spawnedCard);
     }
-
-
-
+    /// <summary>
+    /// Retrieves the particle system associated with the specified rarity tier.
+    /// </summary>
+    /// <param name="rarityTier">The rarity tier for which to obtain the corresponding particle system.</param>
+    /// <returns>The particle system that corresponds to the specified rarity tier. If the rarity tier is not recognized, the
+    /// particle system for the Common tier is returned.</returns>
     private ParticleSystem ReturnParticleSystem(RarityTier rarityTier)
     {
         switch (rarityTier)
-        {
+        { 
             case RarityTier.Common:
                 return particleSystems[0];
             case RarityTier.Uncommon:
@@ -114,4 +109,37 @@ public class CardBuilder : MonoBehaviour
             default: return particleSystems[0];
         }
     }
+    /// <summary>
+    /// Retrieves all cards with a tier of Rare, Epic, or Legendary.
+    /// </summary>
+    /// <remarks>Use this method to obtain cards that are above or equal to the Rare tier for scenarios where
+    /// only higher-tier cards are relevant, such as special rewards or advanced gameplay features.</remarks>
+    /// <returns>A list of <see cref="CardData"/> objects representing cards whose tier is Rare, Epic, or Legendary. The list
+    /// will be empty if no such cards are found.</returns>
+    public List<CardData> ReturnAboveRareTier()
+    {
+        LootManager lootManager = LootManager.instance;
+
+        var tempList = cardSystem.GetAllCards();
+        List<CardData> result = new List<CardData>();
+
+        foreach (CardData card in tempList) // Checks if current card's tier is within the Rare, Epic, Legendary range.
+        {
+            if (lootManager.IsTierInsideRarity(card.cardTier, RarityTier.Rare)
+               || lootManager.IsTierInsideRarity(card.cardTier, RarityTier.Epic)
+               || lootManager.IsTierInsideRarity(card.cardTier, RarityTier.Legendary))
+            {
+                result.Add(card);
+            }
+
+
+        }
+        return result;
+    }
+
+
+
+
+
+
 }

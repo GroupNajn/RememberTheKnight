@@ -157,11 +157,7 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
 
     private void MoveToHoverBasePosition()
     {
-        Vector3 newPosition = Vector3.MoveTowards(
-            rb.position,
-            basePosition,
-            moveToHoverSpeed * Time.fixedDeltaTime
-        );
+        Vector3 newPosition = Vector3.MoveTowards(rb.position,basePosition,moveToHoverSpeed * Time.fixedDeltaTime);
 
         rb.MovePosition(newPosition);
 
