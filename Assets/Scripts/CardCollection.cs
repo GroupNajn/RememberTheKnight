@@ -26,19 +26,7 @@ public class CardCollection : MonoBehaviour
     {
         temporaryCards.Clear();
         equippedCards.Clear();
-
-        
     }
-    private void OnDisable()
-    {
-        
-    }
-
-    void Update()
-    {
-
-    }
-
 
     public void EquipCards(CardData card)
     {
@@ -54,7 +42,7 @@ public class CardCollection : MonoBehaviour
     }
 
 
-    // Logisk fel. Behöver fixas. !!!!!!
+  
     public void AddToTempCollection(CardData card)
     {
         if (card == null) return;

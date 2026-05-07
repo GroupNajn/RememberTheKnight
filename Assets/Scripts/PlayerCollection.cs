@@ -53,32 +53,24 @@ public class PlayerCollection : MonoBehaviour
         {
             cardCollection.EquipCards(cardData);
         }
-
         //where the stats gets applyed the playerStats
         playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
     }
-
     public List<CardData> ReturnTempCardCollection()
     {
         return cardCollection.GetTempCardCollection();
     }
-
     public List<CardData> ReturnPermanentCardCollection()
     {
         return cardCollection.GetEquippedCards();
     }
-
     public List<CardData> ReturnAllCards()
     {
         return cardCollection.ReturnCardsForApplyingStats();
     }
-
     public void SignContract(CardFamily cardFamily)
     {
-
         if (cardContract != null) return;
-
-
         cardContract = new CardContract(cardFamily);
         if (cardContract != null)
         {
@@ -86,10 +78,8 @@ public class PlayerCollection : MonoBehaviour
             cardCollection.PlayersCardContract = cardContract;
             CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
             cardSystem.PlayerConract = cardContract;
-
         }
     }
-
     public void PickupLoot(Loot loot)
     {
         if (loot is Card card)
@@ -98,7 +88,6 @@ public class PlayerCollection : MonoBehaviour
             playerManager.ReApplyStats();
             UpdateDisplayCollection();
         }
-
     }
 
     private void ResetAllLists()
@@ -107,26 +96,18 @@ public class PlayerCollection : MonoBehaviour
         cardCollection.ClearTemporaryCards();
     }
 
-
     public void ClearTemporaryCards()
     {
         cardCollection.ClearTemporaryCards();
     }
-
     public void BreakContract()
     {
         if (cardContract != null)
             cardContract.BreakContract();
     }
-
     public void UpdateDisplayCollection()
     {
         displayEquipedCards = cardCollection.GetEquippedCards();
         displayTempCards = cardCollection.GetTempCardCollection();
-    }
-
-    void Update()
-    {
-
     }
 }
