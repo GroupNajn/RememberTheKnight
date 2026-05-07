@@ -8,6 +8,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Animator))]
 public class NavmeshBehaviourSync : MonoBehaviour
 {
+    private static readonly int IsAttackingHash = Animator.StringToHash("IsAttacking");
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -17,6 +19,11 @@ public class NavmeshBehaviourSync : MonoBehaviour
         if (behaviorAgent.BlackboardReference.GetVariable("stoppingDistance", out stoppingDistance))
             stoppingDistance.Value = navAgent.stoppingDistance;
 
+    }
+
+    void Update()
+    {
+        animator.SetBool(IsAttackingHash, isAttacking.Value);
     }
 
     public void OnAttackStart() { isAttacking.Value = true; }
