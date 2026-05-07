@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Transactions;
 using UnityEngine;
 
@@ -87,7 +88,8 @@ public class CharacterWeaponManager : MonoBehaviour
             rightDamageTrigger.ResetDamage();
 
             characterSoundFXManager.PlayAttackGrunt();
-            characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes),1.5f);
+            //characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes),1.5f);
+            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.attackEvent, gameObject);
 
             currentActiveWeaponData = currentRightWeaponData;
         }
@@ -110,7 +112,8 @@ public class CharacterWeaponManager : MonoBehaviour
             leftDamageTrigger.ResetDamage();
 
             characterSoundFXManager.PlayAttackGrunt();
-            characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes), 1.5f);
+            //characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes), 1.5f);
+            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.attackEvent, gameObject);
 
             currentActiveWeaponData = currentLeftWeaponData;
         }
