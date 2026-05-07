@@ -27,11 +27,10 @@ public class Event_System : MonoBehaviour
 
 
     //Loot Related
-    public Action OnDroopMultipleSouls;
+    public Action <CardData>OnDroopMultipleSouls;
     public Action OnResetPullAllLoot;
     public Action<Loot> OnLootPickedUp;
     public Action<Loot> OnGetLoot;
-    public Action OnCardPickedUp;
 
     //Souls Related
     public Action<int> OnSoulsSpent;

@@ -44,25 +44,29 @@ public class CardCollection : MonoBehaviour
 
   
     public void AddToTempCollection(CardData card)
+{
+    if (card == null) return;
+
+    bool existsInTemp = temporaryCards.Any(c => c != null && c.cardID == card.cardID);
+    bool existsInEquipped = equippedCards.Any(c => c != null && c.cardID == card.cardID);
+
+    if (existsInTemp)
     {
-        if (card == null) return;
-        if(temporaryCards.Contains(card))
-        {
-            Debug.Log($"{card.cardID} Finns Redan I TemporaryCards");
-        }
-        if (!temporaryCards.Contains(card) && !equippedCards.Contains(card))
-        {
-            temporaryCards.Add(card);
-            NotifyCardPickUp();
-        }
-        else
-        {
-            Event_System.instance?.OnDroopMultipleSouls?.Invoke();
-            // If the player already has that card. Invoke the delegate to Listerns(LootManager)
-            //To tell the manager to drop multiple souls, to give the player something else.
-        }
-        Debug.Log($"ANTAL KORT Temporary {TemporaryCards.Count}");
+        
+        Event_System.instance?.OnDroopMultipleSouls?.Invoke(card);
+        return;
     }
+
+    if (existsInEquipped)
+    {
+      
+        Event_System.instance?.OnDroopMultipleSouls?.Invoke(card);
+        return;
+    }
+
+    temporaryCards.Add(card);
+   
+}
 
     public void RemoveFromTemporaryCollection(Card card)
     {
@@ -100,11 +104,6 @@ public class CardCollection : MonoBehaviour
     public void ClearEquipedCards()
     {
         equippedCards.Clear();
-    }
-
-    private void NotifyCardPickUp()
-    {
-        Event_System.instance?.OnCardPickedUp?.Invoke();
     }
 
 

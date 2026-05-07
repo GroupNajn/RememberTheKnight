@@ -3,20 +3,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Mono.Cecil.Cil;
+using Mono.Cecil;
 
 // Script made by Henric some random date
 
 public class LootManager : MonoBehaviour
 {
     public static LootManager instance;
-
-    [Header("Loot_Table")]
-    [SerializeField] List<Loot> soulTable;
-    [SerializeField] List<Loot> CommonLootTable;
-    [SerializeField] List<Loot> UncommonLootTable;
-    [SerializeField] List<Loot> rareLootTable;
-    [SerializeField] List<Loot> EpicLootTable;
-    [SerializeField] List<Loot> LegendaryLootTable;
 
     [Header("New Loot Table")]
 
@@ -26,10 +19,6 @@ public class LootManager : MonoBehaviour
     [SerializeField] List<CardData> newRareLootTable;
     [SerializeField] List<CardData> newEpicLootTable;
     [SerializeField] List<CardData> newLegendaryLootTable;
-
-
-
-
 
     public HashSet<Loot> DroppedLoot { get { return droppedLoot; } }
     HashSet<Loot> droppedLoot;
@@ -119,6 +108,7 @@ public class LootManager : MonoBehaviour
         //Debug.Log("LootManager subscribed");
         //Event_System.instance.OnEnemyKilled += RollMultipuleLoot;
         Event_System.instance.OnEnemyKilledNew += TryToDropLoot;
+        Event_System.instance.OnDroopMultipleSouls += SpawnMultipleSouls;
         InitializeCardPools();
     }
 
@@ -233,7 +223,7 @@ public class LootManager : MonoBehaviour
 
 
 
-   
+
     // Returns the Next RarityTier, used in the Upgrade Mechanic, to advance the loot into the next RarityTier Range. 
     private RarityTier GetNextRarity(RarityTier rarity)
     {
@@ -370,19 +360,19 @@ public class LootManager : MonoBehaviour
 
         List<CardData> allowedCards = FilterLoot(profile.allowedFamiles);
 
-        if(allowedCards.Count <= 0)
+        if (allowedCards.Count <= 0)
         {
             Debug.LogWarning("No allowed cards found in LootProfile");
             return;
         }
 
-        for(int i = 0; i < lootAmount; i++)
+        for (int i = 0; i < lootAmount; i++)
         {
             RarityTier finalRarity = RollRarityUpgrade(profile.baseRarity);
 
             List<CardData> cardsInRarity = FilterCardsByRarity(allowedCards, finalRarity);
 
-            if(cardsInRarity.Count <= 0)
+            if (cardsInRarity.Count <= 0)
             {
                 Debug.LogWarning("No cards found in rarity" + finalRarity);
             }
@@ -422,81 +412,6 @@ public class LootManager : MonoBehaviour
             droppedLoot.Remove(loot);
     }
 
-    public void GetOneRandomItemLoot(EnemyDamage enemy)
-    {
-        float totalWeight = 0;
-
-        foreach (var item in SwitchLootTable(enemy.tier)) // Add all weights from items for the respective loot table
-            totalWeight += item.Weight;
-
-        float roll = Random.Range(0, totalWeight); // Make a roll from 0 to the sum of all weights. (e.g) 0-250
-        float current = 0;
-
-        foreach (var item in SwitchLootTable(enemy.tier))
-        {
-            current += item.Weight;
-            if (roll < current)
-            {
-                PrintPercentOnSelectedItem(current, totalWeight);
-                DropLoot(item, enemy);
-
-                return;
-            }
-        }
-    }
-
-    private List<Loot> SwitchLootTable(RarityTier tier)
-    {
-        switch (tier)
-        {
-            case RarityTier.Common:
-                return CommonLootTable;
-            case RarityTier.Uncommon:
-                return UncommonLootTable;
-            case RarityTier.Rare:
-                return rareLootTable;
-            case RarityTier.Epic:
-                return EpicLootTable;
-            case RarityTier.Legendary:
-                return LegendaryLootTable;
-            default:
-                return CommonLootTable;
-
-        }
-
-
-    }
-    public void RollMultipuleLoot(EnemyDamage enemy)
-    {
-        for (int i = 0; i < CalculateLootAmount(); i++)
-        {
-            GetOneRandomItemLoot(enemy);
-        }
-    }
-
-    private int CalculateLootAmount()
-    {
-        float totalWeight = 0;
-        foreach (var weight in amountChanceTable)
-        {
-            totalWeight += weight;
-        }
-
-        float roll = Random.Range(0, totalWeight);
-        float current = 0;
-
-        for (int i = 0; i < amountChanceTable.Count; i++)
-        {
-            current += amountChanceTable[i];
-
-            if (roll < current)
-            {
-                return i + 1;
-            }
-        }
-
-        return 1;
-    }
 
     public void DropLoot(Loot item, EnemyDamage enemy)
     {
@@ -518,30 +433,18 @@ public class LootManager : MonoBehaviour
         builder.InstatitateCard(card, spawnPos);
     }
 
-
-    private void PrintPercentOnSelectedItem(float itemW, float SumOfW)
+    public void SpawnMultipleSouls(CardData card)
     {
-        float percent = (itemW / SumOfW) * 100;
-        Debug.Log("%" + percent);
-    }
+        Vector3 playerPosition = GameObject.Find("Player").transform.position;
 
-    public void ReDesributeWeight(List<Loot> table)
-    {
-        float totalWeight = 0;
-        int itemsInTable = 0;
-        foreach (var item in table)
+        int spawnCount = (int)card.cardSoulCost / 2;
+
+        spawnCount = Mathf.Max(1, spawnCount);
+
+        for (int i = 0; i < spawnCount; i++)
         {
-            itemsInTable++;
-            totalWeight += item.Weight;
+            SpawnSoul(playerPosition);
         }
-        if (totalWeight < 100)
-        {
-            float missingWeight = (totalWeight - 100);
-            float allocatWeight = Mathf.Abs(missingWeight) / itemsInTable;
-
-        }
-
-
     }
 
     private void InitializeCardPools()
