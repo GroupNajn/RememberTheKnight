@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private BookUi bookUi; // Meike tbc
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
-    
+
     [SerializeField] private GameObject backButtonUI;
 
     [Header("Menu UI")]
@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour
 
 
     public bool UIMenuActive = true;
+    public bool timeScaleOn = true;
 
 
     private void Awake()
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
 
-        backgrundUI.gameObject.SetActive(true);
+        //backgrundUI.gameObject.SetActive(true);
         backButtonUI.gameObject.SetActive(false);
 
         UIMenuActive = true;
@@ -89,6 +90,9 @@ public class UIManager : MonoBehaviour
     {
         if (!UIMenuActive)
         {
+            if(playerStats.CurrentHealth <= 0)
+                return;
+
             UIMenuActive = true;
 
             CheckUIState();
@@ -159,7 +163,7 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
         Cursor.visible = false; // Hide the cursor when resuming
         playerInput.enabled = true; // Enable player input when resuming
-         
+
         ClosePauseMenu(); // Hide the pause menu
         CloseCardSelectUI(); // Hide the card selection UI
         CloseFamilySelectUI(); // Hide the Family selection UI
@@ -170,25 +174,40 @@ public class UIManager : MonoBehaviour
         CloseBookUI();
 
         CheckUIState();
+        CheckTimeScaleUI(true);
     }
 
     public void CheckUIState()
     {
         if (!UIMenuActive)
         {
-            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+            Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
             Cursor.visible = false; // Hide the cursor when resuming
             playerInput.enabled = true; // Enable player input when resuming
         }
         else
         {
-            Time.timeScale = 0f; // Pause the game by setting time scale to 0
+            Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
             Cursor.visible = true; // Show the cursor when paused
             playerInput.enabled = false; // Disable player input when paused
         }
     }
+
+    public void CheckTimeScaleUI(bool timeScaleOn)
+    {
+        if (timeScaleOn)
+        {
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            Time.timeScale = 0f;
+        }
+    }
+
+
 
     // BACKGROUND
     public void CloseBackgroundUI()
@@ -339,6 +358,8 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = false;
         CheckUIState();
+        CheckTimeScaleUI(true);
+
     }
 
     // FAMILY SELECT UI
@@ -349,6 +370,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleUI(true);
     }
 
     public void CloseFamilySelectUI()
@@ -358,7 +380,7 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
-    
+
     // CARD SHOP UI
     public void OpenCardShopUI()
     {
@@ -367,6 +389,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleUI(true);
     }
 
     public void CloseCardShopUI()
