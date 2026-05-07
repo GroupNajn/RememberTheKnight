@@ -21,16 +21,12 @@ public partial class CircleTargetAction : Action
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private CharacterController characterController;
-
-    private Vector3 circlePoint;
-    private bool isClockwise = true;
+    [SerializeReference] public BlackboardVariable<bool> IsClockwise;
     private Vector3 lastDestination;
-    private Vector3 lastTargetPos;
     private float minMoveDistance;
 
     private bool shouldCorrect = false;
     private Vector3 currentCirclePoint;
-    private Queue<Vector3> circlePoints;
 
     protected override Status OnStart()
     {
@@ -42,10 +38,7 @@ public partial class CircleTargetAction : Action
         lastDestination = Target.Value.position;
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
-        navMeshAgent.autoBraking = false;
-        circlePoints = SampleCirclePoints(20);
-        if (circlePoints.Count == 0) return Status.Failure;
-        currentCirclePoint = circlePoints.Dequeue();
+        currentCirclePoint = SampleCirclePoints(3);
         navMeshAgent.SetDestination(currentCirclePoint);
         return Status.Running;
     }
@@ -60,64 +53,56 @@ public partial class CircleTargetAction : Action
 
         var dist = (Target.Value.position - Self.Value.transform.position).magnitude;
         shouldCorrect = dist > CircleRadius.Value * 1.2 || dist < CircleRadius.Value * 0.8;
-        if (shouldCorrect) circlePoints = SampleCirclePoints(5);
-        if (circlePoints.Count == 0)
+        if (shouldCorrect)
         {
-            circlePoints = SampleCirclePoints(5);
-            if (circlePoints.Count == 0) return Status.Failure;
+            currentCirclePoint = SampleCirclePoints(3);
+            if (!RegularNavigate(currentCirclePoint))
+            {
+                return Status.Running;
+            }
         }
 
-        if (!RegularNavigate(currentCirclePoint))
-        {
-            return Status.Running;
-        }
-        else
-        {
-            currentCirclePoint = circlePoints.Dequeue();
-            return Status.Running;
-        }
 
-        return Status.Running;
-
-        navMeshAgent.nextPosition = Self.Value.transform.position;
         float currentSpeedX = animator.GetFloat(XHash);
-        float currentSpeedZ = animator.GetFloat(YHash);
 
-        if (isClockwise)
+
+        if (IsClockwise.Value)
         {
             animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, -1f, navMeshAgent.acceleration * Time.deltaTime));
-            isClockwise = navMeshAgent.CalculatePath(Self.Value.transform.position - Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
+            IsClockwise.Value = navMeshAgent.CalculatePath(Self.Value.transform.position - Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
         }
         else
         {
             animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, 1f, navMeshAgent.acceleration * Time.deltaTime));
-            isClockwise = !navMeshAgent.CalculatePath(Self.Value.transform.position + Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
+            IsClockwise.Value = !navMeshAgent.CalculatePath(Self.Value.transform.position + Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
         }
+        animator.SetFloat(YHash, Mathf.Lerp(animator.GetFloat(YHash), 0, navMeshAgent.acceleration * Time.deltaTime));
 
         return Status.Running;
     }
 
     protected override void OnEnd()
     {
-        navMeshAgent.autoBraking = true;
+        animator.SetFloat(XHash, 0);
+        animator.SetFloat(YHash, 0);
+
     }
 
-    private Queue<Vector3> SampleCirclePoints(int sampleDensity)
+    private Vector3 SampleCirclePoints(int sampleDensity)
     {
         Vector3 dir = navMeshAgent.transform.position - Target.Value.position;
         dir.y = 0;
         dir.Normalize();
         dir *= CircleRadius.Value;
-        Queue<Vector3> circlePath = new();
         for (int i = 0; i < sampleDensity; i++)
         {
 
-            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 45 * i, navMeshAgent.transform.up) * dir, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 45 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
             {
-                circlePath.Enqueue(hit.position);
+                return hit.position;
             }
         }
-        return circlePath;
+        return navMeshAgent.transform.position;
     }
 
     private bool RegularNavigate(Vector3 destination)
@@ -162,7 +147,7 @@ public partial class CircleTargetAction : Action
 
             navMeshAgent.velocity = localVelocity;
         }
-        return !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.1f;
+        return !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5;
     }
 }
 
