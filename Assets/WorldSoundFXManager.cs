@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
@@ -6,20 +7,25 @@ public class WorldSoundFXManager : MonoBehaviour
     public static WorldSoundFXManager instance;
 
     [Header("Damage Sounds")]
-    public AudioClip[] damageSFX;
+   // public AudioClip[] damageSFX;
+    public EventReference damageEvent;
 
     [Header("Action Sounds")]
-    public AudioClip rollSFX;
-    public AudioClip backstepSFX;
-    public AudioClip pickUpSFX;
+   // public AudioClip rollSFX;
+    //public AudioClip backstepSFX;
+    //public AudioClip pickUpSFX;
+    public EventReference rollEvent;
+    public EventReference backstepEvent;
+    public EventReference pickupEvent;
+    public EventReference attackEvent;
 
-    [Header("Boss Music")]
-    [SerializeField] AudioSource BossIntroPlayer;
-    [SerializeField] AudioSource BossLoopPlayer;
+    //[Header("Boss Music")]
+    //[SerializeField] AudioSource BossIntroPlayer;
+    //[SerializeField] AudioSource BossLoopPlayer;
 
-    [Header("Background Music")]
-    [SerializeField] AudioSource BackgroundIntroPlayer;
-    [SerializeField] AudioSource BackgroundLoopPlayer;
+    //[Header("Background Music")]
+   // [SerializeField] AudioSource BackgroundIntroPlayer;
+  //  [SerializeField] AudioSource BackgroundLoopPlayer;
 
 
     private void Awake()
@@ -39,48 +45,41 @@ public class WorldSoundFXManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void PlayBackgroundTrack(AudioClip introTrack, AudioClip loopTrack)
-    {
-        BackgroundIntroPlayer.volume = 0.5f;
-        BackgroundIntroPlayer.clip = introTrack;
-        BackgroundIntroPlayer.loop = false;
-        BackgroundIntroPlayer.Play();
+    //public void PlayBackgroundTrack(AudioClip introTrack, AudioClip loopTrack)
+    //{
+    //    BackgroundIntroPlayer.volume = 0.5f;
+    //    BackgroundIntroPlayer.clip = introTrack;
+    //    BackgroundIntroPlayer.loop = false;
+    //    BackgroundIntroPlayer.Play();
 
-        BackgroundLoopPlayer.volume = 0.5f;
-        BackgroundLoopPlayer.clip = loopTrack;
-        BackgroundLoopPlayer.loop = true;
-        BackgroundLoopPlayer.PlayDelayed(BackgroundIntroPlayer.clip.length);
-    }
+    //    BackgroundLoopPlayer.volume = 0.5f;
+    //    BackgroundLoopPlayer.clip = loopTrack;
+    //    BackgroundLoopPlayer.loop = true;
+    //    BackgroundLoopPlayer.PlayDelayed(BackgroundIntroPlayer.clip.length);
+    //}
 
-    public void StopBackgroundMusic()
-    {
-        StartCoroutine(FadeOutBackgroundMusicThenStop());
-    }
+    //public void StopBackgroundMusic()
+    //{
+    //    StartCoroutine(FadeOutBackgroundMusicThenStop());
+    //}
 
-    private IEnumerator FadeOutBackgroundMusicThenStop()
-    {
-        while (BackgroundLoopPlayer.volume > 0)
-        {
-            BackgroundIntroPlayer.volume -= Time.deltaTime;
-            BackgroundLoopPlayer.volume -= Time.deltaTime;
-            yield return null;
-        }
+    //private IEnumerator FadeOutBackgroundMusicThenStop()
+    //{
+    //    while (BackgroundLoopPlayer.volume > 0)
+    //    {
+    //        BackgroundIntroPlayer.volume -= Time.deltaTime;
+    //        BackgroundLoopPlayer.volume -= Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        BackgroundIntroPlayer.Stop();
-        BackgroundLoopPlayer.Stop();
-    }
+    //    BackgroundIntroPlayer.Stop();
+    //    BackgroundLoopPlayer.Stop();
+    //}
 
-    public AudioClip ChooseRandomSFXFromArray(AudioClip[] array)
-    {
-        int index = Random.Range(0, array.Length);
+    //public AudioClip ChooseRandomSFXFromArray(AudioClip[] array)
+    //{
+    //    int index = Random.Range(0, array.Length);
 
-        return array[index];
-    }
-
-
-
-
-
-
-
+    //    return array[index];
+    //}
 }

@@ -36,7 +36,7 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
         if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
         {
             uiManager.CloseStartMenu();
-            uiManager.CloseBackgroundUI();
+            //uiManager.CloseBackgroundUI();
             uiManager.UIMenuActive = false;
 
             uiManager.OpenCharacterSelectUI();
