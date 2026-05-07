@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
-        Event_System.instance.OnCardPickedUp += ReApplyStats;
+        //Event_System.instance.OnCardPickedUp += ReApplyStats;
 
         GetCharges(0); // Update the material of the cup at the start of the game with the initial healing charges
     }
@@ -153,23 +153,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
-        playerStats.MaxHealth = playerStats.baseHealth;
-        playerStats.maxStamina = playerStats.baseStamina;
-
-        playerStats.currentLuck = playerStats.baseLuck;
-        playerStats.currentCritChance = playerStats.baseCritChance;
-
-        playerStats.currentWalkSpeedModifier = playerStats.baseWalkSpeedModifier;
-        playerStats.currentSprintSpeedModifier = playerStats.baseSprintSpeedModifier;
-        playerStats.currentDodgeSpeedModifier = playerStats.baseDodgeSpeedModifier;
-        playerStats.currentDamageModifier = playerStats.baseDamageModifier;
-        playerStats.currentHealModifier = playerStats.baseHealModifier;
-        playerStats.currentKnockbackResistance = playerStats.baseKnockbackResistance;
-
-        playerStats.currentWeaponSize = playerStats.baseWeaponSize;
-        playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.baseWeaponSize;
-
-
+       
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -185,27 +169,23 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyStaminaChanged();
     }
 
-    private void ApplyStatsOnCardPickUp(CardData card)
+    private void ApplySingleCard(CardData card)
     {
-        if (card == null) return;
-        InitializePlayerBaseStats();
+        if(card == null) return;
+       
         ApplyStatsInternally(card);
-
-        NotifyHealthChanged();
-        NotifyStaminaChanged();
-    }
-    public void ReApplyStats()
-    {
-        InitializePlayerBaseStats();
-        List<CardData> templist = playerColllection.ReturnAllCards();
-        foreach (CardData card in templist)
-        {
-            ApplyStatsInternally(card);
-
-        }
 
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
+    }
+    public void ReApplyStats()
+    {
+        List<CardData> templist = playerColllection.ReturnAllCards();
+        InitializePlayerBaseStats();
+        foreach (CardData card in templist)
+        {
+            ApplyStatsInternally(card);
+        }
         NotifyHealthChanged();
         NotifyStaminaChanged();
     }

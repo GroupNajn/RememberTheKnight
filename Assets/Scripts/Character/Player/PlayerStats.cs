@@ -109,7 +109,7 @@ public class PlayerStats : MonoBehaviour
         baseHealModifier = currentHealModifier;
         baseKnockbackResistance = currentKnockbackResistance;
         
-        baseWeaponSize = playerWeaponManager.currentRightHandWeapon.transform.localScale;
+        baseWeaponSize = new Vector3(1.2f, 1.2f,1.2f);
         currentWeaponSize = baseWeaponSize;
     }
 }

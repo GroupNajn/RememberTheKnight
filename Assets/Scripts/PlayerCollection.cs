@@ -7,6 +7,9 @@ public class PlayerCollection : MonoBehaviour
     [SerializeField] private CardCollection cardCollection;
     private PlayerManager playerManager;
 
+    [SerializeField] private List<CardData> displayEquipedCards = new List<CardData>();
+    [SerializeField] private List<CardData> displayTempCards = new List<CardData>();
+    
     public CardCollection CardCollection
     {
         get => cardCollection;
@@ -25,6 +28,9 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnLootPickedUp += PickupLoot;
         Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
         playerManager = GetComponent<PlayerManager>();
+        ResetAllLists();
+      
+
     }
     private void OnDestroy()
     {
@@ -89,10 +95,16 @@ public class PlayerCollection : MonoBehaviour
         if (loot is Card card)
         {
             InsertIntoCardCollection(card.CardData);
-            playerManager.ApplyStatsInternally(card.CardData);
-
+            playerManager.ReApplyStats();
+            UpdateDisplayCollection();
         }
 
+    }
+
+    private void ResetAllLists()
+    {
+        cardCollection.ClearEquipedCards();
+        cardCollection.ClearTemporaryCards();
     }
 
 
@@ -105,6 +117,12 @@ public class PlayerCollection : MonoBehaviour
     {
         if (cardContract != null)
             cardContract.BreakContract();
+    }
+
+    public void UpdateDisplayCollection()
+    {
+        displayEquipedCards = cardCollection.GetEquippedCards();
+        displayTempCards = cardCollection.GetTempCardCollection();
     }
 
     void Update()

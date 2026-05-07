@@ -46,7 +46,7 @@ public class LootManager : MonoBehaviour
         get => cardSystem;
     }
     [Header("Loot Drop Modifiers")]
-    [SerializeField] private float multipleLootModifier = 2f;
+    [SerializeField] private float multipleLootModifier = 1f;
     [SerializeField] private float luckChanceScaler = 1f; // It will multiply the current player % chance. If 2, double. If 3 tripple it etc...
     [SerializeField] private int maxLootAmount = 3;
     [SerializeField] private float soulDropModifier = 2.5f;
@@ -151,7 +151,7 @@ public class LootManager : MonoBehaviour
     {
         float chance = GetScaledLuckChance() * multipleLootModifier; // * 2 
 
-        chance += 0.25f; // To make sure the player have atleast 25% to drop a loot. It will  be increase with higher luck. 
+        chance += 0.1f; // To make sure the player have atleast 25% to drop a loot. It will  be increase with higher luck. 
         int amount = 0;
 
         while (Random.value < chance) // Between [0.0 - 1.0] 
@@ -161,7 +161,7 @@ public class LootManager : MonoBehaviour
             if (amount >= maxLootAmount)
                 break;
 
-            chance *= 0.35f; // will divide the chance by 2 for each successful increase drop amount.
+            chance *= 0.15f; // will divide the chance by 2 for each successful increase drop amount.
         }
 
         return amount;
@@ -207,7 +207,7 @@ public class LootManager : MonoBehaviour
     }
 
 
-
+    // Boolean to check if A CardTier is within a RarityTier. 
     private bool IsTierInsideRarity(Tier tier, RarityTier rarity)
     {
         return rarity switch
@@ -234,7 +234,7 @@ public class LootManager : MonoBehaviour
 
 
    
-
+    // Returns the Next RarityTier, used in the Upgrade Mechanic, to advance the loot into the next RarityTier Range. 
     private RarityTier GetNextRarity(RarityTier rarity)
     {
         switch (rarity)
@@ -255,6 +255,8 @@ public class LootManager : MonoBehaviour
                 return rarity;
         }
     }
+    // Takes in RarityTier and calculates the chance of it upgrading based on 
+    // Another scaling method, "GetUpgradeChance" it scales the chance depending on the input Tier to the method. 
     private RarityTier RollRarityUpgrade(RarityTier baseRarity)
     {
         RarityTier currentRarity = baseRarity;
@@ -266,6 +268,8 @@ public class LootManager : MonoBehaviour
             if (Random.value <= upgradeChance)
             {
                 currentRarity = GetNextRarity(currentRarity);
+
+                upgradeChance *= 0.5f; // Divide the chance by 2. 
             }
             else
             {
@@ -280,14 +284,15 @@ public class LootManager : MonoBehaviour
 
     private float GetUpgradeChance(RarityTier rarity)
     {
+        // luckChance = 10 % at start. 
         float luckChance = GetScaledLuckChance();
 
         (float baseChance, float modifier) = rarity switch
         {                   //Cases
-            RarityTier.Common => (0.25f, CommonTierUpgrade),
-            RarityTier.Uncommon => (0.15f, UncommonUpgradeTierModifier),
-            RarityTier.Rare => (0.13f, RareTierUpgradeModifier),
-            RarityTier.Epic => (0.11f, EpicTierUpgradeModifier),
+            RarityTier.Common => (0.11f, CommonTierUpgrade),                 // 0.11 + (0.10 * 1) 21% Chance | Common => UnCommon | Max Cap 111%
+            RarityTier.Uncommon => (0.08f, UncommonUpgradeTierModifier),// 0.08 + (0.10 * 0.7 ) = 16% Chance | UnCommon => Rare Max Cap 78%
+            RarityTier.Rare => (0.06f, RareTierUpgradeModifier),          // 0.06 + (0.10 * 0.3) = 9% Chance | Rare => Epic | Max Cap 36%
+            RarityTier.Epic => (0.04f, EpicTierUpgradeModifier),          // 0.04 + (0.10 * 0.1) = 5% Chance | Epic => Legendary | Max Cap 14% 
             RarityTier.Legendary => (0f, 0f),
             _ => (0f, 0f) // Default Case
         };
