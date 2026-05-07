@@ -208,7 +208,7 @@ public class LootManager : MonoBehaviour
 
 
     // Boolean to check if A CardTier is within a RarityTier. 
-    private bool IsTierInsideRarity(Tier tier, RarityTier rarity)
+    public bool IsTierInsideRarity(Tier tier, RarityTier rarity)
     {
         return rarity switch
         {
@@ -269,7 +269,7 @@ public class LootManager : MonoBehaviour
             {
                 currentRarity = GetNextRarity(currentRarity);
 
-                upgradeChance *= 0.5f; // Divide the chance by 2. 
+                upgradeChance *= 0.65f; // Divide the chance by 2. 
             }
             else
             {

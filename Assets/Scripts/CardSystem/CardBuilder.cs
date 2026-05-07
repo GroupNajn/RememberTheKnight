@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static IPickupable;
 
+// Script made by Henric in the end of April 2026.
+
 public class CardBuilder : MonoBehaviour
 {
     private Transform parentSpawnPosTrans;
