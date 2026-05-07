@@ -21,6 +21,7 @@ public class Card : Loot, IPickupable
         set => cardBack = value;
     }
 
+    private bool hasBeenPickedUp = false;
     public CardData SetCardData(CardData card) => cardData = card; 
 
     private CardUnlockType cardUnlockType = CardUnlockType.Permanent;
@@ -56,21 +57,23 @@ public class Card : Loot, IPickupable
 
     protected void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Triggered by: " + other.name);
+        if (hasBeenPickedUp)
+            return;
 
-        if (other.CompareTag("Player") && pickable == PickableState.Pickable)
-        {
-            Pickup();
-        }
+        if (!other.CompareTag("Player"))
+            return;
+
+        if (pickable != PickableState.Pickable)
+            return;
+
+        hasBeenPickedUp = true;
+
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+            col.enabled = false;
+
+        Pickup();
     }
 
-    public override void Pickup()
-    {
-        //Debug.Log($"You picked up {itemName}");
 
-        Destroy(gameObject);
-        Event_System.instance?.OnLootPickedUp.Invoke(this);
-    }
-
-   
 }
