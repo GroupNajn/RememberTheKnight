@@ -37,7 +37,7 @@ public class CardCollection : MonoBehaviour
         {
             equippedCards.Add(card);
         }
-        Debug.Log($"ANTAL KORT I EQUIPPED {equippedCards.Count}"); 
+   
 
     }
 

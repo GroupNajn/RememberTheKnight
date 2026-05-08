@@ -34,11 +34,6 @@ public class CardSystem : MonoBehaviour
 
 
     }
-    void Update()
-    {
-
-    }
-
     //Temporary Method to return a randomCardData in the allcards list. 
     public CardData ReturnRandomCard()
     {
@@ -70,12 +65,6 @@ public class CardSystem : MonoBehaviour
             }
         }
 
-        Debug.Log($"UNLOCKED CARDS: {unlockedCards.Count}");
-
-        foreach (CardData cardData in hashUnlocked)
-        {
-            Debug.Log($"Card ID: {cardData.cardID}");
-        }
     }
 
     public void InitializeLockCards()
@@ -171,7 +160,6 @@ public void UnlockAllTierOneToThreeTemporary()
         unlockedCards.Add(card);
 
     }
-    Debug.Log($"Antal Kort i unlocked List:  {unlockedCards.Count}");
 }
 
 //Initializes the The HashSet that is to be used outside of the Class itself.

@@ -139,7 +139,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         if (Event_System.instance != null)
         {
-            Event_System.instance.OnStatsApplied -= ApplyStatsFromCardSelection;
+            Event_System.instance.OnConfirmCardSelection -= ApplyStatsFromCardSelection;
         }
     }
 
@@ -147,7 +147,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         if (Event_System.instance != null)
         {
-            Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
+            Event_System.instance.OnConfirmCardSelection += ApplyStatsFromCardSelection;
         }
     }
 

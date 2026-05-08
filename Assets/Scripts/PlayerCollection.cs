@@ -24,9 +24,10 @@ public class PlayerCollection : MonoBehaviour
     void Start()
     {
         Event_System.instance.OnContractSign += SignContract;
-        Event_System.instance.OnStatsApplied += EquipCard;
+        Event_System.instance.OnConfirmCardSelection += EquipCard;
         Event_System.instance.OnLootPickedUp += PickupLoot;
         Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
+        Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         playerManager = GetComponent<PlayerManager>();
         ResetAllLists();
       
@@ -35,9 +36,10 @@ public class PlayerCollection : MonoBehaviour
     private void OnDestroy()
     {
         Event_System.instance.OnContractSign -= SignContract;
-        Event_System.instance.OnStatsApplied -= EquipCard;
+        Event_System.instance.OnConfirmCardSelection -= EquipCard;
         Event_System.instance.OnLootPickedUp -= PickupLoot;
         Event_System.instance.OnPlayerDeath -= ClearTemporaryCards;
+        Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
     }
 
     public void InsertIntoCardCollection(CardData card)
@@ -55,6 +57,17 @@ public class PlayerCollection : MonoBehaviour
         }
         //where the stats gets applyed the playerStats
         playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
+    }
+
+    public void AddCardToTempOnPurchase(List<CardData> cards)
+    {
+        foreach(CardData cardData in cards)
+        {
+            InsertIntoCardCollection(cardData);
+        }
+        playerManager.ReApplyStats();
+        UpdateDisplayCollection();
+
     }
     public List<CardData> ReturnTempCardCollection()
     {
