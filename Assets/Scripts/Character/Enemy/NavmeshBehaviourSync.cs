@@ -16,6 +16,7 @@ public class NavmeshBehaviourSync : MonoBehaviour
         navAgent = GetComponent<NavMeshAgent>();
         behaviorAgent = GetComponent<BehaviorGraphAgent>();
         if (behaviorAgent.BlackboardReference.GetVariable("isAttacking", out isAttacking)) { }
+        if (behaviorAgent.BlackboardReference.GetVariable("isEmoting", out isEmoting)) { }
         if (behaviorAgent.BlackboardReference.GetVariable("stoppingDistance", out stoppingDistance))
             stoppingDistance.Value = navAgent.stoppingDistance;
 
@@ -28,6 +29,9 @@ public class NavmeshBehaviourSync : MonoBehaviour
 
     public void OnAttackStart() { isAttacking.Value = true; }
     public void OnAttackEnd() { isAttacking.Value = false; }
+
+    public void OnEmoteStart() { isEmoting.Value = true; }
+    public void OnEmoteEnd() { isEmoting.Value = false; }
     private Animator animator;
     private NavMeshAgent navAgent;
     private BehaviorGraphAgent behaviorAgent;
@@ -45,4 +49,5 @@ public class NavmeshBehaviourSync : MonoBehaviour
     }
 
     private BlackboardVariable<bool> isAttacking;
+    private BlackboardVariable<bool> isEmoting;
 }
