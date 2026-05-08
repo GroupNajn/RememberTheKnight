@@ -12,6 +12,7 @@ public class InteractCameraHandler : MonoBehaviour
     private GameObject interactCam;
     private CinemachineCamera cinemachineInteractCam;
     private CinemachinePositionComposer cinemachinePositionComposer;
+    private CinemachinePanTilt cinemachinePanTilt;
 
     void Start()
     {
@@ -20,9 +21,10 @@ public class InteractCameraHandler : MonoBehaviour
         interactCam = GameObject.FindGameObjectWithTag("ShopCamera");
         cinemachineInteractCam = interactCam.GetComponent<CinemachineCamera>();
         cinemachinePositionComposer = cinemachineInteractCam.GetComponent<CinemachinePositionComposer>();
+        cinemachinePanTilt = cinemachineInteractCam.GetComponent<CinemachinePanTilt>();
 
 
-        if (playerTransform == null)
+        if (playerTransform == null) 
         {
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerLookAt");
 
@@ -53,7 +55,8 @@ public class InteractCameraHandler : MonoBehaviour
         this.target = target;
 
         cinemachineInteractCam.Follow = this.target;
-        cinemachineInteractCam.transform.rotation = Quaternion.Euler(preset.rotation);
+        cinemachinePanTilt.PanAxis.Value = preset.rotation.y;
+        cinemachinePanTilt.TiltAxis.Value = preset.rotation.x;
         cinemachinePositionComposer.Composition.ScreenPosition = preset.screenPosition;
         cinemachinePositionComposer.CameraDistance = preset.distance;
 
@@ -64,9 +67,11 @@ public class InteractCameraHandler : MonoBehaviour
     {
         target = playerTransform;
         cinemachineInteractCam.Follow = playerTransform;
-        cinemachineInteractCam.transform.position = playerTransform.position;
+        //cinemachineInteractCam.transform.position = playerTransform.position;
         cinemachinePositionComposer.Composition.ScreenPosition = Vector2.zero;
-        cinemachinePositionComposer.transform.rotation = Quaternion.identity;
+        cinemachinePanTilt.PanAxis.Value = 0f;
+        cinemachinePanTilt.TiltAxis.Value = 0f; 
+        //cinemachinePositionComposer.transform.rotation = Quaternion.identity;
         cameraAnimator.Play(stateName: "FreeLookCamera");
     }
 }
