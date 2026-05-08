@@ -270,6 +270,18 @@ public class LootManager : MonoBehaviour
         return currentRarity;
     }
 
+    private bool RollForChargedSoul(float chance)
+    {
+        float baseChance = 1f;
+
+        float overflow = chance - baseChance;
+
+        if (overflow <= 0f)
+            return false;
+
+        return Random.value < overflow;
+    }
+
 
 
     private float GetUpgradeChance(RarityTier rarity)
@@ -344,6 +356,9 @@ public class LootManager : MonoBehaviour
         return cards[randomIndex];
     }
 
+
+
+
     public void TryToDropLoot(EnemyLootProfile profile, Vector3 spawnPos)
     {
         if (profile == null) return;
@@ -383,22 +398,6 @@ public class LootManager : MonoBehaviour
         }
 
     }
-
-    private bool RollForChargedSoul(float chance)
-    {
-        float baseChance = 1f;
-
-        float overflow = chance - baseChance;
-
-        if (overflow <= 0f)
-            return false;
-
-        return Random.value < overflow;
-    }
-
-    // Methods below handle the loot dropping and which item to drop depending on loot table. 
-
-
 
     public void RegisterLoot(Loot loot)
     {
@@ -481,6 +480,87 @@ public class LootManager : MonoBehaviour
     }
 
 
+
+    // All methods below are connected to the shop.
+
+    private float GetRewardUpgradeChance(RarityTier rarity)
+    {
+        switch (rarity)
+        {
+            case RarityTier.Rare:
+
+                return 0.18f;
+
+            case RarityTier.Epic:
+                return 0.04f;
+
+            default:
+                return 0f;
+        }
+
+    }
+    /// <summary>
+    /// Generates a collection of seven reward cards, each selected based on a rolled rarity tier.
+    /// </summary>
+    /// <remarks>Each card is chosen by first rolling a rarity tier and then selecting a random card from that
+    /// tier. Duplicate cards may be included if randomly selected more than once.</remarks>
+    /// <returns>A list of seven <see cref="CardData"/> objects representing the selected reward cards. The list may contain
+    /// fewer than seven cards if no card is available for a rolled rarity tier.</returns>
+    public List<CardData> RollSevenRewardCards() // Använd denna metoden anton när du hämtar korten. 
+    {
+        List<CardData> result = new List<CardData>();
+
+        for (int i = 0; i < 7; i++)
+        {
+            RarityTier rolledRarity = RollRewardRarity(RarityTier.Rare);
+
+            CardData card = GetRandomCardFromRarity(rolledRarity);
+
+            if (card != null)
+                result.Add(card);
+        }
+        return result;
+    }
+
+    private RarityTier RollRewardRarity(RarityTier baseRarity)
+    {
+        RarityTier currentRarity = baseRarity;
+
+        while (currentRarity != RarityTier.Legendary)
+        {
+            float upgradeChance = GetRewardUpgradeChance(currentRarity);
+
+            if (Random.value <= upgradeChance)
+            {
+                currentRarity = GetNextRarity(currentRarity);
+            }
+            else
+            {
+                break;
+            }
+        }
+        return currentRarity;
+    }
+
+    private CardData GetRandomCardFromRarity(RarityTier rarity)
+    {
+        LootManager lootManager = LootManager.instance;
+
+        List<CardData> validCards = new List<CardData>();
+
+        foreach (CardData card in cardSystem.GetAllCards())
+        {
+            if (lootManager.IsTierInsideRarity(card.cardTier, rarity))
+            {
+                validCards.Add(card);
+            }
+        }
+        if (validCards.Count == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, validCards.Count);
+        return validCards[randomIndex];
+    }
 
 
 
