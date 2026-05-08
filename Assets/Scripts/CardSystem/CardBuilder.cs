@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static IPickupable;
@@ -131,14 +130,12 @@ public class CardBuilder : MonoBehaviour
             {
                 result.Add(card);
             }
-
-
         }
         return result;
     }
 
 
-
+    
 
 
 
