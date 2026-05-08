@@ -28,6 +28,7 @@ public partial class CircleTargetAction : Action
     private bool shouldCorrect = false;
     private Vector3 currentCirclePoint;
     private Vector3? correctionPoint;
+    private LayerMask obstacleMask = ~(1 << 8);
     protected override Status OnStart()
     {
         navMeshAgent = Self.Value;
@@ -96,17 +97,41 @@ public partial class CircleTargetAction : Action
 
         float currentSpeedX = animator.GetFloat(XHash);
 
+        float castDistance = navMeshAgent.radius + navMeshAgent.stoppingDistance;
+        float sphereRadius = navMeshAgent.radius * 0.8f;
+        float yOffset = 0.5f;
+
+        Vector3 origin = Self.Value.transform.position + Vector3.up * yOffset;
+        Vector3 rightDirection = Self.Value.transform.right;
+        Vector3 leftDirection = -Self.Value.transform.right;
+
+        bool collisionToRight = Physics.SphereCast(origin + rightDirection, sphereRadius, rightDirection, out _, castDistance, obstacleMask);
+        bool collisionToLeft = Physics.SphereCast(origin + leftDirection, sphereRadius, leftDirection, out _, castDistance, obstacleMask);
+
+        Debug.DrawRay(origin + rightDirection, rightDirection * castDistance, collisionToRight ? Color.red : Color.green);
+        Debug.DrawRay(origin + rightDirection, leftDirection * castDistance, collisionToLeft ? Color.red : Color.green);
+
+        IsClockwise.Value = IsClockwise.Value ? !collisionToRight : collisionToLeft;
+
+
+        Vector3 targetPosition = IsClockwise.Value
+            ? Self.Value.transform.position - Self.Value.transform.right * castDistance
+            : Self.Value.transform.position + Self.Value.transform.right * castDistance;
+
 
         if (IsClockwise.Value)
         {
-            animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, -1f, navMeshAgent.acceleration * Time.deltaTime));
-            IsClockwise.Value = navMeshAgent.CalculatePath(Self.Value.transform.position - Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
+            IsClockwise.Value =
+                navMeshAgent.CalculatePath(Self.Value.transform.position - Self.Value.transform.right, new NavMeshPath());
         }
         else
         {
-            animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, 1f, navMeshAgent.acceleration * Time.deltaTime));
-            IsClockwise.Value = !navMeshAgent.CalculatePath(Self.Value.transform.position + Self.Value.transform.right * (navMeshAgent.radius + navMeshAgent.stoppingDistance), new NavMeshPath());
+            IsClockwise.Value =
+                !navMeshAgent.CalculatePath(Self.Value.transform.position + Self.Value.transform.right, new NavMeshPath());
         }
+
+        float targetSpeedX = IsClockwise.Value ? -0.5f : 0.5f;
+        animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, targetSpeedX, navMeshAgent.acceleration * Time.deltaTime));
         animator.SetFloat(YHash, Mathf.Lerp(animator.GetFloat(YHash), 0, navMeshAgent.acceleration * Time.deltaTime));
 
         return Status.Running;
