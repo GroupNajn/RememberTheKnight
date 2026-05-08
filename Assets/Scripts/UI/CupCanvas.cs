@@ -28,6 +28,14 @@ public class CupCanvas : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            UpdateCup(100, 100, 10);
+        }
+    }
+
     public void UpdateCup(int chargesLeft, int maxCharges, int chargesPerUse)
     {
         int usesLeft = chargesLeft / chargesPerUse;
