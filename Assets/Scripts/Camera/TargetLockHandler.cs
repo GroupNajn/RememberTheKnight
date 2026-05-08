@@ -113,6 +113,12 @@ public class TargetLockHandler : MonoBehaviour
         cinemachineFreeLookCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
         cinemachineHardLockCam.ForceCameraPosition(pos: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.position, rot: GameObject.FindGameObjectWithTag("CameraCenteredPos").transform.rotation);
     }
+
+    public void SceneSwitch()
+    {
+        Unlock();
+        ForceCenterCamera();
+    }
     IEnumerator SmoothCenterCamera()
     {
         float time = 0f;
