@@ -1,84 +1,55 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
-public class familyBookUI : MonoBehaviour
+public class familyBookUI : AutoSelectFirstButtonOnEnable
 {
-
-    [Header("Panels")]
-    [SerializeField] private GameObject swordsMarkerRight;
-    [SerializeField] private GameObject wandsMarkerRight;
-    [SerializeField] private GameObject cupsMarkerRight;
-    [SerializeField] private GameObject pentaclesMarkerRight;
-
-    [SerializeField] private GameObject swordsMarkerLeft;
-    [SerializeField] private GameObject wandsMarkerLeft;
-    [SerializeField] private GameObject cupsMarkerLeft;
-    [SerializeField] private GameObject pentaclesMarkerLeft;
-
-
-
-    public void Setup(CardFamily family, CardData cardData)
+    private UIManager uiManager;
+    private PlayerInput playerInput;
+    CardFamily confirmedFamily;
+    protected override void OnEnable()
     {
+        base.OnEnable();
+    }
+    void Start()
+    {
+        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        uiManager = GetComponentInParent<UIManager>();
+    }
+    public void SelectFamily(FamilyUI selected)
+    {
+        CardFamily selectedFamily;
 
-        swordsMarkerRight.SetActive(false);
-        wandsMarkerRight.SetActive(false);
-        cupsMarkerRight.SetActive(false);
-        pentaclesMarkerRight.SetActive(false);
-
-        swordsMarkerLeft.SetActive(false);
-        wandsMarkerLeft.SetActive(false);
-        cupsMarkerLeft.SetActive(false);
-        pentaclesMarkerLeft.SetActive(false);
-
-        switch (family)
+        foreach (FamilyUI familyUI in GetComponentsInChildren<FamilyUI>(true))
         {
-            case CardFamily.Swords:
-                wandsMarkerRight.SetActive(true); //the rest of the book marks true based on what side it should be on
-                cupsMarkerRight.SetActive(true);
-                pentaclesMarkerRight.SetActive(true);
+            // SHOW ALL BUTTONS
+            familyUI.gameObject.SetActive(true);
 
-                ShowInfo(cardData); // show the info about this family
-                break;
+            if (familyUI.infoBox != null)
+            {
+                familyUI.infoBox.SetActive(false);
+            }
+        }
 
-            case CardFamily.Wands:
+        // SETS TAB BUTTON INACTIVE
+        selected.gameObject.SetActive(false);
+        // SET TEXT ACTIVE
+        selected.infoBox.SetActive(true);
+        selectedFamily = selected.familyData.cardFamily;
+        confirmedFamily = selectedFamily;
 
-                swordsMarkerLeft.SetActive(true);
-                cupsMarkerRight.SetActive(true);
-                pentaclesMarkerRight.SetActive(true);
-
-                ShowInfo(cardData);
-                break;
-
-            case CardFamily.Cups:
-
-                swordsMarkerLeft.SetActive(true);
-                wandsMarkerLeft.SetActive(true);
-                pentaclesMarkerRight.SetActive(true);
-
-                ShowInfo(cardData);
-                break;
-
-            case CardFamily.Pentacles:
-
-                swordsMarkerLeft.SetActive(true);
-                wandsMarkerLeft.SetActive(true);
-                cupsMarkerLeft.SetActive(true);
-
-                ShowInfo(cardData);
-                break;
+    }
+    public void OnSignContract()
+    {
+        PlayerCollection playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+        if (playerCollection != null)
+        {
+            playerCollection.SignContract(confirmedFamily);
+            CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+            cardSystem.UnlockCardsAfterSigningContract(playerCollection.playerContract);
         }
     }
-
-    private void ShowInfo(CardData cardData)
-    {
-       // SHOW INFO TEXT
-
-        if (cardData == null) return;
-
-        cardData.cardFamily.ToString();
-    }
-
-
-
 }
