@@ -97,7 +97,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
     public void OnConfirmSelection()
     {
-        Event_System.instance.OnStatsApplied?.Invoke(purchasedCardData);
+        Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
     }

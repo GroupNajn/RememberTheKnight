@@ -164,7 +164,7 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
     // With the cardData list as a parameter. 
     public void OnConfirmSelection()
     {
-        Event_System.instance.OnStatsApplied?.Invoke(selectedCardData);
+        Event_System.instance.OnConfirmCardSelection?.Invoke(selectedCardData);
         uiManager.CloseCardSelectUI();
         interactCameraHandler.InteractCamReset();
     }
