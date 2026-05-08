@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1343824722725404225}
   - component: {fileID: 5813854046302130286}
   m_Layer: 8
-  m_Name: UnarmedWeapon
+  m_Name: EnemyUnarmedWeapon
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4bdd2780ce574f9670c37fa774fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 3f7fc9ac9816aa4459b4bf3787a572b2, type: 2}
+  weaponData: {fileID: 11400000, guid: e92a79c7ab31ef415a4ee10b0c19eda5, type: 2}
 --- !u!136 &8390920631166758820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -67,8 +67,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 0.12
+  m_Radius: 0.2
+  m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1343824722725404225
@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170c10e939edd144ebad06cc857359a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
 --- !u!54 &5813854046302130286
 Rigidbody:
   m_ObjectHideFlags: 0
