@@ -27,7 +27,7 @@ public partial class CircleTargetAction : Action
 
     private bool shouldCorrect = false;
     private Vector3 currentCirclePoint;
-
+    private Vector3? correctionPoint;
     protected override Status OnStart()
     {
         navMeshAgent = Self.Value;
@@ -38,6 +38,9 @@ public partial class CircleTargetAction : Action
         lastDestination = Target.Value.position;
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
+        animator.SetFloat(XHash, 0);
+        animator.SetFloat(YHash, 0);
+        navMeshAgent.velocity = Vector3.zero;
         currentCirclePoint = SampleCirclePoints(3);
         navMeshAgent.SetDestination(currentCirclePoint);
         return Status.Running;
@@ -50,9 +53,34 @@ public partial class CircleTargetAction : Action
         Self.Value.transform.rotation = Quaternion.LookRotation(lookDir);
 
         navMeshAgent.nextPosition = Self.Value.transform.position;
+        if (!navMeshAgent.isOnNavMesh)
+        {
+            if (NavMesh.SamplePosition(Self.Value.transform.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            {
+                correctionPoint = hit.position;
+            }
+        }
+
+        if (correctionPoint != null)
+        {
+            var point = (Vector3)correctionPoint;
+            Self.Value.transform.position = Vector3.Lerp(Self.Value.transform.position, point, navMeshAgent.acceleration);
+            var pos = Self.Value.transform.position;
+            bool isDoneCorrecting =
+                Mathf.Approximately(pos.x, point.x) &&
+                Mathf.Approximately(pos.y, point.y) &&
+                Mathf.Approximately(pos.z, point.z);
+
+            animator.SetFloat(XHash, 0);
+            animator.SetFloat(YHash, 0);
+            if (!isDoneCorrecting)
+            { return Status.Running; }
+            correctionPoint = null;
+        }
 
         var dist = (Target.Value.position - Self.Value.transform.position).magnitude;
         shouldCorrect = dist > CircleRadius.Value * 1.2 || dist < CircleRadius.Value * 0.8;
+
         if (shouldCorrect)
         {
             currentCirclePoint = SampleCirclePoints(3);
@@ -60,6 +88,9 @@ public partial class CircleTargetAction : Action
             {
                 return Status.Running;
             }
+
+            if (navMeshAgent.isOnNavMesh)
+                navMeshAgent.ResetPath();
         }
 
 
@@ -85,7 +116,12 @@ public partial class CircleTargetAction : Action
     {
         animator.SetFloat(XHash, 0);
         animator.SetFloat(YHash, 0);
+        if (navMeshAgent.isOnNavMesh)
+            navMeshAgent.ResetPath();
+        navMeshAgent.velocity = Vector3.zero;
 
+        navMeshAgent.updatePosition = true;
+        navMeshAgent.updateRotation = true;
     }
 
     private Vector3 SampleCirclePoints(int sampleDensity)
@@ -97,7 +133,7 @@ public partial class CircleTargetAction : Action
         for (int i = 0; i < sampleDensity; i++)
         {
 
-            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 45 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
             {
                 return hit.position;
             }
@@ -115,10 +151,7 @@ public partial class CircleTargetAction : Action
         lastDestination = destination;
         if (shouldUpdateDestination) navMeshAgent.SetDestination(destination);
 
-        // Get world space desired velocity from NavMeshAgent
-        Vector3 worldDesiredVelocity = navMeshAgent.desiredVelocity;
-
-        // Convert world velocity to local space for animator
+        Vector3 worldDesiredVelocity = navMeshAgent.desiredVelocity / (2 * navMeshAgent.speed);
         Vector3 localDesiredVelocity = Self.Value.transform.InverseTransformDirection(worldDesiredVelocity);
 
         float desiredSpeedX = localDesiredVelocity.x;  // Strafe
@@ -126,23 +159,20 @@ public partial class CircleTargetAction : Action
         float currentSpeedX = animator.GetFloat(XHash);
         float currentSpeedZ = animator.GetFloat(YHash);
 
-        animator.SetFloat(XHash, MathF.Round(Mathf.Lerp(
-                currentSpeedX,
-                desiredSpeedX,
-                navMeshAgent.acceleration * Time.deltaTime
-            ), 2));
-        animator.SetFloat(YHash, MathF.Round(Mathf.Lerp(
+        animator.SetFloat(XHash, Mathf.Lerp(
+              currentSpeedX,
+              desiredSpeedX,
+              navMeshAgent.acceleration * Time.deltaTime
+          ));
+        animator.SetFloat(YHash, Mathf.Lerp(
                 currentSpeedZ,
                 desiredSpeedZ,
                 navMeshAgent.acceleration * Time.deltaTime
-            ), 2));
+            ));
 
         if (animator.deltaPosition.magnitude > minMoveDistance)
         {
-            // Delta position is already in world space
             Vector3 worldVelocity = animator.deltaPosition / Time.deltaTime;
-
-            // Convert world velocity to local space for NavMeshAgent
             Vector3 localVelocity = Self.Value.transform.InverseTransformDirection(worldVelocity);
 
             navMeshAgent.velocity = localVelocity;
