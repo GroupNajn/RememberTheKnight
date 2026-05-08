@@ -8,26 +8,31 @@ using System.Collections;
 using System.Collections.Generic;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "RootMotionNavigate", story: "[Self] navigates to [Target] using root motion", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
+[NodeDescription(name: "Root Motion Navigate", story: "[Self] navigates to [Target] using root motion", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
 public partial class RootMotionNavigateAction : Action
 {
-    private static readonly int MovementSpeedHash = Animator.StringToHash("MovementSpeed");
+    private static readonly int YHash = Animator.StringToHash("Y");
+    private static readonly int XHash = Animator.StringToHash("X");
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<bool> IsNavigating = new(false);
+    [SerializeReference] public BlackboardVariable<float> CircleRadius;
+    [SerializeReference] public BlackboardVariable<bool> ShouldStopAtCircleRadius = new(false);
 
     [SerializeReference] public BlackboardVariable<List<string>> BreakingEmotes = new(new());
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private CharacterController characterController;
 
+    private Vector3 targetPos;
     private Vector3 lastTargetPos;
-
+    private float minMoveDistance;
     protected override Status OnStart()
     {
         animator = Self.Value.GetComponent<Animator>();
         navMeshAgent = Self.Value.GetComponent<NavMeshAgent>();
         characterController = Self.Value.GetComponent<CharacterController>();
+        minMoveDistance = characterController != null ? characterController.minMoveDistance : 0.01f;
         if (navMeshAgent == null || animator == null)
         {
             return Status.Failure;
@@ -40,8 +45,20 @@ public partial class RootMotionNavigateAction : Action
 
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
+        navMeshAgent.velocity = Vector3.zero;
+        animator.SetFloat(XHash, 0);
+        animator.SetFloat(YHash, 0);
+        navMeshAgent.velocity = Vector3.zero;
+        Self.Value.transform.rotation = Quaternion.LookRotation(Self.Value.transform.forward);
 
-        navMeshAgent.SetDestination(Target.Value.position);
+        if (ShouldStopAtCircleRadius.Value)
+        {
+            var dir = (Self.Value.transform.position - Target.Value.position).normalized;
+            dir *= CircleRadius.Value;
+            targetPos = Target.Value.position + dir;
+        }
+        else targetPos = Target.Value.position;
+        navMeshAgent.SetDestination(targetPos);
         lastTargetPos = Target.Value.position;
         IsNavigating.Value = true;
         return Status.Running;
@@ -52,49 +69,27 @@ public partial class RootMotionNavigateAction : Action
         if (animator == null || navMeshAgent == null) return Status.Failure;
         if (!navMeshAgent.isOnNavMesh) return Status.Failure;
         if (navMeshAgent.hasPath && navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid) return Status.Failure;
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return Status.Success;
+        if (Time.deltaTime <= 1e-5f) return Status.Running;
 
-        navMeshAgent.nextPosition = Self.Value.transform.position;
 
+        if (ShouldStopAtCircleRadius.Value)
+        {
+            var dir = (Self.Value.transform.position - Target.Value.position).normalized;
+            dir *= CircleRadius.Value;
+            targetPos = Target.Value.position + dir;
+        }
+        else targetPos = Target.Value.position;
         bool shouldUpdateDestination =
             !Mathf.Approximately(lastTargetPos.x, Target.Value.position.x) ||
             !Mathf.Approximately(lastTargetPos.y, Target.Value.position.y) ||
             !Mathf.Approximately(lastTargetPos.z, Target.Value.position.z);
-
-
+        lastTargetPos = targetPos;
+        navMeshAgent.nextPosition = Self.Value.transform.position;
         if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.position);
-        lastTargetPos = Target.Value.position;
 
-
-        bool isEmoting = false;
-        var animState = animator.GetCurrentAnimatorStateInfo(0);
-
-        foreach (var breakingEmote in BreakingEmotes.Value)
-        {
-            if (animState.IsName(breakingEmote))
-                isEmoting = true;
-        }
-
-        float minSpeed = characterController != null ? characterController.minMoveDistance / Time.deltaTime : 0.01f;
-
-        if (!isEmoting)
-        {
-
-            float desiredSpeed = Mathf.Max(navMeshAgent.desiredVelocity.magnitude, minSpeed);
-            float currentSpeed = animator.GetFloat(MovementSpeedHash);
-            animator.SetFloat(MovementSpeedHash, MathF.Round(Mathf.Lerp(currentSpeed, desiredSpeed, navMeshAgent.acceleration * Time.deltaTime), 2));
-            if (animator.deltaPosition.magnitude > 0.01f) navMeshAgent.velocity = animator.deltaPosition / (Time.deltaTime + 0.00001f);
-        }
-        else
-        {
-            animator.SetFloat(MovementSpeedHash, 0f);
-            navMeshAgent.velocity = Vector3.zero;
-
-        }
-
-        Vector3 direction = navMeshAgent.steeringTarget - navMeshAgent.nextPosition;
-        direction.Normalize();
-        Quaternion desiredRotation = Quaternion.LookRotation(direction);
-
+        Vector3 direction = (navMeshAgent.steeringTarget - navMeshAgent.nextPosition).normalized;
+        Quaternion desiredRotation = Quaternion.LookRotation(direction, Self.Value.transform.up);
         if (Quaternion.Angle(Self.Value.transform.rotation, desiredRotation) > 5)
         {
             Self.Value.transform.rotation = Quaternion.RotateTowards(
@@ -104,27 +99,40 @@ public partial class RootMotionNavigateAction : Action
             );
         }
 
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
-        {
-            return Status.Success;
-        }
+        Vector3 desiredVelocity = navMeshAgent.desiredVelocity / navMeshAgent.speed;
+        float desiredSpeedX = desiredVelocity.x;
+        float desiredSpeedZ = desiredVelocity.z;
+        float currentSpeedX = animator.GetFloat(XHash);
+        float currentSpeedZ = animator.GetFloat(YHash);
+
+        animator.SetFloat(XHash, Mathf.Lerp(
+                currentSpeedX,
+                desiredSpeedX,
+                navMeshAgent.acceleration * Time.deltaTime
+            ));
+        animator.SetFloat(YHash, Mathf.Lerp(
+                currentSpeedZ,
+                desiredSpeedZ,
+                navMeshAgent.acceleration * Time.deltaTime
+            ));
+
+        if (animator.deltaPosition.magnitude > minMoveDistance)
+            navMeshAgent.velocity = animator.deltaPosition / Time.deltaTime;
+
+
         return Status.Running;
     }
 
     protected override void OnEnd()
     {
-        if (navMeshAgent != null)
-        {
-            if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
-            navMeshAgent.velocity = Vector3.zero;
-        }
-        if (animator != null)
-        {
-            animator.SetFloat(MovementSpeedHash, 0);
-        }
+        if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
+        navMeshAgent.velocity = Vector3.zero;
+
+        navMeshAgent.updatePosition = true;
+        navMeshAgent.updateRotation = true;
+        animator.SetFloat(XHash, 0);
+        animator.SetFloat(YHash, 0);
         IsNavigating.Value = false;
     }
-
-
 }
 

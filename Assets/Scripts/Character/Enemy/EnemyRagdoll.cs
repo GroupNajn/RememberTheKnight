@@ -16,7 +16,6 @@ public class EnemyRagdoll : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         characterRigidbody = GetComponent<Rigidbody>();
         characterLimbs = GetComponentsInChildren<Rigidbody>();
-        characterJoints = GetComponentsInChildren<CharacterJoint>();
         characterController = GetComponent<CharacterController>();
         navmeshAgent = GetComponent<NavMeshAgent>();
 
@@ -31,8 +30,10 @@ public class EnemyRagdoll : MonoBehaviour
         behaviorGraphAgent.enabled = false;
         foreach (var characterLimb in characterLimbs)
         {
+
             if (!characterLimb.CompareTag("Weapon"))
-               { characterLimb.isKinematic = false;
+            {
+                characterLimb.isKinematic = false;
                 characterLimb.detectCollisions = true;
             }
         }
@@ -49,8 +50,9 @@ public class EnemyRagdoll : MonoBehaviour
         behaviorGraphAgent.enabled = true;
         foreach (var characterLimb in characterLimbs)
         {
-            if(!characterLimb.CompareTag("Weapon"))
-            {characterLimb.isKinematic = true;
+            if (!characterLimb.CompareTag("Weapon"))
+            {
+                characterLimb.isKinematic = true;
                 characterLimb.detectCollisions = false;
             }
         }
@@ -67,7 +69,6 @@ public class EnemyRagdoll : MonoBehaviour
 
     private Rigidbody characterRigidbody;
     private Rigidbody[] characterLimbs;
-    private CharacterJoint[] characterJoints;
     private CapsuleCollider capsuleCollider;
     private CharacterController characterController;
     private NavMeshAgent navmeshAgent;
