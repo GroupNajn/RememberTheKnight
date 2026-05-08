@@ -35,7 +35,7 @@ public partial class LineOfSightAction : Action
         }
 
         LayerMask excludeEnemies = ~(1 << ExcludeLayer.Value);
-        if (Physics.Raycast(Self.Value.position, dir, out RaycastHit hit, MaxDistance.Value, excludeEnemies))
+        if (Physics.Raycast(Self.Value.position + new Vector3(0, 1, 0), dir, out RaycastHit hit, MaxDistance.Value, excludeEnemies))
         {
             if (hit.collider.CompareTag(TargetTag.Value))
             {
