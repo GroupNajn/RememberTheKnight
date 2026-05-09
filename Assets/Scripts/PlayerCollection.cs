@@ -57,6 +57,7 @@ public class PlayerCollection : MonoBehaviour
         }
         //where the stats gets applyed the playerStats
         playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
+        UpdateDisplayCollection();
     }
 
     public void AddCardToTempOnPurchase(List<CardData> cards)
