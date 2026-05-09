@@ -32,9 +32,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 634629200117231466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -200}
   m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1617642119938513603
@@ -298,14 +298,13 @@ GameObject:
   - component: {fileID: 1975628624966388682}
   - component: {fileID: 4699927515639208183}
   - component: {fileID: 6546942192908587254}
-  - component: {fileID: 5771175385635874477}
   m_Layer: 5
   m_Name: FamilyBook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5092189569210315518
 RectTransform:
   m_ObjectHideFlags: 0
@@ -389,22 +388,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5771175385635874477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274940230610779701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca7189e766adc1847967e8ef32b7d031, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swordsMarker: {fileID: 0}
-  wandsMarker: {fileID: 0}
-  cupsMarker: {fileID: 0}
-  pentaclesMarker: {fileID: 0}
 --- !u!1 &1313185081803743483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1091,7 @@ GameObject:
   - component: {fileID: 7942456060113266475}
   - component: {fileID: 824942472965536598}
   - component: {fileID: 5840839554217982933}
+  - component: {fileID: 504290088126245211}
   m_Layer: 5
   m_Name: CupsTab
   m_TagString: Untagged
@@ -1217,17 +1201,31 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BookUi, Assembly-CSharp
-        m_MethodName: GoToStats
-        m_Mode: 1
+        m_TargetAssemblyTypeName: familyBookUI, Assembly-CSharp
+        m_MethodName: SelectFamily
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 504290088126245211}
+          m_ObjectArgumentAssemblyTypeName: FamilyUI, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &504290088126245211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2972617887791738984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f22db078ce03314b8c822444877a4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  familyData: {fileID: 11400000, guid: e843270792c14584cad724b31a6dea90, type: 2}
+  infoBox: {fileID: 5800407709586996485}
 --- !u!1 &4042179187117933957
 GameObject:
   m_ObjectHideFlags: 0
@@ -1807,6 +1805,7 @@ GameObject:
   - component: {fileID: 5889195728034642992}
   - component: {fileID: 5905818175627700930}
   - component: {fileID: 2803998879139977166}
+  - component: {fileID: 1121665994450148312}
   m_Layer: 5
   m_Name: WandsTab
   m_TagString: Untagged
@@ -1916,17 +1915,31 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BookUi, Assembly-CSharp
-        m_MethodName: GoToCards
-        m_Mode: 1
+        m_TargetAssemblyTypeName: familyBookUI, Assembly-CSharp
+        m_MethodName: SelectFamily
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1121665994450148312}
+          m_ObjectArgumentAssemblyTypeName: FamilyUI, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1121665994450148312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5801243964203942803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f22db078ce03314b8c822444877a4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  familyData: {fileID: 11400000, guid: 09cdf9c8e8486a547afebb10140d8391, type: 2}
+  infoBox: {fileID: 6607971658185017205}
 --- !u!1 &6473831840131682203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2544,6 +2557,7 @@ GameObject:
   - component: {fileID: 5860069278628872817}
   - component: {fileID: 619625186265767914}
   - component: {fileID: 4140339379062678767}
+  - component: {fileID: 368741408386288745}
   m_Layer: 5
   m_Name: SwordsTab
   m_TagString: Untagged
@@ -2653,17 +2667,31 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BookUi, Assembly-CSharp
-        m_MethodName: GoToLore
-        m_Mode: 1
+        m_TargetAssemblyTypeName: familyBookUI, Assembly-CSharp
+        m_MethodName: SelectFamily
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 368741408386288745}
+          m_ObjectArgumentAssemblyTypeName: FamilyUI, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &368741408386288745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8424013415725578932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f22db078ce03314b8c822444877a4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  familyData: {fileID: 11400000, guid: c163981df436b73489d535d4c3326d5f, type: 2}
+  infoBox: {fileID: 1930892955504244723}
 --- !u!1 &8467851146710206432
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,6 +2779,7 @@ GameObject:
   - component: {fileID: 903825116166241134}
   - component: {fileID: 5242820674375265851}
   - component: {fileID: 8766487068072502426}
+  - component: {fileID: 5093860354501037268}
   m_Layer: 5
   m_Name: PentaclesTab
   m_TagString: Untagged
@@ -2860,17 +2889,31 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BookUi, Assembly-CSharp
-        m_MethodName: GoToStats
-        m_Mode: 1
+        m_TargetAssemblyTypeName: familyBookUI, Assembly-CSharp
+        m_MethodName: SelectFamily
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 5093860354501037268}
+          m_ObjectArgumentAssemblyTypeName: FamilyUI, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5093860354501037268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124059497239628747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f22db078ce03314b8c822444877a4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  familyData: {fileID: 11400000, guid: 7fc1f44fe59eae547846a282a56d303c, type: 2}
+  infoBox: {fileID: 5135212416327063918}
 --- !u!1 &9174128777254822831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2903,9 +2946,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 634629200117231466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -525}
   m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &749775711783636209
