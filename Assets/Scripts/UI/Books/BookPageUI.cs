@@ -38,26 +38,24 @@ public class BookPageUI : MonoBehaviour
                 ShowStats(data.stats);
                 break;
 
-            /*case PageData.PageType.Cards:
-                cardPanel.SetActive(true);
-                if (data.cards == null || data.cards.Count == 0)
-                {
-                    data.cards = new List<CardData>();
+            //case PageData.PageType.Cards:
+            //    cardPanel.SetActive(true);
+            //    if (data.cards == null || data.cards.Count == 0)
+            //    {
+            //        data.cards = new List<CardData>();
 
-                    data.cards.AddRange(playerCollection.ReturnPermanentCardCollection());
-                    data.cards.AddRange(playerCollection.ReturnTempCardCollection());
-                }
+            //        data.cards.AddRange(playerCollection.ReturnPermanentCardCollection());
+            //        data.cards.AddRange(playerCollection.ReturnTempCardCollection());
+            //    }
 
-                ShowCards(data.cards);
-                break;
-            */
+            //    ShowCards(data.cards);
+            //    break;
+
             case PageData.PageType.Cards:
                 cardPanel.SetActive(true);
-
-                if (data.cards != null)
-                    ShowCardsTemp(data.cards);
-
+                ShowCards(data.cards);
                 break;
+
 
             case PageData.PageType.Text:
                 textPanel.SetActive(true);
@@ -118,7 +116,7 @@ public class BookPageUI : MonoBehaviour
             var ui = Instantiate(cardPrefab, cardContainer);
 
             // You can't modify CardUI → assign directly
-            ui.cardData = card;
+            ui.Setup(card, true);
         }
     }
 
