@@ -74,9 +74,8 @@ public class InteractCameraHandler : MonoBehaviour
         cinemachineInputAxisController.enabled = true;
         cameraAnimator.Play(stateName: "FreeLookCamera");
 
-        target = playerTransform;
+        target = null;
         cinemachineInteractCam.Follow = playerTransform;
-        cinemachinePositionComposer.Composition.ScreenPosition = Vector2.zero;
         cinemachinePanTilt.PanAxis.Value = 0f;
         cinemachinePanTilt.TiltAxis.Value = 0f;
     }

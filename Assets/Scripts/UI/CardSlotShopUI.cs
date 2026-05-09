@@ -1,16 +1,18 @@
-using System.Net.Sockets;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Splines.ExtrusionShapes;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class CardSlotShopUI : MonoBehaviour
+public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] TextMeshProUGUI soulCostText;
+
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
     [SerializeField] public bool isLocked;
 
-    [SerializeField] private Color lockedColor = Color.gray;
-    [SerializeField] private Color unlockedColor = Color.white;
+
+    [SerializeField] private ShopBoardCardSlot linkedBoardSlot;
+    public ShopBoardCardSlot LinkedBoardSlot => linkedBoardSlot;
 
     [SerializeField] private CardData cardData;
     public CardData CardData => cardData;
@@ -24,10 +26,6 @@ public class CardSlotShopUI : MonoBehaviour
     {
         IsSelected = false;
     }
-    // Added IsSelected = false becuase the first time the card is started via 
-    // UIManager it is set to false to default to that, once it's state has been updated once during the game.
-    // It will no longe be reset to false. 
-
     public void SetCard(CardData card)
     {
         if (isLocked)
@@ -39,8 +37,12 @@ public class CardSlotShopUI : MonoBehaviour
             return;
 
         cardData = card;
+        soulCostText.text = card.cardSoulCost.ToString();
     }
-
+    public void SetBoardSlot(ShopBoardCardSlot slot)
+    {
+        linkedBoardSlot = slot;
+    }
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
@@ -49,5 +51,17 @@ public class CardSlotShopUI : MonoBehaviour
     public void SetUnlockable(bool unlockable)
     {
         this.IsUnlockable = unlockable;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (linkedBoardSlot != null)
+            linkedBoardSlot.SetHoverVisual(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (linkedBoardSlot != null)
+            linkedBoardSlot.SetHoverVisual(false);
     }
 }
