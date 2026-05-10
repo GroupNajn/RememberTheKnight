@@ -39,7 +39,8 @@ public class PlayerVFX : CharacterVFX
                 if (child.CompareTag("Arrow_VFX"))
                 {
                     PlayerManager playerManager = this.gameObject.GetComponent<PlayerManager>();
-                    playerManager.TakeDamage(5, child.position);
+                    DamageInfo damageInfo = new DamageInfo(5f);
+                    playerManager.TakeDamage(damageInfo, child.position);
                     Destroy(child.gameObject);
                 }
             }

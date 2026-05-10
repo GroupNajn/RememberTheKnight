@@ -10,7 +10,8 @@ public class DeathZone : MonoBehaviour
         {
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
-            damageable.TakeDamage(9999, contactPoint);
+            DamageInfo damageInfo = new DamageInfo(9999f);
+            damageable.TakeDamage(damageInfo, contactPoint);
         }
     }
 }
