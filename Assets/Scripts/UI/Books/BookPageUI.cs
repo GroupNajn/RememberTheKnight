@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 public class BookPageUI : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
@@ -17,8 +18,7 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private Transform cardContainer;
     [SerializeField] private CardUI cardPrefab;
     [SerializeField] private PlayerCollection playerCollection;
-    [SerializeField] private CardSelectionUI cardSelectionUI;
-    [SerializeField] private bool useTestCards = true;
+    //[SerializeField] private CardSelectionUI cardSelectionUI;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI pageText;
@@ -37,19 +37,6 @@ public class BookPageUI : MonoBehaviour
                 statsPanel.SetActive(true);
                 ShowStats(data.stats);
                 break;
-
-            //case PageData.PageType.Cards:
-            //    cardPanel.SetActive(true);
-            //    if (data.cards == null || data.cards.Count == 0)
-            //    {
-            //        data.cards = new List<CardData>();
-
-            //        data.cards.AddRange(playerCollection.ReturnPermanentCardCollection());
-            //        data.cards.AddRange(playerCollection.ReturnTempCardCollection());
-            //    }
-
-            //    ShowCards(data.cards);
-            //    break;
 
             case PageData.PageType.Cards:
                 cardPanel.SetActive(true);
@@ -76,9 +63,6 @@ public class BookPageUI : MonoBehaviour
         // MaxHP, HealthRegen, TotalHeal
         //Stamina, StaminaRegen 
         //Luck , CritRate
-        //dodgeCoolCown
-
-
 
         statsText.text =
           // $"Light Damage: {stats.LightDamage}\n" +
@@ -90,13 +74,9 @@ public class BookPageUI : MonoBehaviour
           $"Stamina: {stats.maxStamina}\n" +
           $"Stamina Regen: {stats.staminaRegenRate}\n" +
           $"Luck: {stats.currentLuck}\n" +
-          $"Crit Rate: {stats.currentCritChance}\n" +
-          $"Dodge Cooldown: {stats.dodgeCoolDown}\n";
-         
+          $"Crit Rate: {stats.currentCritChance}\n";
+             
     }
-
-   
-    
         private void ShowCards(List<CardData> cards)
     {
         // Safety check
@@ -116,24 +96,21 @@ public class BookPageUI : MonoBehaviour
             var ui = Instantiate(cardPrefab, cardContainer);
 
             // You can't modify CardUI → assign directly
+            ui.transform.SetAsLastSibling();
             ui.Setup(card, true);
+
+            Button button = ui.GetComponent<Button>();
+
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(ui.ToggleInfo);
+            }
+          
         }
     }
 
-    // Temporary method to show cards, since the original ShowCards is not working as intended. This method will only show the cards that are passed to it, without trying to access the player's collection or card selection UI.
-    private void ShowCardsTemp(List<CardData> cards)
-    {
-        if (cards == null) return;
-
-        foreach (Transform child in cardContainer)
-            Destroy(child.gameObject);
-
-        foreach (var card in cards)
-        {
-            var ui = Instantiate(cardPrefab, cardContainer);
-            ui.cardData = card;
-        }
-    }
+   
 }
 
 

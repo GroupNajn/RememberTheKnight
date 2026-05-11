@@ -1,5 +1,6 @@
 using System.Text;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,7 +23,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private GameObject infoBox;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
-    [SerializeField] private bool alwaysShowInfo = false;
 
     private string damageText;
 
@@ -57,7 +57,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void Setup(CardData data, bool ShowInfo = false)
     {
         cardData = data;
-        alwaysShowInfo = ShowInfo;
 
         if (cardImage == null)
             cardImage = GetComponent<Image>();
@@ -166,7 +165,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         nameText.text = cardData.cardName;
 
-        if (IsUnlockable || alwaysShowInfo)
+        if (IsUnlockable)
         {
             CheckStatsForString();
             infoBox.SetActive(true);
@@ -183,5 +182,35 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         infoBox.SetActive(false);
     }
 
+    public void ToggleInfo()
+    {
+        if (cardData == null)
+            return;
+        
+        nameText.text = cardData.cardName;
+        CheckStatsForString();
+
+        if (cardData.cardFamily == CardFamily.Cups)
+        {
+            ColorUtility.TryParseHtmlString("#5F2828", out var darkRed);
+            infoBox.GetComponent<Image>().color = darkRed;
+        }
+        else if (cardData.cardFamily == CardFamily.Swords)
+        {
+            ColorUtility.TryParseHtmlString("#4B4A53", out var gray);
+            infoBox.GetComponent<Image>().color = gray;
+        }
+        else if (cardData.cardFamily == CardFamily.Pentacles)
+        {
+            ColorUtility.TryParseHtmlString("#DAD232", out var yellow);
+            infoBox.GetComponent<Image>().color = yellow;
+        }
+        else if (cardData.cardFamily == CardFamily.Wands)
+        {
+            ColorUtility.TryParseHtmlString("#435F28", out var green);
+            infoBox.GetComponent<Image>().color = green;
+        }
+        infoBox.SetActive(!infoBox.activeSelf);
+    }
 
 }
