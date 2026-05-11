@@ -21,7 +21,8 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
 
     public void OpenAudio()
     {
-        // NÄR VI LÄGGER TILL AUDIO INSTÄLLNINGAR
+        uiManager.CloseOptionMenu();
+        uiManager.OpenAudioUI();
     }
 
     public void OpenVideo()
@@ -29,14 +30,4 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
         // NÄR VI LÄGGER TILL VIDEO INSTÄLLNINGAR
     }
 
-    //public void BackToStartMenu()
-    //{
-    //    uiManager.OpenStartMenu();
-    //    uiManager.CloseStartOptionMenu();
-    //}
-    //public void BackToPauseMenu()
-    //{
-    //    uiManager.OpenPauseMenu();
-    //    uiManager.ClosePauseOptionMenu();
-    //}
 }

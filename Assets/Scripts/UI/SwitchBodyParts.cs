@@ -490,7 +490,7 @@ public class SwitchBodyParts : MonoBehaviour
 
             // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
             uiManager.OpenSoulUI();
-            uiManager.ShowPlayerBars();
+            uiManager.OpenPlayerBars();
             uiManager.OpenCupUI();
             uiManager.OpenWeaponIconUI();
         }

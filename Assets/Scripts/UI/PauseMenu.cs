@@ -67,11 +67,17 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
         uiManager.ClosePauseMenu(); // Hide the pause menu
     }
 
-    public void OpenPauseOptions()
+    public void OpenOptions()
     {
-        //uiManager.OpenOptionMenu();
-        //uiManager.ClosePauseMenu();
+        uiManager.OpenOptionMenu();
+
+        uiManager.ClosePauseMenu();
+        uiManager.CloseStartMenu();
+
+
+        uiManager.CloseUIOnMenuOpen();
     }
+
 
     public void LoadLobby()
     {
