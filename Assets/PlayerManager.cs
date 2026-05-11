@@ -25,7 +25,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         private set { }
     }
 
-
     [SerializeField] public bool isDead = false;
 
     private void Start()
@@ -57,6 +56,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
             isDead = false;
         }
         playerAnimator.SetBool("IsDead", isDead);
+
+        playerVFX.SetVignetteIntensity(1 - (playerStats.currentStamina / playerStats.maxStamina));
 
     }
 
@@ -133,6 +134,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void NotifyStaminaChanged()
     {
         onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+
     }
 
     private void OnDisable()
