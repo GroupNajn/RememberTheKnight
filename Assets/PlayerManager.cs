@@ -60,14 +60,14 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     }
 
-    public void TakeDamage(float damage, Vector3 contactPoint)
+    public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
         if (CanTakeDamage && !isDead)
         {
             playerVFX.PlayBloodSplatter(contactPoint);
             playerSFX.PlayDamageGrunt();
 
-            playerStats.CurrentHealth -= damage;
+            playerStats.CurrentHealth -= damageInfo.DamageAmount;
             NotifyHealthChanged();
             if (isDead)
             {

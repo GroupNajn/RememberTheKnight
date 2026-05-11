@@ -262,6 +262,9 @@ MonoBehaviour:
   sizeDecreaser: 30
   heightScaler: 1
   heightDecreaser: 1
+  critScaler: 2
+  critColor: {r: 0.8018868, g: 0.7784502, b: 0.374466, a: 0}
+  normalDamageColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &2120044190184848766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351,6 +354,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: critColor.b
+      value: 0.37254903
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: critColor.g
+      value: 0.78039217
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: critColor.r
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: normalDamageColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: normalDamageColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
+      propertyPath: normalDamageColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
       propertyPath: scaleCurve.m_Curve.Array.data[0].value
       value: 20
       objectReference: {fileID: 0}
@@ -390,7 +417,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scaler
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8087845253020521979, guid: 786c48081e1512f4493db12b56592d96, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

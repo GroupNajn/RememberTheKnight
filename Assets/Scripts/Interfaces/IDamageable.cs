@@ -13,6 +13,6 @@ public interface IDamageable
     public bool CanTakeDamage { get; }
 
     //IEnumerator DamageCoolDown(int damageDelay); // Uncomment if you want to use a cooldown for taking damage, but currently not used in the project
-    public void TakeDamage(float damage, Vector3 contactPoint);
+    public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint);
     public void Death();
 }
