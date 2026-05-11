@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,6 +7,8 @@ using static Unity.Collections.AllocatorManager;
 
 public class GlobalVolumeManager : MonoBehaviour
 {
+    public static GlobalVolumeManager Instance { get; private set; }
+
     [SerializeField] Volume globalVolume;
     private VolumeProfile volumeProfile;
 
@@ -17,6 +20,16 @@ public class GlobalVolumeManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
+
         volumeProfile = globalVolume.profile;
 
         volumeProfile.TryGet(out Bloom);
@@ -57,9 +70,19 @@ public class GlobalVolumeManager : MonoBehaviour
         Vignette.active = enabled;
     }
 
+    public float GetVignetteIntensity()
+    {
+        return Vignette.intensity.value;
+    }
+
     public void SetVignetteColor(Color color)
     {
         Vignette.color.value = color;
+    }
+
+    public void SmoothVingetteIntensity(float target)
+    {
+        SetVignetteIntensity(Mathf.Lerp(GetVignetteIntensity(), target, Time.deltaTime)); 
     }
 
     public void SetVignetteIntensity(float value)
