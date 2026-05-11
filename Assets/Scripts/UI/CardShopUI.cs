@@ -14,6 +14,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     [SerializeField] private TextMeshProUGUI errorText;
     [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
     [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
+
+    private Dictionary<string, CardData> spendCards = new Dictionary<string, CardData>();
     [SerializeField] private int maxPurchased = 1;
 
     private float errorTimer = 0f;
@@ -93,6 +95,13 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             ShowError("Not enough souls!", 2f);
             return;
         }
+        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+
+        if (collection.CardIsPickedUp(card)) // Checks if the card is in equiped lists and temporary lists.
+        {
+            ShowError("You already have that card", 2f);
+            return;
+        }
 
         slot.SetSelected(true);
 
@@ -104,7 +113,27 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
     public void OnConfirmSelection()
     {
+        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+
+        foreach (CardData purchasedCard in purchasedCardData)
+        {
+            if (collection.CardIsPickedUp(purchasedCard)) // Checks if the card is in equiped lists and temporary lists.
+            {
+                ShowError($"You already have {purchasedCard.cardName}", 2f);
+                return;
+            }
+            
+        }
+
+        
         Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
+        foreach (CardData purchasedCard in purchasedCardData) 
+        {
+            if (spendCards.ContainsKey(purchasedCard.cardID)) continue; // Dictonary to see if a card is already purchased. 
+
+            Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
+            spendCards.Add(purchasedCard.cardID, purchasedCard);
+        }
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
     }
@@ -139,4 +168,5 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         errorActive = true;
         errorTimer = duration;
     }
+
 }
