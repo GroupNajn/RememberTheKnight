@@ -258,7 +258,6 @@ public class UIManager : MonoBehaviour
     {
         if (pauseMenuUI)
         {
-            UIMenuActive = false;
             pauseMenuUI.SetActive(false); // Hide the pause menu
         }
     }
@@ -299,7 +298,6 @@ public class UIManager : MonoBehaviour
     {
         if (optionMenuUI)
         {
-            UIMenuActive = false;
             optionMenuUI.SetActive(false);
         }
     }

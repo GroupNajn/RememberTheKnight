@@ -65,6 +65,8 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
         playerInput.enabled = true; // Enable player input when resuming
 
         uiManager.ClosePauseMenu(); // Hide the pause menu
+        uiManager.UIMenuActive = false; // Set the UI menu active flag to false
+        uiManager.CheckUIState();
     }
 
     public void OpenOptions()
