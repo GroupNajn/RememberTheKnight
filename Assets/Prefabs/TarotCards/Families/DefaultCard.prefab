@@ -186,8 +186,9 @@ GameObject:
   - component: {fileID: 4562426423036857842}
   - component: {fileID: 8975629724936582030}
   - component: {fileID: 3915080882070878772}
-  - component: {fileID: 4067164315691182246}
+  - component: {fileID: 6107020339972192104}
   - component: {fileID: 7559952419670400984}
+  - component: {fileID: 4067164315691182246}
   - component: {fileID: 7948543573408980211}
   m_Layer: 13
   m_Name: DefaultCard
@@ -266,6 +267,38 @@ MonoBehaviour:
   lerpSpeed: 2
   arriveThreshold: 0.005
   hoverBlendSpeed: 4
+--- !u!114 &6107020339972192104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4375267230617661102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afaade1b656122441bf74e7701b41efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7559952419670400984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4375267230617661102}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4889ff3dc82d7aa46ab2cb39772a1962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launchForce: 3
+  bounceDamping: 0
+  maxBounces: 2
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 1600
+  physicsCollider: {fileID: 4067164315691182246}
+  pickupCollider: {fileID: 4785791902392502325}
 --- !u!65 &4067164315691182246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -287,26 +320,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.99, y: 2.36, z: 0.74}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7559952419670400984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4375267230617661102}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4889ff3dc82d7aa46ab2cb39772a1962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  launchForce: 3
-  bounceDamping: 0
-  maxBounces: 2
-  environmentMask:
-    serializedVersion: 2
-    m_Bits: 1600
-  physicsCollider: {fileID: 4067164315691182246}
-  pickupCollider: {fileID: 4785791902392502325}
 --- !u!54 &7948543573408980211
 Rigidbody:
   m_ObjectHideFlags: 0
