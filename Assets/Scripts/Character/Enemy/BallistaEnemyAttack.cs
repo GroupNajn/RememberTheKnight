@@ -18,7 +18,7 @@ public class BallistaEnemyAttack : MonoBehaviour
     [SerializeField] private float attackDelayTimer = 1f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackDuration = 3f;
-    [SerializeField] private float attackRange = 10f;
+    [SerializeField] private float attackRange = 8f;
     [SerializeField] private float rotationSpeed = 5f;
 
     private bool isAttacking = false;
@@ -34,8 +34,9 @@ public class BallistaEnemyAttack : MonoBehaviour
     [SerializeField] private Vector3 arrowReady;
     [SerializeField] private Vector3 arrowReleased;
 
-    [Header("Animation")]
+    [Header("Animation/VFX")]
     [SerializeField] private AnimationCurve attackCurve;
+    [SerializeField] private ParticleSystem attackParticles;
 
     private void Start()
     {
@@ -57,7 +58,6 @@ public class BallistaEnemyAttack : MonoBehaviour
         AimAtPlayer();
         HandleAttackLogic();
 
-        
     }
 
     private bool IsTargetInRange()
@@ -73,6 +73,7 @@ public class BallistaEnemyAttack : MonoBehaviour
             if (delayTimer <= 0f)
             {
                 delayTimer = attackDelayTimer;
+                attackParticles.Play();
             }
         }
 
