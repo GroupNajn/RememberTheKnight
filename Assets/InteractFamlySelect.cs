@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUIText
@@ -7,12 +9,18 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
     [SerializeField] private GameObject firstTimeEffect;
 
     UIManager playerUIManager;
+    [SerializeField] private InteractCameraPreset preset;
+    [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
+    [SerializeField] private Transform cameraLookAtTransform; 
+    private InteractCameraHandler interactCameraHandler;
 
     private bool canShowUI = false;
 
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+        stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
 
         PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
@@ -33,6 +41,13 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
                 firstTimeEffect.SetActive(false);
         }
 
+        interactCameraHandler.InteractCamSwitch(cameraLookAtTransform, preset);
+        StartCoroutine(OpenUI());
+    }
+
+    IEnumerator OpenUI()
+    {
+        yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
         playerUIManager.OpenFamilySelectUI();
     }
 

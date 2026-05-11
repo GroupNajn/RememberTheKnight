@@ -8,11 +8,12 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
 
-    [SerializeField] private InteractCameraPreset preset;
     private UIManager playerUIManager;
+    [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
-
+    [SerializeField] private Transform cameraLookAtTransform;
     private InteractCameraHandler interactCameraHandler;
+
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
@@ -38,7 +39,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
                 firstTimeEffect.SetActive(false);
         }
 
-        interactCameraHandler.InteractCamSwitch(transform, preset);
+        interactCameraHandler.InteractCamSwitch(cameraLookAtTransform, preset);
         StartCoroutine(OpenUI());
     }
 

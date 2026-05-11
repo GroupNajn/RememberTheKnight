@@ -10,13 +10,16 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
 
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
+    [SerializeField] private Transform cameraLookAtTransform;
+    private InteractCameraHandler interactCameraHandler;
+
     private UIManager playerUIManager;
     private CardShopUI cardShopUI;
     private ShopBoard board;
 
     private bool canShowUI = false;
 
-    private InteractCameraHandler interactCameraHandler;
+   
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();

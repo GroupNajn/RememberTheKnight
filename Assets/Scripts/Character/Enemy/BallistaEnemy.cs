@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BallistaEnemy : MonoBehaviour
 {
-
     // Condition for destroying ballista
     [Header("Enemies")]
     [SerializeField] private List<GameObject> requiredEnemies = new List<GameObject>();
@@ -14,9 +13,9 @@ public class BallistaEnemy : MonoBehaviour
     [SerializeField] private GameObject destroyedBallista;
     [SerializeField] private bool IsDestroyed = false;
 
-    private void Start()
+    void Start()
     {
-        Event_System.instance.OnEnemyKilled += OnEnemyKilled;
+        Event_System.instance.OnEnemyKilledNew += OnEnemyKilled;
 
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
@@ -24,13 +23,13 @@ public class BallistaEnemy : MonoBehaviour
         }
     }
 
-    private void OnEnemyKilled(EnemyDamage damage)
+    void OnEnemyKilled(EnemyLootProfile enemy, Vector3 spawnPos) 
     {
         if (IsDestroyed) return;
 
-        if (requiredEnemies.Contains(damage.gameObject))
+        if (requiredEnemies.Contains(enemy.gameObject))
         {
-            requiredEnemies.Remove(damage.gameObject);
+            requiredEnemies.Remove(enemy.gameObject);
         }
 
         if (requiredEnemies.Count == 0)

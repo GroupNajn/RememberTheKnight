@@ -18,6 +18,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference backstepEvent;
     public EventReference pickupEvent;
     public EventReference attackEvent;
+    public EventReference footStepEvent;
 
     //[Header("Boss Music")]
     //[SerializeField] AudioSource BossIntroPlayer;

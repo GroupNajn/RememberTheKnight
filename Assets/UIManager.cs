@@ -350,6 +350,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleUI(true);
     }
 
     public void CloseCardSelectUI()
@@ -358,8 +359,6 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = false;
         CheckUIState();
-        CheckTimeScaleUI(true);
-
     }
 
     // FAMILY SELECT UI

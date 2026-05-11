@@ -12,7 +12,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     public ShopBoard shopBoard;
 
     [SerializeField] private TextMeshProUGUI errorText;
-
     [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
     [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
     [SerializeField] private int maxPurchased = 1;
@@ -49,6 +48,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             if (i < cards.Count)
             {
                 uiSlots[i].SetCard(cards[i].CurrentCard);
+                uiSlots[i].SetBoardSlot(cards[i]);
             }
             else
             {
@@ -74,6 +74,10 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         if (slot.IsSelected)
         {
             slot.SetSelected(false);
+
+            if (slot.LinkedBoardSlot != null)
+                slot.LinkedBoardSlot.SetSelectedVisual(false);
+
             purchasedCardData.Remove(card);
             return;
         }
@@ -91,13 +95,16 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         }
 
         slot.SetSelected(true);
+
+        if (slot.LinkedBoardSlot != null)
+            slot.LinkedBoardSlot.SetSelectedVisual(true);
+
         purchasedCardData.Add(card);
-        Debug.Log($"Selected card: {card.name}");
     }
 
     public void OnConfirmSelection()
     {
-        Event_System.instance.OnStatsApplied?.Invoke(purchasedCardData);
+        Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
     }

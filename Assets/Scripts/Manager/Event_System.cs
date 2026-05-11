@@ -17,13 +17,16 @@ public class Event_System : MonoBehaviour
     //Player Related
     public Action OnPlayerDeath;
     public Action<int> OnPlayerDamaged;
-    public Action<List<CardData>> OnStatsApplied;
 
     //Enemy Related
-    public Action<Transform, float> OnEnemyDamage;
+    public Action<Transform, DamageInfo> OnEnemyDamage;
     public Action<EnemyDamage> OnEnemySpawn;
     public Action<EnemyDamage> OnEnemyKilled;
     public Action<EnemyLootProfile, Vector3> OnEnemyKilledNew;
+
+    //UI & Shop Related
+    public Action<List<CardData>> OnConfirmCardSelection;
+    public Action<List<CardData>> OnConfirmPurchase;
 
 
     //Loot Related

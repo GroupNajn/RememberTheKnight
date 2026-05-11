@@ -22,6 +22,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private GameObject infoBox;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private bool alwaysShowInfo = false;
 
     private string damageText;
 
@@ -52,6 +53,19 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         infoBox.SetActive(false);
 
+    }
+    public void Setup(CardData data, bool ShowInfo = false)
+    {
+        cardData = data;
+        alwaysShowInfo = ShowInfo;
+
+        if (cardImage == null)
+            cardImage = GetComponent<Image>();
+
+        if (cardData != null)
+        {
+            cardImage.sprite = cardData.cardImage;
+        }
     }
     void Start()
     {
@@ -152,7 +166,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         nameText.text = cardData.cardName;
 
-        if (IsUnlockable)
+        if (IsUnlockable || alwaysShowInfo)
         {
             CheckStatsForString();
             infoBox.SetActive(true);

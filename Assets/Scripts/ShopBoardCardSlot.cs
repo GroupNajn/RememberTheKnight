@@ -9,6 +9,16 @@ public class ShopBoardCardSlot : MonoBehaviour
     [SerializeField] private ShopBoard board;
     [SerializeField] public CardData CurrentCard;
 
+    [Header("Visual indicators")]
+    [SerializeField] private GameObject hoverVisual;
+    private bool isSelected;
+
+    private void Awake()
+    {
+        if (hoverVisual != null)
+            hoverVisual.SetActive(false);
+    }
+
     public void SetCard(CardData card)
     {
         CurrentCard = card;
@@ -27,5 +37,23 @@ public class ShopBoardCardSlot : MonoBehaviour
         }
 
         board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
+    }
+
+
+    public void SetHoverVisual(bool active)
+    {
+        if (isSelected)
+            return;
+
+        if (hoverVisual != null)
+            hoverVisual.SetActive(active);
+    }
+
+    public void SetSelectedVisual(bool selected)
+    {
+        isSelected = selected;
+
+        if (hoverVisual != null)
+            hoverVisual.SetActive(selected);
     }
 }
