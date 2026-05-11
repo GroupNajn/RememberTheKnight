@@ -115,6 +115,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     {
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
 
+
         foreach (CardData purchasedCard in purchasedCardData)
         {
             if (collection.CardIsPickedUp(purchasedCard)) // Checks if the card is in equiped lists and temporary lists.
@@ -122,18 +123,12 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                 ShowError($"You already have {purchasedCard.cardName}", 2f);
                 return;
             }
-            
-        }
-
-        
-        Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
-        foreach (CardData purchasedCard in purchasedCardData) 
-        {
-            if (spendCards.ContainsKey(purchasedCard.cardID)) continue; // Dictonary to see if a card is already purchased. 
-
             Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
-            spendCards.Add(purchasedCard.cardID, purchasedCard);
+
         }
+        Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
+
+        ResetSlots();
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
     }
@@ -167,6 +162,37 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         errorText.gameObject.SetActive(true);
         errorActive = true;
         errorTimer = duration;
+    }
+
+    private void ResetSlots()
+    {
+        PlayerCollection collecton = GameObject.Find("Player").GetComponent<PlayerCollection>();
+
+        foreach (CardSlotShopUI uislot in uiSlots)
+        {
+            if (collecton.CardIsPickedUp(uislot.CardData))
+            {
+                uislot.SetSelected(false);
+
+                if (uislot.LinkedBoardSlot != null)
+                    uislot.LinkedBoardSlot.SetSelectedVisual(false);
+            }
+        }
+        purchasedCardData.Clear();
+    }
+
+    public void ForceReset()
+    {
+        foreach (CardSlotShopUI uislot in uiSlots)
+        {
+            
+            uislot.SetSelected(false);
+
+            if (uislot.LinkedBoardSlot != null)
+                uislot.LinkedBoardSlot.SetSelectedVisual(false);
+        }
+        purchasedCardData.Clear();
+
     }
 
 }
