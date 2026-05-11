@@ -9,39 +9,42 @@ using UnityEngine.AI;
 [NodeDescription(name: "Execute Attack", story: "Executes [AttackName] in [Self] and waits until attack is finished", category: "Action", id: "ef1e95d1ab6c3ff8e5dc52964d0d5daf")]
 public partial class AttackAction : Action
 {
+    private static readonly int IsAttackingHash = Animator.StringToHash("IsAttacking");
     [SerializeReference] public BlackboardVariable<string> AttackName;
     [SerializeReference] public BlackboardVariable<Animator> Self;
-    [SerializeReference] public BlackboardVariable<bool> IsAttacking = new();
     [SerializeReference] public BlackboardVariable<float> SecondsTimeout = new(5);
-
-    private NavMeshAgent navMeshAgent;
     private float elapsedSeconds = 0f;
     private float lastTime = 0f;
     private bool hasStartedAttack = false;
+    private bool isAttacking = false;
 
     protected override Status OnStart()
     {
         if (Self.Value == null) return Status.Failure;
-        navMeshAgent = Self.Value.gameObject.GetComponent<NavMeshAgent>();
         lastTime = Time.time;
         Self.Value.SetTrigger(AttackName.Value);
+        isAttacking = Self.Value.GetBool(IsAttackingHash);
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
         if (elapsedSeconds >= SecondsTimeout.Value) return Status.Failure;
+        isAttacking = Self.Value.GetBool(IsAttackingHash);
+
+        if (isAttacking && !hasStartedAttack)
+            hasStartedAttack = true;
+
         if (!hasStartedAttack)
         {
             elapsedSeconds += Time.time - lastTime;
             lastTime = Time.time;
-            hasStartedAttack = IsAttacking.Value;
+            hasStartedAttack = isAttacking;
         }
 
-        if (hasStartedAttack)
+        if (hasStartedAttack && !isAttacking)
         {
-            if (navMeshAgent) navMeshAgent.nextPosition = Self.Value.transform.position;
-            if (!IsAttacking.Value) return Status.Success;
+            return Status.Success;
         }
         return Status.Running;
     }
@@ -49,9 +52,7 @@ public partial class AttackAction : Action
     protected override void OnEnd()
     {
         elapsedSeconds = 0f;
-        IsAttacking.Value = false;
         hasStartedAttack = false;
-        if (navMeshAgent) navMeshAgent.nextPosition = Self.Value.transform.position;
     }
 }
 

@@ -8,7 +8,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Circle Target", story: "[Self] circles around [Target] in a radius of [CircleRadius]", category: "Action", id: "4208390532c834c3ccafbfbd56ecfb3c")]
+[NodeDescription(name: "Circle Target", story: "[Self] circles around [Target] in a radius of [CircleRadius] for [Duration] seconds", category: "Action", id: "4208390532c834c3ccafbfbd56ecfb3c")]
 public partial class CircleTargetAction : Action
 {
 
@@ -17,6 +17,7 @@ public partial class CircleTargetAction : Action
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<float> CircleRadius;
+    [SerializeReference] public BlackboardVariable<float> Duration;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -26,9 +27,11 @@ public partial class CircleTargetAction : Action
     private float minMoveDistance;
 
     private bool shouldCorrect = false;
+    private bool isCorrecting = false;
     private Vector3 currentCirclePoint;
-    private Vector3? correctionPoint;
-    private LayerMask obstacleMask = ~(1 << 8);
+    private float maxSpeed;
+
+    private float elapsedSeconds;
     protected override Status OnStart()
     {
         navMeshAgent = Self.Value;
@@ -39,114 +42,118 @@ public partial class CircleTargetAction : Action
         lastDestination = Target.Value.position;
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
-        animator.SetFloat(XHash, 0);
-        animator.SetFloat(YHash, 0);
+        elapsedSeconds = 0;
         navMeshAgent.velocity = Vector3.zero;
-        currentCirclePoint = SampleCirclePoints(3);
+        currentCirclePoint = SampleCirclePoints(10);
         navMeshAgent.SetDestination(currentCirclePoint);
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        Vector3 lookDir = Target.Value.position - Self.Value.transform.position;
-        lookDir.y = 0;
-        Self.Value.transform.rotation = Quaternion.LookRotation(lookDir);
-
-        navMeshAgent.nextPosition = Self.Value.transform.position;
-        if (!navMeshAgent.isOnNavMesh)
-        {
-            if (NavMesh.SamplePosition(Self.Value.transform.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
-            {
-                correctionPoint = hit.position;
-            }
-        }
-
-        if (correctionPoint != null)
-        {
-            var point = (Vector3)correctionPoint;
-            Self.Value.transform.position = Vector3.Lerp(Self.Value.transform.position, point, navMeshAgent.acceleration);
-            var pos = Self.Value.transform.position;
-            bool isDoneCorrecting =
-                Mathf.Approximately(pos.x, point.x) &&
-                Mathf.Approximately(pos.y, point.y) &&
-                Mathf.Approximately(pos.z, point.z);
-
-            animator.SetFloat(XHash, 0);
-            animator.SetFloat(YHash, 0);
-            if (!isDoneCorrecting)
-            { return Status.Running; }
-            correctionPoint = null;
-        }
-
-        var dist = (Target.Value.position - Self.Value.transform.position).magnitude;
-        shouldCorrect = dist > CircleRadius.Value * 1.2 || dist < CircleRadius.Value * 0.8;
-
-        if (shouldCorrect)
-        {
-            currentCirclePoint = SampleCirclePoints(3);
-            if (!RegularNavigate(currentCirclePoint))
-            {
-                return Status.Running;
-            }
-
-            if (navMeshAgent.isOnNavMesh)
-                navMeshAgent.ResetPath();
-        }
-
-
+        elapsedSeconds += Time.deltaTime;
         float currentSpeedX = animator.GetFloat(XHash);
+        float currentSpeedZ = animator.GetFloat(YHash);
+        if (elapsedSeconds >= Duration.Value)
+        {
+            if (navMeshAgent.hasPath) navMeshAgent.ResetPath();
+            animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, 0, navMeshAgent.acceleration * Time.deltaTime));
+            animator.SetFloat(YHash, Mathf.Lerp(currentSpeedZ, 0, navMeshAgent.acceleration * Time.deltaTime));
+            if (Mathf.Approximately(currentSpeedX, 0) && Mathf.Approximately(currentSpeedZ, 0)) return Status.Success;
+            else return Status.Running;
+        }
 
-        float castDistance = navMeshAgent.radius + navMeshAgent.stoppingDistance;
-        float sphereRadius = navMeshAgent.radius * 0.8f;
-        float yOffset = 0.5f;
+        maxSpeed = Mathf.Clamp(Vector3.Distance(Self.Value.transform.position, Target.Value.position) / (1.2f * CircleRadius), 0.5f, 1f);
+        navMeshAgent.nextPosition = Self.Value.transform.position;
+        var dist = (Target.Value.position - Self.Value.transform.position).magnitude;
+        shouldCorrect = dist > CircleRadius.Value + navMeshAgent.radius || dist < CircleRadius.Value - navMeshAgent.radius;
 
-        Vector3 origin = Self.Value.transform.position + Vector3.up * yOffset;
-        Vector3 rightDirection = Self.Value.transform.right;
-        Vector3 leftDirection = -Self.Value.transform.right;
+        Self.Value.transform.LookAt(Target.Value.position);
+        if (shouldCorrect && !isCorrecting)
+        {
+            currentCirclePoint = SampleCirclePoints(10);
+            isCorrecting = true;
+        }
 
-        bool collisionToRight = Physics.SphereCast(origin + rightDirection, sphereRadius, rightDirection, out _, castDistance, obstacleMask);
-        bool collisionToLeft = Physics.SphereCast(origin + leftDirection, sphereRadius, leftDirection, out _, castDistance, obstacleMask);
+        if (isCorrecting && !shouldCorrect)
+        {
+            isCorrecting = false;
+            navMeshAgent.ResetPath();
+        }
 
-        Debug.DrawRay(origin + rightDirection, rightDirection * castDistance, collisionToRight ? Color.red : Color.green);
-        Debug.DrawRay(origin + rightDirection, leftDirection * castDistance, collisionToLeft ? Color.red : Color.green);
+        if (isCorrecting)
+        {
+            bool shouldUpdateDestination =
+            !Mathf.Approximately(lastDestination.x, currentCirclePoint.x) ||
+            !Mathf.Approximately(lastDestination.y, currentCirclePoint.y) ||
+            !Mathf.Approximately(lastDestination.z, currentCirclePoint.z);
+            lastDestination = currentCirclePoint;
+            if (shouldUpdateDestination) navMeshAgent.SetDestination(currentCirclePoint);
 
-        IsClockwise.Value = IsClockwise.Value ? !collisionToRight : collisionToLeft;
+            Vector3 worldDesiredVelocity = navMeshAgent.desiredVelocity / navMeshAgent.speed;
+            Vector3 localDesiredVelocity = Self.Value.transform.InverseTransformDirection(worldDesiredVelocity) * maxSpeed;
 
+            float desiredSpeedX = localDesiredVelocity.x;
+            float desiredSpeedZ = localDesiredVelocity.z;
 
-        Vector3 targetPosition = IsClockwise.Value
-            ? Self.Value.transform.position - Self.Value.transform.right * castDistance
-            : Self.Value.transform.position + Self.Value.transform.right * castDistance;
-
+            animator.SetFloat(XHash, Mathf.Lerp(
+                  currentSpeedX,
+                  desiredSpeedX,
+                  navMeshAgent.acceleration * Time.deltaTime
+              ));
+            animator.SetFloat(YHash, Mathf.Lerp(
+                    currentSpeedZ,
+                    desiredSpeedZ,
+                    navMeshAgent.acceleration * Time.deltaTime
+                ));
+        }
 
         if (IsClockwise.Value)
         {
-            IsClockwise.Value =
-                navMeshAgent.CalculatePath(Self.Value.transform.position - Self.Value.transform.right, new NavMeshPath());
+            if (NavMesh.SamplePosition(Self.Value.transform.position - Self.Value.transform.right, out NavMeshHit hit, 0.1f, navMeshAgent.areaMask))
+                IsClockwise.Value = navMeshAgent.CalculatePath(hit.position, new NavMeshPath());
         }
         else
         {
-            IsClockwise.Value =
-                !navMeshAgent.CalculatePath(Self.Value.transform.position + Self.Value.transform.right, new NavMeshPath());
+            if (NavMesh.SamplePosition(Self.Value.transform.position + Self.Value.transform.right, out NavMeshHit hit, 0.1f, navMeshAgent.areaMask))
+                IsClockwise.Value = !navMeshAgent.CalculatePath(hit.position, new NavMeshPath());
         }
 
-        float targetSpeedX = IsClockwise.Value ? -0.5f : 0.5f;
+        /* 
+                float sphereRadius = navMeshAgent.radius * 0.8f;
+                float yOffset = navMeshAgent.height / 2;
+
+                Vector3 origin = Self.Value.transform.position + Vector3.up * yOffset;
+
+                var result = IsClockwise.Value
+                    ? Physics.SphereCastAll(origin, sphereRadius, -Self.Value.transform.right)
+                    : Physics.SphereCastAll(origin, sphereRadius, Self.Value.transform.right);
+
+                foreach (var hit in result)
+                {
+                    if (Vector3.Distance(hit.point, Self.Value.transform.position) > Self.Value.stoppingDistance) break;
+                    if (!hit.collider.transform.IsChildOf(Self.Value.gameObject.transform) && hit.collider.gameObject != Self.Value.gameObject)
+                    {
+                        IsClockwise.Value = !IsClockwise.Value;
+                        break;
+                    }
+                } */
+
+        float targetSpeedX = IsClockwise.Value ? -maxSpeed : maxSpeed;
         animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, targetSpeedX, navMeshAgent.acceleration * Time.deltaTime));
-        animator.SetFloat(YHash, Mathf.Lerp(animator.GetFloat(YHash), 0, navMeshAgent.acceleration * Time.deltaTime));
+        animator.SetFloat(YHash, Mathf.Lerp(currentSpeedZ, 0, navMeshAgent.acceleration * Time.deltaTime));
 
         return Status.Running;
+
     }
 
     protected override void OnEnd()
     {
-        animator.SetFloat(XHash, 0);
-        animator.SetFloat(YHash, 0);
         if (navMeshAgent.isOnNavMesh)
             navMeshAgent.ResetPath();
-        navMeshAgent.velocity = Vector3.zero;
 
-        navMeshAgent.updatePosition = true;
-        navMeshAgent.updateRotation = true;
+        animator.SetFloat(XHash, 0);
+        animator.SetFloat(YHash, 0);
     }
 
     private Vector3 SampleCirclePoints(int sampleDensity)
@@ -164,45 +171,6 @@ public partial class CircleTargetAction : Action
             }
         }
         return navMeshAgent.transform.position;
-    }
-
-    private bool RegularNavigate(Vector3 destination)
-    {
-
-        bool shouldUpdateDestination =
-            !Mathf.Approximately(lastDestination.x, destination.x) ||
-            !Mathf.Approximately(lastDestination.y, destination.y) ||
-            !Mathf.Approximately(lastDestination.z, destination.z);
-        lastDestination = destination;
-        if (shouldUpdateDestination) navMeshAgent.SetDestination(destination);
-
-        Vector3 worldDesiredVelocity = navMeshAgent.desiredVelocity / (2 * navMeshAgent.speed);
-        Vector3 localDesiredVelocity = Self.Value.transform.InverseTransformDirection(worldDesiredVelocity);
-
-        float desiredSpeedX = localDesiredVelocity.x;  // Strafe
-        float desiredSpeedZ = localDesiredVelocity.z;  // Forward
-        float currentSpeedX = animator.GetFloat(XHash);
-        float currentSpeedZ = animator.GetFloat(YHash);
-
-        animator.SetFloat(XHash, Mathf.Lerp(
-              currentSpeedX,
-              desiredSpeedX,
-              navMeshAgent.acceleration * Time.deltaTime
-          ));
-        animator.SetFloat(YHash, Mathf.Lerp(
-                currentSpeedZ,
-                desiredSpeedZ,
-                navMeshAgent.acceleration * Time.deltaTime
-            ));
-
-        if (animator.deltaPosition.magnitude > minMoveDistance)
-        {
-            Vector3 worldVelocity = animator.deltaPosition / Time.deltaTime;
-            Vector3 localVelocity = Self.Value.transform.InverseTransformDirection(worldVelocity);
-
-            navMeshAgent.velocity = localVelocity;
-        }
-        return !navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5;
     }
 }
 
