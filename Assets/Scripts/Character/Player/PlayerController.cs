@@ -140,26 +140,17 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             if (playerStats.currentStamina <= 0)
                 return;
 
-            //if (PlayerAnimator.GetFloat("Y") <= 0 && math.abs(PlayerAnimator.GetFloat("X")) <= 0.47)
-            //{
-            //    PlayerAnimator.SetTrigger("BackStep");
-            //    playerState.SetMoveState(MoveState.Dodging);
-            //}
-            //else
-            //{
-            //    PlayerAnimator.SetTrigger("Dodge");
-            //    playerState.SetMoveState(MoveState.Dodging);
-            //}
+            bool isbackstepLocked = lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47;
+            bool isbackstepUnlocked = !lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.magnitude <= 0.1f;
 
-            if (playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47)
+            if (isbackstepLocked || isbackstepUnlocked)
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
             }
             else
             {
-                PlayerAnimator.SetFloat("Y", playerLocomotionInput.MovementInput.y);
-                PlayerAnimator.SetFloat("X", playerLocomotionInput.MovementInput.x);
+               
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
             }
@@ -199,7 +190,9 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         if (!PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != dodgeHash)
         {
-      
+            PlayerAnimator.SetFloat("Y", playerLocomotionInput.MovementInput.y);
+            PlayerAnimator.SetFloat("X", playerLocomotionInput.MovementInput.x);
+
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");
