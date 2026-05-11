@@ -16,7 +16,7 @@ public class Number_Scaler : MonoBehaviour
     [SerializeField] float sizeDecreaser = 1f;
     [SerializeField] float heightScaler= 1f;
     [SerializeField] float heightDecreaser = 1f;
-    [SerializeField] float critScaler = 2f;
+    [SerializeField] float critScaler = 3f;
     [SerializeField] private Color critColor;
     [SerializeField] private Color normalDamageColor;
     private bool critSwitch = false;

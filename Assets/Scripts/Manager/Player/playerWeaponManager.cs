@@ -135,7 +135,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
             damageInfo.SetIsCrit(true);
         }
 
-        if (playerController.AttackCharged)
+        if (playerController.AttackCharged && !damageInfo.IsCrit)
             damageInfo.SetDamageAmount((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier);
 
         else if (playerController.AttackCharged && damageInfo.IsCrit)
