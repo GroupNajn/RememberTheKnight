@@ -66,6 +66,8 @@ public class PlayerWeaponManager : CharacterWeaponManager
             OnHolster(null);
         }
 
+        currentWeaponIndex = (currentWeaponIndex + 1) % Weapons.Count;
+
         currentWeaponIndex %= Weapons.Count;
 
         // Stäng av alla
@@ -98,7 +100,6 @@ public class PlayerWeaponManager : CharacterWeaponManager
         OnWeaponChanged?.Invoke(equippedWeapon);
 
         // gå vidare till nästa för nästa interaction
-        currentWeaponIndex = (currentWeaponIndex + 1) % Weapons.Count;
     }
 
     public override void DeactivateRightDamageCollider()
