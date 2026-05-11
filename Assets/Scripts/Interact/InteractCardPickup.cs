@@ -39,7 +39,7 @@ public class InteractCardPickup : MonoBehaviour, IInteractable, IInteractableUIT
         }
         else if (!collection.CardIsPickedUp(cardData))
         {
-            data.InfoText = $"[F]: Pickup {cardData.cardName}.";
+            data.InfoText = $"[F]: Pickup: {cardData.cardName}.";
             data.CanInteract = true;
         }
         else
