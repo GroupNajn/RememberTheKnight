@@ -129,7 +129,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         // finalDamage = weaponData.base + weapondaata.charged + damgemodifier 
         DamageInfo damageInfo = new DamageInfo();
         float critRoll = Random.Range(0f, 1f);
-        if (critRoll <= playerStats.currentCritChance)
+        if (critRoll <= playerStats.currentCritChance / 100)
         {
             damageInfo.SetIsCrit(true);
         }
