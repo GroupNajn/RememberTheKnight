@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8909926475269855805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Explosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Explosion
+  Guid:
+    Data1: -1237825201
+    Data2: 1317442101
+    Data3: 412025992
+    Data4: 1261286357
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 0
 --- !u!114 &-8909860748236231494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,8 +42,99 @@ MonoBehaviour:
   Path: FMOD/Desktop/SXF.bank
   Name: SXF
   StudioPath: bank:/SXF
-  lastModified: 639137827507301920
+  lastModified: 639140891742674206
   FileSizes: []
+  Exists: 0
+--- !u!114 &-8603148591509827026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/EnemyHitByBlade
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/EnemyHitByBlade
+  Guid:
+    Data1: -1137432193
+    Data2: 1171348526
+    Data3: 1385781903
+    Data4: -1967364064
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-8180292640625849316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Events/Rain & thunder & Wind event
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Master.bank
+  Guid:
+    Data1: 0
+    Data2: 0
+    Data3: 0
+    Data4: 0
+  Banks: []
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &-8010261375194842479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 639141025377306443
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-6337328646809573992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 639141025377331604
+  FileSizes:
+  - Name: 
+    Value: 1618
   Exists: 1
 --- !u!114 &-6018787495904940471
 MonoBehaviour:
@@ -33,9 +151,9 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639137827507280619
+  lastModified: 639140583123744424
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-6015942257924011484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,23 +164,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Ambience/Rain And Thunder
+  m_Name: event:/Events/Rain And Wind event
   m_EditorClassIdentifier: 
-  Path: event:/Ambience/Rain And Thunder
+  Path: event:/Events/Rain And Wind event
   Guid:
-    Data1: -586356755
-    Data2: 1116125765
-    Data3: 1336278697
-    Data4: 1808623595
+    Data1: -297425645
+    Data2: 1138902390
+    Data3: -1398783335
+    Data4: -1192002082
   Banks:
   - {fileID: 8316239563476303886}
+  - {fileID: -4054882798259832506}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 726312
+  Length: 0
 --- !u!114 &-5457150174963052091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,7 +227,151 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-3070747369966380890
+--- !u!114 &-4054882798259832506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Events.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Events.bank
+  Name: Events
+  StudioPath: bank:/Events
+  lastModified: 639140556662943060
+  FileSizes: []
+  Exists: 0
+--- !u!114 &-3918093937163846228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemy Blade Attack
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemy Blade Attack
+  Guid:
+    Data1: 329178485
+    Data2: 1228425648
+    Data3: 964673977
+    Data4: 1889427912
+  Banks:
+  - {fileID: -8909860748236231494}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 8.2
+  Length: 0
+--- !u!114 &-3318315861417584321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemy Blade Attack
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemy Blade Attack
+  Guid:
+    Data1: 329178485
+    Data2: 1228425648
+    Data3: 964673977
+    Data4: 1889427912
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 8.2
+  Length: 0
+--- !u!114 &-2733246496473487633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain And Thunder
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain And Thunder
+  Guid:
+    Data1: -586356755
+    Data2: 1116125765
+    Data3: 1336278697
+    Data4: 1808623595
+  Banks:
+  - {fileID: 8316239563476303886}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 726312
+--- !u!114 &-2557680094837490719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain & thunder & Wind loop
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain & thunder & Wind loop
+  Guid:
+    Data1: 996096314
+    Data2: 1255357229
+    Data3: 339504026
+    Data4: 1109145
+  Banks:
+  - {fileID: 8316239563476303886}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
+--- !u!114 &-2515288833822886516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Events.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Events.bank
+  Name: Events
+  StudioPath: bank:/Events
+  lastModified: 639141025379506828
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-2135220194069634948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,6 +398,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 309645
+--- !u!114 &-2002358252830420023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/ItemPickup
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/ItemPickup
+  Guid:
+    Data1: -2065037866
+    Data2: 1315747430
+    Data3: 601418676
+    Data4: 1767915314
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1779789746133219382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/EnemyHitByBlade
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/EnemyHitByBlade
+  Guid:
+    Data1: -1137432193
+    Data2: 1171348526
+    Data3: 1385781903
+    Data4: -1967364064
+  Banks:
+  - {fileID: -8909860748236231494}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1457771656272046804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain And Wind loop
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain And Wind loop
+  Guid:
+    Data1: 200003549
+    Data2: 1110451059
+    Data3: -312557435
+    Data4: -559487295
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &-1094254380474246875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +497,33 @@ MonoBehaviour:
   lastModified: 639137640732896630
   FileSizes: []
   Exists: 1
+--- !u!114 &-862428162144865672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Roll
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Roll
+  Guid:
+    Data1: 624647155
+    Data2: 1158606448
+    Data3: 1839725953
+    Data4: -927475457
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 806
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,47 +537,84 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 4717499793082559293}
-  - {fileID: 8316239563476303886}
-  - {fileID: -6018787495904940471}
-  - {fileID: -8909860748236231494}
+  - {fileID: -6337328646809573992}
+  - {fileID: 2794800869992304196}
+  - {fileID: -2515288833822886516}
+  - {fileID: -8010261375194842479}
+  - {fileID: 273186655221460251}
   EditorEvents:
-  - {fileID: -3070747369966380890}
-  - {fileID: -6015942257924011484}
-  - {fileID: 461501038085043810}
-  - {fileID: 1724022374818944231}
-  - {fileID: 4755770338717057899}
-  - {fileID: 2559570461905494137}
-  - {fileID: 1864965575574048390}
-  - {fileID: 6412731423967991377}
-  - {fileID: -4125525075796279624}
+  - {fileID: 5236661965855156986}
+  - {fileID: 712539252350673476}
+  - {fileID: 5761859634726041559}
+  - {fileID: -1457771656272046804}
+  - {fileID: 5651651495941868249}
+  - {fileID: 6275827793058780846}
+  - {fileID: 640418532392144546}
+  - {fileID: -8909926475269855805}
+  - {fileID: 5622046325208696367}
+  - {fileID: -3318315861417584321}
+  - {fileID: -8603148591509827026}
+  - {fileID: -2002358252830420023}
+  - {fileID: 1769665637445302967}
+  - {fileID: -862428162144865672}
+  - {fileID: 2832759509198947542}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -6018787495904940471}
+  - {fileID: -8010261375194842479}
   StringsBanks:
-  - {fileID: 4717499793082559293}
+  - {fileID: -6337328646809573992}
   cacheVersion: 131859
-  cacheTime: 639137827507301920
+  cacheTime: 639141028744398189
   SerializableEventsDict:
-  - key: event:/Music/Music Loop
-    index: 0
-  - key: event:/Ambience/Rain And Thunder
-    index: 1
-  - key: event:/SFX/BodyHit
-    index: 2
   - key: event:/SFX/Explosion
-    index: 3
-  - key: event:/SFX/Attack
-    index: 4
-  - key: event:/SFX/ItemDrop
-    index: 5
+    index: 0
   - key: event:/SFX/BackStep
-    index: 6
+    index: 1
   - key: event:/SFX/Roll
-    index: 7
+    index: 2
   - key: event:/SFX/ItemPickup
+    index: 3
+  - key: event:/Events/Rain And Wind event
+    index: 4
+  - key: event:/Music/Music Loop
+    index: 5
+  - key: event:/Ambience/Rain And Wind loop
+    index: 6
+  - key: event:/Ambience/Rain And Thunder
+    index: 7
+  - key: event:/SFX/FootStep
     index: 8
---- !u!114 &461501038085043810
+  - key: event:/Ambience/Rain & thunder & Wind loop
+    index: 9
+  - key: event:/Events/Rain & thunder & Wind event
+    index: 10
+  - key: event:/SFX/Enemy Blade Attack
+    index: 11
+  - key: event:/SFX/Player Blade Attack
+    index: 12
+  - key: event:/SFX/HitByFist
+    index: 13
+  - key: event:/SFX/EnemyHitByBlade
+    index: 14
+--- !u!114 &273186655221460251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SXF.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/SXF.bank
+  Name: SXF
+  StudioPath: bank:/SXF
+  lastModified: 639141025378398022
+  FileSizes: []
+  Exists: 1
+--- !u!114 &640418532392144546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,16 +624,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/BodyHit
+  m_Name: event:/SFX/HitByFist
   m_EditorClassIdentifier: 
-  Path: event:/SFX/BodyHit
+  Path: event:/SFX/HitByFist
   Guid:
     Data1: -741006004
     Data2: 1217047147
     Data3: -1666627155
     Data4: 757506468
   Banks:
-  - {fileID: -8909860748236231494}
+  - {fileID: 273186655221460251}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -233,6 +641,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 9.6
   Length: 0
+--- !u!114 &712539252350673476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Music Loop
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Music Loop
+  Guid:
+    Data1: 787066667
+    Data2: 1279215718
+    Data3: -799348801
+    Data4: -1599441255
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 309645
 --- !u!114 &1724022374818944231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +695,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 40
   Length: 0
+--- !u!114 &1769665637445302967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/BackStep
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/BackStep
+  Guid:
+    Data1: 1429079022
+    Data2: 1205932694
+    Data3: 537686940
+    Data4: 1407690238
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 355
+--- !u!114 &1843453031804779845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain And Wind loop
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain And Wind loop
+  Guid:
+    Data1: 200003549
+    Data2: 1110451059
+    Data3: -312557435
+    Data4: -559487295
+  Banks:
+  - {fileID: 8316239563476303886}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &1864965575574048390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +776,25 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 355
---- !u!114 &2559570461905494137
+--- !u!114 &2794800869992304196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Ambience.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Ambience.bank
+  Name: Ambience
+  StudioPath: bank:/Ambience
+  lastModified: 639141028744398189
+  FileSizes: []
+  Exists: 1
+--- !u!114 &2832759509198947542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -297,14 +804,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/ItemDrop
+  m_Name: event:/SFX/Player Blade Attack
   m_EditorClassIdentifier: 
-  Path: event:/SFX/ItemDrop
+  Path: event:/SFX/Player Blade Attack
   Guid:
-    Data1: -373020462
-    Data2: 1317632820
-    Data3: 1577148569
-    Data4: 1896368503
+    Data1: 1548457973
+    Data2: 1295311660
+    Data3: 1053082539
+    Data4: 1515383024
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2907238389634622196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/FootStep
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/FootStep
+  Guid:
+    Data1: 1087116644
+    Data2: 1171423278
+    Data3: 969314710
+    Data4: 790940891
   Banks:
   - {fileID: -8909860748236231494}
   IsStream: 0
@@ -312,8 +846,8 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
-  Length: 900
+  MaxDistance: 10
+  Length: 0
 --- !u!114 &3053830413677127920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +868,32 @@ MonoBehaviour:
   - Name: 
     Value: 908
   Exists: 1
+--- !u!114 &3396140747310466863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/HitByFist
+  m_EditorClassIdentifier: 
+  Path: FMOD/Desktop/Master.strings.bank
+  Guid:
+    Data1: 0
+    Data2: 0
+    Data3: 0
+    Data4: 0
+  Banks: []
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &4717499793082559293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,10 +909,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639137827507280619
+  lastModified: 639141025377331604
   FileSizes:
   - Name: 
-    Value: 1234
+    Value: 1618
   Exists: 1
 --- !u!114 &4755770338717057899
 MonoBehaviour:
@@ -364,14 +924,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Attack
+  m_Name: event:/SFX/Player Blade Attack
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Attack
+  Path: event:/SFX/Player Blade Attack
   Guid:
-    Data1: 329178485
-    Data2: 1228425648
-    Data3: 964673977
-    Data4: 1889427912
+    Data1: 1548457973
+    Data2: 1295311660
+    Data3: 1053082539
+    Data4: 1515383024
   Banks:
   - {fileID: -8909860748236231494}
   IsStream: 0
@@ -379,8 +939,118 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 8.2
+  MaxDistance: 20
   Length: 0
+--- !u!114 &5236661965855156986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Events/Rain And Wind event
+  m_EditorClassIdentifier: 
+  Path: event:/Events/Rain And Wind event
+  Guid:
+    Data1: -297425645
+    Data2: 1138902390
+    Data3: -1398783335
+    Data4: -1192002082
+  Banks:
+  - {fileID: 2794800869992304196}
+  - {fileID: -2515288833822886516}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &5622046325208696367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/FootStep
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/FootStep
+  Guid:
+    Data1: 1087116644
+    Data2: 1171423278
+    Data3: 969314710
+    Data4: 790940891
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 0
+--- !u!114 &5651651495941868249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Events/Rain & thunder & Wind event
+  m_EditorClassIdentifier: 
+  Path: event:/Events/Rain & thunder & Wind event
+  Guid:
+    Data1: -2036752916
+    Data2: 1201052605
+    Data3: 1944595883
+    Data4: -925315949
+  Banks:
+  - {fileID: 2794800869992304196}
+  - {fileID: -2515288833822886516}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &5761859634726041559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain & thunder & Wind loop
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain & thunder & Wind loop
+  Guid:
+    Data1: 996096314
+    Data2: 1255357229
+    Data3: 339504026
+    Data4: 1109145
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &5775915776157025884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +1071,33 @@ MonoBehaviour:
     Data4: 1808623595
   Banks:
   - {fileID: 7997788253384021258}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 726312
+--- !u!114 &6275827793058780846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain And Thunder
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain And Thunder
+  Guid:
+    Data1: -586356755
+    Data2: 1116125765
+    Data3: 1336278697
+    Data4: 1808623595
+  Banks:
+  - {fileID: 2794800869992304196}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -468,6 +1165,6 @@ MonoBehaviour:
   Path: FMOD/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639137827507280619
+  lastModified: 639141028744398189
   FileSizes: []
   Exists: 1

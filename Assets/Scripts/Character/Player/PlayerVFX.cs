@@ -32,18 +32,17 @@ public class PlayerVFX : CharacterVFX
     {
         //if arrows in player body, take damage when rolling
 
-        if (this.gameObject.GetComponent<PlayerStates>().CurrentMoveState == MoveState.Dodging)
-        {
-            foreach (Transform child in GameObject.FindWithTag("Root").GetComponentsInChildren<Transform>())
-            {
-                if (child.CompareTag("Arrow_VFX"))
-                {
-                    PlayerManager playerManager = this.gameObject.GetComponent<PlayerManager>();
-                    DamageInfo damageInfo = new DamageInfo(5f);
-                    playerManager.TakeDamage(damageInfo, child.position);
-                    Destroy(child.gameObject);
-                }
-            }
-        }
+        //if (this.gameObject.GetComponent<PlayerStates>().CurrentMoveState == MoveState.Dodging)
+        //{
+        //    foreach (Transform child in GameObject.FindWithTag("Root").GetComponentsInChildren<Transform>())
+        //    {
+        //        if (child.CompareTag("Arrow_VFX"))
+        //        {
+        //            PlayerManager playerManager = this.gameObject.GetComponent<PlayerManager>();
+        //            playerManager.TakeDamage(5, child.position);
+        //            Destroy(child.gameObject);
+        //        }
+        //    }
+        //}
     }
 }

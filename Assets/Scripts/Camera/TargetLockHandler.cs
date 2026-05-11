@@ -25,6 +25,7 @@ public class TargetLockHandler : MonoBehaviour
     public float loseSightDelay = 0.1f;
 
     public bool AutomaticlyFindNewTarget = true;
+    public bool CenterCameraOnTab = false;
 
     [Range(0f, 1f)]
     public float minDotProduct = 0.5f;
@@ -121,6 +122,7 @@ public class TargetLockHandler : MonoBehaviour
     }
     IEnumerator SmoothCenterCamera()
     {
+       
         float time = 0f;
         float lerpTime = 0.2f;
         cinemachineFreeLookCam.GetComponent<CinemachineDeoccluder>().enabled = false;
@@ -333,7 +335,8 @@ public class TargetLockHandler : MonoBehaviour
     {
         if (currentTarget == null)
         {
-            StartCoroutine(SmoothCenterCamera());
+            if(CenterCameraOnTab)
+                StartCoroutine(SmoothCenterCamera());
             return;
         }
 

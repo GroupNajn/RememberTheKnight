@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2634969065990476537}
   - component: {fileID: 1294988760804920709}
+  - component: {fileID: 2305483723512926855}
   m_Layer: 0
   m_Name: WorldSoundFXManager
   m_TagString: Untagged
@@ -44,22 +45,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c0509f13abc1aa47b5103701c01a898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageSFX:
-  - {fileID: 8300000, guid: 2d9f1aa3752657b4dbf9aa2f92ebfd26, type: 3}
-  - {fileID: 8300000, guid: 35a217bced0da50468b38a15578adb22, type: 3}
-  - {fileID: 8300000, guid: 674d9757765bd6746a0261c8c17b8c18, type: 3}
-  - {fileID: 8300000, guid: 397e4182f9c44c4429851ede57300b9b, type: 3}
-  rollSFX: {fileID: 8300000, guid: 8aabbf4d666b56c41a2c9b90c554069b, type: 3}
-  backstepSFX: {fileID: 8300000, guid: f80824b39844c28459c004be9a150eeb, type: 3}
-  pickUpSFX: {fileID: 8300000, guid: 1c042982a4403a6439d0c19d603e708f, type: 3}
+  damageEvent:
+    Guid:
+      Data1: -741006004
+      Data2: 1217047147
+      Data3: -1666627155
+      Data4: 757506468
+    Path: event:/SFX/HitByFist
   rollEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  BossIntroPlayer: {fileID: 0}
-  BossLoopPlayer: {fileID: 0}
-  BackgroundIntroPlayer: {fileID: 0}
-  BackgroundLoopPlayer: {fileID: 0}
+      Data1: 624647155
+      Data2: 1158606448
+      Data3: 1839725953
+      Data4: -927475457
+    Path: event:/SFX/Roll
+  backstepEvent:
+    Guid:
+      Data1: 1429079022
+      Data2: 1205932694
+      Data3: 537686940
+      Data4: 1407690238
+    Path: event:/SFX/BackStep
+  pickupEvent:
+    Guid:
+      Data1: -2065037866
+      Data2: 1315747430
+      Data3: 601418676
+      Data4: 1767915314
+    Path: event:/SFX/ItemPickup
+  attackEvent:
+    Guid:
+      Data1: 329178485
+      Data2: 1228425648
+      Data3: 964673977
+      Data4: 1889427912
+    Path: event:/SFX/Enemy Blade Attack
+  footStepEvent:
+    Guid:
+      Data1: 1087116644
+      Data2: 1171423278
+      Data3: 969314710
+      Data4: 790940891
+    Path: event:/SFX/FootStep
+--- !u!114 &2305483723512926855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382340745301478090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 787066667
+      Data2: 1279215718
+      Data3: -799348801
+      Data4: -1599441255
+    Path: event:/Music/Music Loop
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
