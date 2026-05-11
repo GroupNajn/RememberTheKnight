@@ -26,6 +26,7 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         IsSelected = false;
     }
+   
     public void SetCard(CardData card)
     {
         if (isLocked)

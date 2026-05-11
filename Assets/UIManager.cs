@@ -395,6 +395,7 @@ public class UIManager : MonoBehaviour
 
     public void CloseCardShopUI()
     {
+        cardShopUI.GetComponent<CardShopUI>().ForceReset();
         cardShopUI.SetActive(false);
 
         UIMenuActive = false;
