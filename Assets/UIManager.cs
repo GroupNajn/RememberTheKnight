@@ -207,8 +207,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
-
     // BACKGROUND
     public void CloseBackgroundUI()
     {
@@ -324,6 +322,9 @@ public class UIManager : MonoBehaviour
     public void OpenAudioUI()
     {
         audioUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void CloseAudioUI()
@@ -335,6 +336,9 @@ public class UIManager : MonoBehaviour
     public void OpenVideoUI()
     {
         videoUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
     }
 
     public void CloseVideoUI()
@@ -472,11 +476,17 @@ public class UIManager : MonoBehaviour
         soulUI.SetActive(false);
     }
 
-
-    public void ShowPlayerBars()
+    // PLAYER BARS UI
+    public void OpenPlayerBars()
     {
         healthBar.SetActive(true);
         staminaBar.SetActive(true);
+    }
+
+    public void ClosePlayerBars()
+    {
+        healthBar.SetActive(false);
+        staminaBar.SetActive(false);
     }
 
     // CUP UI
@@ -501,20 +511,24 @@ public class UIManager : MonoBehaviour
         weaponIconUI.SetActive(false);
     }
 
-    //public void DisableAllWorldCanvas(bool value)
-    //{
-    //    Event_System.instance?.OnForceCloseUI.Invoke(value);
-    //}
 
-    //private void OnEnable()
-    //{
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //}
+    // UI TOGGLE
+    public void CloseUIOnMenuOpen()
+    {
+        CloseSoulUI();
+        ClosePlayerBars();
+        CloseCupUI();
+        CloseWeaponIconUI();
+    }
 
-    //private void OnDisable()
-    //{
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
+    public void OpenUIOnMenuClose()
+    {
+        OpenSoulUI();
+        OpenPlayerBars();
+        OpenCupUI();
+        OpenWeaponIconUI();
+    }
+
 
     public void GoBackFromOptions()
     {
@@ -529,8 +543,9 @@ public class UIManager : MonoBehaviour
         {
             CloseOptionMenu();
             OpenPauseMenu();
-
+            
             CloseBackButtonUI();
+            OpenUIOnMenuClose(); // SHOW BARS ETC
         }
     }
     public void GoBackFromControlls()
