@@ -1390,6 +1390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySkeleton (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7493179197623156213, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2210,6 +2214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySkeleton (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7493179197623156213, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2423,19 +2431,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 838166568999346924, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1068261253218421661, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1068261253218421661, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4059207040045649482, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
       propertyPath: m_Name
       value: EnemyWitchCaster
+      objectReference: {fileID: 0}
+    - target: {fileID: 4059207040045649482, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5498705647807292296, guid: 07d28ee8a0894ea4ea8f09375f6efe1e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2918,6 +2930,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySkeleton (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7493179197623156213, guid: 24b90d691f4893e528a609daef0a5fb8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3031,10 +3047,6 @@ PrefabInstance:
     - target: {fileID: 738989674375410310, guid: a392a528991cf90458c1a487c6df2e53, type: 3}
       propertyPath: m_Name
       value: EnemyGravedigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 738989674375410310, guid: a392a528991cf90458c1a487c6df2e53, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1279185550166484204, guid: a392a528991cf90458c1a487c6df2e53, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3551,19 +3563,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6590469975317091890, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
   m_PrefabInstance: {fileID: 1493280059}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1393409242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1393409230}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 978a5fbe39df43c429403475138a2fe8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractDistance: 8
 --- !u!114 &1393409254 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2491541292144789250, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
@@ -3575,6 +3574,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &1393409273
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393409230}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.25, y: 0.9, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!4 &1394548099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4282188658442966244, guid: 4767bca14e4997f44bf8bcafa0c1757c, type: 3}
@@ -7212,7 +7227,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6590469975317091890, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1393409242}
+      addedObject: {fileID: 1393409273}
   m_SourcePrefab: {fileID: 100100000, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
 --- !u!4 &1501827759 stripped
 Transform:
@@ -7721,15 +7736,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1241872304365157290, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1241872304365157290, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1463381503594533595, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4624532995418066361, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_Name
@@ -7737,7 +7752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4624532995418066361, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6504825722562781706, guid: d76934f5198662e4cb643ec5d2295c7a, type: 3}
       propertyPath: m_LocalPosition.x
