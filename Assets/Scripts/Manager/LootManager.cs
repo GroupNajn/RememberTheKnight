@@ -519,6 +519,7 @@ public class LootManager : MonoBehaviour
             CardData card = GetRandomCardFromRarity(rolledRarity);
 
             if (card != null)
+                if (result.Contains(card)) continue;
                 result.Add(card);
         }
         return result;

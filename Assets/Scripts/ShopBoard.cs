@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using UnityEngine;
 
 public class ShopBoard : MonoBehaviour
@@ -29,23 +30,22 @@ public class ShopBoard : MonoBehaviour
 
     void PopulateSlots()
     {
-        var allCards = cardSystem.GetAllCards();
+        var allCards = LootManager.instance.RollSevenRewardCards();
 
         if (allCards == null || allCards.Count == 0)
             return;
 
-        foreach (var slot in slots)
+        for (int i = 0; i < slots.Count; i++)
         {
-
-            if (slot.isLocked)
+            if (i >= allCards.Count)
             {
-                slot.SetCard(null);
+                slots[i].SetLocked(true);
+                slots[i].SetCard(null);
             }
             else
             {
-                int randomIndex = Random.Range(0, allCards.Count);
-                CardData randomCard = allCards[randomIndex];
-                slot.SetCard(randomCard);
+                CardData randomCard = allCards[i];
+                slots[i].SetCard(randomCard);
             }
         }
     }

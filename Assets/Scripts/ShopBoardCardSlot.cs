@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AppUI.Redux;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,5 +56,9 @@ public class ShopBoardCardSlot : MonoBehaviour
 
         if (hoverVisual != null)
             hoverVisual.SetActive(selected);
+    }
+    public void SetLocked(bool value)
+    {
+        isLocked = value;
     }
 }
