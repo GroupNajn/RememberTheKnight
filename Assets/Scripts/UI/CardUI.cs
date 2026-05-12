@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Text;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -44,7 +46,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         IsSelected = false;
 
 
-        cardImage = GetComponent<Image>();
+        cardImage = GetComponent<Button>().targetGraphic as Image;
+        // cardImage = GetComponent<Button>().targetGraphic();
+
 
         TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -52,6 +56,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         statsText = texts[1];
 
         infoBox.SetActive(false);
+        //cardImage.rectTransform.sizeDelta = this.rectTransform.sizeDelta;
 
     }
     public void Setup(CardData data, bool ShowInfo = false)
@@ -65,6 +70,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             cardImage.sprite = cardData.cardImage;
         }
+        cardImage.rectTransform.sizeDelta = new Vector2(300, 100);
     }
     void Start()
     {
@@ -168,7 +174,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (IsUnlockable)
         {
             CheckStatsForString();
-            infoBox.SetActive(true);
+            // infoBox.SetActive(true);
+            StartCoroutine(FlipCard());
         }
         else
         {
@@ -179,8 +186,41 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        infoBox.SetActive(false);
+        // infoBox.SetActive(false);
+        if (IsUnlockable || alwaysShowInfo)
+        {
+            StartCoroutine(UnFlipCard());
+        }
+
     }
+
+    IEnumerator FlipCard()
+    {
+        float time = 0f;
+        float cardFlipDuration = 0.15f;
+        Vector3 originalScale = cardImage.rectTransform.localScale;
+        while (time < cardFlipDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / cardFlipDuration;
+            cardImage.rectTransform.localScale = Vector3.Lerp(originalScale, new Vector3(0.01f, 1, 1), t);
+            yield return null;
+
+        }
+        cardImage.rectTransform.localScale = new Vector3(0.01f, 1, 1);
+
+        infoBox.SetActive(true);
+        time = 0f;
+        while (time < cardFlipDuration)
+        {
+            time += Time.deltaTime;
+
+            float t = time / cardFlipDuration;
+            cardImage.rectTransform.localScale = Vector3.Lerp(new Vector3(0.01f, 1, 1), new Vector3(1, 1, 1), t);
+            yield return null;
+
+        }
+        cardImage.rectTransform.localScale = new Vector3(1, 1, 1);
 
     public void ToggleInfo()
     {
@@ -213,4 +253,39 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         infoBox.SetActive(!infoBox.activeSelf);
     }
 
+    IEnumerator UnFlipCard()
+    {
+        //yield return StartCoroutine(FlipCard());
+
+        yield return new WaitForSeconds(0.2f);    // Small delay before Allowing flipping back, adjust as needed
+
+
+        float time = 0f;
+        float cardFlipDuration = 0.15f;
+        Vector3 originalScale = cardImage.rectTransform.localScale;
+
+        while (time < cardFlipDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / cardFlipDuration;
+            cardImage.rectTransform.localScale = Vector3.Lerp(originalScale, new Vector3(0.01f, 1, 1), t);
+            yield return null;
+
+        }
+        cardImage.rectTransform.localScale = new Vector3(0.01f, 1, 1);
+
+        infoBox.SetActive(false);
+
+        time = 0f;
+        while (time < cardFlipDuration)
+        {
+            time += Time.deltaTime;
+
+            float t = time / cardFlipDuration;
+            cardImage.rectTransform.localScale = Vector3.Lerp(new Vector3(0.01f, 1, 1), new Vector3(1, 1, 1), t);
+            yield return null;
+
+        }
+        cardImage.rectTransform.localScale = new Vector3(1, 1, 1);
+    }
 }
