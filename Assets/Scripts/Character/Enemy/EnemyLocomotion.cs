@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
 [RequireComponent(typeof(Animator))]
@@ -9,6 +11,11 @@ using UnityEngine.AI;
 [RequireComponent(typeof(CharacterController))]
 public class EnemyLocomotion : MonoBehaviour
 {
+    [SerializeField] MultiAimConstraint aimConstraint;
+
+    [SerializeField] Transform lookAt;
+    private static readonly int YHash = Animator.StringToHash("Y");
+    private static readonly int XHash = Animator.StringToHash("X");
     private static readonly int IsEmotingHash = Animator.StringToHash("IsEmoting");
     private static readonly int IsAttackingHash = Animator.StringToHash("IsAttacking");
 
@@ -28,11 +35,41 @@ public class EnemyLocomotion : MonoBehaviour
 
     void Update()
     {
-        if (animator.deltaPosition.magnitude > characterController.minMoveDistance)
-        {
-            navAgent.velocity = animator.deltaPosition / Time.deltaTime;
-        }
+        float currentSpeedX = animator.GetFloat(XHash);
+        float currentSpeedZ = animator.GetFloat(YHash);
+
+        Vector3 localVelocity = new(currentSpeedX, 0f, currentSpeedZ);
+        if (localVelocity.magnitude > 1f)
+            localVelocity.Normalize();
+
+        navAgent.velocity = transform.TransformDirection(localVelocity) * navAgent.speed;
         navAgent.nextPosition = transform.position;
+
+
+
+        if (aimConstraint == null)
+            return;
+
+        if (behaviorAgent.BlackboardReference.GetVariable<GameObject>("Target", out var target))
+        {
+            if (target.Value)
+            {
+                if (currentTarget == null || currentTarget != target.Value)
+                {
+                    currentTarget = target.Value;
+                    currentAimAt = currentTarget.GetComponentsInChildren<Transform>().FirstOrDefault(transform => transform.name == "Head");
+                }
+            }
+        }
+
+        if (currentAimAt != null)
+            lookAt.position = currentAimAt.transform.position;
+
+        float weightTarget;
+        if (animator.GetBool(IsAttackingHash) || currentAimAt == null) weightTarget = 0;
+        else weightTarget = 1;
+
+        aimConstraint.weight = Mathf.Lerp(aimConstraint.weight, weightTarget, 4 * Time.deltaTime);
     }
 
     public void OnAttackStart() => animator.SetBool(IsAttackingHash, true);
@@ -44,6 +81,8 @@ public class EnemyLocomotion : MonoBehaviour
     private BehaviorGraphAgent behaviorAgent;
     private CharacterController characterController;
     private BlackboardVariable<float> stoppingDistance;
+    private GameObject currentTarget;
+    private Transform currentAimAt;
     public bool InCombat
     {
         get
