@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+
 
 public class Projectile : MonoBehaviour
 {
@@ -10,8 +12,11 @@ public class Projectile : MonoBehaviour
     public float speed;
     public Vector3 direction;
     List<ParticleSystem> projectiles = new();
+
     Collider projectileCollider;
     Vector3 origin;
+    [Header("SFX")]
+    public EventReference FlyingEvent;
 
 
     private void Awake()
@@ -24,6 +29,11 @@ public class Projectile : MonoBehaviour
     private void Start()
     {
         origin = transform.position;
+        if (isArrow)
+        {
+            RuntimeManager.PlayOneShotAttached(FlyingEvent, gameObject);
+        }
+        
     }
 
     void Update()

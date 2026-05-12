@@ -51455,6 +51455,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      propertyPath: FullyChargedEvent.Path
+      value: event:/SFX/HitMarker/Enemy/FullyChargedHit
+      objectReference: {fileID: 0}
+    - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
       propertyPath: attackGrunts.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -51462,6 +51466,22 @@ PrefabInstance:
       propertyPath: 'attackGrunts.Array.data[0]'
       value: 
       objectReference: {fileID: 8300000, guid: f39923b9126586746a19824c9c43726a, type: 3}
+    - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      propertyPath: FullyChargedEvent.Guid.Data1
+      value: -538931918
+      objectReference: {fileID: 0}
+    - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      propertyPath: FullyChargedEvent.Guid.Data2
+      value: 1142424811
+      objectReference: {fileID: 0}
+    - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      propertyPath: FullyChargedEvent.Guid.Data3
+      value: -941851987
+      objectReference: {fileID: 0}
+    - target: {fileID: 25966239622868066, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
+      propertyPath: FullyChargedEvent.Guid.Data4
+      value: -264710509
+      objectReference: {fileID: 0}
     - target: {fileID: 1852973978288301669, guid: e4157c52b9a19484cb4c03f86b3b0cde, type: 3}
       propertyPath: interactMask.m_Bits
       value: 8193
@@ -246349,6 +246369,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2361232004992193728, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Music/Music Loop
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361232004992193728, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: 787066667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361232004992193728, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1279215718
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361232004992193728, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -799348801
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361232004992193728, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: -1599441255
+      objectReference: {fileID: 0}
     - target: {fileID: 2414381802125147012, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: m_Colors.m_PressedColor.b
       value: 1
@@ -247274,16 +247314,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: rollEvent.Path
+      value: event:/SFX/Movement/Roll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: attackEvent.Path
-      value: event:/SFX/Player Blade Attack
+      value: event:/SFX/Attacks/Player/Player Blade Attack Light
       objectReference: {fileID: 0}
     - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: damageEvent.Path
-      value: event:/SFX/EnemyHitByBlade
+      value: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: pickupEvent.Path
+      value: event:/SFX/Card Pickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: backstepEvent.Path
+      value: event:/SFX/Movement/BackStep
       objectReference: {fileID: 0}
     - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: footStepEvent.Path
-      value: event:/SFX/FootStep
+      value: event:/SFX/Movement/FootStep
       objectReference: {fileID: 0}
     - target: {fileID: 3369475023468202946, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: rollEvent.Guid.Data1
@@ -249125,6 +249177,10 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 2144174387}
+    - target: {fileID: 6242306728136386518, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6257349457911226778, guid: 0281dcb668c41ae43b2b530e13d9929e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -267041,6 +267097,69 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.001, y: 0.59300005, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1784609934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1784609936}
+  - component: {fileID: 1784609935}
+  m_Layer: 0
+  m_Name: AmbienceEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1784609935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784609934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 996096314
+      Data2: 1255357229
+      Data3: 339504026
+      Data4: 1109145
+    Path: event:/Ambience/Rain & thunder & Wind loop
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!4 &1784609936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784609934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1785193511
 GameObject:
   m_ObjectHideFlags: 0
@@ -322224,3 +322343,4 @@ SceneRoots:
   - {fileID: 170448462}
   - {fileID: 2133851862}
   - {fileID: 60081995}
+  - {fileID: 1784609936}

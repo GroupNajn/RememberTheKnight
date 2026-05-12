@@ -88,13 +88,13 @@ public class CharacterSoundFXManager : MonoBehaviour
     {
             RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.footStepEvent, gameObject);
     }
-    public virtual void PlayAttackSwoosh()
-    {
-        if (footSteps.Length > 0)
-        {
-            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.attackEvent, gameObject);
+    //public virtual void PlayAttackSwoosh()
+    //{
+    //    if (footSteps.Length > 0)
+    //    {
+    //        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.attackEvent, gameObject);
 
-            // audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(footSteps));
-        }
-    }
+    //        // audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(footSteps));
+    //    }
+    //}
 }
