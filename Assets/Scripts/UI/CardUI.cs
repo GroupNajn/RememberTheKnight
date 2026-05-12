@@ -25,6 +25,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private GameObject infoBox;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
+    private bool alwaysShowInfo;
 
     private string damageText;
 
@@ -221,6 +222,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         }
         cardImage.rectTransform.localScale = new Vector3(1, 1, 1);
+    }
 
     public void ToggleInfo()
     {
