@@ -25,6 +25,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private GameObject infoBox;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
+    private bool alwaysShowInfo;
 
     private string damageText;
 
@@ -187,12 +188,43 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         // infoBox.SetActive(false);
-        if (IsUnlockable || alwaysShowInfo)
+        if (IsUnlockable)
         {
             StartCoroutine(UnFlipCard());
         }
 
     }
+    public void ToggleInfo()
+    {
+        if (cardData == null)
+            return;
+
+        nameText.text = cardData.cardName;
+        CheckStatsForString();
+
+        if (cardData.cardFamily == CardFamily.Cups)
+        {
+            ColorUtility.TryParseHtmlString("#5F2828", out var darkRed);
+            infoBox.GetComponent<Image>().color = darkRed;
+        }
+        else if (cardData.cardFamily == CardFamily.Swords)
+        {
+            ColorUtility.TryParseHtmlString("#4B4A53", out var gray);
+            infoBox.GetComponent<Image>().color = gray;
+        }
+        else if (cardData.cardFamily == CardFamily.Pentacles)
+        {
+            ColorUtility.TryParseHtmlString("#DAD232", out var yellow);
+            infoBox.GetComponent<Image>().color = yellow;
+        }
+        else if (cardData.cardFamily == CardFamily.Wands)
+        {
+            ColorUtility.TryParseHtmlString("#435F28", out var green);
+            infoBox.GetComponent<Image>().color = green;
+        }
+        infoBox.SetActive(!infoBox.activeSelf);
+    }
+
 
     IEnumerator FlipCard()
     {
@@ -221,38 +253,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         }
         cardImage.rectTransform.localScale = new Vector3(1, 1, 1);
-
-    public void ToggleInfo()
-    {
-        if (cardData == null)
-            return;
-        
-        nameText.text = cardData.cardName;
-        CheckStatsForString();
-
-        if (cardData.cardFamily == CardFamily.Cups)
-        {
-            ColorUtility.TryParseHtmlString("#5F2828", out var darkRed);
-            infoBox.GetComponent<Image>().color = darkRed;
-        }
-        else if (cardData.cardFamily == CardFamily.Swords)
-        {
-            ColorUtility.TryParseHtmlString("#4B4A53", out var gray);
-            infoBox.GetComponent<Image>().color = gray;
-        }
-        else if (cardData.cardFamily == CardFamily.Pentacles)
-        {
-            ColorUtility.TryParseHtmlString("#DAD232", out var yellow);
-            infoBox.GetComponent<Image>().color = yellow;
-        }
-        else if (cardData.cardFamily == CardFamily.Wands)
-        {
-            ColorUtility.TryParseHtmlString("#435F28", out var green);
-            infoBox.GetComponent<Image>().color = green;
-        }
-        infoBox.SetActive(!infoBox.activeSelf);
     }
 
+  
     IEnumerator UnFlipCard()
     {
         //yield return StartCoroutine(FlipCard());

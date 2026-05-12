@@ -15,7 +15,7 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     [SerializeField] TextMeshProUGUI masterVolText;
     [SerializeField] TextMeshProUGUI musicVolText;
     [SerializeField] TextMeshProUGUI SoundsFXVolText;
-    private void Start()
+    protected override void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
 
@@ -26,6 +26,8 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
         masterVolumeSlider.value = 50;
         musicVolumeSlider.value = 50;
         SoundsFXVolumeSlider.value = 50;
+
+        base.Start();
     }
 
     public void SetMasterVolume(float volume)

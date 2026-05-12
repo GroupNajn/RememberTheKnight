@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 5554015106985034764}
   - component: {fileID: 1135070217562431694}
   - component: {fileID: 6081340567810714408}
+  - component: {fileID: 2391651384732697443}
   m_Layer: 0
   m_Name: HealingFountain
   m_TagString: Untagged
@@ -171,6 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50757597c407a724998624ac42f61d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactableID: 
+  firstTimeEffect: {fileID: 0}
   lightObject: {fileID: 5434801468452981728}
   healingCost: 5
   isExpended: 0
@@ -194,10 +197,24 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.56
-  m_Height: 2.2
+  m_Radius: 0.6
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: -0.22, y: 0, z: -1.12}
+--- !u!114 &2391651384732697443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222253158668563246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a8c77291c54bde4598414cb501b5191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightedObjects:
+  - {fileID: 2828993293532187334}
 --- !u!1 &1886176662791785286
 GameObject:
   m_ObjectHideFlags: 0

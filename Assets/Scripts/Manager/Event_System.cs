@@ -34,6 +34,7 @@ public class Event_System : MonoBehaviour
     public Action OnResetPullAllLoot;
     public Action<Loot> OnLootPickedUp;
     public Action<Loot> OnGetLoot;
+    public Action<IDamageable> OnSpawnChargedSoul;
 
     //Souls Related
     public Action<int> OnSoulsSpent;

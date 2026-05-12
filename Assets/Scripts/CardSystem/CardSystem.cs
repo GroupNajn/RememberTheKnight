@@ -74,12 +74,8 @@ public class CardSystem : MonoBehaviour
         {
             if (cardData.cardTier == Tier.I)
             {
-                if (!unlockedCards.Contains(cardData) && !hashUnlocked.Add(cardData))
-                {
                     unlockedCards.Add(cardData);
                     hashUnlocked.Add(cardData);
-
-                }
             }
         }
     }

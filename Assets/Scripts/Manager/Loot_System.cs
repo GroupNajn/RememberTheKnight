@@ -65,7 +65,8 @@ public class Loot_System : MonoBehaviour
 
         if (loot is Soul)
         {
-            currentSoulCount += 1;
+            Soul soul = (Soul)loot;
+            currentSoulCount += soul.SoulCollectReward;
             canvasTextScript.SetSoulsAmount(currentSoulCount);
         }
         IncreaseCupCharges(loot);
@@ -73,11 +74,11 @@ public class Loot_System : MonoBehaviour
 
     private void IncreaseCupCharges(Loot loot)
     {
-        if (loot.TryGetComponent<ChargedSoul>(out ChargedSoul chargedSoul))
+        if (loot.TryGetComponent<HealingSoul>(out HealingSoul healingSoul))
         {
 
             PlayerManager p = GameObject.Find("Player").GetComponent<PlayerManager>();
-            p.GetCharges(chargedSoul.ChargeAmount);
+            p.GetCharges(healingSoul.HealingChargeAmount);
             Debug.Log("HEALING SOUL GOT COLLECTED!");
         }
     }

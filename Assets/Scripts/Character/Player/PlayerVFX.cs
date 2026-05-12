@@ -35,7 +35,7 @@ public class PlayerVFX : CharacterVFX
 
     public void SetVignetteIntensity(float value)
     {
-        GlobalVolumeManager.Instance.SmoothVingetteIntensity(Mathf.Clamp(value, VignetteMin, VignetteMax));
+        //GlobalVolumeManager.Instance.SmoothVingetteIntensity(Mathf.Clamp(value, VignetteMin, VignetteMax));
     }
 
     public void Update()

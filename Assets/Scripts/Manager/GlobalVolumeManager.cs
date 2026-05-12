@@ -145,6 +145,11 @@ public class GlobalVolumeManager : MonoBehaviour
         FilmGrain.active = enabled;
     }
 
+    public float GetFilmGrainIntensity()
+    {
+        return FilmGrain.intensity.value;
+    }
+
     public void SetFilmGrainIntensity(float value)
     {
         FilmGrain.intensity.value = value;
