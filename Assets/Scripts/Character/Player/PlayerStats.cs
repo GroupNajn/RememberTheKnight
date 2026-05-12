@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -62,7 +61,7 @@ public class PlayerStats : MonoBehaviour
     public int maxHealingCharges = 100;
     public int currentHealingCharges;
     public int healingChargeCost = 10;
-    public float cupHealAmount = 20f;
+    [Range(0, 1)] public float cupHealAmountPercentage = 0.25f;
 
     // Base Values used for Applying Stats
     [Header("Base Values")]
