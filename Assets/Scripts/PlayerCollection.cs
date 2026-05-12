@@ -137,9 +137,10 @@ public class PlayerCollection : MonoBehaviour
     public bool CardIsPickedUp(CardData card)
     {
         var tempList = cardCollection.ReturnCardsForApplyingStats();
-
+        
         foreach(CardData cardData in tempList)
         {
+            if(card == null ) continue;
             if (card.cardID == cardData.cardID)
                 return true;
         }
