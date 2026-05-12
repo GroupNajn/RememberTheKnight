@@ -27,7 +27,8 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
 
     public void OpenVideo()
     {
-        // NÄR VI LÄGGER TILL VIDEO INSTÄLLNINGAR
+        uiManager.CloseOptionMenu();
+        uiManager.OpenVideoUI();
     }
 
 }

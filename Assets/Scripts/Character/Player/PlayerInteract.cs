@@ -7,6 +7,8 @@ public class PlayerInteract : MonoBehaviour
     PlayerController playerController;
     [SerializeField] private LayerMask interactMask;
 
+    private HighlightTarget highLight;
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -48,6 +50,19 @@ public class PlayerInteract : MonoBehaviour
 
             if (interactable != null)
             {
+                HighlightTarget newHighLight = hit.collider.GetComponent<HighlightTarget>();
+
+                if (newHighLight != highLight)
+                {
+                    if (highLight != null)
+                        highLight.SetHighlight(false);
+
+                    highLight = newHighLight;
+
+                    if (highLight != null)
+                        highLight.SetHighlight(true);
+                }
+
                 if (!UIManager.Instance.UIMenuActive)
                 {
                     string interactableUIText = "[F]";
@@ -62,6 +77,17 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
+        ClearHighLight();
+
         UIManager.Instance.CloseInteractiveUI();
+    }
+
+    public void ClearHighLight()
+    {
+        if (highLight != null)
+        {
+            highLight.SetHighlight(false);
+            highLight = null;
+        }
     }
 }

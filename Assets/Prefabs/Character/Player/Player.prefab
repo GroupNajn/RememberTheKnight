@@ -768,7 +768,7 @@ MonoBehaviour:
   maxHealingCharges: 100
   currentHealingCharges: 30
   healingChargeCost: 10
-  cupHealAmount: 20
+  cupHealAmountPercentage: 0.25
   baseHealth: 0
   baseStamina: 0
   baseLuck: 0
@@ -793,6 +793,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardCollection: {fileID: 7523651887060300156, guid: 9d5e65a16535466499bae36c752c1b0b, type: 3}
+  displayEquipedCards: []
+  displayTempCards: []
 --- !u!114 &2045710683252585095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,7 +844,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978a5fbe39df43c429403475138a2fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractDistance: 8
+  InteractDistance: 7
+  interactMask:
+    serializedVersion: 2
+    m_Bits: 40961
 --- !u!114 &8692204682195476090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,6 +861,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodSplatterVFX: {fileID: 4545752516965069178, guid: dcc699067f2e32e4eaefd49a65965d2c, type: 3}
+  VignetteMax: 0.4
+  VignetteMin: 0.25
   SlamVFX: {fileID: 1971782994008408158, guid: 75ed3eeea3766c646bc8d7392733f6bb, type: 3}
   ForwardOffset: 1
   HealVFX: {fileID: 3139263980467573834, guid: 367e1e493942028409bdab28b945609b, type: 3}

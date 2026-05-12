@@ -111,7 +111,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         Debug.Log("Attempting to heal. Current Charges: " + playerStats.currentHealingCharges);
         if (playerStats.currentHealingCharges >= playerStats.healingChargeCost)
         {
-            Heal(playerStats.cupHealAmount);
+            Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
             playerStats.currentHealingCharges -= playerStats.healingChargeCost;
             CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
         }
