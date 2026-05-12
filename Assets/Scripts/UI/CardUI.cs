@@ -15,6 +15,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
     [field: SerializeField] public bool OverrideLockState { get; private set; } = false;
 
+    private bool alwaysShowInfo;
+
     [SerializeField] private Color lockedColor = Color.gray;
     [SerializeField] private Color unlockedColor = Color.white;
 
@@ -221,6 +223,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         }
         cardImage.rectTransform.localScale = new Vector3(1, 1, 1);
+    }
 
     public void ToggleInfo()
     {
