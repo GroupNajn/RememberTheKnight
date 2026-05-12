@@ -1,4 +1,6 @@
 using UnityEngine;
+using FMODUnity;
+
 
 [CreateAssetMenu(menuName = "Weapons/Weapon Data")]
 
@@ -16,7 +18,9 @@ public class WeaponData : ScriptableObject
     [SerializeField] public float AnimatorSpeed = 1f;
 
     [Header("SFX")]
-    public AudioClip[] whooshes;
+    public EventReference SwooshEvent;
+    public EventReference HitEvent;
+
 
     [Header("Animator")]
     public AnimatorOverrideController WeaponAnimator;

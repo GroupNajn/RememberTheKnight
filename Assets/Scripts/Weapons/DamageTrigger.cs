@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -87,16 +88,17 @@ public class DamageTrigger : MonoBehaviour
 
             if (playerController != null) // if player
             {
-
                 if (playerController.AttackCharged)
                 {
                     combatManager.GainStamina(30);
+                    RuntimeManager.PlayOneShotAttached(playerController.gameObject.GetComponent<PlayerSoundFXManager>().FullyChargedEvent, playerController.gameObject);
                 }
                 damageable.TakeDamage(playerWeaponManager.CalculateFinalDamage(playerWeaponManager.currentActiveWeaponData), contactPoint);
+                RuntimeManager.PlayOneShotAttached(playerWeaponManager.currentActiveWeaponData.HitEvent, other.gameObject);
                 return;
             }
-
             damageable.TakeDamage(enemyWeaponManager.CalculateFinalDamage(enemyWeaponManager.currentActiveWeaponData), contactPoint);
+            RuntimeManager.PlayOneShotAttached(enemyWeaponManager.currentActiveWeaponData.HitEvent, other.gameObject);
         }
     }
 

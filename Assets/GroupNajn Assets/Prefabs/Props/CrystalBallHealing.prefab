@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 2067256006452465178}
   - component: {fileID: 2271662297424920115}
   - component: {fileID: 4752961075481639504}
+  - component: {fileID: -3674569278491872659}
   m_Layer: 0
   m_Name: CrystalBallHealing
   m_TagString: Untagged
@@ -192,6 +193,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.7
   m_Center: {x: 0, y: 0.3, z: 0}
+--- !u!114 &-3674569278491872659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4469450863440696210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1858236034
+      Data2: 1247438281
+      Data3: -1123854414
+      Data4: -2099209517
+    Path: event:/SFX/CrystalBallHushing
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 8.2
 --- !u!1 &4515765682477512100
 GameObject:
   m_ObjectHideFlags: 0
