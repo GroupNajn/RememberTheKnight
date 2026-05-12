@@ -8,16 +8,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Root Motion Navigate", story: "[Self] navigates to [Target] using root motion", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
+[NodeDescription(name: "Root Motion Navigate", story: "[Self] navigates to [Target] using root motion with avoidance priotity [Priority]", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
 public partial class RootMotionNavigateAction : Action
 {
     private static readonly int YHash = Animator.StringToHash("Y");
     private static readonly int XHash = Animator.StringToHash("X");
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
+    [SerializeReference] public BlackboardVariable<int> Priority;
     [SerializeReference] public BlackboardVariable<float> CircleRadius;
     [SerializeReference] public BlackboardVariable<bool> ShouldStopAtCircleRadius = new(false);
-
     [SerializeReference] public BlackboardVariable<List<string>> BreakingEmotes = new(new());
     private Animator animator;
     private NavMeshAgent navMeshAgent;
@@ -26,6 +26,7 @@ public partial class RootMotionNavigateAction : Action
     private Vector3 targetPos;
     private Vector3 lastTargetPos;
     private float minMoveDistance;
+    private int initialAvoidancePriority;
     protected override Status OnStart()
     {
         animator = Self.Value.GetComponent<Animator>();
@@ -43,10 +44,8 @@ public partial class RootMotionNavigateAction : Action
         if (dist <= navMeshAgent.stoppingDistance) return Status.Success;
 
         navMeshAgent.updatePosition = false;
-        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateRotation = true;
         if (navMeshAgent.hasPath) navMeshAgent.ResetPath();
-        animator.SetFloat(XHash, 0);
-        animator.SetFloat(YHash, 0);
         if (ShouldStopAtCircleRadius.Value)
         {
             var dir = (Self.Value.transform.position - Target.Value.position).normalized;
@@ -56,10 +55,7 @@ public partial class RootMotionNavigateAction : Action
         else targetPos = Target.Value.position;
         navMeshAgent.SetDestination(targetPos);
         lastTargetPos = Target.Value.position;
-        if (animator.deltaPosition.magnitude > minMoveDistance)
-        {
-            navMeshAgent.velocity = animator.deltaPosition / Time.deltaTime;
-        }
+        navMeshAgent.avoidancePriority = Priority.Value;
         return Status.Running;
     }
 
@@ -86,20 +82,13 @@ public partial class RootMotionNavigateAction : Action
         lastTargetPos = targetPos;
         if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.position);
 
-        Vector3 direction = (navMeshAgent.steeringTarget - navMeshAgent.nextPosition).normalized;
-        Quaternion desiredRotation = Quaternion.LookRotation(direction, Self.Value.transform.up);
-        if (Quaternion.Angle(Self.Value.transform.rotation, desiredRotation) > 5)
-        {
-            Self.Value.transform.rotation = Quaternion.RotateTowards(
-                Self.Value.transform.rotation,
-                desiredRotation,
-                navMeshAgent.angularSpeed * Time.deltaTime
-            );
-        }
+        Vector3 desiredVelocity = navMeshAgent.desiredVelocity;
+        Vector3 desiredLocalVelocity = Vector3.zero;
+        if (desiredVelocity.magnitude > 0.01f)
+            desiredLocalVelocity = Self.Value.transform.InverseTransformDirection(desiredVelocity).normalized;
 
-        Vector3 desiredVelocity = navMeshAgent.desiredVelocity / navMeshAgent.speed;
-        float desiredSpeedX = desiredVelocity.x;
-        float desiredSpeedZ = desiredVelocity.z;
+        float desiredSpeedX = desiredLocalVelocity.x;
+        float desiredSpeedZ = desiredLocalVelocity.z;
         float currentSpeedX = animator.GetFloat(XHash);
         float currentSpeedZ = animator.GetFloat(YHash);
 
@@ -118,6 +107,8 @@ public partial class RootMotionNavigateAction : Action
 
     protected override void OnEnd()
     {
+
+        navMeshAgent.avoidancePriority = initialAvoidancePriority;
         if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
         animator.SetFloat(XHash, 0);
         animator.SetFloat(YHash, 0);
