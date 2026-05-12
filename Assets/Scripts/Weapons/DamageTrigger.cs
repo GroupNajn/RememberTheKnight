@@ -40,6 +40,7 @@ public class DamageTrigger : MonoBehaviour
     Animator playerAnimator;
     PlayerWeaponManager playerWeaponManager;
     EnemyWeaponManager enemyWeaponManager;
+    Collider selfCollider;
 
 
     HashSet<IDamageable> damagedObjects = new HashSet<IDamageable>();
@@ -53,17 +54,8 @@ public class DamageTrigger : MonoBehaviour
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
         playerWeaponManager = player.GetComponent<PlayerWeaponManager>();
         playerAnimator = player.GetComponent<Animator>();
-        if (weaponData != null)
-        {
-            //damageAmount = weaponData.BaseDamage;
-            //chargedDamageBonus = weaponData.ChargedDamageBonus;
-        }
-        else
-        {
-            // NOT NEEDED ANY MORE 
-            //damageAmount = 999;
-            //chargedDamageBonus = 0;
-        }
+        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -75,7 +67,12 @@ public class DamageTrigger : MonoBehaviour
             enemyWeaponManager = this.gameObject.GetComponentInParent<EnemyWeaponManager>();
         }
 
-        if (check && other.gameObject == player)// prevent damaging self with own weapon
+        if (check && (other.gameObject == player) )// prevent player from damaging self with own weapon
+        {
+            return;
+        }
+
+        if (transform.IsChildOf(other.transform))
         {
             return;
         }

@@ -51,7 +51,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
     }
     public void ShowHealthBarForDuration(Transform target, DamageInfo damage) // Used for showing the healthbar when taking damage, called from the event system
     {
-        if (healthBar == null) return;
+        if (healthBar == null || target != transform.parent) return;
 
         healthBar.gameObject.SetActive(true);
 

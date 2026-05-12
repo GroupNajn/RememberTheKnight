@@ -38,13 +38,13 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         float incomingDamage = damageInfo.DamageAmount;
         if (CanTakeDamage && Health > 0)
         {
-            if (Mathf.Approximately(threat.Value, 0)) incomingDamage *= SneakMultiplier;
-            
+            if (threat != null && Mathf.Approximately(threat.Value, 0))
+                incomingDamage *= SneakMultiplier;
+
             Health -= incomingDamage;
             OnHealthChanged?.Invoke(Health, MaxHealth);
             
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
-            
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();
             animator.SetTrigger(HitHash);
