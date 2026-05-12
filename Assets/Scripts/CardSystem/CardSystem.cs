@@ -73,12 +73,8 @@ public class CardSystem : MonoBehaviour
         {
             if (cardData.cardTier == Tier.I)
             {
-                if (!unlockedCards.Contains(cardData) && !hashUnlocked.Add(cardData))
-                {
                     unlockedCards.Add(cardData);
                     hashUnlocked.Add(cardData);
-
-                }
             }
         }
     }
@@ -109,7 +105,6 @@ public void UnlockDroppedCardInSignedFamily(CardData card)
         unlockedTier++;
         Mathf.Clamp(unlockedTier, (int)Tier.I, (int)Tier.XIII);
     }
-
 }
 
 

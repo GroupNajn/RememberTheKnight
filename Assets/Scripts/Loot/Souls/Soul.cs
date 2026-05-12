@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Soul: Loot, IPickupable
 {
+    [field: SerializeField] public int SoulCollectReward { get; private set; } = 1;
 
-    
 
 
     protected virtual void OnTriggerEnter(Collider other)

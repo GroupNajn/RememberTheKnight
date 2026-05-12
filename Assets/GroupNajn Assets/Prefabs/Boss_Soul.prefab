@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   followRange: 8
-  followSpeed: 1
+  startFollowSpeed: 1
   growthRate: 1.15
   drag: 2
   maxFollowSpeed: 10
@@ -175,14 +175,11 @@ MonoBehaviour:
   baseHoverOffset: 0.8
   moveToHoverSpeed: 0.5
   arriveThreshold: 0.005
-  liftSpeed: 1.5
-  boostSpeed: 50
-  environmentMask:
-    serializedVersion: 2
-    m_Bits: 0
-  heightCheckInterval: 1
   groundCheckDistance: 10
   heightCorrectionSpeed: 5
+  liftSpeed: 1.5
+  boostSpeed: 50
+  collisionPushForce: 2
 --- !u!135 &-6488114877606157554
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,6 +218,7 @@ MonoBehaviour:
   <itemName>k__BackingField: 
   tier: 0
   pickable: 0
+  <SoulCollectReward>k__BackingField: 5
 --- !u!54 &-7480633617958417653
 Rigidbody:
   m_ObjectHideFlags: 0

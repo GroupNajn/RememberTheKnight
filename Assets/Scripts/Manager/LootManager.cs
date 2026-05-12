@@ -363,12 +363,14 @@ public class LootManager : MonoBehaviour
     {
         if (profile == null) return;
 
-        SpawnSoul(spawnPos);
+        if (profile.canDropSouls)
+            SpawnSoul(spawnPos);
+
 
         float soulChance = 1f + GetScaledLuckChance();
         if (RollForChargedSoul(soulChance))
         {
-            SpawnChargedSoul(spawnPos);
+            spawnHealingSoul(spawnPos);
         }
 
         int lootAmount = RollForMultipleLoot();
@@ -422,7 +424,7 @@ public class LootManager : MonoBehaviour
     {
         Instantiate(newSoulTable[0], spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
     }
-    public void SpawnChargedSoul(Vector3 spawnPos)
+    public void spawnHealingSoul(Vector3 spawnPos)
     {
         Instantiate(newSoulTable[1], spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
     }
