@@ -21,6 +21,7 @@ public partial class NavAgentRotateAction : Action
     protected override Status OnStart()
     {
         finalAngularSpeed = Self.Value.angularSpeed;
+        if (Target.Value == null) return Status.Success;
         return Status.Running;
     }
 

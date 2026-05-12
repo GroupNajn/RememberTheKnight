@@ -2312,6 +2312,8 @@ GameObject:
   - component: {fileID: 6817891939070019127}
   - component: {fileID: 8204932613426564533}
   - component: {fileID: -501138198487248759}
+  - component: {fileID: 7685655418106890922}
+  - component: {fileID: 4725385596688805720}
   m_Layer: 8
   m_Name: EnemyWitchCaster
   m_TagString: Enemy
@@ -2419,7 +2421,6 @@ MonoBehaviour:
   - rid: 4680590414493778376
   - rid: 4680590414493778377
   - rid: 4680590414493778378
-  - rid: 4680590584804802986
   - rid: 6699910492161573658
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
@@ -2459,15 +2460,6 @@ MonoBehaviour:
           m_Value1: 8035434306340229786
         Name: threatRadius
         m_Value: 20
-    - rid: 4680590584804802986
-      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 14274531564481370787
-          m_Value1: 10381297462099968179
-        Name: breakingEmotes
-        m_Value:
-        - Get Up
     - rid: 6699910492161573658
       type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2563,6 +2555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6040ace4f2ff69009bd6e34ae374eea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimConstraint: {fileID: 0}
+  lookAt: {fileID: 0}
 --- !u!114 &5846474368139444213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2759,6 +2753,94 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: -1
   OverrideMaxDistance: -1
+--- !u!114 &7685655418106890922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 0}
+    m_Active: 1
+  m_Effectors: []
+--- !u!114 &4725385596688805720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059207040045649482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 4485291405535309063}
+  - {fileID: 2014641830710236990}
+  - {fileID: 1859673825222381277}
+  - {fileID: 226821373775576137}
+  - {fileID: 872878150162689036}
+  - {fileID: 3775487295643491628}
+  - {fileID: 7552746727488320234}
+  - {fileID: 709239694591681100}
+  - {fileID: 4560053761259551003}
+  - {fileID: 5742671269138574875}
+  - {fileID: 4442117888662658947}
+  - {fileID: 639881629438073874}
+  - {fileID: 7393530195862998151}
+  - {fileID: 5462168778448934185}
+  - {fileID: 2827422893371808567}
+  - {fileID: 8019361558166292193}
+  - {fileID: 9141060502051457260}
+  - {fileID: 5178546367389165043}
+  - {fileID: 7466416205762484615}
+  - {fileID: 58281009910136203}
+  - {fileID: 3420504124923285631}
+  - {fileID: 1985473191151175340}
+  - {fileID: 947534832627377243}
+  - {fileID: 6125523600536809221}
+  - {fileID: 4207155098207098855}
+  - {fileID: 6947395063259696197}
+  - {fileID: 7256818589243885944}
+  - {fileID: 5074618128724573798}
+  - {fileID: 189702701671574054}
+  - {fileID: 5726400511517446399}
+  - {fileID: 7591294907893956096}
+  - {fileID: 7409464335911626346}
+  - {fileID: 931984279606613001}
+  - {fileID: 7008415740048548133}
+  - {fileID: 1716161641559451227}
+  - {fileID: 1314875815197752189}
+  - {fileID: 7448963416991961472}
+  - {fileID: 2482462097649758587}
+  - {fileID: 1665296467282246369}
+  - {fileID: 264634155611118842}
+  - {fileID: 1459601762652928901}
+  - {fileID: 6587680231737755327}
+  - {fileID: 4998275513434355058}
+  - {fileID: 7171242358200842205}
+  - {fileID: 8036182878995900082}
+  - {fileID: 307480837189666813}
+  - {fileID: 4050414507954003868}
+  - {fileID: 4091216517974757380}
+  - {fileID: 1964775559432505757}
+  - {fileID: 5428664175484309848}
+  - {fileID: 1345089900103712895}
+  - {fileID: 3885714697941568532}
+  - {fileID: 5610985229198294549}
 --- !u!1 &4103938120646374376
 GameObject:
   m_ObjectHideFlags: 0
