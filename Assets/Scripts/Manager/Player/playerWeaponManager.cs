@@ -125,14 +125,28 @@ public class PlayerWeaponManager : CharacterWeaponManager
         }
     }
 
-    public override float CalculateFinalDamage(WeaponData weaponData)
+    public new DamageInfo CalculateFinalDamage(WeaponData weaponData)
     {
         // finalDamage = weaponData.base + weapondaata.charged + damgemodifier 
-        if (playerController.AttackCharged)
-            finalDamage = (damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier;
-        else
-            finalDamage = damageAmount * playerStats.currentDamageModifier;
+        DamageInfo damageInfo = new DamageInfo();
+        float critRoll = Random.Range(0f, 1f);
+        if (critRoll <= playerStats.currentCritChance / 100)
+        {
+            damageInfo.SetIsCrit(true);
+        }
 
-        return finalDamage;
+        if (playerController.AttackCharged && !damageInfo.IsCrit)
+            damageInfo.SetDamageAmount((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier);
+
+        else if (playerController.AttackCharged && damageInfo.IsCrit)
+             damageInfo.SetDamageAmount(((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier) * 2);
+
+        else if (damageInfo.IsCrit)
+            damageInfo.SetDamageAmount((damageAmount * playerStats.currentDamageModifier) * 2);
+
+        else
+            damageInfo.SetDamageAmount(damageAmount * playerStats.currentDamageModifier);
+
+        return damageInfo;
     }
 }

@@ -25,7 +25,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         private set { }
     }
 
-
     [SerializeField] public bool isDead = false;
 
     private void Start()
@@ -58,16 +57,18 @@ public class PlayerManager : MonoBehaviour, IDamageable
         }
         playerAnimator.SetBool("IsDead", isDead);
 
+        playerVFX.SetVignetteIntensity(1 - (playerStats.currentStamina / playerStats.maxStamina));
+
     }
 
-    public void TakeDamage(float damage, Vector3 contactPoint)
+    public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
         if (CanTakeDamage && !isDead)
         {
             playerVFX.PlayBloodSplatter(contactPoint);
             playerSFX.PlayDamageGrunt();
 
-            playerStats.CurrentHealth -= damage;
+            playerStats.CurrentHealth -= damageInfo.DamageAmount;
             NotifyHealthChanged();
             if (isDead)
             {
@@ -133,6 +134,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void NotifyStaminaChanged()
     {
         onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
+
     }
 
     private void OnDisable()

@@ -60,8 +60,9 @@ public class Explosion : MonoBehaviour
             }
             if (damageableHit)
             {
-                float damage = MathF.Round(Mathf.Lerp(0, explosionMaxDamage, 1 - (distanceToDamageable / explotionRadius)), 0);
-                damageable.GetComponent<IDamageable>().TakeDamage(damage, Vector3.zero);
+                DamageInfo damageInfo = new DamageInfo();
+                damageInfo.SetDamageAmount(MathF.Round(Mathf.Lerp(0, explosionMaxDamage, 1 - (distanceToDamageable / explotionRadius)), 0));
+                damageable.GetComponent<IDamageable>().TakeDamage(damageInfo, Vector3.zero);
             }
         }
 

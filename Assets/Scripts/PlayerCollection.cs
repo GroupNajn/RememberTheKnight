@@ -6,10 +6,12 @@ public class PlayerCollection : MonoBehaviour
 {
     [SerializeField] private CardCollection cardCollection;
     private PlayerManager playerManager;
+    private PlayerStats playerStats;
+    float healthPercentage;
 
     [SerializeField] private List<CardData> displayEquipedCards = new List<CardData>();
     [SerializeField] private List<CardData> displayTempCards = new List<CardData>();
-    
+
     public CardCollection CardCollection
     {
         get => cardCollection;
@@ -29,6 +31,7 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         playerManager = GetComponent<PlayerManager>();
+        playerStats = GetComponent<PlayerStats>();
         ResetAllLists();
       
 
@@ -62,11 +65,14 @@ public class PlayerCollection : MonoBehaviour
 
     public void AddCardToTempOnPurchase(List<CardData> cards)
     {
-        foreach(CardData cardData in cards)
+        healthPercentage = playerStats.CurrentHealth / playerStats.MaxHealth;
+        foreach (CardData cardData in cards)
         {
             InsertIntoCardCollection(cardData);
         }
         playerManager.ReApplyStats();
+        playerStats.CurrentHealth = playerStats.MaxHealth * healthPercentage;
+        playerManager.Heal(0);
         UpdateDisplayCollection();
 
     }
@@ -98,8 +104,11 @@ public class PlayerCollection : MonoBehaviour
     {
         if (loot is Card card)
         {
+            healthPercentage = playerStats.CurrentHealth / playerStats.MaxHealth;
             InsertIntoCardCollection(card.CardData);
             playerManager.ReApplyStats();
+            playerStats.CurrentHealth = playerStats.MaxHealth * healthPercentage;
+            playerManager.Heal(0);
             UpdateDisplayCollection();
         }
     }
@@ -123,5 +132,18 @@ public class PlayerCollection : MonoBehaviour
     {
         displayEquipedCards = cardCollection.GetEquippedCards();
         displayTempCards = cardCollection.GetTempCardCollection();
+    }
+
+    public bool CardIsPickedUp(CardData card)
+    {
+        var tempList = cardCollection.ReturnCardsForApplyingStats();
+
+        foreach(CardData cardData in tempList)
+        {
+            if (card.cardID == cardData.cardID)
+                return true;
+        }
+        return false;
+
     }
 }

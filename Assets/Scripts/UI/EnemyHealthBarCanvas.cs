@@ -49,7 +49,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
         hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
-    public void ShowHealthBarForDuration(Transform target, float damage) // Used for showing the healthbar when taking damage, called from the event system
+    public void ShowHealthBarForDuration(Transform target, DamageInfo damage) // Used for showing the healthbar when taking damage, called from the event system
     {
         if (healthBar == null) return;
 

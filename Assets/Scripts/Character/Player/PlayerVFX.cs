@@ -1,7 +1,12 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerVFX : CharacterVFX
 {
+    [Header("Vignett Settings")]
+    public float VignetteMax = 0.4f;
+    public float VignetteMin = 0.25f;
+
     [Header("Slam VFX")]
     public GameObject SlamVFX;
     public float ForwardOffset = 1f;
@@ -26,6 +31,11 @@ public class PlayerVFX : CharacterVFX
         GameObject root = GameObject.FindWithTag("Root");
         GameObject VFX = Instantiate(Arrow_VFX, contactPoint, Quaternion.LookRotation(contactPoint - root.transform.position) * Quaternion.Euler(0, 180, 0), root.transform);
         Destroy(VFX, 10f);
+    }
+
+    public void SetVignetteIntensity(float value)
+    {
+        GlobalVolumeManager.Instance.SmoothVingetteIntensity(Mathf.Clamp(value, VignetteMin, VignetteMax));
     }
 
     public void Update()

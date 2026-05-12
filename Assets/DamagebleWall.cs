@@ -22,11 +22,11 @@ public class DamagebleWall : MonoBehaviour, IDamageable
     }
 
 
-    public void TakeDamage(float damage, Vector3 contactPoint)
+    public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
         if (CanTakeDamage && Health > 0)
         {
-            Health -= damage;
+            Health -= damageInfo.DamageAmount;
 
             enemyVFX.PlayBloodSplatter(contactPoint);
 

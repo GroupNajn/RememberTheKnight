@@ -81,12 +81,14 @@ public class EnemyExplodeAttack : MonoBehaviour
                 Destroy(barrel);
                 ParticleSystem explosion = Instantiate(this.explosion, barrel.transform.position, Quaternion.identity);
                 // explosion.Play();
-                enemyDamage.TakeDamage(enemyDamage.Health, Vector3.zero);
+                DamageInfo damageInfo = new DamageInfo((float)enemyDamage.Health);
+                enemyDamage.TakeDamage(damageInfo, Vector3.zero);
             }
             if (damageableHit)
             {
-                float damage = MathF.Round(Mathf.Lerp(0, explosionMaxDamage, 1 - (distanceToDamageable / explotionRadius)), 0);
-                damageable.GetComponent<IDamageable>().TakeDamage(damage, Vector3.zero);
+                DamageInfo damageInfo = new DamageInfo();
+                damageInfo.SetDamageAmount(MathF.Round(Mathf.Lerp(0, explosionMaxDamage, 1 - (distanceToDamageable / explotionRadius)), 0));
+                damageable.GetComponent<IDamageable>().TakeDamage(damageInfo, Vector3.zero);
             }
         }
 

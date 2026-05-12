@@ -33,9 +33,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     private BlackboardVariable<float> threat;
     private List<Transform> childObjects;
 
-    public void TakeDamage(float damage, Vector3 contactPoint)
+    public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
-        float incomingDamage = damage;
+        float incomingDamage = damageInfo.DamageAmount;
         if (CanTakeDamage && Health > 0)
         {
             if (Mathf.Approximately(threat.Value, 0)) incomingDamage *= SneakMultiplier;
@@ -43,7 +43,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
             Health -= incomingDamage;
             OnHealthChanged?.Invoke(Health, MaxHealth);
             
-            Event_System.instance.OnEnemyDamage?.Invoke(transform, incomingDamage);
+            Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
             
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();

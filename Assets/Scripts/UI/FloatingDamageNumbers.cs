@@ -12,7 +12,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     [SerializeField] GameObject prefab;
     private Transform spawnPos;
     private TextMeshProUGUI textMesh;
-   
+
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class FloatingDamageNumbers : MonoBehaviour
     {
         if (textMesh != null)
             textMesh.transform.rotation = this.transform.rotation * Quaternion.Euler(0f, 180f, 0f);
-       
+
 
     }
 
@@ -48,18 +48,21 @@ public class FloatingDamageNumbers : MonoBehaviour
     }
 
 
-    private void SpawnFloatingNumbers(Transform parentTransform, float damage)
+    private void SpawnFloatingNumbers(Transform parentTransform, DamageInfo damageInfo)
     {
 
         if (parentTransform != transform.parent)
             return;
         //var transform = GetComponent<Transform>().Find("HealthBar");
         var popup = Instantiate(prefab, spawnPos.position, Quaternion.identity, transform);
-       
+
+        Number_Scaler number = popup.GetComponent<Number_Scaler>();
+        number.SetCritBoolean(damageInfo.IsCrit);
+
         textMesh = popup.GetComponentInChildren<TextMeshProUGUI>();
-        int castedInt = (int)damage; 
+        int castedInt = (int)damageInfo.DamageAmount;
         textMesh.text = castedInt.ToString();
-        
+
         StartCoroutine(DisableAfterTime(popup, 3f));
     }
 }
