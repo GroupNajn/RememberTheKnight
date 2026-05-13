@@ -276,7 +276,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639143028971002868
+  lastModified: 639143111126013243
   FileSizes: []
   Exists: 1
 --- !u!114 &-7957663653656642059
@@ -454,10 +454,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639143028971023066
+  lastModified: 639143111126071352
   FileSizes:
   - Name: 
-    Value: 3632
+    Value: 3734
   Exists: 1
 --- !u!114 &-6267956547839427887
 MonoBehaviour:
@@ -1363,33 +1363,6 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
---- !u!114 &-2436814979222953647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/PlayerBreaths
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/PlayerBreaths
-  Guid:
-    Data1: 951517895
-    Data2: 1125193636
-    Data3: 296077727
-    Data4: 1507529713
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9.6
-  Length: 0
 --- !u!114 &-2326998848595276111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,6 +1390,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2201781502525909028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerLowStamina
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerLowStamina
+  Guid:
+    Data1: -1652371622
+    Data2: 1230875498
+    Data3: -2107254087
+    Data4: 671003288
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 6078861622924593636}
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 4584
 --- !u!114 &-2135220194069634948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1884,7 +1885,6 @@ MonoBehaviour:
   - {fileID: 4381252974040558294}
   - {fileID: 7109386094335379002}
   - {fileID: -108185298503960650}
-  - {fileID: -2436814979222953647}
   - {fileID: -8280436711169484163}
   - {fileID: 7016759640216888804}
   - {fileID: 5256917891728859277}
@@ -1906,14 +1906,17 @@ MonoBehaviour:
   - {fileID: 9114110047591730068}
   - {fileID: -559418362119596655}
   - {fileID: -6371917307057465705}
+  - {fileID: -2201781502525909028}
+  - {fileID: 6035166480336051385}
   EditorParameters:
   - {fileID: 5822965360318754753}
+  - {fileID: 8950005356321585938}
   MasterBanks:
   - {fileID: -8010261375194842479}
   StringsBanks:
   - {fileID: -6337328646809573992}
   cacheVersion: 131859
-  cacheTime: 639143028973224122
+  cacheTime: 639143112051875036
   SerializableEventsDict:
   - key: event:/Events/Rain And Wind event
     index: 0
@@ -1961,50 +1964,52 @@ MonoBehaviour:
     index: 21
   - key: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Heavy
     index: 22
-  - key: event:/SFX/PlayerBreaths
-    index: 23
   - key: event:/SFX/Soul Pickup
-    index: 24
+    index: 23
   - key: event:/SFX/Card Pickup
-    index: 25
+    index: 24
   - key: event:/SFX/Attacks/Enemy/ArrowFlying
-    index: 26
+    index: 25
   - key: event:/SFX/Movement/BackStep
-    index: 27
+    index: 26
   - key: event:/SFX/Teleport
-    index: 28
+    index: 27
   - key: event:/SFX/Movement/Roll
-    index: 29
+    index: 28
   - key: event:/SFX/Attacks/Player/Player Blade Attack Light
-    index: 30
+    index: 29
   - key: event:/SFX/HitMarker/Enemy/FireBallHit
-    index: 31
+    index: 30
   - key: event:/SFX/Attacks/Enemy/Enemy Fist Attack
-    index: 32
+    index: 31
   - key: snapshot:/InsideReverb
-    index: 33
+    index: 32
   - key: snapshot:/OutsideReverb
-    index: 34
+    index: 33
   - key: event:/Events/SnapShotInside
-    index: 35
+    index: 34
   - key: event:/Events/SnapShotOutside
-    index: 36
+    index: 35
   - key: event:/SFX/Death/EnemyDeath
-    index: 37
+    index: 36
   - key: event:/SFX/UI/Pause
-    index: 38
+    index: 37
   - key: event:/SFX/Death/PlayerDeath
-    index: 39
+    index: 38
   - key: event:/SFX/UI/CardFlip
-    index: 40
+    index: 39
   - key: event:/SFX/UI/Start
-    index: 41
+    index: 40
   - key: event:/SFX/UI/Hover
-    index: 42
+    index: 41
   - key: event:/SFX/UI/Select
-    index: 43
+    index: 42
   - key: event:/SFX/UI/PaperFlip
+    index: 43
+  - key: event:/SFX/PlayerLowStamina
     index: 44
+  - key: event:/SFX/PlayerWakesUp
+    index: 45
 --- !u!114 &273186655221460251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2020,7 +2025,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/SXF.bank
   Name: SXF
   StudioPath: bank:/SXF
-  lastModified: 639143028973224122
+  lastModified: 639143112051875036
   FileSizes: []
   Exists: 1
 --- !u!114 &434497487054475220
@@ -3098,6 +3103,57 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &6035166480336051385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerWakesUp
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerWakesUp
+  Guid:
+    Data1: 951517895
+    Data2: 1125193636
+    Data3: 296077727
+    Data4: 1507529713
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9.6
+  Length: 0
+--- !u!114 &6078861622924593636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerLowStamina/Stamina
+  m_EditorClassIdentifier: 
+  Name: Stamina
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1262449471
+    data2: 3662713580
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &6206704957393315252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3308,7 +3364,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 273186655221460251}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
@@ -3584,6 +3640,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8950005356321585938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Stamina
+  m_EditorClassIdentifier: 
+  Name: Stamina
+  StudioPath: parameter:/Stamina
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1262449471
+    data2: 3662713580
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &9109272143376630656
 MonoBehaviour:
   m_ObjectHideFlags: 0

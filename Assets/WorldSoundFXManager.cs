@@ -19,6 +19,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference pickupEvent;
     public EventReference attackEvent;
     public EventReference footStepEvent;
+    public EventReference teleportEvent;
 
     [Header("Button Sounds")]
     public EventReference cardFlipEvent;

@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +29,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     [SerializeField] public bool isDead = false;
 
+    //private EventInstance lowStamInstance;
+
     private void Start()
     {
         playerCombatManager = PlayerCombatManager.Instance;
@@ -38,6 +42,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats = GetComponent<PlayerStats>();
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
+        //lowStamInstance.start();
+
+
 
         //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
         //Event_System.instance.OnCardPickedUp += ReApplyStats;
@@ -59,6 +68,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerVFX.SetVignetteIntensity(1 - (playerStats.currentStamina / playerStats.maxStamina));
 
+        RuntimeManager.StudioSystem.setParameterByName("Stamina", playerStats.currentStamina / playerStats.maxStamina);
+       // RuntimeManager.StudioSystem.setParameterByName("Stamina",1);
+        float currentValue;
+        RuntimeManager.StudioSystem.getParameterByName("Stamina", out currentValue);
+        Debug.Log($"Stamina: {currentValue}, current stam: {playerStats.currentStamina}, max stam: {playerStats.maxStamina}");
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
