@@ -31,7 +31,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        if(playerInput != null)
+        if (playerInput != null)
         {
             inputActions = playerInput.actions;
         }
@@ -63,7 +63,6 @@ public class InputManager : MonoBehaviour
             usingGamepad = true;
         }
     }
-
     public void SaveBindings()
     {
         if (inputActions == null)
@@ -90,25 +89,5 @@ public class InputManager : MonoBehaviour
         inputActions.LoadBindingOverridesFromJson(json);
 
         Debug.Log("Bindings Loaded");
-    }
-
-    public void ResetBindings()
-    {
-        if (inputActions == null)
-            return;
-
-        foreach (var map in inputActions.actionMaps)
-        {
-            map.RemoveAllBindingOverrides();
-        }
-
-        PlayerPrefs.DeleteKey(rebindKeys);
-
-        foreach (var bindKey in FindObjectsByType<BindKeys>(FindObjectsSortMode.None))
-        {
-            bindKey.UpdateBindingDisplay();
-        }
-
-        Debug.Log("Bindings Reset");
     }
 }

@@ -170,6 +170,6 @@ public class BindKeys : MonoBehaviour
             return;
         }
 
-        bindingText.text = action.GetBindingDisplayString(bindingIndex,InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
+        bindingText.text = action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
     }
 }
