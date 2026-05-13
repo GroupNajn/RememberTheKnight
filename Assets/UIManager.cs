@@ -84,6 +84,8 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         startMenuUI.gameObject.SetActive(true);
 
+        Event_System.instance.OnLoadScenes += OnLoadScene;
+
     }
 
     void OnPauseGame()
@@ -268,6 +270,8 @@ public class UIManager : MonoBehaviour
         if (characterSelectUI)
         {
             UIMenuActive = true;
+            CheckUIState();
+            CloseUIOnMenuOpen();
             characterSelectUI.SetActive(true);
 
         }
@@ -276,6 +280,7 @@ public class UIManager : MonoBehaviour
     {
         if (characterSelectUI)
         {
+            CloseUIOnMenuOpen();
             characterSelectUI.SetActive(false);
         }
     }
@@ -588,5 +593,22 @@ public class UIManager : MonoBehaviour
 
         gameObject.SetActive(true);
         //UIInput.enabled = true;
+    }
+
+    void OnLoadScene()
+    {
+        // Close menues when the screen is black
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            CloseStartMenu();
+            //uiManager.CloseBackgroundUI();
+            UIMenuActive = false;
+
+            OpenCharacterSelectUI();
+
+            // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
+            CloseSoulUI();
+            CloseCupUI();
+        }
     }
 }
