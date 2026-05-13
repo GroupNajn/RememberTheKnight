@@ -15,11 +15,7 @@ public class BindKeys : MonoBehaviour
     public TextMeshProUGUI bindingText;
 
     [Header("Device Restrictions")]
-<<<<<<< Updated upstream
     public bool keyboardMouseBinding;
-=======
-    public bool keyboardBinding;
->>>>>>> Stashed changes
     public bool gamepadBinding;
 
     private InputAction action;
@@ -33,7 +29,6 @@ public class BindKeys : MonoBehaviour
             return;
         }
 
-<<<<<<< Updated upstream
         if (InputManager.Instance != null && InputManager.Instance.inputActions != null)
         {
             action = InputManager.Instance.inputActions.FindAction(actionReference.action.id);
@@ -42,38 +37,27 @@ public class BindKeys : MonoBehaviour
         {
             action = actionReference.action;
         }
-=======
-        action = actionReference.action;
->>>>>>> Stashed changes
 
         if (bindingText == null)
             bindingText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-<<<<<<< Updated upstream
     private void OnEnable()
-=======
-    private void Start()
->>>>>>> Stashed changes
     {
         UpdateBindingDisplay();
     }
 
-<<<<<<< Updated upstream
     private void OnDisable()
     {
         rebindingOperation?.Dispose();
         rebindingOperation = null;
     }
 
-=======
->>>>>>> Stashed changes
     public void StartRebind()
     {
         if (action == null || bindingText == null)
             return;
 
-<<<<<<< Updated upstream
         if (bindingIndex < 0 || bindingIndex >= action.bindings.Count)
         {
             Debug.LogError($"Invalid binding index {bindingIndex} on {gameObject.name}");
@@ -84,10 +68,6 @@ public class BindKeys : MonoBehaviour
         rebindingOperation?.Dispose();
 
         action.Disable();
-=======
-        action.Disable();
-
->>>>>>> Stashed changes
         bindingText.text = "...";
 
         rebindingOperation = action.PerformInteractiveRebinding(bindingIndex)
@@ -96,7 +76,6 @@ public class BindKeys : MonoBehaviour
             .WithControlsExcluding("<Mouse>/scroll")
             .WithControlsExcluding("<Pointer>/position")
             .WithControlsExcluding("<Pointer>/delta")
-<<<<<<< Updated upstream
             .WithCancelingThrough("<Keyboard>/escape");
 
         if (keyboardMouseBinding)
@@ -145,68 +124,21 @@ public class BindKeys : MonoBehaviour
                 Debug.LogWarning($"Duplicate binding detected: {newBinding}");
                 action.RemoveBindingOverride(bindingIndex);
             }
-=======
-            .WithControlsExcluding("<Gamepad>/leftStick")
-            .WithControlsExcluding("<Gamepad>/rightStick")
-            .WithCancelingThrough("<Keyboard>/escape");
-
-        if (keyboardBinding)
-        {
-            rebindingOperation.WithControlsHavingToMatchPath("<Keyboard>");
-            rebindingOperation.WithControlsHavingToMatchPath("<Mouse>");
-        }
-
-
-        if (gamepadBinding)
-            rebindingOperation.WithControlsHavingToMatchPath("<Gamepad>");
-
-        rebindingOperation.OnComplete(operation =>
-        {
-            bool duplicate = false;
-
-            var newBinding = action.bindings[bindingIndex].effectivePath;
-
-            foreach (var map in action.actionMap.asset.actionMaps)
-            {
-                foreach (var otherAction in map.actions)
-                {
-                    for (int i = 0; i < otherAction.bindings.Count; i++)
-                    {
-                        if (otherAction == action && i == bindingIndex)
-                            continue;
-
-                        if (otherAction.bindings[i].effectivePath == newBinding)
-                            duplicate = true;
-                    }
-                }
-            }
-
-            if (duplicate)
-                action.RemoveBindingOverride(bindingIndex);
->>>>>>> Stashed changes
 
             action.Enable();
 
             operation.Dispose();
-<<<<<<< Updated upstream
             rebindingOperation = null;
 
             UpdateBindingDisplay();
 
             if (InputManager.Instance != null)
                 InputManager.Instance.SaveBindings();
-=======
-
-            UpdateBindingDisplay();
-
-            InputManager.Instance.SaveBindings();
->>>>>>> Stashed changes
         });
 
         rebindingOperation.Start();
     }
 
-<<<<<<< Updated upstream
     private bool IsDuplicateBinding(string newBinding)
     {
         foreach (var map in action.actionMap.asset.actionMaps)
@@ -227,26 +159,17 @@ public class BindKeys : MonoBehaviour
         return false;
     }
 
-=======
->>>>>>> Stashed changes
     public void UpdateBindingDisplay()
     {
         if (action == null || bindingText == null)
             return;
 
-<<<<<<< Updated upstream
         if (bindingIndex < 0 || bindingIndex >= action.bindings.Count)
         {
             bindingText.text = "Invalid";
             return;
         }
 
-        bindingText.text = action.GetBindingDisplayString(bindingIndex,InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
-    }
-}
-=======
         bindingText.text = action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
     }
 }
-
->>>>>>> Stashed changes
