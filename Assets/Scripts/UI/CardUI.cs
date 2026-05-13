@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -5,6 +6,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static IPickupable;
 
 
 // Script Updated by Henric 2026-04-17
@@ -261,6 +263,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         yield return new WaitForSeconds(0.2f);    // Small delay before Allowing flipping back, adjust as needed
 
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.cardFlipEvent);
 
         float time = 0f;
         float cardFlipDuration = 0.15f;
