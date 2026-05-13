@@ -15,7 +15,7 @@ public class BindKeys : MonoBehaviour
     public TextMeshProUGUI bindingText;
 
     [Header("Device Restrictions")]
-    public bool keyboardMouseBinding;
+    public bool keyboardBinding;
     public bool gamepadBinding;
 
     private InputAction action;
@@ -29,28 +29,15 @@ public class BindKeys : MonoBehaviour
             return;
         }
 
-        if (InputManager.Instance != null && InputManager.Instance.inputActions != null)
-        {
-            action = InputManager.Instance.inputActions.FindAction(actionReference.action.id);
-        }
-        else
-        {
-            action = actionReference.action;
-        }
+        action = actionReference.action;
 
         if (bindingText == null)
             bindingText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    private void OnEnable()
+    private void Start()
     {
         UpdateBindingDisplay();
-    }
-
-    private void OnDisable()
-    {
-        rebindingOperation?.Dispose();
-        rebindingOperation = null;
     }
 
     public void StartRebind()
@@ -58,16 +45,8 @@ public class BindKeys : MonoBehaviour
         if (action == null || bindingText == null)
             return;
 
-        if (bindingIndex < 0 || bindingIndex >= action.bindings.Count)
-        {
-            Debug.LogError($"Invalid binding index {bindingIndex} on {gameObject.name}");
-            bindingText.text = "Invalid";
-            return;
-        }
-
-        rebindingOperation?.Dispose();
-
         action.Disable();
+
         bindingText.text = "...";
 
         rebindingOperation = action.PerformInteractiveRebinding(bindingIndex)
@@ -76,87 +55,54 @@ public class BindKeys : MonoBehaviour
             .WithControlsExcluding("<Mouse>/scroll")
             .WithControlsExcluding("<Pointer>/position")
             .WithControlsExcluding("<Pointer>/delta")
+            .WithControlsExcluding("<Gamepad>/leftStick")
+            .WithControlsExcluding("<Gamepad>/rightStick")
             .WithCancelingThrough("<Keyboard>/escape");
 
-        if (keyboardMouseBinding)
+        if (keyboardBinding)
         {
-            rebindingOperation.WithControlsExcluding("<Gamepad>");
+            rebindingOperation.WithControlsHavingToMatchPath("<Keyboard>");
+            rebindingOperation.WithControlsHavingToMatchPath("<Mouse>");
         }
-        else if (gamepadBinding)
-        {
+
+
+        if (gamepadBinding)
             rebindingOperation.WithControlsHavingToMatchPath("<Gamepad>");
-        }
-
-        rebindingOperation.OnCancel(operation =>
-        {
-            action.Enable();
-
-            operation.Dispose();
-            rebindingOperation = null;
-
-            UpdateBindingDisplay();
-        });
 
         rebindingOperation.OnComplete(operation =>
         {
-            string newBinding = action.bindings[bindingIndex].effectivePath;
+            bool duplicate = false;
 
-            bool invalidBinding = false;
+            var newBinding = action.bindings[bindingIndex].effectivePath;
 
-            if (keyboardMouseBinding)
+            foreach (var map in action.actionMap.asset.actionMaps)
             {
-                invalidBinding =
-                    !newBinding.StartsWith("<Keyboard>") &&
-                    !newBinding.StartsWith("<Mouse>");
+                foreach (var otherAction in map.actions)
+                {
+                    for (int i = 0; i < otherAction.bindings.Count; i++)
+                    {
+                        if (otherAction == action && i == bindingIndex)
+                            continue;
+
+                        if (otherAction.bindings[i].effectivePath == newBinding)
+                            duplicate = true;
+                    }
+                }
             }
-            else if (gamepadBinding)
-            {
-                invalidBinding = !newBinding.StartsWith("<Gamepad>");
-            }
 
-            if (invalidBinding)
-            {
-                Debug.LogWarning($"Invalid binding for this slot: {newBinding}");
+            if (duplicate)
                 action.RemoveBindingOverride(bindingIndex);
-            }
-            else if (IsDuplicateBinding(newBinding))
-            {
-                Debug.LogWarning($"Duplicate binding detected: {newBinding}");
-                action.RemoveBindingOverride(bindingIndex);
-            }
 
             action.Enable();
 
             operation.Dispose();
-            rebindingOperation = null;
 
             UpdateBindingDisplay();
 
-            if (InputManager.Instance != null)
-                InputManager.Instance.SaveBindings();
+            InputManager.Instance.SaveBindings();
         });
 
         rebindingOperation.Start();
-    }
-
-    private bool IsDuplicateBinding(string newBinding)
-    {
-        foreach (var map in action.actionMap.asset.actionMaps)
-        {
-            foreach (var otherAction in map.actions)
-            {
-                for (int i = 0; i < otherAction.bindings.Count; i++)
-                {
-                    if (otherAction == action && i == bindingIndex)
-                        continue;
-
-                    if (otherAction.bindings[i].effectivePath == newBinding)
-                        return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public void UpdateBindingDisplay()
@@ -164,12 +110,7 @@ public class BindKeys : MonoBehaviour
         if (action == null || bindingText == null)
             return;
 
-        if (bindingIndex < 0 || bindingIndex >= action.bindings.Count)
-        {
-            bindingText.text = "Invalid";
-            return;
-        }
-
-        bindingText.text = action.GetBindingDisplayString(bindingIndex,InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
+        bindingText.text = action.GetBindingDisplayString(bindingIndex, InputBinding.DisplayStringOptions.DontUseShortDisplayNames);
     }
 }
+
