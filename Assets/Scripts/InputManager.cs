@@ -9,6 +9,9 @@ public class InputManager : MonoBehaviour
     [Header("Input Actions")]
     public InputActionAsset inputActions;
 
+    [Header("Player Input")]
+    public PlayerInput playerInput;
+
     [Header("Device Detection")]
     public bool usingGamepad;
 
@@ -28,6 +31,11 @@ public class InputManager : MonoBehaviour
             return;
         }
 
+        if(playerInput != null)
+        {
+            inputActions = playerInput.actions;
+        }
+
         LoadBindings();
     }
 
@@ -44,14 +52,13 @@ public class InputManager : MonoBehaviour
             usingGamepad = false;
         }
 
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) // MAY NEED TO ADD MORE MOUSE BUTTONS
         {
             usingGamepad = false;
         }
 
         // Gamepad
-        if (Gamepad.current != null &&
-            Gamepad.current.wasUpdatedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
         {
             usingGamepad = true;
         }
@@ -59,6 +66,9 @@ public class InputManager : MonoBehaviour
 
     public void SaveBindings()
     {
+        if (inputActions == null)
+            return;
+
         string json = inputActions.SaveBindingOverridesAsJson();
 
         PlayerPrefs.SetString(rebindKeys, json);
@@ -69,6 +79,9 @@ public class InputManager : MonoBehaviour
 
     public void LoadBindings()
     {
+        if (inputActions == null)
+            return;
+
         if (!PlayerPrefs.HasKey(rebindKeys))
             return;
 
@@ -81,12 +94,20 @@ public class InputManager : MonoBehaviour
 
     public void ResetBindings()
     {
+        if (inputActions == null)
+            return;
+
         foreach (var map in inputActions.actionMaps)
         {
             map.RemoveAllBindingOverrides();
         }
 
         PlayerPrefs.DeleteKey(rebindKeys);
+
+        foreach (var bindKey in FindObjectsByType<BindKeys>(FindObjectsSortMode.None))
+        {
+            bindKey.UpdateBindingDisplay();
+        }
 
         Debug.Log("Bindings Reset");
     }
