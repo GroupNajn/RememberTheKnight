@@ -550,6 +550,8 @@ GameObject:
   - component: {fileID: 333612495369372603}
   - component: {fileID: 8548886817526811005}
   - component: {fileID: 4187262473237783389}
+  - component: {fileID: 5712160591337018985}
+  - component: {fileID: -6542833409895683729}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -900,6 +902,13 @@ MonoBehaviour:
       Data3: -941851987
       Data4: -264710509
     Path: event:/SFX/HitMarker/Enemy/FullyChargedHit
+  outOfBreathEvent:
+    Guid:
+      Data1: -1652371622
+      Data2: 1230875498
+      Data3: -2107254087
+      Data4: 671003288
+    Path: event:/SFX/PlayerLowStamina
 --- !u!114 &333612495369372603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,6 +960,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
+--- !u!114 &5712160591337018985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0e04e2572f9a940a47465f6f3c2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Parameter: SoulCount
+  TriggerEvent: 0
+  Value: 0
+--- !u!114 &-6542833409895683729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1652371622
+      Data2: 1230875498
+      Data3: -2107254087
+      Data4: 671003288
+    Path: event:/SFX/PlayerLowStamina
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 10
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
