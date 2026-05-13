@@ -6,22 +6,33 @@ public class BallistaSoulInstantiate : MonoBehaviour
 
     [SerializeField] private GameObject prefab;
     [SerializeField] Transform spawnTransform;
+    [SerializeField] private EnemyLootProfile profile;
     private Vector3 lastSpawnPosition;
-    void Start()
+    private void Start()
     {
-        
-    }
+        profile = GetComponentInParent<EnemyLootProfile>();
 
-    void Update()
-    {
-        if (spawnTransform != null)
-        {
-            lastSpawnPosition = spawnTransform.position;
-        }
+        if (Event_System.instance != null)
+            Event_System.instance.OnEnemyKilledNew += InstantiateChargedSoul;
     }
 
     private void OnDestroy()
     {
-        Instantiate(prefab, lastSpawnPosition, Quaternion.identity, this.transform);
+        if (Event_System.instance != null)
+            Event_System.instance.OnEnemyKilledNew -= InstantiateChargedSoul;
+    }
+
+    private void Update()
+    {
+        if (spawnTransform != null)
+            lastSpawnPosition = spawnTransform.position;
+    }
+
+    public void InstantiateChargedSoul(EnemyLootProfile sender, Vector3 throwAwayParameter)
+    {
+        if (sender != profile)
+            return;
+
+        Instantiate(prefab, lastSpawnPosition, Quaternion.identity);
     }
 }

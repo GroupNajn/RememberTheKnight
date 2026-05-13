@@ -1,9 +1,6 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Mono.Cecil.Cil;
-using Mono.Cecil;
 
 // Script made by Henric some random date
 
@@ -508,7 +505,7 @@ public class LootManager : MonoBehaviour
     /// tier. Duplicate cards may be included if randomly selected more than once.</remarks>
     /// <returns>A list of seven <see cref="CardData"/> objects representing the selected reward cards. The list may contain
     /// fewer than seven cards if no card is available for a rolled rarity tier.</returns>
-    public List<CardData> RollSevenRewardCards() // Använd denna metoden anton när du hämtar korten. 
+    public List<CardData> RollSevenRewardCards() // Anvï¿½nd denna metoden anton nï¿½r du hï¿½mtar korten. 
     {
         List<CardData> result = new List<CardData>();
 
@@ -519,7 +516,8 @@ public class LootManager : MonoBehaviour
             CardData card = GetRandomCardFromRarity(rolledRarity);
 
             if (card != null)
-                result.Add(card);
+                if (result.Contains(card)) continue;
+            result.Add(card);
         }
         return result;
     }

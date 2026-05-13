@@ -11,35 +11,34 @@ public partial class NavAgentRotateAction : Action
 {
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
-    [SerializeReference] public BlackboardVariable<float> Acceleration = new(0);
     [SerializeReference] public BlackboardVariable<float> Tolerance = new(10);
-    [SerializeReference] public BlackboardVariable<bool> Continous = new(false);
-    [SerializeReference] public BlackboardVariable<bool> PauseSignal = new(false);
+    [SerializeReference] public BlackboardVariable<bool> Continuous = new(false);
 
 
-    private float finalAngularSpeed;
     protected override Status OnStart()
     {
-        finalAngularSpeed = Self.Value.angularSpeed;
+        if (Target.Value == null) return Status.Success;
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        if (PauseSignal.Value) return Status.Running;
-        Vector3 dir = (Target.Value.position - Self.Value.transform.position).normalized;
-        Quaternion desiredRotation = Quaternion.LookRotation(dir);
+        Vector3 direction = Target.Value.position - Self.Value.transform.position;
+        direction.y = 0;
 
+        if (direction == Vector3.zero)
+            return Continuous.Value ? Status.Running : Status.Success;
+
+        Quaternion desiredRotation = Quaternion.LookRotation(direction.normalized);
         bool isDone = Quaternion.Angle(Self.Value.transform.rotation, desiredRotation) < Tolerance.Value;
 
-        if (isDone && !Continous.Value) return Status.Success;
+        if (isDone && !Continuous.Value) return Status.Success;
 
         Self.Value.transform.rotation = Quaternion.RotateTowards(
             Self.Value.transform.rotation,
             desiredRotation,
-            finalAngularSpeed * Time.deltaTime
+            Self.Value.angularSpeed * Time.deltaTime
         );
-        finalAngularSpeed += finalAngularSpeed * Acceleration.Value * Time.deltaTime;
         return Status.Running;
     }
 

@@ -8,16 +8,31 @@ using UnityEngine.InputSystem.LowLevel;
 public class familyBookUI : AutoSelectFirstButtonOnEnable
 {
     private UIManager uiManager;
+    private InteractCameraHandler interactCameraHandler;
+
     private PlayerInput playerInput;
     CardFamily confirmedFamily;
+
+
+    [SerializeField] private FamilyUI defaultFamily;
+
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        if(defaultFamily != null)
+        {
+            SelectFamily(defaultFamily);
+        }
     }
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
+        uiManager = FindFirstObjectByType<UIManager>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        uiManager = GetComponentInParent<UIManager>();
     }
     public void SelectFamily(FamilyUI selected)
     {
@@ -51,5 +66,8 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
             CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
             cardSystem.UnlockCardsAfterSigningContract(playerCollection.playerContract);
         }
+
+        uiManager.CloseFamilySelectUI();
+        interactCameraHandler.InteractCamReset();
     }
 }

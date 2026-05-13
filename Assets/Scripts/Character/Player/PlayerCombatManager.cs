@@ -70,24 +70,24 @@ public class PlayerCombatManager : MonoBehaviour
 
     public bool CheckInCombat()
     {
-       
+
 
         List<GameObject> enemies = new List<GameObject>();
 
-        
-            enemies.Clear();
 
-            int enemyLayerMask = 1 << 8;
+        enemies.Clear();
 
-            Collider[] hits = Physics.OverlapSphere(this.gameObject.transform.position, 25, enemyLayerMask);
+        int enemyLayerMask = 1 << 8;
 
-            foreach (Collider hit in hits)
-            {
-                enemies.Add(hit.gameObject);
-            }
-        
+        Collider[] hits = Physics.OverlapSphere(this.gameObject.transform.position, 25, enemyLayerMask);
 
-       
+        foreach (Collider hit in hits)
+        {
+            enemies.Add(hit.gameObject);
+        }
+
+
+
         foreach (GameObject enemy in enemies)
         {
             if (!enemy)
@@ -95,7 +95,7 @@ public class PlayerCombatManager : MonoBehaviour
                 continue;
             }
 
-            if (enemy.GetComponent<NavmeshBehaviourSync>().InCombat && enemy.GetComponent<NavMeshAgent>().isActiveAndEnabled)
+            if (enemy.GetComponent<EnemyLocomotion>().InCombat && enemy.GetComponent<NavMeshAgent>().isActiveAndEnabled)
             {
                 InCombat = true;
                 return true;
@@ -108,7 +108,7 @@ public class PlayerCombatManager : MonoBehaviour
     public void SetStaminaState(StaminaAction action)
     {
         currentAction = action;
-       
+
     }
 
     public void EnableInvulnerable()
@@ -211,7 +211,7 @@ public class PlayerCombatManager : MonoBehaviour
 
             staminaRegenTime = 0;
         }
-        else if(!CheckInCombat()) // If not in combat and stamina is depleted, regenerate stamina
+        else if (!CheckInCombat()) // If not in combat and stamina is depleted, regenerate stamina
         {
             RegenerateStamina();
         }
@@ -238,7 +238,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void GainStamina(float amount)
     {
-       // Debug.Log($"Gained {amount} stamina.");
+        // Debug.Log($"Gained {amount} stamina.");
         playerStats.currentStamina += amount;
         if (playerStats.currentStamina > playerStats.maxStamina)
             playerStats.currentStamina = playerStats.maxStamina;

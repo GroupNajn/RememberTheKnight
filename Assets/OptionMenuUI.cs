@@ -11,6 +11,8 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
     private void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
+
+        base.Start();
     }
 
     public void OpenControlls()

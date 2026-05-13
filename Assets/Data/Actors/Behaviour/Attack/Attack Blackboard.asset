@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3976490740413032565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: Attack Blackboard
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 639142350111011650
+  AssetID:
+    m_Value0: 5510740061933883226
+    m_Value1: 6237513356610621338
+  m_Blackboard:
+    m_Variables:
+    - rid: 6699910676364657407
+    - rid: 6699910676364657409
+    - rid: 6699910682272072435
+    - rid: 6699910676364657411
+    - rid: 6699910676364657415
+    - rid: 6699910681786057042
+    - rid: 6699910681786057374
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6699910676364657407
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 836044365305646730
+          m_Value1: 10922019513662295080
+        Name: Agent
+        m_Value: {fileID: 0}
+    - rid: 6699910676364657409
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9860020251782098776
+          m_Value1: 1416191289493623559
+        Name: Target
+        m_Value: {fileID: 0}
+    - rid: 6699910676364657411
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 4803684399478535074
+          m_Value1: 13876332376030940488
+        Name: Attack Delay
+        m_Value: 0
+    - rid: 6699910676364657415
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11234926689430901734
+          m_Value1: 5142006832972571257
+        Name: Circle Radius
+        m_Value: 0
+    - rid: 6699910681786057042
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9304223508230877669
+          m_Value1: 8986732516663331507
+        Name: Attack Name
+        m_Value: Attack
+    - rid: 6699910681786057374
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15218578599156702610
+          m_Value1: 10632453404100067844
+        Name: Backstep Name
+        m_Value: Backstep
+    - rid: 6699910682272072435
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12004437389443161721
+          m_Value1: 1652674451623927022
+        Name: Attack Radius
+        m_Value: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: Attack Blackboard
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 5510740061933883226
+    m_Value1: 6237513356610621338
+  m_Variables:
+  - rid: 6699910676364657406
+  - rid: 6699910676364657408
+  - rid: 6699910682272072434
+  - rid: 6699910676364657410
+  - rid: 6699910676364657414
+  - rid: 6699910681786057041
+  - rid: 6699910681786057373
+  m_VersionTimestamp: 639142350111011650
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -3976490740413032565}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6699910676364657406
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 836044365305646730
+          m_Value1: 10922019513662295080
+        Name: Agent
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6699910676364657408
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9860020251782098776
+          m_Value1: 1416191289493623559
+        Name: Target
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 6699910676364657410
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 4803684399478535074
+          m_Value1: 13876332376030940488
+        Name: Attack Delay
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 6699910676364657414
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11234926689430901734
+          m_Value1: 5142006832972571257
+        Name: Circle Radius
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 6699910681786057041
+      type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9304223508230877669
+          m_Value1: 8986732516663331507
+        Name: Attack Name
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: Attack
+    - rid: 6699910681786057373
+      type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15218578599156702610
+          m_Value1: 10632453404100067844
+        Name: Backstep Name
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: Backstep
+    - rid: 6699910682272072434
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 12004437389443161721
+          m_Value1: 1652674451623927022
+        Name: Attack Radius
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0

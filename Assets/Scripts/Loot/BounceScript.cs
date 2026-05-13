@@ -48,7 +48,7 @@ public class BounceScript : MonoBehaviour
         if (pickupCollider != null)
         {
             pickupCollider.enabled = false;
-            StartCoroutine(EnablePickupColliderAfterDelay(1.5f));
+            StartCoroutine(EnablePickupColliderAfterDelay(2.5f));
         }
 
         horizontalDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
@@ -161,8 +161,8 @@ public class BounceScript : MonoBehaviour
 
         hasLanded = true;
 
-        if (pickupCollider != null)
-            pickupCollider.enabled = true;
+        //if (pickupCollider != null)
+        //    pickupCollider.enabled = true;
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

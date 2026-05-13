@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
-    [SerializeField] private BookUi bookUi; // Meike tbc
+    [SerializeField] private BookUi bookInventoryUI; // Meike tbc
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
 
@@ -83,6 +83,8 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         startMenuUI.gameObject.SetActive(true);
+
+        Event_System.instance.OnLoadScenes += OnLoadScene;
 
     }
 
@@ -268,6 +270,8 @@ public class UIManager : MonoBehaviour
         if (characterSelectUI)
         {
             UIMenuActive = true;
+            CheckUIState();
+            CloseUIOnMenuOpen();
             characterSelectUI.SetActive(true);
 
         }
@@ -405,7 +409,7 @@ public class UIManager : MonoBehaviour
     {
         CloseInteractiveUI();
         // bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
-        bookUi.BuildInventory(playerStats);
+        bookInventoryUI.BuildInventory(playerStats);
         bookUI.SetActive(true);
 
         UIMenuActive = true;
@@ -588,5 +592,22 @@ public class UIManager : MonoBehaviour
 
         gameObject.SetActive(true);
         //UIInput.enabled = true;
+    }
+
+    void OnLoadScene()
+    {
+        // Close menues when the screen is black
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            CloseStartMenu();
+            //uiManager.CloseBackgroundUI();
+            UIMenuActive = false;
+
+            OpenCharacterSelectUI();
+
+            // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
+            CloseSoulUI();
+            CloseCupUI();
+        }
     }
 }

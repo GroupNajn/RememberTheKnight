@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] TextMeshProUGUI soulCostText;
+    [SerializeField] GameObject soulCostDisplay;
 
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
@@ -35,7 +36,10 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
 
         if (card == null)
+        {
+            soulCostDisplay.SetActive(false);
             return;
+        }
 
         cardData = card;
         soulCostText.text = card.cardSoulCost.ToString();

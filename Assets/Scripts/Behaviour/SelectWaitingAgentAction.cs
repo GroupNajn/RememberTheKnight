@@ -4,7 +4,6 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
-using UnityEditor.Rendering;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Select Waiting Agent", story: "Select [Agent] from [Waitlist] when [Aggrolist] has fewer than [Count] entries", category: "Action", id: "acfa597d9d3f5a396bb4920ebd434ee5")]

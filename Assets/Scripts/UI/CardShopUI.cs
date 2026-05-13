@@ -36,6 +36,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+
+        base.Start();
     }
 
     public void PopulateSlots()
