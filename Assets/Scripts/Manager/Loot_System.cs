@@ -10,14 +10,15 @@ public class Loot_System : MonoBehaviour
     [field: SerializeField] public int currentSoulCount { get; private set; } = 0;
     private Soul_Canvas_Text_Script canvasTextScript;
     private readonly Dictionary<int, Loot> soulsCollected = new Dictionary<int, Loot>();
+    private float timeSinceLastSoulCollected = 0f;
+    public float soulSoundCollectionReset = 5f; //seconds
+    private bool checkForSoundReset = false;
     // Dictonary used to see if a souls has been collected before, to prevent a double event invoke from,
     // same soul not to trigger double souls_collected.
     private int id = 0;
 
     void Start()
     {
-
-
         if (Event_System.instance != null)
         {
             Event_System.instance.OnLootPickedUp += IncreaseSouls;
@@ -44,7 +45,16 @@ public class Loot_System : MonoBehaviour
 
     void Update()
     {
-
+        if(checkForSoundReset)
+        {
+            timeSinceLastSoulCollected += Time.deltaTime;
+            if(timeSinceLastSoulCollected >= soulSoundCollectionReset)
+            {
+                checkForSoundReset = false;
+                timeSinceLastSoulCollected = 0f;
+                GetComponent<FMODUnity.StudioGlobalParameterTrigger>().TriggerParameters(); // trigger parameter to reset the soul collection pitch change
+            }
+        }
     }
 
     public void ConsumeSouls(int souls)
@@ -59,7 +69,8 @@ public class Loot_System : MonoBehaviour
     public void IncreaseSouls(Loot loot)
     {
         if (soulsCollected.ContainsValue(loot)) return;
-
+        checkForSoundReset = true;
+        timeSinceLastSoulCollected = 0f;
         soulsCollected.Add(id, loot);
         id++;
 
