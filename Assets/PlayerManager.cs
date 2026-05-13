@@ -69,10 +69,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerVFX.SetVignetteIntensity(1 - (playerStats.currentStamina / playerStats.maxStamina));
 
         RuntimeManager.StudioSystem.setParameterByName("Stamina", playerStats.currentStamina / playerStats.maxStamina);
-       // RuntimeManager.StudioSystem.setParameterByName("Stamina",1);
-        float currentValue;
-        RuntimeManager.StudioSystem.getParameterByName("Stamina", out currentValue);
-        Debug.Log($"Stamina: {currentValue}, current stam: {playerStats.currentStamina}, max stam: {playerStats.maxStamina}");
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
