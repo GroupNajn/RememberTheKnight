@@ -9,10 +9,12 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private Transform firePoint;
     [SerializeField] private float projectileSpeed = 20f;
+    [SerializeField] private EnemyWeaponManager weaponManager;
 
     void Start()
     {
         selfHitbox = GetComponent<CapsuleCollider>();
+        weaponManager = GetComponent<EnemyWeaponManager>();
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name == "ShootingPoint") firePoint = child;
@@ -49,7 +51,10 @@ public class ProjectileHandler : MonoBehaviour
 
 
         GameObject projectileObject = Instantiate(projectile, firePoint.position, rotation);
+        Projectile projectileScript = projectileObject.GetComponent<Projectile>();
+        projectileScript.enemyWeaponManager = GetComponent<EnemyWeaponManager>();
 
+        
 
         projectileObject.GetComponent<Projectile>().direction = direction;
         projectileObject.GetComponent<Projectile>().speed = projectileSpeed;

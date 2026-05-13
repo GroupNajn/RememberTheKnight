@@ -36,6 +36,8 @@ public class BallistaProjectileHandler : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(direction);
 
         GameObject proj = Instantiate(projectilePrefab, firePoint.position, rotation);
+        Projectile projectileScript = proj.GetComponent<Projectile>();
+        projectileScript.enemyWeaponManager = GetComponent<EnemyWeaponManager>();
         proj.gameObject.SetActive(true);
 
         proj.GetComponent<Projectile>().direction = direction;

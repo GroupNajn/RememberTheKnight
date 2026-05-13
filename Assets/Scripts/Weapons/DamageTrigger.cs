@@ -62,7 +62,11 @@ public class DamageTrigger : MonoBehaviour
     {
         PlayerStates check = this.gameObject.GetComponentInParent<PlayerStates>();
 
-        if (check == null)
+        if (gameObject.TryGetComponent<Projectile>(out Projectile projectile))
+        {
+            enemyWeaponManager = projectile.enemyWeaponManager;
+        }
+        if (check == null && enemyWeaponManager == null)// om inte spelare
         {
             enemyWeaponManager = this.gameObject.GetComponentInParent<EnemyWeaponManager>();
         }
@@ -83,7 +87,7 @@ public class DamageTrigger : MonoBehaviour
         {
             Vector3 contactPoint = other.ClosestPoint(transform.position);
 
-            if (playerController != null) // if player
+            if (playerController != null && check != null) // if player
             {
                 if (playerController.AttackCharged)
                 {

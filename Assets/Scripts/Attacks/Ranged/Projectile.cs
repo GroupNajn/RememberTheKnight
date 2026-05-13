@@ -13,6 +13,8 @@ public class Projectile : MonoBehaviour
     public Vector3 direction;
     List<ParticleSystem> projectiles = new();
 
+    [field:SerializeField] public EnemyWeaponManager enemyWeaponManager { get; set; }
+
     Collider projectileCollider;
     Vector3 origin;
     [Header("SFX")]
