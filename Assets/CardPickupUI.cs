@@ -39,6 +39,7 @@ public class CardPickupUI : MonoBehaviour
 
     public void OnConfirmPickup()
     {
+        
 
     }
 
