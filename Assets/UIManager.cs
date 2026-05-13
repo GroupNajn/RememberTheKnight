@@ -280,7 +280,6 @@ public class UIManager : MonoBehaviour
     {
         if (characterSelectUI)
         {
-            CloseUIOnMenuOpen();
             characterSelectUI.SetActive(false);
         }
     }
