@@ -132928,6 +132928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 942900069}
   - component: {fileID: 942900068}
+  - component: {fileID: 942900070}
   m_Layer: 0
   m_Name: Ambience Emitter
   m_TagString: Untagged
@@ -132950,11 +132951,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 200003549
-      Data2: 1110451059
-      Data3: -312557435
-      Data4: -559487295
-    Path: event:/Ambience/Rain And Wind loop
+      Data1: 996096314
+      Data2: 1255357229
+      Data3: 339504026
+      Data4: 1109145
+    Path: event:/Ambience/Rain & thunder & Wind loop
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -132981,6 +132982,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &942900070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942900067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 460087738
+      Data2: 1130556925
+      Data3: -1232028997
+      Data4: 1057291885
+    Path: snapshot:/OutsideReverb
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!4 &942908656 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4696253752816830777, guid: 632eee49de0562648bc267266b3016cb, type: 3}
