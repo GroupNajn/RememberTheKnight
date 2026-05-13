@@ -7,6 +7,6 @@ using Unity.Properties;
 [CreateAssetMenu(menuName = "Behavior/Event Channels/Request Aggro")]
 #endif
 [Serializable, GeneratePropertyBag]
-[EventChannelDescription(name: "Request Aggro", message: "[Agent] requests aggro on [Target]", category: "Events", id: "4620a7a93106d695a268802d01703ebd")]
-public sealed partial class RequestAggroEvent : EventChannel<GameObject, GameObject> { }
+[EventChannelDescription(name: "Request Aggro", message: "[Agent] of type [EnemyClass] requests aggro on [Target]", category: "Events", id: "4620a7a93106d695a268802d01703ebd")]
+public sealed partial class RequestAggroEvent : EventChannel<GameObject, EnemyType, GameObject> { }
 
