@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
+public class InteractibleBook : MonoBehaviour, IInteractable, IInteractableUIText
 {
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
@@ -54,7 +54,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Choose Minor Arcana.";
+        UIData.InfoText = "[F]: Open Book";
         return UIData;
     }
 }
