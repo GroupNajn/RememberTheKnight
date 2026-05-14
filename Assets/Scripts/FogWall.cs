@@ -19,6 +19,7 @@ public class FogWall : MonoBehaviour
     void TurnOnWall()
     {
         wall.SetActive(true);
+        //bossHealthbar.SetActive(true);
     }
 
     void TurnOffWall()

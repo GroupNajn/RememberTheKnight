@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardShopUI;
     [SerializeField] private GameObject bookUI;
     [SerializeField] private GameObject cardPickupUI;
+    [SerializeField] private GameObject inventoryBookUI;
+    [SerializeField] private GameObject pedistalBookUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -87,6 +89,9 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         startMenuUI.gameObject.SetActive(true);
         Event_System.instance.OnLootPickedUp += OpenCardPickupUI;
+
+        Event_System.instance.OnLoadScenes += OnLoadScene;
+
     }
 
     void OnPauseGame()
@@ -277,6 +282,8 @@ public class UIManager : MonoBehaviour
         if (characterSelectUI)
         {
             UIMenuActive = true;
+            CheckUIState();
+            CloseUIOnMenuOpen();
             characterSelectUI.SetActive(true);
 
         }
@@ -479,6 +486,29 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    public void OpenInventoryBook()
+    {
+        OpenBookUI();
+        ClosePedistalBook();
+        inventoryBookUI.SetActive(true);
+    }
+
+    public void CloseInventoryBook()
+    {
+        inventoryBookUI.SetActive(false);
+    }
+
+    public void OpenPedistalBook()
+    {
+        OpenBookUI();
+        CloseInteractiveUI();
+        pedistalBookUI.SetActive(true);
+    }
+
+    public void ClosePedistalBook()
+    {
+        pedistalBookUI.SetActive(false);
+    }
 
     //DEATH UI
     public void ShowDeathScreen()
@@ -646,5 +676,22 @@ public class UIManager : MonoBehaviour
 
         gameObject.SetActive(true);
         //UIInput.enabled = true;
+    }
+
+    void OnLoadScene()
+    {
+        // Close menues when the screen is black
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            CloseStartMenu();
+            //uiManager.CloseBackgroundUI();
+            UIMenuActive = false;
+
+            OpenCharacterSelectUI();
+
+            // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
+            CloseSoulUI();
+            CloseCupUI();
+        }
     }
 }

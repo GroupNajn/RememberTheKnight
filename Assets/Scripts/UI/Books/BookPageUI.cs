@@ -16,9 +16,7 @@ public class BookPageUI : MonoBehaviour
 
     [Header("Cards")]
     [SerializeField] private Transform cardContainer;
-    [SerializeField] private CardUI cardPrefab;
-    [SerializeField] private PlayerCollection playerCollection;
-    //[SerializeField] private CardSelectionUI cardSelectionUI;
+    [SerializeField] private InventoryCardUI cardPrefab;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI pageText;

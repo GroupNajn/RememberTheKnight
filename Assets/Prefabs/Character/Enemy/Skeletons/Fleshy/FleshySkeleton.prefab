@@ -1631,6 +1631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6040ace4f2ff69009bd6e34ae374eea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimConstraint: {fileID: 0}
+  lookAt: {fileID: 0}
 --- !u!114 &7750687125377976859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,7 +1707,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 397e4182f9c44c4429851ede57300b9b, type: 3}
   - {fileID: 8300000, guid: 35a217bced0da50468b38a15578adb22, type: 3}
   attackGrunts: []
-  deathSounds: []
+  deathEvent:
+    Guid:
+      Data1: -1454276580
+      Data2: 1179977293
+      Data3: 2075105711
+      Data4: -836897982
+    Path: event:/SFX/Death/EnemyDeath
   footSteps: []
 --- !u!82 &1943480884963267289
 AudioSource:

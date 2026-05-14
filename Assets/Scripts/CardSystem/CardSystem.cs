@@ -199,6 +199,13 @@ public class CardSystem : MonoBehaviour
 
         sortedCards.Sort((a, b) => a.cardTier.CompareTo(b.cardTier));
 
-        return sortedCards[0];
+        if (sortedCards.Count > 0)
+        {
+            return sortedCards[0];
+        }
+        else
+        {
+            return null;
+        }
     }
 }

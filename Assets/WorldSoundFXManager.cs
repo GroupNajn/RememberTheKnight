@@ -19,14 +19,17 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference pickupEvent;
     public EventReference attackEvent;
     public EventReference footStepEvent;
+    public EventReference teleportEvent;
 
+    [Header("Button Sounds")]
+    public EventReference cardFlipEvent;
     //[Header("Boss Music")]
     //[SerializeField] AudioSource BossIntroPlayer;
     //[SerializeField] AudioSource BossLoopPlayer;
 
     //[Header("Background Music")]
-   // [SerializeField] AudioSource BackgroundIntroPlayer;
-  //  [SerializeField] AudioSource BackgroundLoopPlayer;
+    // [SerializeField] AudioSource BackgroundIntroPlayer;
+    //  [SerializeField] AudioSource BackgroundLoopPlayer;
 
 
     private void Awake()
