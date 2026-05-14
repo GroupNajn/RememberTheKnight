@@ -47,7 +47,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     {
         yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
 
-        playerUIManager.OpenBookUI();
+        playerUIManager.OpenCardSelectUI();
     }
 
     public InteractableUIData GetUIData()
