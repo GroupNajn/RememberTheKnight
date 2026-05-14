@@ -18,8 +18,8 @@ public class BookUi : MonoBehaviour
 
     private List<PageData> pages = new List<PageData>();
     [SerializeField] private List<LoreEntry> allLoreEntries;
-    private HashSet<string> unlockedLore = new HashSet<string>();
     [SerializeField] private PlayerCollection playerCollection;
+    [SerializeField] private LoreManager loreManager;
 
     private int currentIndex = 0;
     private int statsPageIndex = -1;
@@ -64,18 +64,18 @@ public class BookUi : MonoBehaviour
         }
 
         // Lore
-        UnlockLore("1");
-        if (unlockedLore.Count > 0)
+        loreManager.UnlockLore("1");
+        
+        lorePageIndex = pages.Count;
+
+        foreach (var entry in allLoreEntries)
         {
-            lorePageIndex = pages.Count;
+            bool unlocked = loreManager.IsLoreUnlocked(entry.id);
 
-            foreach (var entry in allLoreEntries)
+            var entryPages = entry.GetPages(charsPerPage);
+
+            if (unlocked)
             {
-                if (!unlockedLore.Contains(entry.id))
-                    continue;
-
-                var entryPages = entry.GetPages(charsPerPage);
-
                 foreach (var page in entryPages)
                 {
                     pages.Add(new PageData
@@ -85,10 +85,17 @@ public class BookUi : MonoBehaviour
                     });
                 }
             }
-        }
-        else
-        {
-            lorePageIndex = -1;
+            else
+            {
+                foreach (var _ in entryPages)
+                {
+                    pages.Add(new PageData
+                    {
+                        type = PageData.PageType.Text,
+                        text = "???"
+                    });
+                }
+            }
         }
         currentIndex = 0;
         ShowPages();
@@ -189,12 +196,5 @@ public class BookUi : MonoBehaviour
     }
 
     //unlcok lore by id, if not already unlocked. In a real game, this would be called when the player discovers new lore.
-    public void UnlockLore(string id)
-    {
-        if (unlockedLore.Contains(id))
-            return;
-
-        unlockedLore.Add(id);
-        //Debug.Log("Unlocked lore: " + id);
-    }
+    
 }

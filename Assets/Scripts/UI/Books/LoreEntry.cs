@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
-public class LoreEntry 
+[CreateAssetMenu( menuName = "Lore Entry")]
+public class LoreEntry : ScriptableObject
 {
     // Made by Michaëla 2026-04-30
     public string id;
-
+    public string title;
     [TextArea(10, 30)]
     public string fullText;
 
@@ -17,7 +18,6 @@ public class LoreEntry
         if (string.IsNullOrEmpty(fullText))
             return pages;
 
-        // Split the full text into words to avoid breaking words across pages
         string[] words = fullText.Split(' ');
         string current = "";
 
@@ -25,7 +25,9 @@ public class LoreEntry
         {
             if ((current + word).Length > maxCharsPerPage)
             {
-                pages.Add(current);
+                if (!string.IsNullOrWhiteSpace(current))
+                    pages.Add(current.Trim());
+
                 current = "";
             }
 
@@ -33,7 +35,7 @@ public class LoreEntry
         }
 
         if (!string.IsNullOrWhiteSpace(current))
-            pages.Add(current);
+            pages.Add(current.Trim());
 
         return pages;
     }

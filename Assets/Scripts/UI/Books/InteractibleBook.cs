@@ -8,10 +8,16 @@ public class InteractibleBook : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
 
+    [Header("Lore")]
+    [SerializeField] private LoreEntry loreEntry;
+    private LoreManager loreManager;
+
     private UIManager playerUIManager;
+
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
     [SerializeField] private Transform cameraLookAtTransform;
+
     private InteractCameraHandler interactCameraHandler;
 
     void Start()
@@ -19,6 +25,7 @@ public class InteractibleBook : MonoBehaviour, IInteractable, IInteractableUITex
         playerUIManager = FindFirstObjectByType<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
+        loreManager = FindFirstObjectByType<LoreManager>();
 
         PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
@@ -40,6 +47,7 @@ public class InteractibleBook : MonoBehaviour, IInteractable, IInteractableUITex
         }
 
         interactCameraHandler.InteractCamSwitch(cameraLookAtTransform, preset);
+        loreManager.UnlockLore(loreEntry.id);
         StartCoroutine(OpenUI());
     }
 
