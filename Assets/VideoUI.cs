@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 public class VideoUI : AutoSelectFirstButtonOnEnable
 
@@ -20,11 +18,6 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     [SerializeField] Toggle motionToggle;
     [SerializeField] Toggle filmToggle;
 
-    [SerializeField] TMP_Dropdown resolutionDropdown;
-    [SerializeField] Toggle fullScreenToggle;
-    private List<Resolution> filteredResolutions = new List<Resolution>();
-
-
     float lastBloomValue = 0.25f;
     float lastMotionValue = 0.25f;
     float lastFilmValue = 0.25f;
@@ -36,11 +29,8 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     bool sliderInput = false;
     protected override void Start()
     {
-
-        base.Start();
         uiManager = GetComponentInParent<UIManager>();
 
-        // SLIDERS AND TOGGLES
         bloomSlider.value = GlobalVolumeManager.Instance.GetBloomIntensity();
         motionSlider.value = GlobalVolumeManager.Instance.GetMotionBlurIntensity();
         filmSlider.value = GlobalVolumeManager.Instance.GetFilmGrainIntensity();
@@ -49,13 +39,9 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         baseMotionValue = motionSlider.value;
         baseFilmValue = filmSlider.value;
 
-        // RESOLUTION
-        ChooseResolutionsToDisplay();
-
-        fullScreenToggle.isOn = Screen.fullScreen;
+        base.Start();
     }
 
-    // SLIDERS
     public void SetBloomSlider(float value)
     {
         bloomText.text = $"{(int)(value * 100)}";
@@ -156,7 +142,7 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     {
         bloomSlider.value = baseBloomValue;
         motionSlider.value = baseMotionValue;
-        filmSlider.value = baseFilmValue;
+        motionSlider.value = baseFilmValue;
 
         bloomToggle.isOn = true;
         motionToggle.isOn = true;
@@ -171,72 +157,4 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         GlobalVolumeManager.Instance.EnableFilmGrain(true);
 
     }
-
-    // RESOLUTION
-
-    public void ChooseResolutionsToDisplay()
-    {
-        Resolution[] allResolutions = Screen.resolutions;
-
-        resolutionDropdown.ClearOptions();
-        filteredResolutions.Clear();
-
-        Dictionary<string, Resolution> bestResolution = new Dictionary<string, Resolution>();
-
-        foreach (Resolution resolution in allResolutions)
-        {
-            string key = $"{resolution.width}x{resolution.height}";
-
-            if(!bestResolution.ContainsKey(key))
-            {
-                bestResolution.Add(key, resolution);
-            }
-            else
-            {
-                Resolution existingResolution = bestResolution[key];
-
-                if (GetRefreshRate(resolution) > GetRefreshRate(existingResolution))
-                {
-                    bestResolution[key] = resolution;
-                }
-            }
-        }
-
-        List<string> options = new List<string>();
-        int currentResolutionIndex = 0;
-
-        foreach (Resolution resolution in bestResolution.Values)
-        {
-            filteredResolutions.Add(resolution);
-
-            string option = $"{resolution.width} x {resolution.height}";
-            options.Add(option);
-
-            if(resolution.width == Screen.currentResolution.width && resolution.height == Screen.currentResolution.height)
-            {
-                currentResolutionIndex = options.Count - 1;
-            }
-        }
-
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
-    }
-
-    public void SetResolution(int resolutionIndex)
-    {
-        Resolution resolution = filteredResolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode, resolution.refreshRateRatio);
-
-    }
-    public void SetFullScreen(bool isFullScreen)
-    {
-        Screen.fullScreen = isFullScreen;
-    }
-
-    private double GetRefreshRate(Resolution resolution)
-    {
-        return resolution.refreshRateRatio.value;
-    }
-
 }
