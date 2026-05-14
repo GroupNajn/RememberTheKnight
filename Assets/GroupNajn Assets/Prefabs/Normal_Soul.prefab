@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: -2708473579457903996}
   - component: {fileID: 6808719941981885899}
   - component: {fileID: -4791770774635641100}
-  - component: {fileID: 7974437081973884680}
+  - component: {fileID: 3662737189359957755}
   m_Layer: 13
   m_Name: Normal_Soul
   m_TagString: Untagged
@@ -252,7 +252,28 @@ MonoBehaviour:
   <itemName>k__BackingField: 
   tier: 0
   pickable: 0
+  appearEvent:
+    Guid:
+      Data1: 801228916
+      Data2: 1085086488
+      Data3: 1470783932
+      Data4: -2021650527
+    Path: event:/SFX/Drops/Souls/Soul Appear
+  pickupEvent:
+    Guid:
+      Data1: -509421361
+      Data2: 1181659381
+      Data3: -80967257
+      Data4: 1932480611
+    Path: event:/SFX/Drops/Souls/Soul Pickup
   <SoulCollectReward>k__BackingField: 1
+  soulBounceEvent:
+    Guid:
+      Data1: 786266644
+      Data2: 1296366219
+      Data3: 728085636
+      Data4: 1877593097
+    Path: event:/SFX/Drops/Souls/Soul Bounce
 --- !u!114 &858216099933846641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +354,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7974437081973884680
+--- !u!114 &3662737189359957755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -348,14 +369,14 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -509421361
-      Data2: 1181659381
-      Data3: -80967257
-      Data4: 1932480611
-    Path: event:/SFX/Soul Pickup
+      Data1: 1399258757
+      Data2: 1183544309
+      Data3: -1693048642
+      Data4: 2034487202
+    Path: event:/SFX/Drops/Souls/Soul Ambience
   Event: 
-  EventPlayTrigger: 2
-  EventStopTrigger: 0
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

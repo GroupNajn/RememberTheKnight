@@ -1,6 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static IPickupable;
 
 public class BounceScript : MonoBehaviour
 {
@@ -109,6 +111,7 @@ public class BounceScript : MonoBehaviour
 
         if (!IsEnvironmentLayer(collision.gameObject.layer))
             return;
+        RuntimeManager.PlayOneShotAttached(gameObject.GetComponent<Soul>().soulBounceEvent, gameObject);
 
         bounceCount++;
 

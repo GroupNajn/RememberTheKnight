@@ -1,5 +1,29 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9110914157209669617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Stamina
+  m_EditorClassIdentifier: 
+  Name: Stamina
+  StudioPath: parameter:/Stamina
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1262449471
+    data2: 3662713580
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-8910140011767174202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,33 +51,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 10
   Length: 0
---- !u!114 &-8909926475269855805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Explosion
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Explosion
-  Guid:
-    Data1: -1237825201
-    Data2: 1317442101
-    Data3: 412025992
-    Data4: 1261286357
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
-  Length: 0
 --- !u!114 &-8909860748236231494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,6 +69,33 @@ MonoBehaviour:
   lastModified: 639140891742674206
   FileSizes: []
   Exists: 0
+--- !u!114 &-8894912130176439213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Souls/Soul Appear
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Souls/Soul Appear
+  Guid:
+    Data1: 801228916
+    Data2: 1085086488
+    Data3: 1470783932
+    Data4: -2021650527
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 35
+  Length: 0
 --- !u!114 &-8741335125889435049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +150,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-8605321342255372071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerLowStamina/Stamina
+  m_EditorClassIdentifier: 
+  Name: Stamina
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1262449471
+    data2: 3662713580
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-8603148591509827026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +200,33 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+  Length: 0
+--- !u!114 &-8514529998561377238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Attacks/Enemy/Explosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Attacks/Enemy/Explosion
+  Guid:
+    Data1: -1237825201
+    Data2: 1317442101
+    Data3: 412025992
+    Data4: 1261286357
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
   Length: 0
 --- !u!114 &-8297832757178132997
 MonoBehaviour:
@@ -276,7 +351,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639143111126013243
+  lastModified: 639143698559387505
   FileSizes: []
   Exists: 1
 --- !u!114 &-7957663653656642059
@@ -357,6 +432,34 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &-7434032498991708462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerStateSounds/PlayerLowHealth
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerStateSounds/PlayerLowHealth
+  Guid:
+    Data1: 1767345588
+    Data2: 1261844493
+    Data3: 2121051299
+    Data4: 1559404972
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 302981794739573124}
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 1200
 --- !u!114 &-6865989573996019511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,10 +557,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639143111126071352
+  lastModified: 639143698559422987
   FileSizes:
   - Name: 
-    Value: 3734
+    Value: 4320
   Exists: 1
 --- !u!114 &-6267956547839427887
 MonoBehaviour:
@@ -736,6 +839,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4829973516851936646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Crystal Ball/CrystalBallHushing
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Crystal Ball/CrystalBallHushing
+  Guid:
+    Data1: 1858236034
+    Data2: 1247438281
+    Data3: -1123854414
+    Data4: -2099209517
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9.8
+  Length: 13500
 --- !u!114 &-4775416527525937400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,6 +920,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4711396889000650759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Soul Donation/CardUnlock
+  m_EditorClassIdentifier: 
+  Name: CardUnlock
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2356507876
+    data2: 2727748675
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-4622252382961998822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -970,6 +1124,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 726312
+--- !u!114 &-3952547970309315050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Souls/Soul Donation
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Souls/Soul Donation
+  Guid:
+    Data1: 1351951332
+    Data2: 1212858731
+    Data3: -1773727588
+    Data4: 475603191
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -4711396889000650759}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3918093937163846228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,6 +1311,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3175878522245090403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Crystal Ball/Teleport
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Crystal Ball/Teleport
+  Guid:
+    Data1: -57978128
+    Data2: 1338958183
+    Data3: 2049427115
+    Data4: -189428773
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3166757364169173012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerStateSounds/PlayerWakesUp
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerStateSounds/PlayerWakesUp
+  Guid:
+    Data1: 951517895
+    Data2: 1125193636
+    Data3: 296077727
+    Data4: 1507529713
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9.6
+  Length: 0
 --- !u!114 &-3051098090452323520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,6 +1419,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2791503431083316299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Card Select/CardRarity
+  m_EditorClassIdentifier: 
+  Name: CardRarity
+  StudioPath: 
+  Min: 0
+  Max: 5
+  Default: 0
+  ID:
+    data1: 4216586208
+    data2: 3213529702
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-2782571052492084481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1210,6 +1470,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2769771028683758442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerStateSounds/PlayerLowStamina
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerStateSounds/PlayerLowStamina
+  Guid:
+    Data1: -1652371622
+    Data2: 1230875498
+    Data3: -2107254087
+    Data4: 671003288
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -8605321342255372071}
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 4584
 --- !u!114 &-2733246496473487633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,6 +1895,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &-1440621531944441902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Cards/Card Pickup
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Cards/Card Pickup
+  Guid:
+    Data1: 2109068405
+    Data2: 1324845759
+    Data3: -104894312
+    Data4: -1637046709
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1363580076239074827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,7 +2179,6 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: 5236661965855156986}
   - {fileID: 5651651495941868249}
-  - {fileID: -8909926475269855805}
   - {fileID: -6393970425174543802}
   - {fileID: -214708656228370572}
   - {fileID: -2062336569520894714}
@@ -1882,14 +2196,10 @@ MonoBehaviour:
   - {fileID: -1363580076239074827}
   - {fileID: -8741335125889435049}
   - {fileID: -3397701689394774191}
-  - {fileID: 4381252974040558294}
   - {fileID: 7109386094335379002}
   - {fileID: -108185298503960650}
-  - {fileID: -8280436711169484163}
-  - {fileID: 7016759640216888804}
   - {fileID: 5256917891728859277}
   - {fileID: 7570257137875229835}
-  - {fileID: 7569133074817818652}
   - {fileID: 2436326004148991895}
   - {fileID: 5221269892308815164}
   - {fileID: -8041586425012229564}
@@ -1906,110 +2216,141 @@ MonoBehaviour:
   - {fileID: 9114110047591730068}
   - {fileID: -559418362119596655}
   - {fileID: -6371917307057465705}
-  - {fileID: -2201781502525909028}
-  - {fileID: 6035166480336051385}
+  - {fileID: 2138615106833691283}
+  - {fileID: -8514529998561377238}
+  - {fileID: -2769771028683758442}
+  - {fileID: -8894912130176439213}
+  - {fileID: -1440621531944441902}
+  - {fileID: -4829973516851936646}
+  - {fileID: 2355335494029177483}
+  - {fileID: -7434032498991708462}
+  - {fileID: -3166757364169173012}
+  - {fileID: 2314605984616606375}
+  - {fileID: 3586750867814006190}
+  - {fileID: 5209284431959129074}
+  - {fileID: -3952547970309315050}
+  - {fileID: 8481548999399164612}
+  - {fileID: -3175878522245090403}
   EditorParameters:
   - {fileID: 5822965360318754753}
-  - {fileID: 8950005356321585938}
+  - {fileID: -9110914157209669617}
+  - {fileID: 2019285089045287690}
+  - {fileID: 2877990052992026427}
   MasterBanks:
   - {fileID: -8010261375194842479}
   StringsBanks:
   - {fileID: -6337328646809573992}
   cacheVersion: 131859
-  cacheTime: 639143112051875036
+  cacheTime: 639143722430924641
   SerializableEventsDict:
   - key: event:/Events/Rain And Wind event
     index: 0
   - key: event:/Events/Rain & thunder & Wind event
     index: 1
-  - key: event:/SFX/Explosion
-    index: 2
   - key: event:/Music/Music Loop
-    index: 3
+    index: 2
   - key: event:/Ambience/Rain & thunder & Wind loop
-    index: 4
+    index: 3
   - key: event:/Ambience/Light Rain And Wind loop
-    index: 5
+    index: 4
   - key: event:/Ambience/Rain And Thunder Inside
-    index: 6
+    index: 5
   - key: event:/Music/ProphetMusic
-    index: 7
+    index: 6
   - key: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Spear
-    index: 8
+    index: 7
   - key: event:/SFX/Attacks/Player/Player Spear Attack
-    index: 9
+    index: 8
   - key: event:/SFX/Attacks/Player/Player Blade Attack Heavy
-    index: 10
+    index: 9
   - key: event:/SFX/Attacks/Enemy/FireBallFlying
-    index: 11
+    index: 10
   - key: event:/SFX/HitMarker/Enemy/EnemyDeath
-    index: 12
+    index: 11
   - key: event:/SFX/HitMarker/Player/PlayerHitByBlade
-    index: 13
+    index: 12
   - key: event:/SFX/HitMarker/Enemy/FullyChargedHit
-    index: 14
+    index: 13
   - key: event:/SFX/HitMarker/Player/PlayerHitByFist
-    index: 15
+    index: 14
   - key: event:/SFX/Movement/FootStep
-    index: 16
+    index: 15
   - key: event:/SFX/Attacks/Enemy/Enemy Blade Attack
-    index: 17
+    index: 16
   - key: event:/SFX/Attacks/Enemy/FireBallSummon
-    index: 18
+    index: 17
   - key: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Light
-    index: 19
-  - key: event:/SFX/CrystalBallHushing
-    index: 20
+    index: 18
   - key: event:/SFX/Attacks/Enemy/BallistaFiring
-    index: 21
+    index: 19
   - key: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Heavy
-    index: 22
-  - key: event:/SFX/Soul Pickup
-    index: 23
-  - key: event:/SFX/Card Pickup
-    index: 24
+    index: 20
   - key: event:/SFX/Attacks/Enemy/ArrowFlying
-    index: 25
+    index: 21
   - key: event:/SFX/Movement/BackStep
-    index: 26
-  - key: event:/SFX/Teleport
-    index: 27
+    index: 22
   - key: event:/SFX/Movement/Roll
-    index: 28
+    index: 23
   - key: event:/SFX/Attacks/Player/Player Blade Attack Light
-    index: 29
+    index: 24
   - key: event:/SFX/HitMarker/Enemy/FireBallHit
-    index: 30
+    index: 25
   - key: event:/SFX/Attacks/Enemy/Enemy Fist Attack
-    index: 31
+    index: 26
   - key: snapshot:/InsideReverb
-    index: 32
+    index: 27
   - key: snapshot:/OutsideReverb
-    index: 33
+    index: 28
   - key: event:/Events/SnapShotInside
-    index: 34
+    index: 29
   - key: event:/Events/SnapShotOutside
-    index: 35
+    index: 30
   - key: event:/SFX/Death/EnemyDeath
-    index: 36
+    index: 31
   - key: event:/SFX/UI/Pause
-    index: 37
+    index: 32
   - key: event:/SFX/Death/PlayerDeath
-    index: 38
+    index: 33
   - key: event:/SFX/UI/CardFlip
-    index: 39
+    index: 34
   - key: event:/SFX/UI/Start
-    index: 40
+    index: 35
   - key: event:/SFX/UI/Hover
-    index: 41
+    index: 36
   - key: event:/SFX/UI/Select
-    index: 42
+    index: 37
   - key: event:/SFX/UI/PaperFlip
+    index: 38
+  - key: event:/SFX/Drops/Souls/Soul Bounce
+    index: 39
+  - key: event:/SFX/Attacks/Enemy/Explosion
+    index: 40
+  - key: event:/SFX/PlayerStateSounds/PlayerLowStamina
+    index: 41
+  - key: event:/SFX/Drops/Souls/Soul Appear
+    index: 42
+  - key: event:/SFX/Drops/Cards/Card Pickup
     index: 43
-  - key: event:/SFX/PlayerLowStamina
+  - key: event:/SFX/Crystal Ball/CrystalBallHushing
     index: 44
-  - key: event:/SFX/PlayerWakesUp
+  - key: event:/SFX/Drops/Souls/Soul Ambience
     index: 45
+  - key: event:/SFX/PlayerStateSounds/PlayerLowHealth
+    index: 46
+  - key: event:/SFX/PlayerStateSounds/PlayerWakesUp
+    index: 47
+  - key: event:/SFX/Drops/Cards/Card Unlocked
+    index: 48
+  - key: event:/SFX/Drops/Souls/Soul Pickup
+    index: 49
+  - key: event:/SFX/Drops/Cards/Card Select
+    index: 50
+  - key: event:/SFX/Drops/Souls/Soul Donation
+    index: 51
+  - key: event:/SFX/Drops/Cards/Card Sacrefice
+    index: 52
+  - key: event:/SFX/Crystal Ball/Teleport
+    index: 53
 --- !u!114 &273186655221460251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2025,8 +2366,32 @@ MonoBehaviour:
   Path: FMOD/Desktop/SXF.bank
   Name: SXF
   StudioPath: bank:/SXF
-  lastModified: 639143112051875036
+  lastModified: 639143722430924641
   FileSizes: []
+  Exists: 1
+--- !u!114 &302981794739573124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerLowHealth/Health
+  m_EditorClassIdentifier: 
+  Name: Health
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3100099775
+    data2: 4101078337
+  Type: 0
+  IsGlobal: 1
+  Labels: []
   Exists: 1
 --- !u!114 &434497487054475220
 MonoBehaviour:
@@ -2316,6 +2681,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 355
+--- !u!114 &2019285089045287690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Health
+  m_EditorClassIdentifier: 
+  Name: Health
+  StudioPath: parameter:/Health
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3100099775
+    data2: 4101078337
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &2029290620340641836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2343,6 +2732,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &2138615106833691283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Souls/Soul Bounce
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Souls/Soul Bounce
+  Guid:
+    Data1: 786266644
+    Data2: 1296366219
+    Data3: 728085636
+    Data4: 1877593097
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 0
 --- !u!114 &2163507428247079743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2355,6 +2771,60 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2314605984616606375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Cards/Card Unlocked
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Cards/Card Unlocked
+  Guid:
+    Data1: 1265021643
+    Data2: 1138744007
+    Data3: 991617982
+    Data4: -558999812
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2355335494029177483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Souls/Soul Ambience
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Souls/Soul Ambience
+  Guid:
+    Data1: 1399258757
+    Data2: 1183544309
+    Data3: -1693048642
+    Data4: 2034487202
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 31812
 --- !u!114 &2436326004148991895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2445,6 +2915,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &2877990052992026427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/CardUnlock
+  m_EditorClassIdentifier: 
+  Name: CardUnlock
+  StudioPath: parameter:/CardUnlock
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2356507876
+    data2: 2727748675
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &2884986102961929410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2653,6 +3147,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &3586750867814006190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Souls/Soul Pickup
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Souls/Soul Pickup
+  Guid:
+    Data1: -509421361
+    Data2: 1181659381
+    Data3: -80967257
+    Data4: 1932480611
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 4424618501323358415}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4294282512901787633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2707,7 +3229,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &4381252974040558294
+--- !u!114 &4424618501323358415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2716,24 +3238,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/CrystalBallHushing
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Soul Pickup/SoulCount
   m_EditorClassIdentifier: 
-  Path: event:/SFX/CrystalBallHushing
-  Guid:
-    Data1: 1858236034
-    Data2: 1247438281
-    Data3: -1123854414
-    Data4: -2099209517
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9.8
-  Length: 13500
+  Name: SoulCount
+  StudioPath: 
+  Min: 0
+  Max: 7
+  Default: 0
+  ID:
+    data1: 3184211930
+    data2: 1637171312
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &4717499793082559293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2808,6 +3327,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2000
+--- !u!114 &5209284431959129074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Cards/Card Select
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Cards/Card Select
+  Guid:
+    Data1: -2065037866
+    Data2: 1315747430
+    Data3: 601418676
+    Data4: 1767915314
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -2791503431083316299}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5221269892308815164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3343,33 +3890,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &7569133074817818652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Teleport
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Teleport
-  Guid:
-    Data1: -57978128
-    Data2: 1338958183
-    Data3: 2049427115
-    Data4: -189428773
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &7570257137875229835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3585,6 +4105,33 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 10
+  Length: 0
+--- !u!114 &8481548999399164612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Drops/Cards/Card Sacrefice
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Drops/Cards/Card Sacrefice
+  Guid:
+    Data1: 1892579308
+    Data2: 1237657832
+    Data3: 1382797958
+    Data4: -1917517257
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &8705914729525239240
 MonoBehaviour:
