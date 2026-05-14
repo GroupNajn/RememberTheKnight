@@ -98,7 +98,7 @@ public class TargetLockHandler : MonoBehaviour
                     lostSightTimer = 0f;
                 }
             }
-            if (currentTarget != null && !currentTarget.gameObject.GetComponent<BehaviorGraphAgent>().enabled)
+            if (currentTarget != null && !currentTarget.GetComponentInParent<BehaviorGraphAgent>().enabled)
             {
                 if (AutomaticlyFindNewTarget)
                     FindTarget();
@@ -185,7 +185,7 @@ public class TargetLockHandler : MonoBehaviour
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                bestTarget = enemy.transform;
+                bestTarget = enemy.gameObject.GetComponentInChildren<Transform>().Find("EnemyLookAt");
                 //Debug.Log("Enemies in range: " + enemiesUnfiltered.Count);
                 //Debug.Log("Filtered enemies: " + enemies.Count);
                 //Debug.Log("Best target: " + bestTarget);
@@ -200,8 +200,6 @@ public class TargetLockHandler : MonoBehaviour
 
         currentTarget = bestTarget;
         AddTargets();
-
-
     }
     private void FindNewTarget()
     {
@@ -291,7 +289,7 @@ public class TargetLockHandler : MonoBehaviour
             if (dotRight < lowestDot)
             {
                 lowestDot = dotRight;
-                bestTarget = enemy;
+                bestTarget = enemy.gameObject.GetComponentInChildren<Transform>().Find("EnemyLookAt");
             }
         }
 
@@ -345,12 +343,26 @@ public class TargetLockHandler : MonoBehaviour
         targetGroup.AddMember(playerTransform, 0.75f, 1f);
         targetGroup.AddMember(currentTarget, 1f, 1);
 
-        currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
+        BehaviorGraphAgent agent = currentTarget.GetComponentInParent<BehaviorGraphAgent>();
+
+        if (agent != null)
+        {
+            agent.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
+        }
+
+        //currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
     }
     void ClearTarget()
     {
         if (currentTarget != null)
-            currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().HideHealthBar();
+        {
+            BehaviorGraphAgent agent = currentTarget.GetComponentInParent<BehaviorGraphAgent>();
+
+            if (agent != null)
+            {
+                agent.GetComponentInChildren<EnemyHealthBarCanvas>().HideHealthBar();
+            }
+        }
 
         currentTarget = null;
 
