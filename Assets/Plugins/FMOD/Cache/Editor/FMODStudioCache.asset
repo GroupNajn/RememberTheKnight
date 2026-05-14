@@ -51,33 +51,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 10
   Length: 0
---- !u!114 &-8909926475269855805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Explosion
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Explosion
-  Guid:
-    Data1: -1237825201
-    Data2: 1317442101
-    Data3: 412025992
-    Data4: 1261286357
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 40
-  Length: 0
 --- !u!114 &-8909860748236231494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,7 +269,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639143693416310806
+  lastModified: 639143737677672456
   FileSizes: []
   Exists: 1
 --- !u!114 &-7957663653656642059
@@ -450,10 +423,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639143693416341333
+  lastModified: 639143737677705550
   FileSizes:
   - Name: 
-    Value: 4266
+    Value: 4320
   Exists: 1
 --- !u!114 &-6267956547839427887
 MonoBehaviour:
@@ -761,33 +734,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-5005583014760869318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/PlayerWakesUp
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/PlayerWakesUp
-  Guid:
-    Data1: 951517895
-    Data2: 1125193636
-    Data3: 296077727
-    Data4: 1507529713
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9.6
-  Length: 0
 --- !u!114 &-4840125161602716258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,6 +842,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4382637426422054189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerStateSounds/PlayerLowHealth
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerStateSounds/PlayerLowHealth
+  Guid:
+    Data1: 1767345588
+    Data2: 1261844493
+    Data3: 2121051299
+    Data4: 1559404972
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -2586136330870948451}
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 1200
 --- !u!114 &-4362202413969795180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1262,6 +1236,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-2956276639378793355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Crystal Ball/Teleport
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Crystal Ball/Teleport
+  Guid:
+    Data1: -57978128
+    Data2: 1338958183
+    Data3: 2049427115
+    Data4: -189428773
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2909347566269878394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,6 +1399,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 9.6
   Length: 0
+--- !u!114 &-2586136330870948451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerLowHealth/Health
+  m_EditorClassIdentifier: 
+  Name: Health
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3100099775
+    data2: 4101078337
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-2557680094837490719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,6 +1889,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-457859232086203778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Crystal Ball/CrystalBallHushing
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Crystal Ball/CrystalBallHushing
+  Guid:
+    Data1: 1858236034
+    Data2: 1247438281
+    Data3: -1123854414
+    Data4: -2099209517
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 9.8
+  Length: 13500
 --- !u!114 &-430332973634432393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1891,34 +1943,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-324195443541124165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/PlayerLowStamina
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/PlayerLowStamina
-  Guid:
-    Data1: -1652371622
-    Data2: 1230875498
-    Data3: -2107254087
-    Data4: 671003288
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 5682242985489340303}
-  MinDistance: 1
-  MaxDistance: 10
-  Length: 4584
 --- !u!114 &-214708656228370572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1946,34 +1970,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 726312
---- !u!114 &-214673315444646578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/PlayerLowHealth
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/PlayerLowHealth
-  Guid:
-    Data1: 1767345588
-    Data2: 1261844493
-    Data3: 2121051299
-    Data4: 1559404972
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 3027444268200683376}
-  MinDistance: 1
-  MaxDistance: 10
-  Length: 1200
 --- !u!114 &-108185298503960650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2026,7 +2022,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 35
   Length: 0
 --- !u!114 &-17718163883005258
 MonoBehaviour:
@@ -2078,7 +2074,6 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: 5236661965855156986}
   - {fileID: 5651651495941868249}
-  - {fileID: -8909926475269855805}
   - {fileID: -6393970425174543802}
   - {fileID: -214708656228370572}
   - {fileID: -2062336569520894714}
@@ -2096,12 +2091,10 @@ MonoBehaviour:
   - {fileID: -1363580076239074827}
   - {fileID: -8741335125889435049}
   - {fileID: -3397701689394774191}
-  - {fileID: 4381252974040558294}
   - {fileID: 7109386094335379002}
   - {fileID: -108185298503960650}
   - {fileID: 5256917891728859277}
   - {fileID: 7570257137875229835}
-  - {fileID: 7569133074817818652}
   - {fileID: 2436326004148991895}
   - {fileID: 5221269892308815164}
   - {fileID: -8041586425012229564}
@@ -2118,9 +2111,6 @@ MonoBehaviour:
   - {fileID: 9114110047591730068}
   - {fileID: -559418362119596655}
   - {fileID: -6371917307057465705}
-  - {fileID: -324195443541124165}
-  - {fileID: -5005583014760869318}
-  - {fileID: -214673315444646578}
   - {fileID: 2595348848143653251}
   - {fileID: -36247701491157059}
   - {fileID: 1589551424864849363}
@@ -2130,6 +2120,12 @@ MonoBehaviour:
   - {fileID: -2909347566269878394}
   - {fileID: -5282508471382492351}
   - {fileID: 1314892431403989727}
+  - {fileID: 911518870294980314}
+  - {fileID: 8907716916107440833}
+  - {fileID: -457859232086203778}
+  - {fileID: -4382637426422054189}
+  - {fileID: 7507007840730801395}
+  - {fileID: -2956276639378793355}
   EditorParameters:
   - {fileID: 5822965360318754753}
   - {fileID: -9110914157209669617}
@@ -2140,7 +2136,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -6337328646809573992}
   cacheVersion: 131859
-  cacheTime: 639143693422938415
+  cacheTime: 639143737681221631
   SerializableEventsDict:
   - key: event:/Events/Rain And Wind event
     index: 0
@@ -2251,7 +2247,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/SXF.bank
   Name: SXF
   StudioPath: bank:/SXF
-  lastModified: 639143693422938415
+  lastModified: 639143737681221631
   FileSizes: []
   Exists: 1
 --- !u!114 &434497487054475220
@@ -2362,6 +2358,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 309645
+--- !u!114 &911518870294980314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Attacks/Enemy/Explosion
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Attacks/Enemy/Explosion
+  Guid:
+    Data1: -1237825201
+    Data2: 1317442101
+    Data3: 412025992
+    Data4: 1261286357
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 0
 --- !u!114 &953887054854311111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2735,7 +2758,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 40
   Length: 0
 --- !u!114 &2640968178726124419
 MonoBehaviour:
@@ -2825,7 +2848,7 @@ MonoBehaviour:
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 40
   Length: 31812
 --- !u!114 &2884986102961929410
 MonoBehaviour:
@@ -2908,30 +2931,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &3027444268200683376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/PlayerLowHealth/Health
-  m_EditorClassIdentifier: 
-  Name: Health
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 3100099775
-    data2: 4101078337
-  Type: 0
-  IsGlobal: 1
-  Labels: []
-  Exists: 1
 --- !u!114 &3050306183256794086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3113,33 +3112,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &4381252974040558294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/CrystalBallHushing
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/CrystalBallHushing
-  Guid:
-    Data1: 1858236034
-    Data2: 1247438281
-    Data3: -1123854414
-    Data4: -2099209517
-  Banks:
-  - {fileID: 273186655221460251}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 9.8
-  Length: 13500
 --- !u!114 &4680240825196995236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3431,30 +3403,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &5682242985489340303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/PlayerLowStamina/Stamina
-  m_EditorClassIdentifier: 
-  Name: Stamina
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1262449471
-    data2: 3662713580
-  Type: 0
-  IsGlobal: 1
-  Labels: []
-  Exists: 1
 --- !u!114 &5705446987648165859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3797,7 +3745,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &7569133074817818652
+--- !u!114 &7507007840730801395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3807,22 +3755,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Teleport
+  m_Name: event:/SFX/PlayerStateSounds/PlayerWakesUp
   m_EditorClassIdentifier: 
-  Path: event:/SFX/Teleport
+  Path: event:/SFX/PlayerStateSounds/PlayerWakesUp
   Guid:
-    Data1: -57978128
-    Data2: 1338958183
-    Data3: 2049427115
-    Data4: -189428773
+    Data1: 951517895
+    Data2: 1125193636
+    Data3: 296077727
+    Data4: 1507529713
   Banks:
   - {fileID: 273186655221460251}
   IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
+  Is3D: 1
+  IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 9.6
   Length: 0
 --- !u!114 &7570257137875229835
 MonoBehaviour:
@@ -3950,6 +3898,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8175773049282337502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PlayerLowStamina/Stamina
+  m_EditorClassIdentifier: 
+  Name: Stamina
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1262449471
+    data2: 3662713580
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &8302777532216914644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4094,6 +4066,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8907716916107440833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/PlayerStateSounds/PlayerLowStamina
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/PlayerStateSounds/PlayerLowStamina
+  Guid:
+    Data1: -1652371622
+    Data2: 1230875498
+    Data3: -2107254087
+    Data4: 671003288
+  Banks:
+  - {fileID: 273186655221460251}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 8175773049282337502}
+  MinDistance: 1
+  MaxDistance: 10
+  Length: 4584
 --- !u!114 &8950005356321585938
 MonoBehaviour:
   m_ObjectHideFlags: 0
