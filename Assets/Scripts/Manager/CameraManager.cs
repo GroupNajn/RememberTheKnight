@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
+
+    [SerializeField] private Camera worldSpaceCamera;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -20,6 +22,12 @@ public class CameraManager : MonoBehaviour
     private void Start()
     {
         FindThings();
+    }
+
+    private void Update()
+    {
+        worldSpaceCamera.transform.position = Camera.main.transform.position;
+        worldSpaceCamera.transform.rotation = Camera.main.transform.rotation;
     }
 
     private void OnEnable()

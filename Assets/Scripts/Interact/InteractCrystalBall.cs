@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUIText
@@ -26,6 +27,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         {
             return;
         }
+
+        RuntimeManager.PlayOneShotAttached (WorldSoundFXManager.instance.teleportEvent,GameObject.FindGameObjectWithTag("Player")); // teleport sound effect
 
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
     }

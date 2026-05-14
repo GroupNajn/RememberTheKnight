@@ -1,6 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static IPickupable;
 
 public class BounceScript : MonoBehaviour
 {
@@ -69,7 +71,7 @@ public class BounceScript : MonoBehaviour
 
         Transform root = player.transform.root;
 
-     
+
         playerColliders = root.GetComponentsInChildren<Collider>(true);
 
         foreach (Collider col in playerColliders)
@@ -109,6 +111,11 @@ public class BounceScript : MonoBehaviour
 
         if (!IsEnvironmentLayer(collision.gameObject.layer))
             return;
+
+        if (TryGetComponent<Soul>(out Soul soul))
+        {
+            RuntimeManager.PlayOneShotAttached(gameObject.GetComponent<Soul>().soulBounceEvent, gameObject);
+        }
 
         bounceCount++;
 
@@ -190,7 +197,7 @@ public class BounceScript : MonoBehaviour
         horizontalSpeed *= 0.9f;
         horizontalSpeed = Mathf.Max(horizontalSpeed, 2f);
 
-        Vector3 newVelocity = horizontalDir * horizontalSpeed; 
+        Vector3 newVelocity = horizontalDir * horizontalSpeed;
         newVelocity.y = yVel;
 
         rb.linearVelocity = newVelocity;

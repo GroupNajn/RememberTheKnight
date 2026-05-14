@@ -1,6 +1,7 @@
 using FMOD;
 using FMODUnity;
 using UnityEngine;
+using static IPickupable;
 
 public class CharacterSoundFXManager : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class CharacterSoundFXManager : MonoBehaviour
     [Header("Attack Grunts")]
     [SerializeField] protected AudioClip[] attackGrunts;
 
-    [Header("Death Sounds")]
-    [SerializeField] protected AudioClip[] deathSounds;
+    [Header("Death Sound")]
+    public EventReference deathEvent;
+
 
 
     [Header("FootSteps")]
@@ -78,10 +80,7 @@ public class CharacterSoundFXManager : MonoBehaviour
     }
     public virtual void PlayDeathSoundFX()
     {
-        if (deathSounds.Length > 0)
-        {
-            //audioSource.PlayOneShot(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(deathSounds), 0.3f);
-        }
+        RuntimeManager.PlayOneShotAttached(deathEvent, gameObject);
     }
 
     public virtual void PlayFootStep()
