@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5674894697551084334}
   - component: {fileID: 3483612465959145139}
   - component: {fileID: 8389009682993560110}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FamilyHeaderImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 135, y: 323}
+  m_AnchoredPosition: {x: 91.9, y: 254.4}
   m_SizeDelta: {x: 130, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3483612465959145139
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6580366133003104552}
   - component: {fileID: 8905866567749069169}
   - component: {fileID: 679139873910458985}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardDisplayBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,8 +111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2.75}
-  m_SizeDelta: {x: 550, y: 465}
+  m_AnchoredPosition: {x: 0, y: 44}
+  m_SizeDelta: {x: 820, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8905866567749069169
 CanvasRenderer:
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4686606331875796116}
   - component: {fileID: 9195251155618766331}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardPickupUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,8 +250,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pickupWindowTransform: {fileID: 8475705825036852487}
+  pickupWindowTransform: {fileID: 4686606331875796116}
   pickupPrefab: {fileID: 0}
+  UIManager: {fileID: 0}
+  disableGameObjects:
+  - {fileID: 4439607422789500878}
+  - {fileID: 6225057836838633075}
+  - {fileID: 4596028176288317666}
+  - {fileID: 1941805758450881313}
+  - {fileID: 4045930527881637690}
+  imageObject: {fileID: 2227677548732634873}
+  CommonColor: {r: 1, g: 1, b: 1, a: 0}
+  UncommonColor: {r: 0.39737508, g: 0.7924528, b: 0.28034887, a: 0}
+  RareColor: {r: 0.21253532, g: 0.18195976, b: 0.8207547, a: 0}
+  EpicColor: {r: 0.6987036, g: 0.1514774, b: 0.8679245, a: 0}
+  LegendaryColor: {r: 0.8867924, g: 0.5970094, b: 0.11294055, a: 0}
   duration: 1
 --- !u!1 &1941805758450881313
 GameObject:
@@ -265,7 +278,7 @@ GameObject:
   - component: {fileID: 3095842011019981132}
   - component: {fileID: 3936008269428088879}
   - component: {fileID: 7886071537458693031}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sacrifice_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +292,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941805758450881313}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -289,8 +302,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -35, y: -23}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 169, y: -425}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3095842011019981132
 CanvasRenderer:
@@ -373,7 +386,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3936008269428088879}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9195251155618766331}
+        m_TargetAssemblyTypeName: CardPickupUI, Assembly-CSharp
+        m_MethodName: OnSacrificeCard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2227677548732634873
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +410,7 @@ GameObject:
   - component: {fileID: 2512962310629998398}
   - component: {fileID: 1101726691052188696}
   - component: {fileID: 5158734915645941649}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,8 +433,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.18, y: -6.1}
-  m_SizeDelta: {x: 240, y: 360}
+  m_AnchoredPosition: {x: -3.9, y: -3}
+  m_SizeDelta: {x: 350, y: 525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1101726691052188696
 CanvasRenderer:
@@ -460,7 +485,7 @@ GameObject:
   - component: {fileID: 3312524808520014555}
   - component: {fileID: 7080053388387238508}
   - component: {fileID: 7752770251107981084}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TMPTier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +509,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5, y: 5}
+  m_SizeDelta: {x: 120, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7080053388387238508
 CanvasRenderer:
@@ -543,8 +568,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2
-  m_fontSizeBase: 2
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -598,7 +623,7 @@ GameObject:
   - component: {fileID: 6725000887749671815}
   - component: {fileID: 8112357976400467462}
   - component: {fileID: 1550205558933155715}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TMPInfoBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -679,8 +704,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 3
-  m_fontSizeBase: 3
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -734,7 +759,7 @@ GameObject:
   - component: {fileID: 5790257525275950506}
   - component: {fileID: 8452180146153527532}
   - component: {fileID: 3713036127719807557}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ShowError
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -748,7 +773,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3869817223700038572}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -871,7 +896,7 @@ GameObject:
   - component: {fileID: 7631785214837935311}
   - component: {fileID: 4275591974783551791}
   - component: {fileID: 1197975820164227690}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Pickup_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,7 +910,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4045930527881637690}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -895,8 +920,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 35, y: -23}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: -178, y: -425}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7631785214837935311
 CanvasRenderer:
@@ -979,7 +1004,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4275591974783551791}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9195251155618766331}
+        m_TargetAssemblyTypeName: CardPickupUI, Assembly-CSharp
+        m_MethodName: OnConfirmPickup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4115016809556287812
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,7 +1029,7 @@ GameObject:
   - component: {fileID: 5202085429085854305}
   - component: {fileID: 4647082623439918059}
   - component: {fileID: 3550114289313610649}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PickupWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1006,7 +1043,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4115016809556287812}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -1019,7 +1056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 91}
   m_SizeDelta: {x: 1400, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5202085429085854305
@@ -1043,14 +1080,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 500ad0f38d6cf704bb3b0f2abb3d7668, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1083,7 +1120,7 @@ GameObject:
   - component: {fileID: 4493813699595702688}
   - component: {fileID: 8885880685160619404}
   - component: {fileID: 924484803404319916}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardInfoBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,8 +1144,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -275.3}
-  m_SizeDelta: {x: 400, y: 150}
+  m_AnchoredPosition: {x: 0, y: -300}
+  m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8885880685160619404
 CanvasRenderer:
@@ -1131,7 +1168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.46666667}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1157,7 +1194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4254556418330532121}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TierHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1195,7 +1232,7 @@ GameObject:
   - component: {fileID: 3793652963621640961}
   - component: {fileID: 2381429284466556477}
   - component: {fileID: 4243366046895942088}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TierHeaderImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1219,7 +1256,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -135, y: 323}
+  m_AnchoredPosition: {x: -116, y: 254.8}
   m_SizeDelta: {x: 130, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2381429284466556477
@@ -1243,7 +1280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1271,7 +1308,7 @@ GameObject:
   - component: {fileID: 1721345496061815760}
   - component: {fileID: 5362276528190896424}
   - component: {fileID: 6583122135218742903}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1295,7 +1332,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5362276528190896424
 CanvasRenderer:
@@ -1352,15 +1389,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1405,7 +1442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3850096643236312872}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FamilyHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1443,7 +1480,7 @@ GameObject:
   - component: {fileID: 8221155711711650707}
   - component: {fileID: 5905731868785556947}
   - component: {fileID: 8740437943422779629}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1467,7 +1504,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5905731868785556947
 CanvasRenderer:
@@ -1524,15 +1561,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1579,7 +1616,7 @@ GameObject:
   - component: {fileID: 5810620434219586489}
   - component: {fileID: 6489002921077704447}
   - component: {fileID: 172543239424647623}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TMPFamily
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1603,7 +1640,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5, y: 5}
+  m_SizeDelta: {x: 120, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6489002921077704447
 CanvasRenderer:
@@ -1662,8 +1699,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 2
-  m_fontSizeBase: 2
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

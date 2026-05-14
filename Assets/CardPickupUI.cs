@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -12,15 +13,27 @@ public class CardPickupUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI infoBoxTMP;
     [SerializeField] CardData cardData;
     [SerializeField] AnimationCurve bounceCurve;
-    [SerializeField] Transform pickupWindowTransform;
+    [SerializeField] RectTransform pickupWindowTransform;
     [SerializeField] GameObject pickupPrefab;
+    [SerializeField] GameObject UIManager;
+    [SerializeField] List<GameObject> disableGameObjects;
+    [SerializeField] GameObject imageObject;
+    [SerializeField] Color CommonColor;
+    [SerializeField] Color UncommonColor;
+    [SerializeField] Color RareColor;
+    [SerializeField] Color EpicColor;
+    [SerializeField] Color LegendaryColor;
+    private UIManager uiManager;
+    public bool isNormalScale { get; private set; }
+
 
     private Vector3 targetScale;
-   [SerializeField] private float duration = 1f;
+    [SerializeField] private float duration = 1f;
     void Start()
     {
         this.transform.localScale = new Vector3(0, 0, 0);
         targetScale = new Vector3(1, 1, 1);
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
     private void OnEnable()
@@ -28,24 +41,40 @@ public class CardPickupUI : MonoBehaviour
         SetFamilyText();
         SetTierText();
         SetInfoBoxText();
-        DisableButtons();
+        SetDisplayImage();
+        DisableGameObjects();
         StartCoroutine(ScaleBouncePickUpWindow());
     }
 
     void Update()
     {
-        
+        isNormalScale = pickupWindowTransform.localScale != Vector3.zero;
     }
-
     public void OnConfirmPickup()
     {
-        
-
+        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+        gameObject.SetActive(false);
+        collection.PickupCard(cardData);
+        uiManager.UIMenuActive = false;
+        uiManager.CheckUIState();
     }
 
     public void OnSacrificeCard()
     {
+        gameObject.SetActive(false);
         Event_System.instance.OnDroopMultipleSouls.Invoke(cardData);
+        uiManager.UIMenuActive = false;
+        uiManager.CheckUIState();
+    }
+
+    public void Close()
+    {
+        pickupWindowTransform.localScale = Vector3.zero;
+    }
+
+    public void Open()
+    {
+        pickupWindowTransform.localScale = Vector3.one;
     }
 
     /// <summary>
@@ -58,10 +87,12 @@ public class CardPickupUI : MonoBehaviour
     private IEnumerator ScaleBouncePickUpWindow()
     {
         float timer = 0f;
-
-        while (timer< duration)
+        // 300 x 450
+        // 300 x 1.5
+        // 350 x 525
+        while (timer < duration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
 
             float t = timer / duration;
             float curvevalue = bounceCurve.Evaluate(t);
@@ -71,22 +102,22 @@ public class CardPickupUI : MonoBehaviour
             yield return null;
         }
         pickupWindowTransform.localScale = Vector3.one;
-        EnableButtons();
+        EnableGameObjects();
     }
 
-    private void DisableButtons()
+    private void DisableGameObjects()
     {
-        foreach (Button button in GetComponentsInChildren<Button>())
+        foreach (GameObject obj in disableGameObjects)
         {
-            button.gameObject.SetActive(false);
+            obj.SetActive(false);
         }
     }
 
-    private void EnableButtons()
+    private void EnableGameObjects()
     {
-        foreach(Button button in GetComponentsInChildren<Button>())
+        foreach (GameObject obj in disableGameObjects)
         {
-            button.gameObject.SetActive(true);
+            obj.SetActive(true);
         }
     }
     /// <summary>
@@ -114,10 +145,43 @@ public class CardPickupUI : MonoBehaviour
     {
 
         StringBuilder tierText = new StringBuilder();
-        tierText.AppendLine("Tier");
+        tierText.AppendLine("Rarity");
 
-        tierText.Append($"{cardData.cardTier}");
+        LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
+        tierText.Append($"{manager.GetRarityFromTier(cardData.cardTier)}");
+        tierTMP.color = SetRarityTextColor(cardData.cardTier);
         tierTMP.text = tierText.ToString();
+    }
+
+    private void SetDisplayImage()
+    {
+        Image image = imageObject.GetComponent<Image>();
+        image.sprite = cardData.cardImage;
+    }
+
+    private Color SetRarityTextColor(Tier tier)
+    {
+        LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
+
+
+        RarityTier currentTier = manager.GetRarityFromTier(tier);
+        switch (currentTier)
+        {
+            case RarityTier.Common:
+                return CommonColor;
+            case RarityTier.Uncommon:
+                return UncommonColor;
+            case RarityTier.Rare:
+                return RareColor;
+            case RarityTier.Epic:
+                return EpicColor;
+            case RarityTier.Legendary:
+                return LegendaryColor;
+            default:
+                return LegendaryColor;
+
+        }
+
     }
     private void SetInfoBoxText()
     {

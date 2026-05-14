@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject cardShopUI;
     [SerializeField] private GameObject bookUI;
+    [SerializeField] private GameObject cardPickupUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -73,6 +74,8 @@ public class UIManager : MonoBehaviour
 
         HideActiveUI();
 
+
+
         playerInput.enabled = false;
         //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
@@ -83,14 +86,14 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         startMenuUI.gameObject.SetActive(true);
-
+        Event_System.instance.OnLootPickedUp += OpenCardPickupUI;
     }
 
     void OnPauseGame()
     {
         if (!UIMenuActive)
         {
-            if(playerStats.CurrentHealth <= 0)
+            if (playerStats.CurrentHealth <= 0)
                 return;
 
             UIMenuActive = true;
@@ -108,13 +111,17 @@ public class UIManager : MonoBehaviour
 
             if (gameDeathScreenUI.activeSelf)
                 return;
+            if (cardPickupUI.activeSelf)
+                return;
+
+
+
 
             if (optionMenuUI.activeSelf)
             {
                 GoBackFromOptions();
                 return;
             }
-
             if (controllsUI.activeSelf)
             {
                 GoBackFromControlls();
@@ -132,6 +139,8 @@ public class UIManager : MonoBehaviour
                 GoBackFromVideo();
                 return;
             }
+           
+
 
 
 
@@ -172,7 +181,7 @@ public class UIManager : MonoBehaviour
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
         CloseBookUI();
-
+      
         CheckUIState();
         CheckTimeScaleUI(true);
     }
@@ -309,6 +318,55 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+    }
+
+    public void OpenCardPickupUI(Loot loot)
+    {
+        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
+
+        if (loot != null)
+        {
+            if (loot.gameObject.TryGetComponent<Card>(out Card card))
+            {
+                if (pickupUI.SetCardData(card.CardData))
+                {
+                    cardPickupUI.SetActive(true);
+                    UIMenuActive = true;
+                    CheckUIState();
+                }
+            }
+        }
+        else
+        {
+            PlayerCollection playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+            playerCollection.PickupLoot(loot);
+
+        }
+    }
+
+    public void ReOpenOrClosePickUp()
+    {
+        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
+        if (cardPickupUI.activeSelf)
+        {
+
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+            Cursor.visible = true; // Show the cursor when paused
+            playerInput.enabled = false; // Disable player input when paused
+
+
+            if (pickupUI.isNormalScale)
+            {
+                pickupUI.Close();
+            }
+            else
+            {
+                pickupUI.Open();
+            }
+        }
+
+
     }
 
     public void CloseControllsUI()
@@ -542,7 +600,7 @@ public class UIManager : MonoBehaviour
         {
             CloseOptionMenu();
             OpenPauseMenu();
-            
+
             CloseBackButtonUI();
             OpenUIOnMenuClose(); // SHOW BARS ETC
         }

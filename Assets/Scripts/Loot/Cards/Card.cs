@@ -75,11 +75,5 @@ public class Card : Loot, IPickupable
         Pickup();
     }
 
-    public override void Pickup()
-    {
-        Destroy(gameObject);
-        Event_System.instance?.OnCardPickUp.Invoke(cardData);
-    }
-
 
 }
