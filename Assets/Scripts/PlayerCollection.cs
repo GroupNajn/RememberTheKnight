@@ -27,7 +27,6 @@ public class PlayerCollection : MonoBehaviour
     {
         Event_System.instance.OnContractSign += SignContract;
         Event_System.instance.OnConfirmCardSelection += EquipCard;
-        Event_System.instance.OnLootPickedUp += PickupLoot;
         Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         playerManager = GetComponent<PlayerManager>();
@@ -40,7 +39,6 @@ public class PlayerCollection : MonoBehaviour
     {
         Event_System.instance.OnContractSign -= SignContract;
         Event_System.instance.OnConfirmCardSelection -= EquipCard;
-        Event_System.instance.OnLootPickedUp -= PickupLoot;
         Event_System.instance.OnPlayerDeath -= ClearTemporaryCards;
         Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
     }
@@ -112,6 +110,23 @@ public class PlayerCollection : MonoBehaviour
             UpdateDisplayCollection();
         }
     }
+
+    public void PickupCard(CardData card)
+    {
+        if (card != null)
+        {
+            healthPercentage = playerStats.CurrentHealth / playerStats.MaxHealth;
+            InsertIntoCardCollection(card);
+            playerManager.ReApplyStats();
+            playerStats.CurrentHealth = playerStats.MaxHealth * healthPercentage;
+            playerManager.Heal(0);
+            UpdateDisplayCollection();
+        }
+    }
+
+
+
+
 
     private void ResetAllLists()
     {
