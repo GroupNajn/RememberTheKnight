@@ -69,6 +69,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerVFX.SetVignetteIntensity(1 - (playerStats.currentStamina / playerStats.maxStamina));
 
         RuntimeManager.StudioSystem.setParameterByName("Stamina", playerStats.currentStamina / playerStats.maxStamina);
+        RuntimeManager.StudioSystem.setParameterByName("Health", playerStats.CurrentHealth / playerStats.MaxHealth);
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
