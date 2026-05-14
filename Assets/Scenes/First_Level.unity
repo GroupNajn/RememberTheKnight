@@ -37363,7 +37363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3227256874406453293, guid: ab777e8b2bb38af49bfc0b8537ed6099, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41914,7 +41914,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3329885957374867632, guid: d21033369389c4c468c85dac15d4f0ed, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329885957374867632, guid: d21033369389c4c468c85dac15d4f0ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -100465,7 +100469,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1722020378899168348, guid: e770f1f993f747943be794726775929c, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7445206968353818543, guid: e770f1f993f747943be794726775929c, type: 3}
       propertyPath: m_Name
@@ -100473,7 +100477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7445206968353818543, guid: e770f1f993f747943be794726775929c, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7789363571628858645, guid: e770f1f993f747943be794726775929c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -201026,7 +201030,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2625104228789493530, guid: 3a043c509a4d5354d89fb6ec135c2a2f, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5972840029281105586, guid: 3a043c509a4d5354d89fb6ec135c2a2f, type: 3}
       propertyPath: m_LocalScale.x
@@ -201090,7 +201094,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6460443287570934792, guid: 3a043c509a4d5354d89fb6ec135c2a2f, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6460443287570934792, guid: 3a043c509a4d5354d89fb6ec135c2a2f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -255354,7 +255362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198297991601939116, guid: 3b8bd45830ca75b4dabb8e0eb0fde688, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -265469,7 +265477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8954384771802947857, guid: 13b44c153cf85eb47998e4379b49e512, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -265493,6 +265501,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8954384771802947857, guid: 13b44c153cf85eb47998e4379b49e512, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1944539734}
+    - targetCorrespondingSourceObject: {fileID: 8954384771802947857, guid: 13b44c153cf85eb47998e4379b49e512, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1944539735}
   m_SourcePrefab: {fileID: 100100000, guid: 13b44c153cf85eb47998e4379b49e512, type: 3}
 --- !u!4 &1840301856 stripped
 Transform:
@@ -280562,6 +280573,23 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.008, y: 0.81100005, z: 0.028}
   m_TimeToStationary: 0.5
+--- !u!114 &1944539735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532709668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d568694acad0a478173c6558abe58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableID: 
+  firstTimeEffect: {fileID: 0}
+  preset: {fileID: 0}
+  stateDrivenCamera: {fileID: 0}
+  cameraLookAtTransform: {fileID: 0}
 --- !u!4 &1944948950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7325596481177733978, guid: 5e166fd7bc552c347a19f403f73f5207, type: 3}

@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject cardShopUI;
     [SerializeField] private GameObject bookUI;
+    [SerializeField] private GameObject inventoryBookUI;
+    [SerializeField] private GameObject pedistalBookUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -425,6 +427,29 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    public void OpenInventoryBook()
+    {
+        OpenBookUI();
+        ClosePedistalBook();
+        inventoryBookUI.SetActive(true);
+    }
+
+    public void CloseInventoryBook()
+    {
+        inventoryBookUI.SetActive(false);
+    }
+
+    public void OpenPedistalBook()
+    {
+        OpenBookUI();
+        CloseInteractiveUI();
+        pedistalBookUI.SetActive(true);
+    }
+
+    public void ClosePedistalBook()
+    {
+        pedistalBookUI.SetActive(false);
+    }
 
     //DEATH UI
     public void ShowDeathScreen()
