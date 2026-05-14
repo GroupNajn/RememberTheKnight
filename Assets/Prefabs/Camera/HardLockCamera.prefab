@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3283714862464537954}
   m_Layer: 0
   m_Name: HardLockCamera
-  m_TagString: Untagged
+  m_TagString: HardLockCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0.6, z: 0}
+  TargetOffset: {x: 0, y: 0.4, z: 0}
   Damping: {x: 0.6, y: 0.6, z: 0.6}
   Lookahead:
     Enabled: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 1.25, z: 0}
+  TargetOffset: {x: 0, y: 0, z: 0}
   Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
@@ -150,12 +150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb4843bae7d24943842ea23130dcd55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FramingMode: 0
+  FramingMode: 2
   FramingSize: 0.2
-  CenterOffset: {x: 0, y: -0.2}
+  CenterOffset: {x: 0, y: 0.2}
   Damping: 0
-  SizeAdjustment: 0
+  SizeAdjustment: 1
   LateralAdjustment: 1
   FovRange: {x: 100, y: 105}
-  DollyRange: {x: -100, y: 100}
+  DollyRange: {x: 0.2, y: 0.2}
   OrthoSizeRange: {x: 1, y: 1000}
