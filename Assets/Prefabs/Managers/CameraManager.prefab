@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 45144315344247146}
   - component: {fileID: 6851468805305444439}
   - component: {fileID: 2810024899164284025}
-  - component: {fileID: 1300240723322709067}
-  - component: {fileID: 7248184512295826886}
   - component: {fileID: 6771474531113318718}
+  - component: {fileID: 7248184512295826886}
   m_Layer: 0
   m_Name: CameraManager
   m_TagString: CameraManager
@@ -88,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldSpaceCamera: {fileID: 6482870658730852122}
---- !u!114 &1300240723322709067
+--- !u!114 &6771474531113318718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,10 +96,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1296989383303517345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 485bb052f5ea1b541b4e5332afa43f4a, type: 3}
+  m_Script: {fileID: 11500000, guid: de9691d47d569cc40a7e3fef465e2a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7248184512295826886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,18 +129,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerActionsMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6771474531113318718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1296989383303517345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9691d47d569cc40a7e3fef465e2a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3097976137332028660
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +196,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -300,8 +286,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5752140397330459675}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1521234, y: 0.000000005522901, z: -8.5005586e-10, w: 0.98836154}
-  m_LocalPosition: {x: 4.32, y: 2.8783526, z: 19.569845}
+  m_LocalRotation: {x: 0.0124962265, y: 0, z: 0, w: 0.9999219}
+  m_LocalPosition: {x: 0.52455425, y: 1.6, z: -7.6802025}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +578,7 @@ GameObject:
   - component: {fileID: 7115317513624740563}
   m_Layer: 0
   m_Name: CanvasCamera
-  m_TagString: Untagged
+  m_TagString: CanvasCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,7 +6,8 @@ public class EnemyLockOnCanvas : MonoBehaviour
     [SerializeField] private TargetLockHandler targetLockHandler;
 
     [SerializeField] private GameObject lockOnIndicatorObject;
-    [SerializeField] private Transform followTarget;
+    [SerializeField] private Transform indicatorFollowTarget;
+    [SerializeField] private Transform lockOnTransform;
 
     private Canvas canvas;
 
@@ -15,21 +16,16 @@ public class EnemyLockOnCanvas : MonoBehaviour
         worldSpaceCamera = GameObject.FindWithTag("WorldSpaceCamera").GetComponent<Camera>();
         targetLockHandler = FindFirstObjectByType<TargetLockHandler>();
 
-        //canvas = GetComponent<Canvas>();
-        //canvas.worldCamera = canvasCamera;
-
         lockOnIndicatorObject.SetActive(false);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (followTarget == null)
+        if (indicatorFollowTarget == null)
             return;
 
-        transform.position = followTarget.position;
-
-        transform.LookAt(worldSpaceCamera.transform.position);
-
+        transform.position = indicatorFollowTarget.position;
+         
         ShowLockOnIndicator();
     }
 
@@ -38,7 +34,7 @@ public class EnemyLockOnCanvas : MonoBehaviour
         if (targetLockHandler == null)
             return;
 
-        bool isLockedOn = targetLockHandler.currentTarget == followTarget;
+        bool isLockedOn = targetLockHandler.currentTarget == lockOnTransform;
 
         lockOnIndicatorObject.SetActive(isLockedOn);
     }
