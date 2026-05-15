@@ -211,8 +211,7 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
             string option = $"{resolution.width} x {resolution.height}";
             options.Add(option);
 
-            if (resolution.width == Screen.currentResolution.width &&
-                resolution.height == Screen.currentResolution.height)
+            if (resolution.width == Screen.currentResolution.width && resolution.height == Screen.currentResolution.height)
             {
                 currentResolutionIndex = filteredResolutions.Count - 1;
             }
@@ -227,12 +226,7 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     {
         Resolution resolution = filteredResolutions[resolutionIndex];
 
-        Screen.SetResolution(
-            resolution.width,
-            resolution.height,
-            Screen.fullScreenMode,
-            resolution.refreshRateRatio
-        );
+        Screen.SetResolution( resolution.width, resolution.height, Screen.fullScreenMode, resolution.refreshRateRatio);
     }
 
     public void SetFullScreen(bool isFullScreen)
