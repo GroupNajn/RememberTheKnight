@@ -54,7 +54,7 @@ public class interactCharacterSelect : MonoBehaviour, IInteractable, IInteractab
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Choose Minor Arcana.";
+        UIData.InfoText = "[F]: Change your outfit.";
         return UIData;
     }
 }
