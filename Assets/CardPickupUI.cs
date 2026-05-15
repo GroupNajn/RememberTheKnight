@@ -25,6 +25,7 @@ public class CardPickupUI : MonoBehaviour
     [SerializeField] Color RareColor;
     [SerializeField] Color EpicColor;
     [SerializeField] Color LegendaryColor;
+
     private UIManager uiManager;
     public bool isNormalScale { get; private set; }
 
