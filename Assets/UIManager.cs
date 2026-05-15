@@ -359,8 +359,6 @@ public class UIManager : MonoBehaviour
 
         if (card == null) return;
 
-        if (!playerCollection.CardIsPickedUp(card))
-        {
             if (unlockUI.SetCardData(card))
             {
                 UIMenuActive = true;
@@ -368,9 +366,6 @@ public class UIManager : MonoBehaviour
                 cardUnlockUI.SetActive(true);
                 CloseInteractiveUI();
             }
-        }
-        else
-            playerCollection.PickupCard(card);
     }
     public void CloseControllsUI()
     {
