@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Experimental.AI;
 
 public class PlayerCollection : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class PlayerCollection : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         ResetAllLists();
-      
+
 
     }
     private void OnDestroy()
@@ -88,15 +89,24 @@ public class PlayerCollection : MonoBehaviour
     }
     public void SignContract(CardFamily cardFamily)
     {
-        if (cardContract != null) return;
-        cardContract = new CardContract(cardFamily);
-        if (cardContract != null)
+        if (cardContract == null)
         {
+            cardContract = new CardContract(cardFamily);
             cardContract.SignContract();
             cardCollection.PlayersCardContract = cardContract;
             CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
             cardSystem.PlayerConract = cardContract;
         }
+        else
+        {
+            cardContract.BreakContract();
+            cardContract = new CardContract(cardFamily);
+            cardContract.SignContract();
+            CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+            cardSystem.PlayerConract = cardContract;
+        }
+
+
     }
     public void PickupLoot(Loot loot)
     {
@@ -156,10 +166,10 @@ public class PlayerCollection : MonoBehaviour
     public bool CardIsPickedUp(CardData card)
     {
         var tempList = cardCollection.ReturnCardsForApplyingStats();
-        
-        foreach(CardData cardData in tempList)
+
+        foreach (CardData cardData in tempList)
         {
-            if(card == null ) continue;
+            if (card == null) continue;
             if (card.cardID == cardData.cardID)
                 return true;
         }

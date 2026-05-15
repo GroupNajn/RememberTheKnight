@@ -8,7 +8,7 @@ public class CardSystem : MonoBehaviour
     [SerializeField] private List<CardData> unlockedCards = new();
     // Hashsets to not have Duplicates.  
     private HashSet<CardData> hashUnlocked = new HashSet<CardData>();
-    private HashSet<CardData> hashAllCards = new HashSet<CardData>();
+  
 
     // Script made by Henric in the end of april 2026. 
 
@@ -22,13 +22,11 @@ public class CardSystem : MonoBehaviour
 
 
     private int unlockedTier = (int)Tier.I;
-    private int unlockableTier = (int)Tier.III;
 
-    
-
+   
     void Start()
     {
-        InitializeHashSets();
+
         InitializeLockCards();
         //UnlockAllTierOneToThreeTemporary();
        
@@ -45,28 +43,7 @@ public class CardSystem : MonoBehaviour
     //Method to be called after a contract is signed and is no longer null.
     // To set the Unlocked Cards at start. 
     // INFO AFTER VERTICAL SLICE 2. METHOD SHOULD NO LONGER UNLOCK UP TO A TIER.
-    public void UnlockCardsAfterSigningContract(CardContract contract)
-    {
-        unlockedCards.Clear();
-        hashUnlocked.Clear();
-        InitializeLockCards();
-
-        foreach (CardData cardData in allCards)
-        {
-            if (cardData.cardFamily == contract.CardFamily && (int)cardData.cardTier <= unlockableTier)
-            {
-                if (!unlockedCards.Contains(cardData) && !hashUnlocked.Contains(cardData))
-                {
-                    unlockedCards.Add(cardData);
-                    hashUnlocked.Add(cardData);
-
-                }
-
-            }
-        }
-
-    }
-
+    
     public void InitializeLockCards()
     {
         foreach (CardData cardData in allCards)
@@ -111,6 +88,7 @@ public class CardSystem : MonoBehaviour
     public void UnlockCardFromDonation(CardData card)
     {
         unlockedCards.Add(card);
+        hashUnlocked.Add(card);
     }
 
     //Method is to be used in unison when a card is picked up, to check if the 
@@ -118,9 +96,9 @@ public class CardSystem : MonoBehaviour
     // the current unlockableTier, and also if the card is the same family as the cardContract. 
     public bool CheckIncreaseUnlockTier(CardData card)
     {
-        if ((int)card.cardTier == unlockableTier + 1 && card.cardFamily == cardContract.CardFamily)
+        if ((int)card.cardTier == unlockedTier + 1 && card.cardFamily == cardContract.CardFamily)
         {
-            unlockableTier++;
+            unlockedTier++;
             return true;
         }
         else return false;
@@ -131,8 +109,8 @@ public class CardSystem : MonoBehaviour
     //Clamps it between the Min and Max Tiers.
     public void IncreaseUnlockTier(int levelIncrease)
     {
-        unlockableTier += levelIncrease;
-        Mathf.Clamp(unlockableTier, (int)Tier.I, (int)Tier.XIII);
+        unlockedTier += levelIncrease;
+        Mathf.Clamp(unlockedTier, (int)Tier.I, (int)Tier.XIII);
     }
 
 
@@ -164,13 +142,6 @@ public class CardSystem : MonoBehaviour
 
     //Initializes the The HashSet that is to be used outside of the Class itself.
     // To avoide duplicates in other algorithms, to prevent unwanted behavior. 
-    private void InitializeHashSets()
-    {
-        foreach (CardData card in allCards)
-        {
-            hashAllCards.Add(card);
-        }
-    }
 
     public IReadOnlyList<CardData> GetUnlockedCards()
     {

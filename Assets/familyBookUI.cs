@@ -64,7 +64,6 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
         {
             playerCollection.SignContract(confirmedFamily);
             CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
-            cardSystem.UnlockCardsAfterSigningContract(playerCollection.playerContract);
         }
 
         uiManager.CloseFamilySelectUI();

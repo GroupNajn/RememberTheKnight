@@ -46,7 +46,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
             return;
         }
 
-       
+
 
         if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired && nextCard != null)
         {
@@ -60,13 +60,13 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
                 soulsDonated = 0;
                 RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
 
-                Debug.Log($"Unlocked card {nextCard.name}");
-                cardSystem.UnlockCardFromDonation(nextCard);
 
                 nextCard = cardSystem.GetNextCardInSelectedFamily();
-
-                if(nextCard != null) 
-                soulsRequired = (int)nextCard.cardSoulCost;
+                if (nextCard != null)
+                {
+                    Event_System.instance.OnSacrificeSuccessful?.Invoke(nextCard);
+                    soulsRequired = (int)nextCard.cardSoulCost;
+                }
             }
         }
     }

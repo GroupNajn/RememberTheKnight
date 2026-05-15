@@ -71,10 +71,10 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
             CardUI card = button.GetComponent<CardUI>();
             if (card == null || card.cardData == null)
                 continue;
-            SetUnlockable(card.cardData, card);
+            SetUnlockedCards(card.cardData, card);
 
 
-            if (card.IsSelected && card.IsUnlockable)
+            if (card.IsSelected && card.IsUnlocked)
             {
                 if (selectedCards.Count < maxCardsSelected)
                 {
@@ -89,22 +89,22 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
         }
     }
 
-    private void SetUnlockable(CardData cardData, CardUI cardUI)
+    private void SetUnlockedCards(CardData cardData, CardUI cardUI)
     {
         CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
         if(cardData == null)
         {
-            cardUI.SetUnlockable(false);
+            cardUI.SetUnlocked(false);
             return;
         }
 
         if (cardSystem.CheckUnlocked(cardData))
         {
-            cardUI.SetUnlockable(true);
+            cardUI.SetUnlocked(true);
         }
         else
         {
-            cardUI.SetUnlockable(false);
+            cardUI.SetUnlocked(false);
         }
         
 
@@ -132,7 +132,7 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
             return;
         
 
-        if (card.IsSelected && card.IsUnlockable)
+        if (card.IsSelected && card.IsUnlocked)
         {
             card.SetSelected(false);
             selectedCards.Remove(card);
@@ -140,7 +140,7 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
             Debug.Log("Card Deselected");
             return;
         }
-        if (!card.IsUnlockable)
+        if (!card.IsUnlocked)
         {
             if (!errorActive)
                 ShowError($"This card is not unlocked!" ,3f);
