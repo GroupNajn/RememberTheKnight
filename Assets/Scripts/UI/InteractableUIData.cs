@@ -1,7 +1,4 @@
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
-public class InteractableUIData : MonoBehaviour
+public class InteractableUIData
 {
     private string infoText;
     public string InfoText
@@ -22,16 +19,5 @@ public class InteractableUIData : MonoBehaviour
     {
         get => canInteract;
         set => canInteract = value;
-    }
-
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
     }
 }

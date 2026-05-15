@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AutoSelectFirstButtonOnEnable : MonoBehaviour
+public class AutoSelectFirstButtonOnEnable : MonoBehaviour 
 {
     [SerializeField] protected GameObject FirstSelectedButton;
 
