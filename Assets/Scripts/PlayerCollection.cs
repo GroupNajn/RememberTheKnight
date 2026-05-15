@@ -27,8 +27,8 @@ public class PlayerCollection : MonoBehaviour
     {
         Event_System.instance.OnContractSign += SignContract;
         Event_System.instance.OnConfirmCardSelection += EquipCard;
-        Event_System.instance.OnPlayerDeath += ClearTemporaryCards;
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
+        Event_System.instance.OnPlayerDeath += CleartTemporaryCardsOnPlayerDeath;
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         ResetAllLists();
@@ -39,8 +39,8 @@ public class PlayerCollection : MonoBehaviour
     {
         Event_System.instance.OnContractSign -= SignContract;
         Event_System.instance.OnConfirmCardSelection -= EquipCard;
-        Event_System.instance.OnPlayerDeath -= ClearTemporaryCards;
         Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
+        Event_System.instance.OnPlayerDeath -= CleartTemporaryCardsOnPlayerDeath;
     }
 
     public void InsertIntoCardCollection(CardData card)
@@ -124,7 +124,11 @@ public class PlayerCollection : MonoBehaviour
         }
     }
 
-
+    private void CleartTemporaryCardsOnPlayerDeath()
+    {
+        cardCollection.ClearTemporaryCards();
+        UpdateDisplayCollection();
+    }
 
 
 

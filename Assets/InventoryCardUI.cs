@@ -42,12 +42,55 @@ public class InventoryCardUI : MonoBehaviour
     }
     public void CheckStatsOfCard()
     {
-        cardUI.CheckStatsForString();
+        CheckStatsForString();
     }
     void Update()
     {
         
     }
+
+    public void CheckStatsForString()
+    {
+        StringBuilder stats = new StringBuilder();
+
+        if (cardData.healthModifier > 0)
+            stats.AppendLine($"Health + {cardData.healthModifier}");
+
+        if (cardData.staminaModifier > 0)
+            stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+
+        if (cardData.luckModifier > 0)
+            stats.AppendLine($"Luck + {cardData.luckModifier}%");
+
+        if (cardData.damageModifier > 0)
+            stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");
+
+        if (cardData.critChance > 0)
+            stats.AppendLine($"critical chance + {cardData.critChance}%");
+
+        if (cardData.walkSpeedModifier > 0)
+            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
+
+        if (cardData.sprintSpeedModifier > 0)
+            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
+
+        if (cardData.dodgeSpeedModifier > 0)
+            stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
+
+        if (cardData.healModifier > 0)
+            stats.AppendLine($" heal multiplier + {cardData.healModifier}%");
+
+        if (cardData.knockbackModifier > 0)
+            stats.AppendLine($"resistance + {cardData.knockbackModifier}%");
+
+        if (cardData.weaponSize != Vector3.zero)
+            stats.AppendLine($"weapon size + {cardData.weaponSize.y * 10}");
+
+        statsText.text = stats.ToString();
+    }
+
+
+
     public void ToggleInfo()
     {
         if (cardData == null)
