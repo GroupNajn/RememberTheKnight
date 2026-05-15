@@ -17,7 +17,7 @@ public class BookUi : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button loreButton;
 
     private List<PageData> pages = new List<PageData>();
-    [SerializeField] private List<LoreEntry> allLoreEntries;
+    [SerializeField] private List<LoreEntry> allLoreEntries = new();
     [SerializeField] private PlayerCollection playerCollection;
     [SerializeField] private LoreManager loreManager;
 

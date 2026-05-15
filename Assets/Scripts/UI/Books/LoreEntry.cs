@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-[System.Serializable]
+
 [CreateAssetMenu( menuName = "Lore Entry")]
 public class LoreEntry : ScriptableObject
 {
