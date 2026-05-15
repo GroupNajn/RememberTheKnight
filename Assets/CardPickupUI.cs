@@ -145,11 +145,10 @@ public class CardPickupUI : MonoBehaviour
     {
 
         StringBuilder tierText = new StringBuilder();
-        tierText.AppendLine("Rarity");
+        tierText.AppendLine("Rarity??");
 
         LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
         tierText.Append($"{manager.GetRarityFromTier(cardData.cardTier)}");
-        tierTMP.color = SetRarityTextColor(cardData.cardTier);
         tierTMP.text = tierText.ToString();
     }
 
@@ -159,7 +158,7 @@ public class CardPickupUI : MonoBehaviour
         image.sprite = cardData.cardImage;
     }
 
-    private Color SetRarityTextColor(Tier tier)
+    private RarityTier GetRarityTier(Tier tier)
     {
         LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
 
@@ -168,17 +167,17 @@ public class CardPickupUI : MonoBehaviour
         switch (currentTier)
         {
             case RarityTier.Common:
-                return CommonColor;
+                return RarityTier.Common;
             case RarityTier.Uncommon:
-                return UncommonColor;
+                return RarityTier.Uncommon;
             case RarityTier.Rare:
-                return RareColor;
+                return RarityTier.Rare;
             case RarityTier.Epic:
-                return EpicColor;
+                return RarityTier.Epic;
             case RarityTier.Legendary:
-                return LegendaryColor;
+                return RarityTier.Legendary;
             default:
-                return LegendaryColor;
+                return RarityTier.Legendary;
 
         }
 

@@ -144,7 +144,7 @@ public class UIManager : MonoBehaviour
                 GoBackFromVideo();
                 return;
             }
-           
+
 
 
 
@@ -186,7 +186,7 @@ public class UIManager : MonoBehaviour
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
         CloseBookUI();
-      
+
         CheckUIState();
         CheckTimeScaleUI(true);
     }
@@ -331,24 +331,19 @@ public class UIManager : MonoBehaviour
     {
         CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
 
-        if (loot != null)
+        if (loot == null) return;
+
+        if (loot.gameObject.TryGetComponent<Card>(out Card card) && !playerCollection.CardIsPickedUp(card.CardData))
         {
-            if (loot.gameObject.TryGetComponent<Card>(out Card card))
+            if (pickupUI.SetCardData(card.CardData))
             {
-                if (pickupUI.SetCardData(card.CardData))
-                {
-                    cardPickupUI.SetActive(true);
-                    UIMenuActive = true;
-                    CheckUIState();
-                }
+                cardPickupUI.SetActive(true);
+                UIMenuActive = true;
+                CheckUIState();
             }
         }
         else
-        {
-            PlayerCollection playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
-            playerCollection.PickupLoot(loot);
-
-        }
+        playerCollection.PickupLoot(loot);
     }
 
     public void ReOpenOrClosePickUp()

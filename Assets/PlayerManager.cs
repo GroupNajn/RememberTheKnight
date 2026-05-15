@@ -42,6 +42,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats = GetComponent<PlayerStats>();
         SceneManager.sceneLoaded += OnSceneLoaded;
+        Event_System.instance.OnSceneTransitionDone += ReApplyStats;
 
         //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
         //lowStamInstance.start();
@@ -153,6 +154,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         if (Event_System.instance != null)
         {
             Event_System.instance.OnConfirmCardSelection -= ApplyStatsFromCardSelection;
+            Event_System.instance.OnSceneTransitionDone -= ReApplyStats;
         }
     }
 
@@ -161,6 +163,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         if (Event_System.instance != null)
         {
             Event_System.instance.OnConfirmCardSelection += ApplyStatsFromCardSelection;
+            Event_System.instance.OnSceneTransitionDone -= ReApplyStats;
         }
     }
 
