@@ -26,7 +26,7 @@ public class BookUi : MonoBehaviour
     private int cardsPageIndex = -1;
     private int lorePageIndex = -1;
 
-    public void BuildInventory( PlayerStats stats)
+    public void BuildInventory(PlayerStats stats)
     {
         pages.Clear();
 
@@ -68,8 +68,9 @@ public class BookUi : MonoBehaviour
         
         lorePageIndex = pages.Count;
 
-        foreach (var entry in allLoreEntries)
+        foreach (var entry in allLoreEntries) 
         {
+            //loreManager.UnlockLore(entry.id);
             bool unlocked = loreManager.IsLoreUnlocked(entry.id);
 
             var entryPages = entry.GetPages(charsPerPage);

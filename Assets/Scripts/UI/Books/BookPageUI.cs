@@ -73,9 +73,8 @@ public class BookPageUI : MonoBehaviour
           $"Stamina Regen: {stats.staminaRegenRate}\n" +
           $"Luck: {stats.currentLuck}\n" +
           $"Crit Rate: {stats.currentCritChance}\n";
-             
     }
-        private void ShowCards(List<CardData> cards)
+    private void ShowCards(List<CardData> cards)
     {
         // Safety check
         if (cards == null)
@@ -97,18 +96,17 @@ public class BookPageUI : MonoBehaviour
             ui.transform.SetAsLastSibling();
             ui.Setup(card, true);
 
-            Button button = ui.GetComponent<Button>();
+            //Button button = ui.GetComponent<Button>();
 
-            if (button != null)
-            {
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(ui.ToggleInfo);
-            }
+            //if (button != null)
+            //{
+            //    button.onClick.RemoveAllListeners();
+            //    button.onClick.AddListener(ui.ToggleInfo);
+            //}
           
         }
     }
 
-   
 }
 
 

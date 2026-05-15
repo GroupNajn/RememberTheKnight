@@ -9999,6 +9999,7 @@ GameObject:
   - component: {fileID: 729459168395947663}
   - component: {fileID: 4972266153478958722}
   - component: {fileID: -989225511532792787}
+  - component: {fileID: 2392222419598560660}
   m_Layer: 0
   m_Name: Interactible Book
   m_TagString: Untagged
@@ -10036,7 +10037,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactableID: BookTest_01
-  firstTimeEffect: {fileID: 141253886211467861}
+  firstTimeEffect: {fileID: 0}
+  loreEntry: {fileID: 11400000, guid: 4903d5653917951418967c6efdbc3d9c, type: 2}
   preset: {fileID: 11400000, guid: 08c9f6347739af541b561acdee349e79, type: 2}
   stateDrivenCamera: {fileID: 0}
   cameraLookAtTransform: {fileID: 9219601994027692274}
@@ -10052,7 +10054,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a8c77291c54bde4598414cb501b5191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightedObjects: []
+  highlightedObjects:
+  - {fileID: 4153010984337929344}
+--- !u!65 &2392222419598560660
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416476650262593197}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.84, y: 1.4, z: 0.66}
+  m_Center: {x: 0, y: 0.69, z: 0}
 --- !u!1 &3020380102850984708
 GameObject:
   m_ObjectHideFlags: 0
