@@ -353,31 +353,6 @@ public class UIManager : MonoBehaviour
         playerCollection.PickupLoot(loot);
     }
 
-    public void ReOpenOrClosePickUp()
-    {
-        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
-        if (cardPickupUI.activeSelf)
-        {
-
-            Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-            Cursor.visible = true; // Show the cursor when paused
-            playerInput.enabled = false; // Disable player input when paused
-
-
-            if (pickupUI.isNormalScale)
-            {
-                pickupUI.Close();
-            }
-            else
-            {
-                pickupUI.Open();
-            }
-        }
-
-
-    }
-
     public void OpenCardUnlockUI(CardData card)
     {
         CardUnlockUI unlockUI = cardUnlockUI.GetComponent<CardUnlockUI>();
@@ -388,9 +363,10 @@ public class UIManager : MonoBehaviour
         {
             if (unlockUI.SetCardData(card))
             {
-                cardUnlockUI.SetActive(true);
                 UIMenuActive = true;
                 CheckUIState();
+                cardUnlockUI.SetActive(true);
+                CloseInteractiveUI();
             }
         }
         else

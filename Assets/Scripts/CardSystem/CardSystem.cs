@@ -156,6 +156,7 @@ public class CardSystem : MonoBehaviour
     public CardData GetNextCardInSelectedFamily()
     {
         List<CardData> sortedCards = new List<CardData>(allCards);
+        if (cardContract == null) return null;
 
         foreach (CardData data in sortedCards.ToArray())
         {
