@@ -1,3 +1,4 @@
+using FMODUnity;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class CardBuilder : MonoBehaviour
     [SerializeField] Transform playerTrans;
     [SerializeField] ParticleSystem[] particleSystems = new ParticleSystem[5];
     bool keyPressed = false;
+
     void Start()
     {
 

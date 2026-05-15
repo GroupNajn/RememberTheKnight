@@ -16,8 +16,7 @@ public abstract class Loot : MonoBehaviour, IPickupable
 
     [SerializeField] protected PickableState pickable = PickableState.NotPickable;
 
-    public EventReference appearEvent;
-    public EventReference pickupEvent;
+   // public EventReference appearEvent;
 
 
 
@@ -38,8 +37,6 @@ public abstract class Loot : MonoBehaviour, IPickupable
 
     protected virtual void  Start()
     {
-        RuntimeManager.PlayOneShotAttached(appearEvent, gameObject);
-
         GameObject player = GameObject.FindWithTag("Player");
         
         if (player != null)
@@ -76,8 +73,6 @@ public abstract class Loot : MonoBehaviour, IPickupable
 
     public virtual void Pickup()
     {
-        //Debug.Log($"You picked up {itemName}");
-        RuntimeManager.PlayOneShotAttached(pickupEvent, playerTransform.gameObject);
         Destroy(gameObject);
         Event_System.instance?.OnLootPickedUp.Invoke(this);
     }
