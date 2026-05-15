@@ -6,6 +6,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 {
     Loot_System lootSystem;
     CardSystem cardSystem;
+    PlayerCollection playerCollection;
 
     CardData nextCard;
     int soulsRequired;
@@ -19,7 +20,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     {
         lootSystem = LootManager.instance.gameObject.GetComponent<Loot_System>();
         cardSystem = LootManager.instance.gameObject.GetComponentInChildren<CardSystem>();
-
+        playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         nextCard = cardSystem.GetNextCardInSelectedFamily();
         if (nextCard)
         {
@@ -31,14 +32,24 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     {
         var UIData = new InteractableUIData();
 
+        if(playerCollection.playerContract != null)
+        {
         UIData.InfoText = "[F]: Donate Souls";
 
-        return UIData;
+        }
+        else if(playerCollection.playerContract == null)
+        {
+            UIData.InfoText = "[F]: You do not have a signed Contract";
+            UIData.ErrorText = "Go to lobby to sign a contract;";
+        }
+
+            return UIData;
     }
 
     public void Interact()
     {
         // Add dialogue if wanted
+        if (playerCollection.playerContract == null) return;
         if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
         {
             Debug.Log("No Family Selected, can not donate");
