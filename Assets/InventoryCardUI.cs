@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Text;
 using TMPro;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class InventoryCardUI : MonoBehaviour
+
+public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // Created by Michaëla 2026-05-13
     //refractered from CardUI
@@ -17,12 +16,6 @@ public class InventoryCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
 
-    private CardUI cardUI;
-
-    public void Awake()
-    {
-        cardUI = FindFirstObjectByType<CardUI>();
-    }
     public void Setup(CardData data, bool ShowInfo = false)
     {
         cardData = data;
@@ -34,19 +27,9 @@ public class InventoryCardUI : MonoBehaviour
         {
             cardImage.sprite = cardData.cardImage;
         }
-        cardImage.rectTransform.sizeDelta = new Vector2(300, 100);
-    }
-    void Start()
-    {
-        
-    }
-    public void CheckStatsOfCard()
-    {
+
         CheckStatsForString();
-    }
-    void Update()
-    {
-        
+        cardImage.rectTransform.sizeDelta = new Vector2(300, 100);
     }
 
     public void CheckStatsForString()
@@ -89,7 +72,15 @@ public class InventoryCardUI : MonoBehaviour
         statsText.text = stats.ToString();
     }
 
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        ToggleInfo();
+    }
 
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        ToggleInfo();
+    }
 
     public void ToggleInfo()
     {
@@ -97,7 +88,6 @@ public class InventoryCardUI : MonoBehaviour
             return;
 
         nameText.text = cardData.cardName;
-        CheckStatsOfCard();
 
         if (cardData.cardFamily == CardFamily.Cups)
         {
