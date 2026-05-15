@@ -1,0 +1,183 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+public class CardUnlockUI : MonoBehaviour
+{
+    [Header("TextMeshPros")]
+    [SerializeField] TextMeshProUGUI rememberTMP;
+    [SerializeField] TextMeshProUGUI familyTMP;
+    [SerializeField] TextMeshProUGUI tierTMP;
+    [SerializeField] TextMeshProUGUI cardInfoTMP;
+    [SerializeField] TextMeshProUGUI errorTMP;
+    [Header("GeneralData")]
+    [SerializeField] CardData cardData;
+    [SerializeField] AnimationCurve bounceCurve;
+
+    [Header("Data to change")]
+    [SerializeField] List<GameObject> disableGameObjects;
+    [SerializeField] RectTransform pickupWindowTransform;
+    [SerializeField] GameObject imageObject;
+
+    public bool isNormalScale { get; private set; }
+    private Vector3 targetScale;
+    private UIManager uiManager;
+
+    [SerializeField] private float duration = 1f;
+    void Start()
+    {
+
+        this.transform.localScale = new Vector3(0, 0, 0);
+        targetScale = new Vector3(1, 1, 1);
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+    }
+
+    private void OnEnable()
+    {
+
+        SetFamilyText();
+        SetTierText();
+        SetInfoBoxText();
+        SetDisplayImage();
+        DisableGameObjects();
+        StartCoroutine(ScaleBouncePickUpWindow());
+    }
+
+    void Update()
+    {
+        isNormalScale = pickupWindowTransform.localScale != Vector3.zero;
+    }
+
+    private IEnumerator ScaleBouncePickUpWindow()
+    {
+        float timer = 0f;
+        // 300 x 450
+        // 300 x 1.5
+        // 350 x 525
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+
+            float t = timer / duration;
+            float curvevalue = bounceCurve.Evaluate(t);
+
+            pickupWindowTransform.localScale = Vector3.one * curvevalue;
+
+            yield return null;
+        }
+        pickupWindowTransform.localScale = Vector3.one;
+        EnableGameObjects();
+    }
+
+    private void DisableGameObjects()
+    {
+        foreach (GameObject obj in disableGameObjects)
+        {
+            obj.SetActive(false);
+        }
+    }
+
+    private void EnableGameObjects()
+    {
+        foreach (GameObject obj in disableGameObjects)
+        {
+            obj.SetActive(true);
+        }
+    }
+
+    public bool SetCardData(CardData card)
+    {
+        return (cardData = card) != null;
+    }
+    private void SetFamilyText()
+    {
+        StringBuilder familyText = new StringBuilder();
+        familyText.AppendLine("Family");
+
+        familyText.Append($"{cardData.cardFamily}");
+        familyTMP.text = familyText.ToString();
+
+    }
+
+    public void OnRememberCard()
+    {
+
+        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+        gameObject.SetActive(false);
+        collection.PickupCard(cardData);
+        uiManager.UIMenuActive = false;
+        uiManager.CheckUIState();
+
+    }
+
+    private void SetTierText()
+    {
+
+        StringBuilder tierText = new StringBuilder();
+        tierText.AppendLine("Rarity");
+
+        LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
+        tierText.Append($"{manager.GetRarityFromTier(cardData.cardTier)}");
+        tierTMP.text = tierText.ToString();
+    }
+
+    private void SetDisplayImage()
+    {
+        Image image = imageObject.GetComponent<Image>();
+        image.sprite = cardData.cardImage;
+    }
+
+    public void Close()
+    {
+        pickupWindowTransform.localScale = Vector3.zero;
+    }
+
+    public void Open()
+    {
+        pickupWindowTransform.localScale = Vector3.one;
+    }
+
+    private void SetInfoBoxText()
+    {
+        StringBuilder stats = new StringBuilder();
+
+        if (cardData.healthModifier > 0)
+            stats.AppendLine($"Health + {cardData.healthModifier}");
+
+        if (cardData.staminaModifier > 0)
+            stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+
+        if (cardData.luckModifier > 0)
+            stats.AppendLine($"Luck + {cardData.luckModifier}%");
+
+        if (cardData.damageModifier > 0)
+            stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");
+
+        if (cardData.critChance > 0)
+            stats.AppendLine($"critical chance + {cardData.critChance}%");
+
+        if (cardData.walkSpeedModifier > 0)
+            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
+
+        if (cardData.sprintSpeedModifier > 0)
+            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
+
+        if (cardData.dodgeSpeedModifier > 0)
+            stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
+
+        if (cardData.healModifier > 0)
+            stats.AppendLine($" heal multiplier + {cardData.healModifier}%");
+
+        if (cardData.knockbackModifier > 0)
+            stats.AppendLine($"resistance + {cardData.knockbackModifier}%");
+
+        if (cardData.weaponSize != Vector3.zero)
+            stats.AppendLine($"weapon size + {cardData.weaponSize.y * 10}");
+
+        cardInfoTMP.text = stats.ToString();
+    }
+
+
+}

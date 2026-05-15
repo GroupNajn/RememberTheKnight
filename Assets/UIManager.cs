@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardShopUI;
     [SerializeField] private GameObject bookUI;
     [SerializeField] private GameObject cardPickupUI;
+    [SerializeField] private GameObject cardUnlockUI;
     [SerializeField] private GameObject inventoryBookUI;
     [SerializeField] private GameObject pedistalBookUI;
 
@@ -116,7 +117,11 @@ public class UIManager : MonoBehaviour
 
             if (gameDeathScreenUI.activeSelf)
                 return;
+
             if (cardPickupUI.activeSelf)
+                return;
+
+            if (cardUnlockUI.activeSelf)
                 return;
 
 
@@ -371,6 +376,24 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OpenCardUnlockUI(CardData card)
+    {
+        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
+
+        if (card == null) return;
+
+        if (!playerCollection.CardIsPickedUp(card))
+        {
+            if (pickupUI.SetCardData(card))
+            {
+                cardUnlockUI.SetActive(true);
+                UIMenuActive = true;
+                CheckUIState();
+            }
+        }
+        else
+            playerCollection.PickupCard(card);
+    }
     public void CloseControllsUI()
     {
         controllsUI.SetActive(false);
