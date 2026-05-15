@@ -62,14 +62,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private PlayerLocomotion playerLocomotionInput;
     private PlayerStates playerState;
     [SerializeField]
-    private TargetLockHandler lockHandler;   
+    private TargetLockHandler lockHandler;
     private PlayerLockRotation playerLockRotation;
-     
+
     [Header("Knockback")]
     public Transform knockbackCalculationPos;
     public bool isKnockedback { get; private set; } = false;
     public Vector3 knockbackForce = Vector3.zero;
     private bool ExplotionInfront;
+
+    [Header("On Top of Enemy")]
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float slideSpeed = 1f;
+    RaycastHit hit;
+    bool rayHit;
     #endregion
 
 
@@ -82,7 +88,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         playerLockRotation = GetComponent<PlayerLockRotation>();
-
     }
 
     private void Update()
@@ -109,6 +114,26 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         HandleAnimationInputs(isIdling);
         HandleDodge(isDodging);
         HandleAttack();
+
+        if (_characterController.isGrounded)
+        {
+            if (Physics.SphereCast(transform.position + _characterController.center, _characterController.radius + _characterController.skinWidth, -transform.up, out hit, _characterController.height / 2 + 1, enemyLayer))
+            {
+                rayHit = true;
+
+                // Move player sideways off the enemy
+                Vector3 directionAway = transform.position - hit.collider.ClosestPoint(transform.position);
+                directionAway.y = 0;
+                directionAway.Normalize();
+                _characterController.Move(directionAway * slideSpeed * Time.deltaTime);
+            }
+            else
+            {
+                rayHit = false;
+            }
+        }
+
+
     }
 
     private void LateUpdate()
@@ -150,7 +175,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             }
             else
             {
-               
+
                 PlayerAnimator.SetTrigger("Dodge");
                 playerState.SetMoveState(MoveState.Dodging);
             }
@@ -202,7 +227,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleAnimationInputs(bool isIdling)
     {
-        
+
         if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
         {
             PlayerAnimator.SetFloat("Y", currentInputMagnitude);
@@ -220,7 +245,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
         RotatePlayerToTarget();
     }
-   
+
     private void HandleAttack()
     {
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
@@ -296,7 +321,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             isKnockedback = false;
             knockbackForce = Vector3.zero;
-            
+
             playerState.SetMoveState(MoveState.Idling);
         }
         PlayerAnimator.SetBool("IsKnockedbacked", playerState.CurrentMoveState == MoveState.Knockedback);
@@ -332,7 +357,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle )
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle)
         {
             targetMagnitudeY = 0f;
         }
@@ -363,7 +388,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
         _characterController.Move(newVelocity * Time.deltaTime);
 
-        
+
         if (animCancelable && !playerState.InActionState())
         {
             bool wantsToSprint = playerLocomotionInput.SprintToggledOn;
@@ -467,5 +492,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             lockHandler = FindFirstObjectByType<TargetLockHandler>();
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.1f);
+        if (rayHit)
+        {
+            Gizmos.DrawWireSphere(hit.point, _characterController.radius + _characterController.skinWidth);
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(hit.point, 0.1f);
+        }
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position + (_characterController.center + (-transform.up * ((_characterController.height / 2) - _characterController.radius))), _characterController.radius + _characterController.skinWidth);
     }
 }
