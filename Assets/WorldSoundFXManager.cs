@@ -16,7 +16,7 @@ public class WorldSoundFXManager : MonoBehaviour
     //public AudioClip pickUpSFX;
     public EventReference rollEvent;
     public EventReference backstepEvent;
-    public EventReference pickupEvent;
+    public EventReference cardPickupEvent;
     public EventReference attackEvent;
     public EventReference footStepEvent;
     public EventReference teleportEvent;
