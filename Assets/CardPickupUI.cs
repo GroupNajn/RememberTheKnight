@@ -1,11 +1,12 @@
 
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using FMODUnity;
+using static UnityEngine.Rendering.DebugUI;
 
 public class CardPickupUI : MonoBehaviour
 {
@@ -31,6 +32,11 @@ public class CardPickupUI : MonoBehaviour
 
     private Vector3 targetScale;
     [SerializeField] private float duration = 1f;
+
+    [Header ("SFX")]
+    public EventReference cardPickupEvent;
+    public EventReference cardSacreficeEvent;
+
     void Start()
     {
         this.transform.localScale = new Vector3(0, 0, 0);
@@ -54,6 +60,10 @@ public class CardPickupUI : MonoBehaviour
     }
     public void OnConfirmPickup()
     {
+        LootManager lootManager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
+        RuntimeManager.StudioSystem.setParameterByName("CardRarity", (float)lootManager.GetRarityFromTier(cardData.cardTier));
+        RuntimeManager.PlayOneShot(cardPickupEvent);
+
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         gameObject.SetActive(false);
         collection.PickupCard(cardData);
@@ -63,6 +73,7 @@ public class CardPickupUI : MonoBehaviour
 
     public void OnSacrificeCard()
     {
+        RuntimeManager.PlayOneShot(cardSacreficeEvent);
         gameObject.SetActive(false);
         Event_System.instance.OnDroopMultipleSouls.Invoke(cardData);
         uiManager.UIMenuActive = false;

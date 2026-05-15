@@ -2501,7 +2501,6 @@ GameObject:
   - component: {fileID: 893522055424362956}
   - component: {fileID: 1024757736383707528}
   - component: {fileID: -7504988990815923443}
-  - component: {fileID: -8591974370782634904}
   - component: {fileID: 2370715255893598852}
   - component: {fileID: 5450700646901097812}
   m_Layer: 8
@@ -2860,11 +2859,11 @@ MonoBehaviour:
   attackGrunts: []
   deathEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1454276580
+      Data2: 1179977293
+      Data3: 2075105711
+      Data4: -836897982
+    Path: event:/SFX/Death/EnemyDeath
   footSteps: []
 --- !u!114 &1024757736383707528
 MonoBehaviour:
@@ -2904,37 +2903,6 @@ MonoBehaviour:
   allowedFamiles: 15
   canDropCards: 1
   canDropSouls: 1
---- !u!114 &-8591974370782634904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4624532995418066361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: -1
-  OverrideMaxDistance: -1
 --- !u!114 &2370715255893598852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5923,11 +5891,16 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6607817718957806304, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6676366249396822126, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
       propertyPath: m_Name
       value: LockOnCanvas
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6607817718957806304, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

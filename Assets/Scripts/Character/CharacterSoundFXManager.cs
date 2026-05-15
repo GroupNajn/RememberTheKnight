@@ -58,7 +58,7 @@ public class CharacterSoundFXManager : MonoBehaviour
     public virtual void PlayPickUpSoundFX()
     {
         //audioSource.PlayOneShot(WorldSoundFXManager.instance.pickUpSFX);
-        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.pickupEvent, gameObject);
+       // RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.pickupEvent, gameObject);
 
     }
 
