@@ -145,7 +145,7 @@ public class CardPickupUI : MonoBehaviour
     {
 
         StringBuilder tierText = new StringBuilder();
-        tierText.AppendLine("Rarity??");
+        tierText.AppendLine("Rarity");
 
         LootManager manager = GameObject.Find("Loot_Manager").GetComponent<LootManager>();
         tierText.Append($"{manager.GetRarityFromTier(cardData.cardTier)}");
