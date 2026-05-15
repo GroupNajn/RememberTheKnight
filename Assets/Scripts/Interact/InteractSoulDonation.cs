@@ -42,21 +42,31 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
         {
             Debug.Log("No Family Selected, can not donate");
-            Debug.Log("Family signed: " +GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed.ToString());
+            Debug.Log("Family signed: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed.ToString());
             return;
         }
-        RuntimeManager.StudioSystem.setParameterByName("CardUnlock", soulsDonated/soulsRequired);
-        RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
 
-        if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired)
+       
+
+        if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired && nextCard != null)
         {
+            RuntimeManager.StudioSystem.setParameterByName("CardUnlock", soulsDonated / soulsRequired);
+            RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
+
             lootSystem.ConsumeSouls(1);
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
+                soulsDonated = 0;
+                RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
+
                 Debug.Log($"Unlocked card {nextCard.name}");
                 cardSystem.UnlockCardFromDonation(nextCard);
-                RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
+
+                nextCard = cardSystem.GetNextCardInSelectedFamily();
+
+                if(nextCard != null) 
+                soulsRequired = (int)nextCard.cardSoulCost;
             }
         }
     }
