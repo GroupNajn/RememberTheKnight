@@ -13,7 +13,7 @@ using static IPickupable;
 public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [field: SerializeField] public bool IsSelected { get; private set; }
-    [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
+    [field: SerializeField] public bool IsUnlocked { get; private set; } = false;
     [field: SerializeField] public bool OverrideLockState { get; private set; } = false;
 
     [SerializeField] private Color lockedColor = Color.gray;
@@ -93,10 +93,10 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (OverrideLockState)
         {
-            IsUnlockable = true;
+            IsUnlocked = true;
         }
 
-        if (!IsUnlockable)
+        if (!IsUnlocked)
         {
             cardImage.color = lockedColor;
         }
@@ -124,9 +124,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         IsSelected = selected;
     }
 
-    public void SetUnlockable(bool unlockable)
+    public void SetUnlocked(bool unlockable)
     {
-        this.IsUnlockable = unlockable;
+        this.IsUnlocked = unlockable;
     }
 
     public void CheckStatsForString()
@@ -173,7 +173,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         nameText.text = cardData.cardName;
 
-        if (IsUnlockable)
+        if (IsUnlocked)
         {
             CheckStatsForString();
             // infoBox.SetActive(true);
@@ -189,7 +189,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         // infoBox.SetActive(false);
-        if (IsUnlockable)
+        if (IsUnlocked)
         {
             StartCoroutine(UnFlipCard());
         }
