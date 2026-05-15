@@ -1282,6 +1282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6040ace4f2ff69009bd6e34ae374eea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimConstraint: {fileID: 0}
+  lookAt: {fileID: 0}
 --- !u!143 &7555740300954913729
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1528,7 +1530,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageGrunts: []
   attackGrunts: []
-  deathSounds: []
+  deathEvent:
+    Guid:
+      Data1: -1454276580
+      Data2: 1179977293
+      Data3: 2075105711
+      Data4: -836897982
+    Path: event:/SFX/Death/EnemyDeath
   footSteps: []
 --- !u!1 &2341542869942172244
 GameObject:
