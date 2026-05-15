@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +18,11 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     [SerializeField] Toggle bloomToggle;
     [SerializeField] Toggle motionToggle;
     [SerializeField] Toggle filmToggle;
+
+    [SerializeField] TMP_Dropdown resolutionDropdown;
+    [SerializeField] Toggle fullScreenToggle;
+
+    private List<Resolution> filteredResolutions = new List<Resolution>();
 
     float lastBloomValue = 0.25f;
     float lastMotionValue = 0.25f;
@@ -39,9 +45,14 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         baseMotionValue = motionSlider.value;
         baseFilmValue = filmSlider.value;
 
+        SetupResolutionDropdown();
+        fullScreenToggle.isOn = Screen.fullScreen;
+
         base.Start();
     }
 
+
+    // SLIDERS
     public void SetBloomSlider(float value)
     {
         bloomText.text = $"{(int)(value * 100)}";
@@ -138,11 +149,13 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         GlobalVolumeManager.Instance.EnableFilmGrain(enabled);
     }
 
+
+    // RESET
     public void ResetValuesToBase()
     {
         bloomSlider.value = baseBloomValue;
         motionSlider.value = baseMotionValue;
-        motionSlider.value = baseFilmValue;
+        filmSlider.value = baseFilmValue;
 
         bloomToggle.isOn = true;
         motionToggle.isOn = true;
@@ -156,5 +169,73 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         GlobalVolumeManager.Instance.EnableMotionBlur(true);
         GlobalVolumeManager.Instance.EnableFilmGrain(true);
 
+    }
+
+
+    // RESOLUTION
+    private void SetupResolutionDropdown()
+    {
+        Resolution[] allResolutions = Screen.resolutions;
+
+        resolutionDropdown.ClearOptions();
+        filteredResolutions.Clear();
+
+        Dictionary<string, Resolution> bestResolutions = new Dictionary<string, Resolution>();
+
+        foreach (Resolution resolution in allResolutions)
+        {
+            string key = resolution.width + "x" + resolution.height;
+
+            if (!bestResolutions.ContainsKey(key))
+            {
+                bestResolutions.Add(key, resolution);
+            }
+            else
+            {
+                Resolution existing = bestResolutions[key];
+
+                if (GetRefreshRate(resolution) > GetRefreshRate(existing))
+                {
+                    bestResolutions[key] = resolution;
+                }
+            }
+        }
+
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+
+        foreach (Resolution resolution in bestResolutions.Values)
+        {
+            filteredResolutions.Add(resolution);
+
+            string option = $"{resolution.width} x {resolution.height}";
+            options.Add(option);
+
+            if (resolution.width == Screen.currentResolution.width && resolution.height == Screen.currentResolution.height)
+            {
+                currentResolutionIndex = filteredResolutions.Count - 1;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = filteredResolutions[resolutionIndex];
+
+        Screen.SetResolution( resolution.width, resolution.height, Screen.fullScreenMode, resolution.refreshRateRatio);
+    }
+
+    public void SetFullScreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
+    }
+
+    private double GetRefreshRate(Resolution resolution)
+    {
+        return resolution.refreshRateRatio.value;
     }
 }
