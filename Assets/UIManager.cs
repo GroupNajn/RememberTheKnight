@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
     [SerializeField] private BookUi bookInventoryUI; // Meike tbc
+    [SerializeField] private ReadableBookUI readableBookUI;
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
 
@@ -159,7 +160,7 @@ public class UIManager : MonoBehaviour
     {
         if (!UIMenuActive)
         {
-            OpenBookUI();
+            OpenInventoryBook();
         }
         else
         {
@@ -464,8 +465,6 @@ public class UIManager : MonoBehaviour
     public void OpenBookUI()
     {
         CloseInteractiveUI();
-        // bookUi.BuildInventory(playerCollection.ReturnPermanentCardCollection(), playerStats); // switch return permanent collection after script is done
-        bookInventoryUI.BuildInventory(playerStats);
         bookUI.SetActive(true);
 
         UIMenuActive = true;
@@ -474,7 +473,10 @@ public class UIManager : MonoBehaviour
 
     public void CloseBookUI()
     {
-        Debug.Log("Closing Book UI");
+        //Debug.Log("Closing Book UI");
+        CloseInventoryBook();
+        ClosePedistalBook();
+
         bookUI.SetActive(false);
 
         UIMenuActive = false;
@@ -486,6 +488,7 @@ public class UIManager : MonoBehaviour
         OpenBookUI();
         ClosePedistalBook();
         inventoryBookUI.SetActive(true);
+        bookInventoryUI.BuildInventory(playerStats);
     }
 
     public void CloseInventoryBook()
@@ -493,11 +496,13 @@ public class UIManager : MonoBehaviour
         inventoryBookUI.SetActive(false);
     }
 
-    public void OpenPedistalBook()
+    public void OpenPedistalBook(LoreEntry entry)
     {
         OpenBookUI();
-        CloseInteractiveUI();
+       // CloseInteractiveUI();
+        CloseInventoryBook();
         pedistalBookUI.SetActive(true);
+        readableBookUI.OpenBooke(entry);
     }
 
     public void ClosePedistalBook()
