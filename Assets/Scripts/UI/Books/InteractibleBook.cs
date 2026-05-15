@@ -55,7 +55,7 @@ public class InteractibleBook : MonoBehaviour, IInteractable, IInteractableUITex
     {
         yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
 
-        playerUIManager.OpenBookUI();
+        playerUIManager.OpenPedistalBook(loreEntry);
     }
 
     public InteractableUIData GetUIData()
