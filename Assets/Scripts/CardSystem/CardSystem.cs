@@ -24,8 +24,7 @@ public class CardSystem : MonoBehaviour
     private int unlockedTier = (int)Tier.I;
     private int unlockableTier = (int)Tier.III;
 
-    [Header("Debugging")]
-    [SerializeField] CardFamily cardFamily; // To be changed to use cardContract.CardFamily instead
+    
 
     void Start()
     {
@@ -190,7 +189,7 @@ public class CardSystem : MonoBehaviour
         foreach (CardData data in sortedCards.ToArray())
         {
             Debug.Log($"Looping through sorted cards");
-            if (data.cardFamily != cardFamily || unlockedCards.Contains(data))
+            if (data.cardFamily != cardContract.CardFamily || unlockedCards.Contains(data))
             {
                 Debug.Log($"Removing {data.name} from sorted cards");
                 sortedCards.Remove(data);
