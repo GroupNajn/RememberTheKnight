@@ -1,3 +1,5 @@
+using FMODUnity;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableUIText
@@ -8,6 +10,10 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     CardData nextCard;
     int soulsRequired;
     int soulsDonated;
+
+    public EventReference donateEvent;
+    public EventReference unlockCardEvent;
+
 
     private void Start()
     {
@@ -33,6 +39,14 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     public void Interact()
     {
         // Add dialogue if wanted
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
+        {
+            Debug.Log("No Family Selected, can not donate");
+            Debug.Log("Family signed: " +GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed.ToString());
+            return;
+        }
+        RuntimeManager.StudioSystem.setParameterByName("CardUnlock", soulsDonated/soulsRequired);
+        RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
 
         if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired)
         {
@@ -42,6 +56,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
             {
                 Debug.Log($"Unlocked card {nextCard.name}");
                 cardSystem.UnlockCardFromDonation(nextCard);
+                RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
             }
         }
     }

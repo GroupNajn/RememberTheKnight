@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -37,12 +38,7 @@ public class Card : Loot, IPickupable
         StartCoroutine(WaitForInitialization(pickUpDelay));
         if (LootManager.instance != null)
             LootManager.instance.RegisterLoot(this);
-
     }
-
-    
-
-
 
     public CardUnlockType CardUnlockType
     {
@@ -73,6 +69,12 @@ public class Card : Loot, IPickupable
             col.enabled = false;
 
         Pickup();
+    }
+    public override void Pickup()
+    {
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.cardPickupEvent, playerTransform.gameObject);
+
+        base.Pickup();
     }
 
 
