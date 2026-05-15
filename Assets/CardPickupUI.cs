@@ -5,6 +5,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class CardPickupUI : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class CardPickupUI : MonoBehaviour
     [SerializeField] Color RareColor;
     [SerializeField] Color EpicColor;
     [SerializeField] Color LegendaryColor;
+
     private UIManager uiManager;
     public bool isNormalScale { get; private set; }
 

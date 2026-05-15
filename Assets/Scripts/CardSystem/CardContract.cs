@@ -1,7 +1,7 @@
 using System.Diagnostics.Contracts;
 using UnityEngine;
 
-public class CardContract : MonoBehaviour
+public class CardContract
 {
     private CardFamily cardFamily = CardFamily.None;
 
