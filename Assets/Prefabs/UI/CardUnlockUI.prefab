@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2127242486977300001}
-  - component: {fileID: 7494724418274152151}
   - component: {fileID: 7708256442486073896}
   m_Layer: 5
   m_Name: CardUnlockUI
@@ -37,10 +36,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 960, y: 540}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 700, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7494724418274152151
+--- !u!114 &7708256442486073896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,12 +48,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 334369732555083817}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75db03a30c2b1e24ba98417d68a5948f, type: 3}
+  m_Script: {fileID: 11500000, guid: 61be38051e88ed343b8fdfc8947456fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tierTMP: {fileID: 7283426551003283624}
+  rememberTMP: {fileID: 5026020081495422080}
   familyTMP: {fileID: 712051083411964216}
-  infoBoxTMP: {fileID: 8353842266688665575}
+  tierTMP: {fileID: 7283426551003283624}
+  cardInfoTMP: {fileID: 8353842266688665575}
+  errorTMP: {fileID: 6425521644449524155}
   cardData: {fileID: 0}
   bounceCurve:
     serializedVersion: 2
@@ -98,34 +99,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pickupWindowTransform: {fileID: 2127242486977300001}
-  pickupPrefab: {fileID: 0}
-  UIManager: {fileID: 0}
+  uiManager: {fileID: 0}
   disableGameObjects:
-  - {fileID: 2817422234932143489}
-  - {fileID: 7963448589005281000}
-  - {fileID: 4443532185796829272}
-  - {fileID: 0}
   - {fileID: 8049353752526725011}
+  - {fileID: 2817422234932143489}
+  unlockWindowTransform: {fileID: 2127242486977300001}
   imageObject: {fileID: 2875863133717287957}
-  CommonColor: {r: 1, g: 1, b: 1, a: 0}
-  UncommonColor: {r: 0.39737508, g: 0.7924528, b: 0.28034887, a: 0}
-  RareColor: {r: 0.21253532, g: 0.18195976, b: 0.8207547, a: 0}
-  EpicColor: {r: 0.6987036, g: 0.1514774, b: 0.8679245, a: 0}
-  LegendaryColor: {r: 0.8867924, g: 0.5970094, b: 0.11294055, a: 0}
   duration: 1
---- !u!114 &7708256442486073896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 334369732555083817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61be38051e88ed343b8fdfc8947456fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &688928551578323991
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +194,7 @@ GameObject:
   - component: {fileID: 1464771127402404505}
   - component: {fileID: 5026020081495422080}
   m_Layer: 5
-  m_Name: TMP
+  m_Name: RememberTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1217,7 +1197,7 @@ GameObject:
   - component: {fileID: 6615878942626149760}
   - component: {fileID: 3451914211902210138}
   m_Layer: 5
-  m_Name: Pickup_Button
+  m_Name: Remember_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1325,9 +1305,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7494724418274152151}
-        m_TargetAssemblyTypeName: CardPickupUI, Assembly-CSharp
-        m_MethodName: OnConfirmPickup
+      - m_Target: {fileID: 7708256442486073896}
+        m_TargetAssemblyTypeName: CardUnlockUI, Assembly-CSharp
+        m_MethodName: OnRememberCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

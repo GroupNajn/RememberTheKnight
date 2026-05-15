@@ -15,15 +15,15 @@ public class CardUnlockUI : MonoBehaviour
     [Header("GeneralData")]
     [SerializeField] CardData cardData;
     [SerializeField] AnimationCurve bounceCurve;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Data to change")]
     [SerializeField] List<GameObject> disableGameObjects;
-    [SerializeField] RectTransform pickupWindowTransform;
+    [SerializeField] RectTransform unlockWindowTransform;
     [SerializeField] GameObject imageObject;
 
     public bool isNormalScale { get; private set; }
     private Vector3 targetScale;
-    private UIManager uiManager;
 
     [SerializeField] private float duration = 1f;
     void Start()
@@ -47,7 +47,7 @@ public class CardUnlockUI : MonoBehaviour
 
     void Update()
     {
-        isNormalScale = pickupWindowTransform.localScale != Vector3.zero;
+        isNormalScale = unlockWindowTransform.localScale != Vector3.zero;
     }
 
     private IEnumerator ScaleBouncePickUpWindow()
@@ -63,11 +63,11 @@ public class CardUnlockUI : MonoBehaviour
             float t = timer / duration;
             float curvevalue = bounceCurve.Evaluate(t);
 
-            pickupWindowTransform.localScale = Vector3.one * curvevalue;
+            unlockWindowTransform.localScale = Vector3.one * curvevalue;
 
             yield return null;
         }
-        pickupWindowTransform.localScale = Vector3.one;
+        unlockWindowTransform.localScale = Vector3.one;
         EnableGameObjects();
     }
 
@@ -103,10 +103,9 @@ public class CardUnlockUI : MonoBehaviour
 
     public void OnRememberCard()
     {
-
-        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+        CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
         gameObject.SetActive(false);
-        collection.PickupCard(cardData);
+        cardSystem.UnlockCardFromDonation(cardData);
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
 
@@ -129,14 +128,16 @@ public class CardUnlockUI : MonoBehaviour
         image.sprite = cardData.cardImage;
     }
 
+  
+
     public void Close()
     {
-        pickupWindowTransform.localScale = Vector3.zero;
+        unlockWindowTransform.localScale = Vector3.zero;
     }
 
     public void Open()
     {
-        pickupWindowTransform.localScale = Vector3.one;
+        unlockWindowTransform.localScale = Vector3.one;
     }
 
     private void SetInfoBoxText()

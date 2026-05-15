@@ -90,6 +90,7 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         startMenuUI.gameObject.SetActive(true);
         Event_System.instance.OnLootPickedUp += OpenCardPickupUI;
+        Event_System.instance.OnSacrificeSuccessful += OpenCardUnlockUI;
 
         Event_System.instance.OnLoadScenes += OnLoadScene;
 
@@ -378,13 +379,13 @@ public class UIManager : MonoBehaviour
 
     public void OpenCardUnlockUI(CardData card)
     {
-        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
+        CardUnlockUI unlockUI = cardUnlockUI.GetComponent<CardUnlockUI>();
 
         if (card == null) return;
 
         if (!playerCollection.CardIsPickedUp(card))
         {
-            if (pickupUI.SetCardData(card))
+            if (unlockUI.SetCardData(card))
             {
                 cardUnlockUI.SetActive(true);
                 UIMenuActive = true;
