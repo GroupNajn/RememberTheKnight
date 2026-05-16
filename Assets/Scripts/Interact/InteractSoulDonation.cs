@@ -27,6 +27,13 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         }
     }
 
+    public bool SetNextCard()
+    {
+        return (nextCard = cardSystem.GetNextCardInSelectedFamily()) != null;
+    }
+
+    public int SetNetCardCost() => soulsRequired = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
+
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
@@ -71,11 +78,9 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
                 RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
 
 
-                nextCard = cardSystem.GetNextCardInSelectedFamily();
                 if (nextCard != null)
                 {
                     Event_System.instance.OnSacrificeSuccessful?.Invoke(nextCard);
-                    soulsRequired = (int)nextCard.cardSoulCost;
                 }
             }
         }

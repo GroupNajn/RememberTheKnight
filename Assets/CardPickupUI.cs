@@ -10,16 +10,25 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class CardPickupUI : MonoBehaviour
 {
+
+    [Header("TextMesh")]
     [SerializeField] TextMeshProUGUI tierTMP;
     [SerializeField] TextMeshProUGUI familyTMP;
     [SerializeField] TextMeshProUGUI infoBoxTMP;
+
+    [Header("Runtime Data")]
     [SerializeField] CardData cardData;
     [SerializeField] AnimationCurve bounceCurve;
     [SerializeField] RectTransform pickupWindowTransform;
+    [SerializeField] RectTransform rescaleRect;
+
+    [Header("GameObjects")]
     [SerializeField] GameObject pickupPrefab;
     [SerializeField] GameObject UIManager;
-    [SerializeField] List<GameObject> disableGameObjects;
     [SerializeField] GameObject imageObject;
+    [SerializeField] List<GameObject> disableGameObjects;
+
+    [Header("Colors")]
     [SerializeField] Color CommonColor;
     [SerializeField] Color UncommonColor;
     [SerializeField] Color RareColor;
@@ -115,6 +124,7 @@ public class CardPickupUI : MonoBehaviour
             yield return null;
         }
         pickupWindowTransform.localScale = Vector3.one;
+        LeanTween.scale(rescaleRect, new Vector3(0.95f, 0.95f, 0.95f), 1.5f).setEaseInBack().setLoopPingPong().setIgnoreTimeScale(true);
         EnableGameObjects();
     }
 
