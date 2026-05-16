@@ -210,7 +210,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         if (scene.name == SceneData.Instance[2]) // Heal to max health after loading lobby
         {
-            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.playerWakeUpEvent, gameObject);
             Heal(playerStats.MaxHealth);
             playerStats.currentHealingCharges = playerStats.startingCharges;
             CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);

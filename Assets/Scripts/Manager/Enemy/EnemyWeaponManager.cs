@@ -1,26 +1,26 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
-
-[RequireComponent(typeof(Animator))]
 public class EnemyWeaponManager : CharacterWeaponManager
 {
-    private static readonly int IsHeavyHash = Animator.StringToHash("IsHeavy");
-    private Animator animator;
     public override void Start()
     {
         base.Start();
-        animator = GetComponent<Animator>();
     }
+
+    public override void Update()
+    {
+        // IF ENEMY SHOULD BE ABLE TO HOLSTER WEAPON, IMPLEMENT HOLSTER CHECK HERE
+    }
+
     public new DamageInfo CalculateFinalDamage(WeaponData weaponData)
     {
         // finalDamage = weaponData.base + weapondaata.charged + damgemodifier 
-        DamageInfo damageInfo = new();
+        DamageInfo damageInfo = new DamageInfo();
         damageInfo.SetIsCrit(false);
-        finalDamage = animator.GetBool(IsHeavyHash) ? weaponData.HeavyDamage : weaponData.LightDamage;
+
+        finalDamage = weaponData.LightDamage;
         damageInfo.SetDamageAmount(finalDamage);
 
         return damageInfo;
     }
-
 }

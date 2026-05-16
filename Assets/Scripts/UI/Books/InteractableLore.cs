@@ -42,7 +42,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
         }
 
         loreManager.UnlockLore(loreEntry.id);
-        playerUIManager.OpenBookUI();
+        playerUIManager.OpenPedistalBook(loreEntry);
     }
 
     public InteractableUIData GetUIData()

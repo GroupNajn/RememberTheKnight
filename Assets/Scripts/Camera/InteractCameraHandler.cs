@@ -35,6 +35,18 @@ public class InteractCameraHandler : MonoBehaviour
 
             cinemachineInteractCam.Follow = playerTransform;
         }
+
+        Debug.Log($"interactCam {interactCam.name}, cinemachineInteractCam {cinemachineInteractCam.name}");
+    }
+
+
+    void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            InteractCamReset();
+        }
     }
 
     public void InteractCamSwitch(Transform target, InteractCameraPreset preset)
@@ -59,11 +71,6 @@ public class InteractCameraHandler : MonoBehaviour
 
     public void InteractCamReset()
     {
-        if (cinemachineInputAxisController == null || cinemachineInteractCam == null || playerTransform == null)
-        {
-            return;
-        }   
-
         cinemachineInputAxisController.enabled = true;
         cameraAnimator.Play(stateName: "FreeLookCamera");
 
