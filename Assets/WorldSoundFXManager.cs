@@ -1,6 +1,8 @@
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using FMOD.Studio;
+using UnityEngine.Rendering;
 
 public class WorldSoundFXManager : MonoBehaviour
 {
@@ -24,6 +26,12 @@ public class WorldSoundFXManager : MonoBehaviour
 
     [Header("Button Sounds")]
     public EventReference cardFlipEvent;
+
+    [Header("VCA")]
+    private VCA masterVCA;
+    private VCA musicVCA;
+    private VCA sfxVCA;
+
     //[Header("Boss Music")]
     //[SerializeField] AudioSource BossIntroPlayer;
     //[SerializeField] AudioSource BossLoopPlayer;
@@ -43,11 +51,47 @@ public class WorldSoundFXManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        masterVCA = RuntimeManager.GetVCA("vca:/master");
+        musicVCA = RuntimeManager.GetVCA("vca:/music");
+        masterVCA = RuntimeManager.GetVCA("vca:/sFX");
     }
 
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+    }
+
+    public float GetMasterVolume()
+    {
+        masterVCA.getVolume(out float volume);
+
+        return volume;
+    }
+    public float GetMusicVolume()
+    {
+        musicVCA.getVolume(out float volume);
+
+        return volume;
+    }
+    public float GetSFXVolume()
+    {
+        sfxVCA.getVolume(out float volume);
+
+        return volume;
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        masterVCA.setVolume(volume);
+    }
+    public void SetMusicVolume(float volume)
+    {
+        musicVCA.setVolume(volume);
+    }
+    public void SetSFXVolume(float volume)
+    {
+        sfxVCA.setVolume(volume);
     }
 
     //public void PlayBackgroundTrack(AudioClip introTrack, AudioClip loopTrack)
