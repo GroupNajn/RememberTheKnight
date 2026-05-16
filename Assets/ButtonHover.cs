@@ -17,19 +17,36 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
     }
 
-   
+    private void OnEnable()
+    {
+        tweenID = -1;
+        
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        LeanTween.cancel(tweenID);
+        LeanTween.cancel(gameObject);
 
         tweenID = LeanTween.scale(rect, Vector3.one * 1.05f, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
 
     }
 
+    private void OnDisable()
+    {
+        
+        LeanTween.cancel(gameObject);
+        tweenID = -1;
+    }
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(gameObject);
+        tweenID = -1;
+    }
+
     public void OnPointerExit(PointerEventData eventData)
     {
-        LeanTween.cancel(tweenID);
+        LeanTween.cancel(gameObject);
 
         tweenID = LeanTween.scale(rect, Vector3.one, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
     }
