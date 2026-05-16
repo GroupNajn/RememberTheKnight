@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class CardUnlockUI : MonoBehaviour
     [SerializeField] List<GameObject> disableGameObjects;
     [SerializeField] RectTransform unlockWindowTransform;
     [SerializeField] GameObject imageObject;
+
+    [SerializeField] RectTransform rescaleRect;
 
     public bool isNormalScale { get; private set; }
     private Vector3 targetScale;
@@ -68,6 +71,7 @@ public class CardUnlockUI : MonoBehaviour
             yield return null;
         }
         unlockWindowTransform.localScale = Vector3.one;
+        LeanTween.scale(rescaleRect, new Vector3(0.95f, 0.95f, 0.95f), 1.5f).setEaseInBack().setLoopPingPong().setIgnoreTimeScale(true);
         EnableGameObjects();
     }
 
