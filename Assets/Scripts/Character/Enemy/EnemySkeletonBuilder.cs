@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 [RequireComponent(typeof(EnemyWeaponManager))]
-
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(EnemyDamage))]
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -39,6 +39,9 @@ public class NewBehaviourScript : MonoBehaviour
             skinnedMeshRenderer.sharedMesh = selectedPreset.mesh;
             enemyDamage.MaxHealth = selectedPreset.maxHealth;
             enemyDamage.Health = selectedPreset.maxHealth;
+
+            if (selectedPreset.overrideController)
+                GetComponent<Animator>().runtimeAnimatorController = selectedPreset.overrideController;
         }
     }
     private void SetLayerRecursively(GameObject obj, int newLayer)
