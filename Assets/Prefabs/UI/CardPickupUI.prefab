@@ -266,6 +266,20 @@ MonoBehaviour:
   EpicColor: {r: 0.6987036, g: 0.1514774, b: 0.8679245, a: 0}
   LegendaryColor: {r: 0.8867924, g: 0.5970094, b: 0.11294055, a: 0}
   duration: 1
+  cardPickupEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  cardSacreficeEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &1941805758450881313
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +292,7 @@ GameObject:
   - component: {fileID: 3095842011019981132}
   - component: {fileID: 3936008269428088879}
   - component: {fileID: 7886071537458693031}
+  - component: {fileID: 5147485588655923649}
   m_Layer: 5
   m_Name: Sacrifice_Button
   m_TagString: Untagged
@@ -399,6 +414,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5147485588655923649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941805758450881313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e756081dbef58a3468b2e77d3016cfaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2227677548732634873
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +923,7 @@ GameObject:
   - component: {fileID: 7631785214837935311}
   - component: {fileID: 4275591974783551791}
   - component: {fileID: 1197975820164227690}
+  - component: {fileID: 672304850566514285}
   m_Layer: 5
   m_Name: Pickup_Button
   m_TagString: Untagged
@@ -1017,6 +1045,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &672304850566514285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4045930527881637690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e756081dbef58a3468b2e77d3016cfaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4115016809556287812
 GameObject:
   m_ObjectHideFlags: 0
