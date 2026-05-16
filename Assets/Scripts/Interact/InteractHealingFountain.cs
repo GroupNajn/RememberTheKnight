@@ -80,7 +80,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
 
         if (!isExpended)
         {
-            data.InfoText = $"[F]: Replenish your cup for {healingCost} souls.";
+            data.InfoText = $"[F]: Replenish yor cup for {healingCost} souls.";
             data.CanInteract = true;
         }
         else

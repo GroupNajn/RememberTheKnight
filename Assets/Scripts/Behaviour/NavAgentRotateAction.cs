@@ -13,8 +13,6 @@ public partial class NavAgentRotateAction : Action
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<float> Tolerance = new(10);
     [SerializeReference] public BlackboardVariable<bool> Continuous = new(false);
-    [SerializeReference] public BlackboardVariable<bool> PauseSignal = new(false);
-    [SerializeReference] public BlackboardVariable<float> SpeedMultiplier = new(1);
 
 
     protected override Status OnStart()
@@ -25,7 +23,6 @@ public partial class NavAgentRotateAction : Action
 
     protected override Status OnUpdate()
     {
-        if (PauseSignal.Value) return Status.Running;
         Vector3 direction = Target.Value.position - Self.Value.transform.position;
         direction.y = 0;
 
@@ -40,7 +37,7 @@ public partial class NavAgentRotateAction : Action
         Self.Value.transform.rotation = Quaternion.RotateTowards(
             Self.Value.transform.rotation,
             desiredRotation,
-            Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value
+            Self.Value.angularSpeed * Time.deltaTime
         );
         return Status.Running;
     }

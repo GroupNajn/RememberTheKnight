@@ -1,4 +1,3 @@
-using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -220,6 +219,7 @@ public class GlobalSceneManager : MonoBehaviour
         Event_System.instance.OnSceneTransitionDone?.Invoke();
 
         //RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene",targetScene.name);
+
 
     }
 

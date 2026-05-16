@@ -16,7 +16,7 @@ public class LoreManager : MonoBehaviour
     }
 
     public HashSet<string> GetUnlockedLore()
-    {   
+    {
         return unlockedLore;
     }
 }

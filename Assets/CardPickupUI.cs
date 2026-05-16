@@ -6,7 +6,6 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CardPickupUI : MonoBehaviour
 {
