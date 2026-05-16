@@ -23,7 +23,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         nextCard = cardSystem.GetNextCardInSelectedFamily();
         if (nextCard)
         {
-            soulsRequired = (int)nextCard.cardSoulCost;
+            soulsRequired = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
         }
     }
 
