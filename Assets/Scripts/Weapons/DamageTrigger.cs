@@ -54,7 +54,7 @@ public class DamageTrigger : MonoBehaviour
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
         playerWeaponManager = player.GetComponent<PlayerWeaponManager>();
         playerAnimator = player.GetComponent<Animator>();
-        
+
 
     }
 
@@ -71,7 +71,7 @@ public class DamageTrigger : MonoBehaviour
             enemyWeaponManager = this.gameObject.GetComponentInParent<EnemyWeaponManager>();
         }
 
-        if (check && (other.gameObject == player) )// prevent player from damaging self with own weapon
+        if (check && (other.gameObject == player))// prevent player from damaging self with own weapon
         {
             return;
         }
@@ -98,7 +98,7 @@ public class DamageTrigger : MonoBehaviour
                 RuntimeManager.PlayOneShotAttached(playerWeaponManager.currentActiveWeaponData.HitEvent, other.gameObject);
                 return;
             }
-            damageable.TakeDamage(enemyWeaponManager.CalculateFinalDamage(enemyWeaponManager.currentActiveWeaponData), contactPoint);
+            damageable.TakeDamage(enemyWeaponManager.CalculateFinalDamage(weaponData), contactPoint);
             RuntimeManager.PlayOneShotAttached(enemyWeaponManager.currentActiveWeaponData.HitEvent, other.gameObject);
         }
     }

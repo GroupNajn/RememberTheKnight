@@ -1,5 +1,4 @@
 using FMODUnity;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableUIText
@@ -24,7 +23,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         nextCard = cardSystem.GetNextCardInSelectedFamily();
         if (nextCard)
         {
-            soulsRequired = (int)Mathf.Pow( (float)nextCard.cardSoulCost, 2);
+            soulsRequired = (int)nextCard.cardSoulCost;
         }
     }
 
@@ -32,18 +31,18 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     {
         var UIData = new InteractableUIData();
 
-        if(playerCollection.playerContract != null)
+        if (playerCollection.playerContract != null)
         {
-        UIData.InfoText = "[F]: Donate Souls";
+            UIData.InfoText = "[F]: Donate Souls";
 
         }
-        else if(playerCollection.playerContract == null)
+        else if (playerCollection.playerContract == null)
         {
             UIData.InfoText = "[F]: You do not have a signed Contract";
             UIData.ErrorText = "Go to lobby to sign a contract;";
         }
 
-            return UIData;
+        return UIData;
     }
 
     public void Interact()
@@ -76,7 +75,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
                 if (nextCard != null)
                 {
                     Event_System.instance.OnSacrificeSuccessful?.Invoke(nextCard);
-                    soulsRequired = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
+                    soulsRequired = (int)nextCard.cardSoulCost;
                 }
             }
         }

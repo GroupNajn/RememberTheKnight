@@ -9,7 +9,7 @@ public class BookPageUI : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private GameObject statsPanel;
     [SerializeField] private GameObject cardPanel;
-    [SerializeField] private GameObject textPanel;
+    [SerializeField] private GameObject lorePanel;
 
     [Header("Stats")]
     [SerializeField] private TextMeshProUGUI statsText;
@@ -18,15 +18,12 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private Transform cardContainer;
     [SerializeField] private InventoryCardUI cardPrefab;
 
-    [Header("Text")]
-    [SerializeField] private TextMeshProUGUI pageText;
+    [Header("Lore")]
+    [SerializeField] private TextMeshProUGUI loreText;
 
     public void Setup(PageData data)
     {
-        // Disable all panels first
-        statsPanel.SetActive(false);
-        cardPanel.SetActive(false);
-        textPanel.SetActive(false);
+        ClearPages();
 
         // Then enable the relevant panel based on the page type
         switch (data.type)
@@ -41,17 +38,20 @@ public class BookPageUI : MonoBehaviour
                 ShowCards(data.cards);
                 break;
 
+            case PageData.PageType.Lore:
+                lorePanel.SetActive(true);
 
-            case PageData.PageType.Text:
-                textPanel.SetActive(true);
-
-                if (data.text != null)
-                    pageText.text = data.text;
-                else
-                    pageText.text = ""; // or "No text"
+                loreText.text = string.IsNullOrEmpty(data.loreText) ? "" : data.loreText;
 
                 break;
         }
+    }
+
+    public void ClearPages()
+    {
+        statsPanel.SetActive(false);
+        cardPanel.SetActive(false);
+        lorePanel.SetActive(false);
     }
 
     private void ShowStats(PlayerStats stats)
