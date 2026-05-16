@@ -15,40 +15,46 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     [SerializeField] TextMeshProUGUI masterVolText;
     [SerializeField] TextMeshProUGUI musicVolText;
     [SerializeField] TextMeshProUGUI SoundsFXVolText;
+
+    private float baseMasterVolume;
+    private float baseMusicVolume;
+    private float baseSFXVolume;
+
     protected override void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
 
-        masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
-        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-        SoundsFXVolumeSlider.onValueChanged.AddListener(SetSoundFXVolume);
+        //masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
+        //musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        //SoundsFXVolumeSlider.onValueChanged.AddListener(SetSoundFXVolume);
 
-        masterVolumeSlider.value = 50;
-        musicVolumeSlider.value = 50;
-        SoundsFXVolumeSlider.value = 50;
+        baseMasterVolume = WorldSoundFXManager.instance.GetMasterVolume();
+        baseMusicVolume = WorldSoundFXManager.instance.GetMusicVolume();
+        baseSFXVolume = WorldSoundFXManager.instance.GetSFXVolume();
+
+        masterVolumeSlider.value = baseMasterVolume;
+        musicVolumeSlider.value = baseMusicVolume;
+        SoundsFXVolumeSlider.value = baseSFXVolume;
 
         base.Start();
     }
 
     public void SetMasterVolume(float volume)
     {
-        masterVolText.text = $"{(int)(volume)}";
-        //AudioManager.Instance.SetMasterVolume(volume);
+        masterVolText.text = $"{(int)(volume * 100)}";
+        WorldSoundFXManager.instance.SetMasterVolume(volume);
     }
 
     public void SetMusicVolume(float volume)
     {
-        musicVolText.text = $"{(int)(volume)}";
-        //AudioManager.Instance.SetMusicVolume(volume);
+        musicVolText.text = $"{(int)(volume * 100)}";
+        WorldSoundFXManager.instance.SetMusicVolume(volume);
     }
 
-    public void SetSoundFXVolume(float volume)
+    public void SetSFXVolume(float volume)
     {
-        //AudioManager.Instance.SetSoundsFXVolume(volume);
-        SoundsFXVolText.text = $"{(int)(volume)}";
+        SoundsFXVolText.text = $"{(int)(volume * 100)}";
+        WorldSoundFXManager.instance.SetSFXVolume(volume);
     }
-
-
-
 
 }
