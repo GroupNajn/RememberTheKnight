@@ -219,7 +219,7 @@ public class GlobalSceneManager : MonoBehaviour
 
         Event_System.instance.OnSceneTransitionDone?.Invoke();
 
-        RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene",targetScene.name);
+        //RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene",targetScene.name);
 
     }
 
