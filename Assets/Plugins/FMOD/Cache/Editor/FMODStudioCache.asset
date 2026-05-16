@@ -269,7 +269,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639143737677672456
+  lastModified: 639145797945579316
   FileSizes: []
   Exists: 1
 --- !u!114 &-7957663653656642059
@@ -377,10 +377,11 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: 3111918574657666491}
   MinDistance: 1
   MaxDistance: 20
-  Length: 309645
+  Length: 314500
 --- !u!114 &-6371917307057465705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,10 +424,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639143737677705550
+  lastModified: 639145797945579888
   FileSizes:
   - Name: 
-    Value: 4320
+    Value: 4454
   Exists: 1
 --- !u!114 &-6267956547839427887
 MonoBehaviour:
@@ -761,6 +762,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4838731001649136819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/CardRarity
+  m_EditorClassIdentifier: 
+  Name: CardRarity
+  StudioPath: parameter:/CardRarity
+  Min: 1
+  Max: 5
+  Default: 1
+  ID:
+    data1: 4216586208
+    data2: 3213529702
+  Type: 1
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-4775416527525937400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,6 +867,38 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4483977604985567208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Scene
+  m_EditorClassIdentifier: 
+  Name: Scene
+  StudioPath: parameter:/Scene
+  Min: 0
+  Max: 7
+  Default: 0
+  ID:
+    data1: 1561321434
+    data2: 1814538722
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - StartScreen
+  - CharacterSelectScreen
+  - LobbyMapNew
+  - CupBoss_Level
+  - Healing_Level
+  - Shop_Level
+  - First_Level
+  - Second_Level
+  Exists: 1
 --- !u!114 &-4382637426422054189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,7 +920,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 273186655221460251}
   IsStream: 1
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters:
   - {fileID: -2586136330870948451}
@@ -1050,6 +1107,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 8.2
   Length: 0
+--- !u!114 &-3897457208901678721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain & thunder Scatter Outisde
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain & thunder Scatter Outisde
+  Guid:
+    Data1: 996096314
+    Data2: 1255357229
+    Data3: 339504026
+    Data4: 1109145
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54400
 --- !u!114 &-3796586469647492706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1465,7 +1549,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Events.bank
   Name: Events
   StudioPath: bank:/Events
-  lastModified: 639142148971618820
+  lastModified: 639142163050427145
   FileSizes: []
   Exists: 1
 --- !u!114 &-2448695962898873182
@@ -2075,7 +2159,6 @@ MonoBehaviour:
   - {fileID: 5236661965855156986}
   - {fileID: 5651651495941868249}
   - {fileID: -6393970425174543802}
-  - {fileID: -214708656228370572}
   - {fileID: -2062336569520894714}
   - {fileID: 1405736316551769352}
   - {fileID: -3051098090452323520}
@@ -2126,17 +2209,22 @@ MonoBehaviour:
   - {fileID: -4382637426422054189}
   - {fileID: 7507007840730801395}
   - {fileID: -2956276639378793355}
+  - {fileID: 7852921780884146162}
+  - {fileID: -3897457208901678721}
+  - {fileID: 4197566940349977613}
   EditorParameters:
   - {fileID: 5822965360318754753}
   - {fileID: -9110914157209669617}
   - {fileID: 2019285089045287690}
   - {fileID: -1022409910682705778}
+  - {fileID: -4838731001649136819}
+  - {fileID: -4483977604985567208}
   MasterBanks:
   - {fileID: -8010261375194842479}
   StringsBanks:
   - {fileID: -6337328646809573992}
   cacheVersion: 131859
-  cacheTime: 639143737681221631
+  cacheTime: 639145797946170725
   SerializableEventsDict:
   - key: event:/Events/Rain And Wind event
     index: 0
@@ -2247,7 +2335,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/SXF.bank
   Name: SXF
   StudioPath: bank:/SXF
-  lastModified: 639143737681221631
+  lastModified: 639145797946170725
   FileSizes: []
   Exists: 1
 --- !u!114 &434497487054475220
@@ -2427,7 +2515,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/SnapShot.bank
   Name: SnapShot
   StudioPath: bank:/SnapShot
-  lastModified: 639142897326702881
+  lastModified: 639144993860592626
   FileSizes: []
   Exists: 1
 --- !u!114 &1314892431403989727
@@ -2483,7 +2571,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 726312
+  Length: 700000
 --- !u!114 &1589551424864849363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2506,7 +2594,7 @@ MonoBehaviour:
   - {fileID: 273186655221460251}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -2793,7 +2881,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639142897323776731
+  lastModified: 639145797945575956
   FileSizes: []
   Exists: 1
 --- !u!114 &2832759509198947542
@@ -2978,6 +3066,38 @@ MonoBehaviour:
   - Name: 
     Value: 908
   Exists: 1
+--- !u!114 &3111918574657666491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Music Loop/Scene
+  m_EditorClassIdentifier: 
+  Name: Scene
+  StudioPath: 
+  Min: 0
+  Max: 7
+  Default: 0
+  ID:
+    data1: 1561321434
+    data2: 1814538722
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - StartScreen
+  - CharacterSelectScreen
+  - LobbyMapNew
+  - CupBoss_Level
+  - Healing_Level
+  - Shop_Level
+  - First_Level
+  - Second_Level
+  Exists: 1
 --- !u!114 &3396140747310466863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3058,6 +3178,66 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &4129261944773308658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/GlobalAmbience/Scene
+  m_EditorClassIdentifier: 
+  Name: Scene
+  StudioPath: 
+  Min: 0
+  Max: 7
+  Default: 0
+  ID:
+    data1: 1561321434
+    data2: 1814538722
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - StartScreen
+  - CharacterSelectScreen
+  - LobbyMapNew
+  - CupBoss_Level
+  - Healing_Level
+  - Shop_Level
+  - First_Level
+  - Second_Level
+  Exists: 1
+--- !u!114 &4197566940349977613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/GlobalAmbience
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/GlobalAmbience
+  Guid:
+    Data1: 650035451
+    Data2: 1212615394
+    Data3: 445325747
+    Data4: -1945603212
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 4129261944773308658}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 60000
 --- !u!114 &4294282512901787633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3417,14 +3597,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: CardRarity
   StudioPath: 
-  Min: 0
+  Min: 1
   Max: 5
-  Default: 0
+  Default: 1
   ID:
     data1: 4216586208
     data2: 3213529702
   Type: 1
-  IsGlobal: 0
+  IsGlobal: 1
   Labels: []
   Exists: 1
 --- !u!114 &5761859634726041559
@@ -3853,6 +4033,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &7852921780884146162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Rain & thunder Scatter Inside
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Rain & thunder Scatter Inside
+  Guid:
+    Data1: -1514438899
+    Data2: 1189847721
+    Data3: -1027038805
+    Data4: 1767647626
+  Banks:
+  - {fileID: 2794800869992304196}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 54400
 --- !u!114 &7997788253384021258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3982,7 +4189,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639142897326584507
+  lastModified: 639145797946106325
   FileSizes: []
   Exists: 1
 --- !u!114 &8376952758886715162
@@ -4087,7 +4294,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 273186655221460251}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters:
   - {fileID: 8175773049282337502}

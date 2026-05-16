@@ -28,6 +28,7 @@ public class PlayerCombatManager : MonoBehaviour
     public bool InCombat = false;
     [SerializeField] public StaminaAction currentAction;
     [SerializeField] public StaminaAction lastAttackAction;
+    [SerializeField] EnemyCoordinator enemyCoordinator;
 
 
     public Dictionary<StaminaAction, float> StaminaCostBasedOnAction = new Dictionary<StaminaAction, float>()
@@ -56,6 +57,7 @@ public class PlayerCombatManager : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         playerManager = GetComponent<PlayerManager>();
         playerController = GetComponent<PlayerController>();
+        enemyCoordinator = GameManager.Instance.GetComponentInChildren<EnemyCoordinator>();
     }
     public void ResetValues()
     {
@@ -70,38 +72,10 @@ public class PlayerCombatManager : MonoBehaviour
 
     public bool CheckInCombat()
     {
-
-
-        List<GameObject> enemies = new List<GameObject>();
-
-
-        enemies.Clear();
-
-        int enemyLayerMask = 1 << 8;
-
-        Collider[] hits = Physics.OverlapSphere(this.gameObject.transform.position, 25, enemyLayerMask);
-
-        foreach (Collider hit in hits)
+        if (enemyCoordinator)
         {
-            enemies.Add(hit.gameObject);
+            return enemyCoordinator.CombatEncounterInProgress;
         }
-
-
-
-        foreach (GameObject enemy in enemies)
-        {
-            if (!enemy)
-            {
-                continue;
-            }
-
-            if (enemy.GetComponent<EnemyLocomotion>().InCombat && enemy.GetComponent<NavMeshAgent>().isActiveAndEnabled)
-            {
-                InCombat = true;
-                return true;
-            }
-        }
-        InCombat = false;
         return false;
     }
 
