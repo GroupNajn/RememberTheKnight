@@ -213,14 +213,22 @@ public class GlobalSceneManager : MonoBehaviour
 
         Event_System.instance.OnLoadScenes.Invoke();
 
+        try // setting parameter for FMOD
+        {
+            RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene", sceneName);
+        }
+        catch
+        {
+            Debug.Log($"FATAL ERROR PREVENTED: No Scene in FMOD called {sceneName}");
+        }
+
         yield return StartCoroutine(FadeFromBlack());
 
         isTransitioning = false;
 
         Event_System.instance.OnSceneTransitionDone?.Invoke();
 
-        //RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene",targetScene.name);
-
+       
     }
 
     IEnumerator UnloadOtherScenes(Scene activeScene)
