@@ -19,6 +19,9 @@ public class BookUi : MonoBehaviour
     [SerializeField] private Button statsButton;
     [SerializeField] private Button cardsButton;
     [SerializeField] private Button loreButton;
+    [SerializeField] private BookMark statsTab;
+    [SerializeField] private BookMark cardsTab;
+    [SerializeField] private BookMark loreTab;
 
     [Header("Data")]
     [SerializeField] private List<LoreEntry> allLoreEntries = new();
@@ -35,14 +38,14 @@ public class BookUi : MonoBehaviour
 
     private int currentIndex = 0;
 
-    public enum BookTab
+    public enum BookTabEnum
     {
         Stats,
         Cards,
         Lore
     }
 
-    private BookTab currentTab = BookTab.Stats;
+    private BookTabEnum currentTab = BookTabEnum.Stats;
 
     public void OnEnable()
     {
@@ -55,7 +58,7 @@ public class BookUi : MonoBehaviour
         BuildCardPages();
         BuildLorePages();
 
-        OpenTab(BookTab.Stats);
+        OpenTab(BookTabEnum.Stats);
         UpdateTabButtons();
     }
 
@@ -106,23 +109,27 @@ public class BookUi : MonoBehaviour
         }
     }
 
-    public void OpenTab(BookTab tab)
+    public void OpenTab(BookTabEnum tab)
     {
         currentTab = tab;
         currentIndex = 0;
 
         switch (tab)
         {
-            case BookTab.Stats:
+            case BookTabEnum.Stats:
                 currentPages = statsPages;
                 break;
-            case BookTab.Cards:
+            case BookTabEnum.Cards:
                 currentPages = cardPages;
                 break;
-            case BookTab.Lore:
+            case BookTabEnum.Lore:
                 currentPages = lorePages;
                 break;
         }
+
+        statsTab.SetSelected(currentTab == BookTabEnum.Stats);
+        cardsTab.SetSelected(currentTab == BookTabEnum.Cards);
+        loreTab.SetSelected(currentTab == BookTabEnum.Lore);
 
         ShowPages();
     }
@@ -195,19 +202,19 @@ public class BookUi : MonoBehaviour
     // go to the first page of the respective section, if it exists. If not, do nothing (or show a message)
     public void GoToStats()
     {
-        OpenTab(BookTab.Stats);
+        OpenTab(BookTabEnum.Stats);
     }
 
     public void GoToCards()
     {
         if (cardPages.Count > 0)
-            OpenTab(BookTab.Cards);
+            OpenTab(BookTabEnum.Cards);
     }
 
     public void GoToLore()
     {
         if (lorePages.Count > 0)
-            OpenTab(BookTab.Lore);
+            OpenTab(BookTabEnum.Lore);
         
     }
 
@@ -218,84 +225,5 @@ public class BookUi : MonoBehaviour
         cardsButton.interactable = cardPages.Count > 0;
         loreButton.interactable = lorePages.Count > 0;
     }
-
-    //unlcok lore by id, if not already unlocked. In a real game, this would be called when the player discovers new lore.
-
-    //public void BuildInventory(PlayerStats stats)
-    //{
-    //    pages.Clear();
-
-    //    List<CardData> allCards = new List<CardData>();
-
-    //    // Get cards from player collection
-    //    allCards.AddRange(playerCollection.ReturnPermanentCardCollection());
-    //    allCards.AddRange(playerCollection.ReturnTempCardCollection());
-
-    //    statsPageIndex = pages.Count;
-
-    //    pages.Add(new PageData
-    //    {
-    //        type = PageData.PageType.Stats,
-    //        stats = stats
-    //    });
-
-    //    // Cards
-    //    if (allCards.Count > 0)
-    //    {
-    //        cardsPageIndex = pages.Count;
-
-    //        for (int i = 0; i < allCards.Count; i += 4)
-    //        {
-    //            pages.Add(new PageData
-    //            {
-    //                type = PageData.PageType.Cards,
-    //                cards = allCards.GetRange(i, Mathf.Min(4, allCards.Count - i))
-    //            });
-    //        }
-    //    }
-    //    else
-    //    {
-    //        cardsPageIndex = -1;
-    //    }
-
-    //    // Lore
-    //    loreManager.UnlockLore("1");
-        
-    //    lorePageIndex = pages.Count;
-
-    //    foreach (var entry in allLoreEntries) 
-    //    {
-    //        //loreManager.UnlockLore(entry.id);
-    //        bool unlocked = loreManager.IsLoreUnlocked(entry.id);
-
-    //        var entryPages = entry.GetPages(charsPerPage);
-
-    //        if (unlocked)
-    //        {
-    //            foreach (var page in entryPages)
-    //            {
-    //                pages.Add(new PageData
-    //                {
-    //                    type = PageData.PageType.Lore,
-    //                    loreText = page
-    //                });
-    //            }
-    //        }
-    //        else
-    //        {
-    //            foreach (var _ in entryPages)
-    //            {
-    //                pages.Add(new PageData
-    //                {
-    //                    type = PageData.PageType.Lore,
-    //                    loreText = "???"
-    //                });
-    //            }
-    //        }
-    //    }
-    //    currentIndex = 0;
-    //    ShowPages();
-    //    UpdateTabButtons();
-    //}
 
 }
