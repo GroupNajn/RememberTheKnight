@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyPreset", menuName = "Scriptable Objects/EnemyPreset")]

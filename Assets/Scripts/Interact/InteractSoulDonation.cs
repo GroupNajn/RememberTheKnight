@@ -1,5 +1,4 @@
 using FMODUnity;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableUIText
@@ -32,18 +31,18 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     {
         var UIData = new InteractableUIData();
 
-        if(playerCollection.playerContract != null)
+        if (playerCollection.playerContract != null)
         {
-        UIData.InfoText = "[F]: Donate Souls";
+            UIData.InfoText = "[F]: Donate Souls";
 
         }
-        else if(playerCollection.playerContract == null)
+        else if (playerCollection.playerContract == null)
         {
             UIData.InfoText = "[F]: You do not have a signed Contract";
             UIData.ErrorText = "Go to lobby to sign a contract;";
         }
 
-            return UIData;
+        return UIData;
     }
 
     public void Interact()
