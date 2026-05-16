@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 4187262473237783389}
   - component: {fileID: 5712160591337018985}
   - component: {fileID: -6542833409895683729}
+  - component: {fileID: -1859438076773701937}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1006,7 +1007,7 @@ MonoBehaviour:
       Data2: 1230875498
       Data3: -2107254087
       Data4: 671003288
-    Path: event:/SFX/PlayerLowStamina
+    Path: event:/SFX/PlayerStateSounds/PlayerLowStamina
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -1018,6 +1019,37 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 10
+--- !u!114 &-1859438076773701937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 650035451
+      Data2: 1212615394
+      Data3: 445325747
+      Data4: -1945603212
+    Path: event:/Ambience/GlobalAmbience
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,23 +16,21 @@ public partial class SelectAgentsToEngageAction : Action
     [SerializeReference] public BlackboardVariable<List<GameObject>> AggroList;
     [SerializeReference] public BlackboardVariable<LostAggroEvent> DisengageEventChannel;
 
+    private HashSet<GameObject> currentlyEngaged = new();
     protected override Status OnStart()
     {
         if (WaitList.Value == null || AggroList.Value == null || DisengageEventChannel.Value == null)
             return Status.Failure;
 
-        List<GameObject> allAgents;
+        currentlyEngaged.RemoveWhere(a => a == null);
 
-        if (AggroList.Value.Count > 0)
-            allAgents = new(AggroList.Value);
-        else
-            allAgents = new();
-
-        if (WaitList.Value.Count > 0)
-            allAgents.AddRange(WaitList.Value);
-
+        var allAgents = new List<GameObject>(AggroList.Value);
+        allAgents.AddRange(WaitList.Value);
+        allAgents = allAgents.Distinct().ToList();
         int allAgentCount = allAgents.Count;
         if (allAgentCount == 0) return Status.Success;
+
+
         allAgents.Sort((agentA, agentB) =>
         {
             var distA = Vector3.Distance(agentA.transform.position, Target.Value.transform.position);
@@ -40,22 +38,33 @@ public partial class SelectAgentsToEngageAction : Action
             return Convert.ToInt32(distA - distB);
         });
 
-        GameObject[] selectedAgents = new GameObject[allAgentCount > Count.Value ? Count.Value : allAgentCount];
-        for (int i = 0; i < selectedAgents.Length; i++)
+        int selectCount = Math.Min(Count.Value, allAgentCount);
+        var newSelection = new HashSet<GameObject>();
+        for (int i = 0; i < selectCount; i++)
         {
             var selectedAgent = allAgents[i];
-            selectedAgents[i] = selectedAgent;
-            if (!AggroList.Value.Contains(selectedAgent)) AggroList.Value.Add(selectedAgent);
-        }
+            newSelection.Add(selectedAgent);
 
-        List<GameObject> snapshot = new(AggroList.Value);
-        foreach (var agent in snapshot)
-        {
-            if (!selectedAgents.Contains(agent))
+            if (!AggroList.Value.Contains(selectedAgent))
             {
-                DisengageEventChannel.Value.SendEventMessage(agent, Target.Value.gameObject);
+                AggroList.Value.Add(selectedAgent);
+                WaitList.Value.Remove(selectedAgent);
             }
         }
+
+        foreach (var agent in currentlyEngaged)
+        {
+            if (!newSelection.Contains(agent) && AggroList.Value.Contains(agent))
+            {
+                DisengageEventChannel.Value.SendEventMessage(agent, Target.Value.gameObject);
+                AggroList.Value.Remove(agent);
+                WaitList.Value.Add(agent);
+            }
+        }
+
+        currentlyEngaged = newSelection;
+
+        AggroList.Value = currentlyEngaged.ToList();
 
         return Status.Success;
     }
