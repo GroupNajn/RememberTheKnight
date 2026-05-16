@@ -108,8 +108,13 @@ public class CardUnlockUI : MonoBehaviour
     public void OnRememberCard()
     {
         CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        InteractSoulDonation donation = GameObject.FindWithTag("DonationWell").GetComponent<InteractSoulDonation>();
+        donation.SetNextCard();
+        donation.SetNetCardCost();
         gameObject.SetActive(false);
         cardSystem.UnlockCardFromDonation(cardData);
+
+
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
 
