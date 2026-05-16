@@ -98,9 +98,10 @@ public partial class CircleTargetAction : Action
                 navMeshAgent.SetDestination(currentCirclePoint);
             }
 
-            Vector3 worldDesiredVelocity = navMeshAgent.desiredVelocity / navMeshAgent.speed;
-            worldDesiredVelocity *= 0.75f;
-            Vector3 localDesiredVelocity = Self.Value.transform.InverseTransformDirection(worldDesiredVelocity);
+            Vector3 desiredVelocity = navMeshAgent.desiredVelocity;
+            Vector3 localDesiredVelocity = Vector3.zero;
+            if (desiredVelocity != Vector3.zero)
+                localDesiredVelocity = Self.Value.transform.InverseTransformDirection(desiredVelocity).normalized;
 
             float desiredSpeedX = localDesiredVelocity.x;
             float desiredSpeedZ = localDesiredVelocity.z;
@@ -178,8 +179,6 @@ public partial class CircleTargetAction : Action
     {
         if (navMeshAgent.hasPath)
             navMeshAgent.ResetPath();
-
-        navMeshAgent.updateRotation = true;
     }
 
     private Vector3 SampleCirclePoints(int sampleDensity)

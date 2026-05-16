@@ -16,6 +16,7 @@ public partial class ClearDeadAgentsAction : Action
         if (List.Value == null) return Status.Failure;
         List.Value.RemoveAll(obj =>
         {
+            if (obj == null) return true;
             if (obj.TryGetComponent(out EnemyDamage enemyDamage))
             {
                 return enemyDamage.Health <= 0;

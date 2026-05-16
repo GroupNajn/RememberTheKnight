@@ -11,43 +11,50 @@ public partial class NavAgentRotateAction : Action
 {
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
-    [SerializeReference] public BlackboardVariable<float> Tolerance = new(10);
     [SerializeReference] public BlackboardVariable<bool> Continuous = new(false);
-    [SerializeReference] public BlackboardVariable<bool> PauseSignal = new(false);
     [SerializeReference] public BlackboardVariable<float> SpeedMultiplier = new(1);
 
 
     protected override Status OnStart()
     {
         if (Target.Value == null) return Status.Success;
+        Self.Value.updateRotation = false;
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        if (PauseSignal.Value) return Status.Running;
         Vector3 direction = Target.Value.position - Self.Value.transform.position;
         direction.y = 0;
 
-        if (direction == Vector3.zero)
+        if (direction == Vector3.zero || direction.magnitude < 0.001f)
             return Continuous.Value ? Status.Running : Status.Success;
+        else
+        {
 
-        Quaternion desiredRotation = Quaternion.LookRotation(direction.normalized);
-        bool isDone = Quaternion.Angle(Self.Value.transform.rotation, desiredRotation) < Tolerance.Value;
+            Quaternion desiredRotation = Quaternion.LookRotation(direction, Self.Value.transform.up);
+            Self.Value.transform.rotation = Quaternion.RotateTowards(
+                Self.Value.transform.rotation,
+                desiredRotation,
+                Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value
+            );
+            if (Continuous.Value) return Status.Running;
 
-        if (isDone && !Continuous.Value) return Status.Success;
+            var currentRotation = Self.Value.transform.rotation.eulerAngles;
+            var desiredRotationEuler = desiredRotation.eulerAngles;
+            bool isDone =
+                Mathf.Approximately(currentRotation.x, desiredRotationEuler.x) &&
+                Mathf.Approximately(currentRotation.y, desiredRotationEuler.y) &&
+                Mathf.Approximately(currentRotation.z, desiredRotationEuler.z);
 
-        Self.Value.transform.rotation = Quaternion.RotateTowards(
-            Self.Value.transform.rotation,
-            desiredRotation,
-            Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value
-        );
+            if (isDone) return Status.Success;
+        }
         return Status.Running;
     }
 
     protected override void OnEnd()
     {
-
+        Self.Value.updateRotation = false;
     }
 }
 

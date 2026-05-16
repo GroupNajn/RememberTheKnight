@@ -12,6 +12,8 @@ public partial class StopAnimatorAction : Action
     private static readonly int YHash = Animator.StringToHash("Y");
     private static readonly int XHash = Animator.StringToHash("X");
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Self;
+    [SerializeReference] public BlackboardVariable<float> BreakingMultiplier = new(3);
+
     private Animator animator;
     protected override Status OnStart()
     {
@@ -24,8 +26,8 @@ public partial class StopAnimatorAction : Action
         float currentSpeedX = animator.GetFloat(XHash);
         float currentSpeedZ = animator.GetFloat(YHash);
 
-        animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, 0, Self.Value.acceleration * Time.deltaTime));
-        animator.SetFloat(YHash, Mathf.Lerp(currentSpeedZ, 0, Self.Value.acceleration * Time.deltaTime));
+        animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, 0, BreakingMultiplier.Value * Self.Value.acceleration * Time.deltaTime));
+        animator.SetFloat(YHash, Mathf.Lerp(currentSpeedZ, 0, BreakingMultiplier.Value * Self.Value.acceleration * Time.deltaTime));
 
         currentSpeedX = animator.GetFloat(XHash);
         currentSpeedZ = animator.GetFloat(YHash);

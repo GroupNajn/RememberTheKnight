@@ -47,12 +47,10 @@ public partial class RootMotionNavigateAction : Action
         navMeshAgent.updateRotation = true;
         if (navMeshAgent.hasPath) navMeshAgent.ResetPath();
         if (ShouldStopAtCircleRadius.Value)
-        {
-            var dir = (Self.Value.transform.position - Target.Value.position).normalized;
-            dir *= CircleRadius.Value;
-            targetPos = Target.Value.position + dir;
-        }
-        else targetPos = Target.Value.position;
+            targetPos = SampleCirclePoints(10);
+        else
+            targetPos = Target.Value.position;
+
         navMeshAgent.SetDestination(targetPos);
         lastTargetPos = Target.Value.position;
         navMeshAgent.avoidancePriority = Priority.Value;
@@ -68,23 +66,23 @@ public partial class RootMotionNavigateAction : Action
         if (Time.deltaTime <= 1e-5f) return Status.Running;
 
 
-        if (ShouldStopAtCircleRadius.Value)
-        {
-            var dir = (Self.Value.transform.position - Target.Value.position).normalized;
-            dir *= CircleRadius.Value;
-            targetPos = Target.Value.position + dir;
-        }
-        else targetPos = Target.Value.position;
+
         bool shouldUpdateDestination =
             !Mathf.Approximately(lastTargetPos.x, Target.Value.position.x) ||
             !Mathf.Approximately(lastTargetPos.y, Target.Value.position.y) ||
             !Mathf.Approximately(lastTargetPos.z, Target.Value.position.z);
-        lastTargetPos = targetPos;
-        if (shouldUpdateDestination) navMeshAgent.SetDestination(Target.Value.position);
+        lastTargetPos = Target.Value.position;
+        if (shouldUpdateDestination)
+        {
+            if (ShouldStopAtCircleRadius.Value)
+                navMeshAgent.SetDestination(SampleCirclePoints(10));
+            else
+                navMeshAgent.SetDestination(Target.Value.position);
+        }
 
         Vector3 desiredVelocity = navMeshAgent.desiredVelocity;
         Vector3 desiredLocalVelocity = Vector3.zero;
-        if (desiredVelocity.magnitude > 0.01f)
+        if (desiredVelocity != Vector3.zero)
             desiredLocalVelocity = Self.Value.transform.InverseTransformDirection(desiredVelocity).normalized;
 
         float desiredSpeedX = desiredLocalVelocity.x;
@@ -112,6 +110,23 @@ public partial class RootMotionNavigateAction : Action
         if (navMeshAgent.isOnNavMesh) navMeshAgent.ResetPath();
         animator.SetFloat(XHash, 0);
         animator.SetFloat(YHash, 0);
+    }
+
+    private Vector3 SampleCirclePoints(int sampleDensity)
+    {
+        Vector3 dir = navMeshAgent.transform.position - Target.Value.position;
+        dir.y = 0;
+        dir.Normalize();
+        dir *= CircleRadius.Value;
+        for (int i = 0; i < sampleDensity; i++)
+        {
+
+            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            {
+                return hit.position;
+            }
+        }
+        return navMeshAgent.transform.position;
     }
 }
 
