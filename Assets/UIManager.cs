@@ -13,8 +13,6 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
-    [SerializeField] private BookUi bookInventoryUI; // Meike tbc
-    [SerializeField] private ReadableBookUI readableBookUI;
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
 
@@ -38,8 +36,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject bookUI;
     [SerializeField] private GameObject cardPickupUI;
     [SerializeField] private GameObject cardUnlockUI;
-    [SerializeField] private GameObject inventoryBookUI;
-    [SerializeField] private GameObject pedistalBookUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -161,12 +157,11 @@ public class UIManager : MonoBehaviour
         }
 
     }
-
     void OnOpenBook()
     {
         if (!UIMenuActive)
         {
-            OpenInventoryBook();
+            OpenBookUI();
         }
         else
         {
@@ -457,6 +452,8 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
+
+    // BOOK UI
     public void OpenBookUI()
     {
         CloseInteractiveUI();
@@ -468,42 +465,12 @@ public class UIManager : MonoBehaviour
 
     public void CloseBookUI()
     {
-        //Debug.Log("Closing Book UI");
-        CloseInventoryBook();
-        ClosePedistalBook();
-
         bookUI.SetActive(false);
 
         UIMenuActive = false;
         CheckUIState();
     }
 
-    public void OpenInventoryBook()
-    {
-        OpenBookUI();
-        ClosePedistalBook();
-        inventoryBookUI.SetActive(true);
-        bookInventoryUI.BuildInventory(playerStats);
-    }
-
-    public void CloseInventoryBook()
-    {
-        inventoryBookUI.SetActive(false);
-    }
-
-    public void OpenPedistalBook(LoreEntry entry)
-    {
-        OpenBookUI();
-       // CloseInteractiveUI();
-        CloseInventoryBook();
-        pedistalBookUI.SetActive(true);
-        readableBookUI.OpenBooke(entry);
-    }
-
-    public void ClosePedistalBook()
-    {
-        pedistalBookUI.SetActive(false);
-    }
 
     //DEATH UI
     public void ShowDeathScreen()
