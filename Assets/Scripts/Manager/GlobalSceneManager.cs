@@ -217,6 +217,10 @@ public class GlobalSceneManager : MonoBehaviour
         isTransitioning = false;
 
         Event_System.instance.OnSceneTransitionDone?.Invoke();
+
+        //RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene",targetScene.name);
+
+
     }
 
     IEnumerator UnloadOtherScenes(Scene activeScene)
