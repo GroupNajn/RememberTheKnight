@@ -51,25 +51,25 @@ public class Card : Loot, IPickupable
         
     }
 
-    protected void OnTriggerEnter(Collider other)
-    {
-        if (hasBeenPickedUp)
-            return;
+    //protected void OnTriggerEnter(Collider other)
+    //{
+    //    if (hasBeenPickedUp)
+    //        return;
 
-        if (!other.CompareTag("Player"))
-            return;
+    //    if (!other.CompareTag("Player"))
+    //        return;
 
-        if (pickable != PickableState.Pickable)
-            return;
+    //    if (pickable != PickableState.Pickable)
+    //        return;
 
-        hasBeenPickedUp = true;
+    //    hasBeenPickedUp = true;
 
-        Collider col = GetComponent<Collider>();
-        if (col != null)
-            col.enabled = false;
+    //    Collider col = GetComponent<Collider>();
+    //    if (col != null)
+    //        col.enabled = false;
 
-        Pickup();
-    }
+    //    Pickup();
+    //}
     public override void Pickup()
     {
         RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.cardPickupEvent, playerTransform.gameObject);
