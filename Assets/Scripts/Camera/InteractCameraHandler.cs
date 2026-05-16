@@ -39,16 +39,6 @@ public class InteractCameraHandler : MonoBehaviour
         Debug.Log($"interactCam {interactCam.name}, cinemachineInteractCam {cinemachineInteractCam.name}");
     }
 
-
-    void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            InteractCamReset();
-        }
-    }
-
     public void InteractCamSwitch(Transform target, InteractCameraPreset preset)
     {
         if (target == null)

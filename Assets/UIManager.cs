@@ -13,8 +13,10 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
+    [Header("General References")]
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
+    [SerializeField] private InteractCameraHandler interactCameraHandler;
 
     [SerializeField] private GameObject backButtonUI;
 
@@ -412,6 +414,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = false;
         CheckUIState();
+        interactCameraHandler.InteractCamReset();
     }
 
     // FAMILY SELECT UI
@@ -431,6 +434,8 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = false;
         CheckUIState();
+
+        interactCameraHandler.InteractCamReset();
     }
 
     // CARD SHOP UI
@@ -451,6 +456,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = false;
         CheckUIState();
+        interactCameraHandler.InteractCamReset();
     }
 
     // BOOK UI
