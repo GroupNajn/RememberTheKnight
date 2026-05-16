@@ -58,16 +58,16 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         if (playerCollection.playerContract == null) return;
         if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
         {
-            Debug.Log("No Family Selected, can not donate");
-            Debug.Log("Family signed: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed.ToString());
-            return;
+            //Debug.Log("No Family Selected, can not donate");
+            //Debug.Log("Family signed: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed.ToString());
+            //return;
         }
 
 
 
         if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired && nextCard != null)
         {
-            RuntimeManager.StudioSystem.setParameterByName("CardUnlock", soulsDonated / soulsRequired);
+            RuntimeManager.StudioSystem.setParameterByName("CardUnlock", (float)soulsDonated / (float)soulsRequired);
             RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
 
             lootSystem.ConsumeSouls(1);
