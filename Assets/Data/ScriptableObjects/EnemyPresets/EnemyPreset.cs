@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyPreset", menuName = "Scriptable Objects/EnemyPreset")]
 public class EnemyPreset : ScriptableObject
 {
+    public int weight = 10;
     public Mesh mesh;
     public GameObject helmet;
     public GameObject rightHandWeapon;
