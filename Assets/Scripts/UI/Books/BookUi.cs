@@ -35,8 +35,10 @@ public class BookUi : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private RectTransform movingBook;
     [SerializeField] private Transform movingPage;
+
     [SerializeField] private float animationDurationMoving = 1f;
     [SerializeField] private float animationDurationOpening = 0.5f;
+    [SerializeField] private bool isAnimating;
     [SerializeField] private AnimationCurve bounceCurve;
 
     [SerializeField] private Vector3 startPos;
@@ -64,13 +66,23 @@ public class BookUi : MonoBehaviour
 
     public void OnEnable()
     {
+        isAnimating = true;
+
         SetClosedInstant();
         BaseBookSetup(playerStats);
+
+        DisableTabButtonsTemporarily();
         StartCoroutine(ScaleBouncePickUpWindow(() =>
         {
             AnimateMove(() =>
             {
-                AnimateOpen();
+                AnimateOpen(() =>
+                {
+                    isAnimating = false;
+
+                    EnableTabButtons();
+                    UpdateTabButtons();
+                });
             });
         }));
     }
@@ -156,11 +168,23 @@ public class BookUi : MonoBehaviour
 
     public void ChangeTab(BookTabEnum tab)
     {
+        if (isAnimating)
+            return;
+
+        isAnimating = true;
+
+        DisableTabButtonsTemporarily();
         AnimateClose(() =>
         {
             OpenTab(tab);
 
-            AnimateOpen();
+            AnimateOpen(() =>
+            {
+                isAnimating = false;
+
+                EnableTabButtons();
+                UpdateTabButtons();
+            });
         });
     }
 
@@ -284,6 +308,20 @@ public class BookUi : MonoBehaviour
         loreButton.interactable = currentTab != BookTabEnum.Lore;
     }
 
+    private void EnableTabButtons()
+    {
+        statsButton.interactable = true;
+        cardsButton.interactable = true;
+        loreButton.interactable = true;
+    }
+
+    private void DisableTabButtonsTemporarily()
+    {
+        statsButton.interactable = false;
+        cardsButton.interactable = false;
+        loreButton.interactable = false;
+    }
+
     // Animations for book opening and closing
 
     public void SetClosedInstant()
@@ -300,9 +338,12 @@ public class BookUi : MonoBehaviour
         });
     }
 
-    public void AnimateOpen()
+    public void AnimateOpen(Action onComplete = null)
     {
-        LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true);
+        LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
     }
 
     public void AnimateClose(Action onComplete = null)
