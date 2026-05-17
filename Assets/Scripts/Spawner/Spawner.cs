@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] float spawnRadius = 10f; // Used if spawnPoints is empty
     [SerializeField] List<Transform> spawnPoints = new List<Transform>();
     [SerializeField] bool randomObjectSpawns = false;
+    [SerializeField, Range(0, 1)] float spawnChance; 
 
     bool randomSpawnPoints;
     int currentSpawnIndex = 0;
@@ -71,6 +72,11 @@ public class Spawner : MonoBehaviour
                 continue;
             }
 
+            if (Random.Range(0f, 1f) > spawnChance)
+            {
+                continue;
+            }
+
             Vector3 spawnPosition;
             Quaternion spawnRotation = Quaternion.identity;
 
@@ -103,6 +109,12 @@ public class Spawner : MonoBehaviour
         {
             if (!spawnPosition)
             {
+                continue;
+            }
+
+            if (Random.Range(0f, 1f) > spawnChance)
+            {
+                Debug.Log("Doesn't spawn object");
                 continue;
             }
 
