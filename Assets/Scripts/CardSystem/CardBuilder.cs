@@ -1,7 +1,9 @@
 using FMODUnity;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using static IPickupable;
 
 // Script made by Henric in the end of April 2026.
@@ -13,7 +15,8 @@ public class CardBuilder : MonoBehaviour
     [SerializeField] private Card cardScript;
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] Transform playerTrans;
-    [SerializeField] ParticleSystem[] particleSystems = new ParticleSystem[5];
+    [SerializeField] ParticleSystem[] normalDropParticles = new ParticleSystem[5];
+    [SerializeField] ParticleSystem[] shopBoardParticles = new ParticleSystem[5];
     bool keyPressed = false;
 
     void Start()
@@ -29,6 +32,8 @@ public class CardBuilder : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y + 180, parentTransform.rotation.eulerAngles.z);
 
         GameObject cardInstance = Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
+        Instantiate(ReturnParticleShopboard(LootManager.instance.GetRarityFromTier(cardData.cardTier)), cardInstance.transform.position, Quaternion.identity, cardInstance.transform);
+        TurnOffSpotLightsOnChildren(cardInstance);
         Card cardScript = cardInstance.GetComponent<Card>();
         SetCardMaterial(cardData, cardScript);
         TurnOffScriptsOnCard(cardInstance);
@@ -81,7 +86,7 @@ public class CardBuilder : MonoBehaviour
     public void InstatitateCard(CardData card, Vector3 spawnPos)
     {
         GameObject spawnedCard = Instantiate(cardPrefab, spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        Instantiate(ReturnParticleSystem(LootManager.instance.GetRarityFromTier(card.cardTier)), spawnedCard.transform.position, Quaternion.identity, spawnedCard.transform);
+        Instantiate(ReturnNormalParticles(LootManager.instance.GetRarityFromTier(card.cardTier)), spawnedCard.transform.position, Quaternion.identity, spawnedCard.transform);
         Card script = spawnedCard.GetComponent<Card>();
         script.SetCardData(card);
         SetCardMaterial(card, script);
@@ -93,21 +98,39 @@ public class CardBuilder : MonoBehaviour
     /// <param name="rarityTier">The rarity tier for which to obtain the corresponding particle system.</param>
     /// <returns>The particle system that corresponds to the specified rarity tier. If the rarity tier is not recognized, the
     /// particle system for the Common tier is returned.</returns>
-    private ParticleSystem ReturnParticleSystem(RarityTier rarityTier)
+    private ParticleSystem ReturnNormalParticles(RarityTier rarityTier)
     {
         switch (rarityTier)
         { 
             case RarityTier.Common:
-                return particleSystems[0];
+                return normalDropParticles[0];
             case RarityTier.Uncommon:
-                return particleSystems[1];
+                return normalDropParticles[1];
             case RarityTier.Rare:
-                return particleSystems[2];
+                return normalDropParticles[2];
             case RarityTier.Epic:
-                return particleSystems[3];
+                return normalDropParticles[3];
             case RarityTier.Legendary:
-                return particleSystems[4];
-            default: return particleSystems[0];
+                return normalDropParticles[4];
+            default: return normalDropParticles[0];
+        }
+    }
+
+    private ParticleSystem ReturnParticleShopboard(RarityTier rarityTier)
+    {
+        switch (rarityTier)
+        {
+            case RarityTier.Common:
+                return shopBoardParticles[0];
+            case RarityTier.Uncommon:
+                return shopBoardParticles[1];
+            case RarityTier.Rare:
+                return shopBoardParticles[2];
+            case RarityTier.Epic:
+                return shopBoardParticles[3];
+            case RarityTier.Legendary:
+                return shopBoardParticles[4];
+            default: return shopBoardParticles[0];
         }
     }
     /// <summary>
@@ -136,8 +159,16 @@ public class CardBuilder : MonoBehaviour
         return result;
     }
 
+    private void TurnOffSpotLightsOnChildren(GameObject obj)
+    {
+        foreach (Light spotlight in obj.GetComponentsInChildren<Light>())
+        {
+            spotlight.enabled = false;
+        }
+    }
 
-    
+
+
 
 
 
