@@ -52,9 +52,17 @@ public class WorldSoundFXManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        masterVCA = RuntimeManager.GetVCA("vca:/master");
-        musicVCA = RuntimeManager.GetVCA("vca:/music");
-        masterVCA = RuntimeManager.GetVCA("vca:/sFX");
+        try
+        {
+            masterVCA = RuntimeManager.GetVCA("vca:/Master");
+            musicVCA = RuntimeManager.GetVCA("vca:/Music");
+            sfxVCA = RuntimeManager.GetVCA("vca:/SFX");
+        }
+        catch
+        {
+            Debug.Log("Fatal error prevented when setting vca references");
+        }
+       
     }
 
     private void Start()
