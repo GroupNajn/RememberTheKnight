@@ -105,7 +105,7 @@ public class DamageTrigger : MonoBehaviour
 
     public void ResetDamage()
     {
-        Debug.Log("Damage reset for " + gameObject.name);
+       // Debug.Log("Damage reset for " + gameObject.name);
         damagedObjects.Clear();
     }
 }
