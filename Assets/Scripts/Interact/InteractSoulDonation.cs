@@ -6,6 +6,8 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     Loot_System lootSystem;
     CardSystem cardSystem;
     PlayerCollection playerCollection;
+    private DonationMoveSoul moveSoul;
+
 
     CardData nextCard;
     int soulsRequired;
@@ -21,6 +23,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         cardSystem = LootManager.instance.gameObject.GetComponentInChildren<CardSystem>();
         playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         nextCard = cardSystem.GetNextCardInSelectedFamily();
+        moveSoul = GetComponent<DonationMoveSoul>();
         if (nextCard)
         {
             soulsRequired = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
@@ -72,8 +75,9 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         {
             RuntimeManager.StudioSystem.setParameterByName("CardUnlock", (float)soulsDonated / (float)soulsRequired);
             RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
-
+            
             lootSystem.ConsumeSouls(1);
+            moveSoul.InstantiateSoul();
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
