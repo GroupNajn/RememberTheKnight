@@ -29,7 +29,7 @@ public partial class AttackAction : Action
 
     protected override Status OnUpdate()
     {
-        if (elapsedSeconds >= SecondsTimeout.Value) return Status.Failure;
+        if (elapsedSeconds >= SecondsTimeout.Value) return Status.Success;
         isAttacking = Self.Value.GetBool(IsAttackingHash);
 
         if (isAttacking && !hasStartedAttack)

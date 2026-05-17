@@ -12,6 +12,8 @@ using System.Linq;
 [RequireComponent(typeof(BehaviorGraphAgent))]
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
+    private static readonly int HasAggroHash = Animator.StringToHash("HasAggro");
+    private static readonly int HasSightHash = Animator.StringToHash("HasSight");
     private static readonly int HitHash = Animator.StringToHash("Hit");
 
     //[SerializeField] private Event_System EventSystem;
@@ -38,12 +40,12 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         float incomingDamage = damageInfo.DamageAmount;
         if (CanTakeDamage && Health > 0)
         {
-            if (threat != null && Mathf.Approximately(threat.Value, 0))
+            if (!animator.GetBool(HasSightHash) && !animator.GetBool(HasAggroHash))
                 incomingDamage *= SneakMultiplier;
 
             Health -= incomingDamage;
             OnHealthChanged?.Invoke(Health, MaxHealth);
-            
+
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();

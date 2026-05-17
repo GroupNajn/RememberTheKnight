@@ -51,7 +51,7 @@ public class EnemySkeletonBuilder : MonoBehaviour
             foreach (var weightedPreset in weightedPresets)
             {
                 currentWeight += weightedPreset.Weight;
-                if (currentWeight < randomValue)
+                if (randomValue <= currentWeight)
                 {
                     selectedPreset = weightedPreset.Preset;
                     break;
