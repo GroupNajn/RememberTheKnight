@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 7300768217044806386}
   - component: {fileID: 661917760473456594}
   - component: {fileID: 5269013278860632916}
+  - component: {fileID: 7848558714380823486}
   m_Layer: 13
   m_Name: HealingSoul
   m_TagString: Untagged
@@ -137,6 +138,27 @@ MonoBehaviour:
   tier: 2
   pickable: 0
   <SoulCollectReward>k__BackingField: 0
+  soulBounceEvent:
+    Guid:
+      Data1: -61267842
+      Data2: 1305709223
+      Data3: -1566363222
+      Data4: -1451805178
+    Path: event:/SFX/Drops/Souls/Heal Soul Bounce
+  soulAppearEvent:
+    Guid:
+      Data1: -1419481803
+      Data2: 1275606321
+      Data3: 2065370016
+      Data4: 969985954
+    Path: event:/SFX/Drops/Souls/Heal Soul Appear
+  soulPickupEvent:
+    Guid:
+      Data1: 1932906100
+      Data2: 1335579945
+      Data3: -192963185
+      Data4: 1991277716
+    Path: event:/SFX/Drops/Souls/Heal Soul Pickup
 --- !u!135 &9028050743942389514
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -217,6 +239,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7de64e1efbffc1b41b66d9d7e3c9a707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7848558714380823486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7928836156734228200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 2120904148
+      Data2: 1263575802
+      Data3: 55939983
+      Data4: 1974813981
+    Path: event:/SFX/Drops/Souls/Heal Soul Ambience
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 40
 --- !u!1 &8488486211287714517
 GameObject:
   m_ObjectHideFlags: 0
