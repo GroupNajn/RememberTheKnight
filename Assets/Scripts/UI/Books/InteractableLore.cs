@@ -10,6 +10,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
 
     [Header("Lore")]
     [SerializeField] private LoreEntry loreEntry;
+    [SerializeField] private LorePageUI lorePageUI;
     private LoreManager loreManager;
 
     private UIManager playerUIManager;
@@ -18,9 +19,8 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
-        //interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
-        //stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
         loreManager = FindFirstObjectByType<LoreManager>();
+        lorePageUI = FindFirstObjectByType<LorePageUI>(FindObjectsInactive.Include);
 
         PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
@@ -42,7 +42,8 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
         }
 
         loreManager.UnlockLore(loreEntry.id);
-        playerUIManager.OpenBookUI();
+        lorePageUI.SetLoreEntry(loreEntry);
+        playerUIManager.OpenLorePageUI();
     }
 
     public InteractableUIData GetUIData()

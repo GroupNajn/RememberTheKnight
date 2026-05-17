@@ -9,17 +9,21 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LorePageUI : MonoBehaviour
 {
-
-
+    [Header("Settings")]
     [SerializeField] private RectTransform lorePageWindowRect;
     [SerializeField] private float duration = 1f;
     [SerializeField] AnimationCurve bounceCurve;
     [SerializeField] List<GameObject> gameObjectsToDisable;
     [SerializeField] TextMeshProUGUI loreTextTMP;
 
+    [Header("References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private BookUi book;
+    [SerializeField] private PlayerStats playerStats;
+
     void Start()
     {
-
+        
     }
 
     void Update()
@@ -30,9 +34,8 @@ public class LorePageUI : MonoBehaviour
 
     private void OnEnable()
     {
-        SetTMPText();
+        DisableGameObjects();
         StartCoroutine(ScaleBouncePickUpWindow());
-        
     }
 
     private IEnumerator ScaleBouncePickUpWindow()
@@ -58,9 +61,12 @@ public class LorePageUI : MonoBehaviour
     }
 
 
-    void OnRememberLore()
+    public void OnRememberLore()
     {
+        uiManager.CloseLorePageUI();
+        uiManager.OpenBookUI();
 
+        book.OpenTab(BookUi.BookTabEnum.Lore);
     }
 
     void EnableGameObjects()
@@ -71,9 +77,9 @@ public class LorePageUI : MonoBehaviour
         }
     }
 
-    private void SetTMPText()
+    public void SetLoreEntry(LoreEntry entry)
     {
-        // Initialize TMP Text on enable or start with preferred data.
+        loreTextTMP.text = entry.GetPages(500)[0];
     }
 
     void DisableGameObjects()

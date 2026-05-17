@@ -49,16 +49,26 @@ public class BookUi : MonoBehaviour
 
     public void OnEnable()
     {
-       BookSetup(playerStats);
+       BaseBookSetup(playerStats);
     }
 
-    public void BookSetup(PlayerStats stats)
+    public void BaseBookSetup(PlayerStats stats)
     {
         BuildStatPages(stats);
         BuildCardPages();
         BuildLorePages();
 
         OpenTab(BookTabEnum.Stats);
+        UpdateTabButtons();
+    }
+
+    public void SpecificBookSetup(PlayerStats stats, BookTabEnum tab)
+    {
+        BuildStatPages(stats);
+        BuildCardPages();
+        BuildLorePages();
+
+        OpenTab(tab);
         UpdateTabButtons();
     }
 
