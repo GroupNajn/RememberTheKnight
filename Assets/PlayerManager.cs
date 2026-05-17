@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerColllection = GetComponent<PlayerCollection>();
 
         playerStats = GetComponent<PlayerStats>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        Event_System.instance.OnLoadScenes += OnSceneLoaded;
         Event_System.instance.OnSceneTransitionDone += ReApplyStats;
 
         //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
@@ -206,9 +206,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyStaminaChanged();
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded()
     {
-        if (scene.name == SceneData.Instance[2]) // Heal to max health after loading lobby
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
         {
             RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.playerWakeUpEvent, gameObject);
             Heal(playerStats.MaxHealth);

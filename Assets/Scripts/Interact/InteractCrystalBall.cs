@@ -6,7 +6,6 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     [SerializeField] int sceneToLoadIndex;
     [SerializeField] bool preLoadScene = false;
 
-    private bool canShowUI = false;
     string sceneName;
 
     private void Start()

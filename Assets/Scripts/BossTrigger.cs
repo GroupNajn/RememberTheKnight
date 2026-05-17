@@ -10,7 +10,7 @@ public class BossTrigger : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Update() // TO BE REMOVED
     {
         if (Input.GetKey(KeyCode.P))
         {

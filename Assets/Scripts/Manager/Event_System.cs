@@ -13,6 +13,7 @@ public class Event_System : MonoBehaviour
 
     //Events 
     public Action OnWin;
+    public Action OnLevelCompleted;
 
     //Player Related
     public Action OnPlayerDeath;

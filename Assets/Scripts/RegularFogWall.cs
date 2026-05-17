@@ -1,25 +1,23 @@
 using UnityEngine;
 
-public class FogWall : MonoBehaviour
+public class RegularFogWall : MonoBehaviour
 {
     GameObject wall;
 
     private void Awake()
     {
         wall = GetComponentInChildren<ParticleSystem>().gameObject;
-        Event_System.instance.OnSpawnBoss += TurnOnWall;       
-        Event_System.instance.OnBossDeath += TurnOffWall;       
+        Event_System.instance.OnLevelCompleted += TurnOffWall;
     }
 
     private void Start()
     {
-        TurnOffWall();
-    } 
+        TurnOnWall();
+    }
 
     void TurnOnWall()
     {
         wall.SetActive(true);
-        //bossHealthbar.SetActive(true);
     }
 
     void TurnOffWall()
@@ -29,7 +27,6 @@ public class FogWall : MonoBehaviour
 
     private void OnDestroy()
     {
-        Event_System.instance.OnSpawnBoss -= TurnOnWall;
-        Event_System.instance.OnBossDeath -= TurnOffWall;
+        Event_System.instance.OnLevelCompleted -= TurnOffWall;
     }
 }
