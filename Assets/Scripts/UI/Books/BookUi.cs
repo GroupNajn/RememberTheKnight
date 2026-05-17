@@ -1,6 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 public class BookUi : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
@@ -30,6 +32,19 @@ public class BookUi : MonoBehaviour
     [SerializeField] private LoreManager loreManager;
     [SerializeField] private UIManager uiManager;
 
+    [Header("Animation")]
+    [SerializeField] private RectTransform movingBook;
+    [SerializeField] private Transform movingPage;
+    [SerializeField] private float animationDurationMoving = 1f;
+    [SerializeField] private float animationDurationOpening = 0.5f;
+    [SerializeField] private AnimationCurve bounceCurve;
+
+    [SerializeField] private Vector3 startPos;
+    [SerializeField] private Vector3 targetPos;
+
+    [SerializeField] private float rotationAngle;
+    [SerializeField] private Vector3 closedRotation;
+
     private List<PageData> statsPages = new();
     private List<PageData> cardPages = new();
     private List<PageData> lorePages = new();
@@ -49,9 +64,29 @@ public class BookUi : MonoBehaviour
 
     public void OnEnable()
     {
-       BaseBookSetup(playerStats);
+        SetClosedInstant();
+        BaseBookSetup(playerStats);
+        StartCoroutine(ScaleBouncePickUpWindow(() =>
+        {
+            AnimateMove(() =>
+            {
+                AnimateOpen();
+            });
+        }));
     }
 
+    public void OnDisable()
+    {
+        ResetBookState();
+    }
+    public void ResetBookState()
+    {
+        LeanTween.cancel(movingPage.gameObject);
+        LeanTween.cancel(movingBook.gameObject);
+
+        movingPage.localEulerAngles = closedRotation;
+        movingBook.localPosition = startPos;
+    }
     public void BaseBookSetup(PlayerStats stats)
     {
         BuildStatPages(stats);
@@ -119,6 +154,16 @@ public class BookUi : MonoBehaviour
         }
     }
 
+    public void ChangeTab(BookTabEnum tab)
+    {
+        AnimateClose(() =>
+        {
+            OpenTab(tab);
+
+            AnimateOpen();
+        });
+    }
+
     public void OpenTab(BookTabEnum tab)
     {
         currentTab = tab;
@@ -136,6 +181,8 @@ public class BookUi : MonoBehaviour
                 currentPages = lorePages;
                 break;
         }
+
+        UpdateTabButtons();
 
         statsTab.SetSelected(currentTab == BookTabEnum.Stats);
         cardsTab.SetSelected(currentTab == BookTabEnum.Cards);
@@ -205,6 +252,8 @@ public class BookUi : MonoBehaviour
 
     public void CloseBook()
     {
+        ResetBookState();
+
         uiManager.CloseBookUI();
     }
 
@@ -212,28 +261,78 @@ public class BookUi : MonoBehaviour
     // go to the first page of the respective section, if it exists. If not, do nothing (or show a message)
     public void GoToStats()
     {
-        OpenTab(BookTabEnum.Stats);
+        ChangeTab(BookTabEnum.Stats);
     }
 
     public void GoToCards()
     {
-        if (cardPages.Count > 0)
-            OpenTab(BookTabEnum.Cards);
+        ChangeTab(BookTabEnum.Cards);
     }
 
     public void GoToLore()
     {
         if (lorePages.Count > 0)
-            OpenTab(BookTabEnum.Lore);
+            ChangeTab(BookTabEnum.Lore);
         
     }
 
     // Enable or disable tab buttons based on whether their respective pages exist
     private void UpdateTabButtons()
     {
-        statsButton.interactable = statsPages.Count > 0;
-        cardsButton.interactable = cardPages.Count > 0;
-        loreButton.interactable = lorePages.Count > 0;
+        statsButton.interactable = currentTab != BookTabEnum.Stats;
+        cardsButton.interactable = currentTab != BookTabEnum.Cards;
+        loreButton.interactable = currentTab != BookTabEnum.Lore;
     }
 
+    // Animations for book opening and closing
+
+    public void SetClosedInstant()
+    {
+        movingBook.localPosition = startPos;
+        movingPage.localEulerAngles = closedRotation;
+    }
+
+    public void AnimateMove(Action onComplete = null)
+    {
+        LeanTween.moveLocal(movingBook.gameObject, targetPos, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    public void AnimateOpen()
+    {
+        LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true);
+    }
+
+    public void AnimateClose(Action onComplete = null)
+    {
+        LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, -rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    private IEnumerator ScaleBouncePickUpWindow(Action onComplete = null)
+    {
+        float timer = 0f;
+        // 300 x 450
+        // 300 x 1.5
+        // 350 x 525
+        while (timer < animationDurationMoving)
+        {
+            timer += Time.unscaledDeltaTime;
+
+            float t = timer / animationDurationMoving;
+            float curvevalue = bounceCurve.Evaluate(t);
+
+            movingBook.transform.localScale = Vector3.one * curvevalue;
+
+            yield return null;
+        }
+        movingBook.transform.localScale = Vector3.one;
+        //LeanTween.scale(rescaleRect, new Vector3(0.95f, 0.95f, 0.95f), 1.5f).setEaseInBack().setLoopPingPong().setIgnoreTimeScale(true);
+
+        onComplete?.Invoke();
+    }
 }
