@@ -19,11 +19,11 @@ public class LootFollowController : MonoBehaviour
 
         bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 1;
 
-        if (Input.GetKeyDown(KeyCode.R) && hasLootThreshhold)
-        {
-            Event_System.instance.OnPullAllSouls?.Invoke();
-            overridden = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.R) && hasLootThreshhold)
+        //{
+        //    Event_System.instance.OnPullAllSouls?.Invoke();
+        //    overridden = true;
+        //}
 
 
         // Start override routine 
