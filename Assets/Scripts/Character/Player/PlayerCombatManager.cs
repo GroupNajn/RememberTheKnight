@@ -57,7 +57,12 @@ public class PlayerCombatManager : MonoBehaviour
         playerStats = GetComponent<PlayerStats>();
         playerManager = GetComponent<PlayerManager>();
         playerController = GetComponent<PlayerController>();
+    }
+
+    private void Start()
+    {
         enemyCoordinator = GameManager.Instance.GetComponentInChildren<EnemyCoordinator>();
+        
     }
     public void ResetValues()
     {
