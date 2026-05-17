@@ -41,7 +41,10 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         if (playerCollection.playerContract != null)
         {
             UIData.InfoText = "[F]: Donate Souls";
-
+        }
+        else if(playerCollection.playerContract != null && lootSystem.currentSoulCount<= 0)
+        {
+            UIData.InfoText = "[F]: Not enough souls.";
         }
         else if (playerCollection.playerContract == null)
         {
