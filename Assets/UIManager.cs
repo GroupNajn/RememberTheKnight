@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject bookUI;
     [SerializeField] private GameObject cardPickupUI;
     [SerializeField] private GameObject cardUnlockUI;
+    [SerializeField] private GameObject lorePageUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -124,7 +125,8 @@ public class UIManager : MonoBehaviour
             if (cardUnlockUI.activeSelf)
                 return;
 
-
+            if (lorePageUI.activeSelf)
+                return;
 
 
             if (optionMenuUI.activeSelf)
@@ -189,7 +191,8 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
-        CloseBookUI();
+        CloseBookUI(); // Hide the book UI
+        CloseLorePageUI(); // Hide the lore page UI
 
         CheckUIState();
         CheckTimeScaleUI(true);
@@ -222,6 +225,14 @@ public class UIManager : MonoBehaviour
         else
         {
             Time.timeScale = 0f;
+        }
+    }
+
+    public void CheckTimeScaleDuringScene(int sceneIndex)
+    {
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[sceneIndex])
+        {
+            CheckTimeScaleUI(true);
         }
     }
 
@@ -311,6 +322,7 @@ public class UIManager : MonoBehaviour
 
             UIMenuActive = true;
             CheckUIState();
+            CheckTimeScaleDuringScene(0);
         }
     }
 
@@ -329,41 +341,9 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleDuringScene(0);
     }
 
-    public void OpenCardPickupUI(Loot loot)
-    {
-        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
-
-        if (loot == null) return;
-
-        if (loot.gameObject.TryGetComponent<Card>(out Card card) && !playerCollection.CardIsPickedUp(card.CardData))
-        {
-            if (pickupUI.SetCardData(card.CardData))
-            {
-                cardPickupUI.SetActive(true);
-                UIMenuActive = true;
-                CheckUIState();
-            }
-        }
-        else
-        playerCollection.PickupLoot(loot);
-    }
-
-    public void OpenCardUnlockUI(CardData card)
-    {
-        CardUnlockUI unlockUI = cardUnlockUI.GetComponent<CardUnlockUI>();
-
-        if (card == null) return;
-
-            if (unlockUI.SetCardData(card))
-            {
-                UIMenuActive = true;
-                CheckUIState();
-                cardUnlockUI.SetActive(true);
-                CloseInteractiveUI();
-            }
-    }
     public void CloseControllsUI()
     {
         controllsUI.SetActive(false);
@@ -376,6 +356,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleDuringScene(0);
     }
 
     public void CloseAudioUI()
@@ -390,6 +371,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
+        CheckTimeScaleDuringScene(0);
     }
 
     public void CloseVideoUI()
@@ -438,6 +420,41 @@ public class UIManager : MonoBehaviour
         interactCameraHandler.InteractCamReset();
     }
 
+    // CARD PICKUP UI
+    public void OpenCardPickupUI(Loot loot)
+    {
+        CardPickupUI pickupUI = cardPickupUI.GetComponent<CardPickupUI>();
+
+        if (loot == null) return;
+
+        if (loot.gameObject.TryGetComponent<Card>(out Card card) && !playerCollection.CardIsPickedUp(card.CardData))
+        {
+            if (pickupUI.SetCardData(card.CardData))
+            {
+                cardPickupUI.SetActive(true);
+                UIMenuActive = true;
+                CheckUIState();
+            }
+        }
+        else
+            playerCollection.PickupLoot(loot);
+    }
+
+    public void OpenCardUnlockUI(CardData card)
+    {
+        CardUnlockUI unlockUI = cardUnlockUI.GetComponent<CardUnlockUI>();
+
+        if (card == null) return;
+
+        if (unlockUI.SetCardData(card))
+        {
+            UIMenuActive = true;
+            CheckUIState();
+            cardUnlockUI.SetActive(true);
+            CloseInteractiveUI();
+        }
+    }
+
     // CARD SHOP UI
     public void OpenCardShopUI()
     {
@@ -472,6 +489,24 @@ public class UIManager : MonoBehaviour
     public void CloseBookUI()
     {
         bookUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
+    }
+
+    // LORE PAGE UI
+    public void OpenLorePageUI()
+    {
+        CloseInteractiveUI();
+        lorePageUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+    
+    public void CloseLorePageUI()
+    {
+        lorePageUI.SetActive(false);
 
         UIMenuActive = false;
         CheckUIState();
