@@ -7,6 +7,7 @@ public class BookUi : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
     //Updated by Anton 2026-05-16
+    //Overhaul made by Anton 2026-05-17
 
     // Todo - make when pressing tab buttons keep pages on same page as now back does not work if pressed tab if pages stats has only one page.
     [Header("Pages")]
@@ -295,19 +296,8 @@ public class BookUi : MonoBehaviour
 
     public void GoToLore()
     {
-        if (lorePages.Count > 0)
-            ChangeTab(BookTabEnum.Lore);
-        
+        ChangeTab(BookTabEnum.Lore);
     }
-
-    // Enable or disable tab buttons based on whether their respective pages exist
-    private void UpdateTabButtons()
-    {
-        statsButton.interactable = currentTab != BookTabEnum.Stats;
-        cardsButton.interactable = currentTab != BookTabEnum.Cards;
-        loreButton.interactable = currentTab != BookTabEnum.Lore;
-    }
-
     private void EnableTabButtons()
     {
         statsButton.interactable = true;
@@ -320,6 +310,14 @@ public class BookUi : MonoBehaviour
         statsButton.interactable = false;
         cardsButton.interactable = false;
         loreButton.interactable = false;
+    }
+
+    // Enable or disable tab buttons based on whether their respective pages exist
+    private void UpdateTabButtons()
+    {
+        statsButton.interactable = currentTab != BookTabEnum.Stats;
+        cardsButton.interactable = currentTab != BookTabEnum.Cards;
+        loreButton.interactable = currentTab != BookTabEnum.Lore;
     }
 
     // Animations for book opening and closing
