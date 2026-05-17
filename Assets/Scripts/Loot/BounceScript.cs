@@ -190,7 +190,7 @@ public class BounceScript : MonoBehaviour
 
     private void Bounce()
     {
-        if (this == null) return;
+        if (rb == null) return;
         float yVel = Mathf.Max(Mathf.Abs(rb.linearVelocity.y) * bounceDamping, 4f);
 
         float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
