@@ -488,7 +488,7 @@ public class LootManager : MonoBehaviour
         {
             case RarityTier.Rare:
 
-                return 0.18f;
+                return 0.12f;
 
             case RarityTier.Epic:
                 return 0.04f;
