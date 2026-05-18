@@ -72,7 +72,6 @@ public class InputManager : MonoBehaviour
         if (usingGamepad != usedGamepad)
         {
             Event_System.instance.OnDeviceChanged.Invoke();
-            Debug.Log("yo");
         }
 
     }
