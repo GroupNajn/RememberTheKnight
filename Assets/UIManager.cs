@@ -84,7 +84,6 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
 
-        //backgrundUI.gameObject.SetActive(true);
         backButtonUI.gameObject.SetActive(false);
 
         UIMenuActive = true;
@@ -93,6 +92,7 @@ public class UIManager : MonoBehaviour
         Event_System.instance.OnSacrificeSuccessful += OpenCardUnlockUI;
 
         Event_System.instance.OnLoadScenes += OnLoadScene;
+        Event_System.instance.OnDeviceChanged += SetCursorBasedOnDevice;
 
     }
 
@@ -152,10 +152,6 @@ public class UIManager : MonoBehaviour
                 return;
             }
 
-
-
-
-
             HideActiveUI();
 
         }
@@ -210,9 +206,19 @@ public class UIManager : MonoBehaviour
         else
         {
             Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-            Cursor.visible = true; // Show the cursor when paused
+
             playerInput.enabled = false; // Disable player input when paused
+
+            if (InputManager.Instance.usingGamepad)
+            {
+                Cursor.lockState = CursorLockMode.Locked; // Unlock the cursor when paused
+                Cursor.visible = false; // Show the cursor when paused
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+                Cursor.visible = true; // Show the cursor when paused
+            }
         }
     }
 
@@ -236,12 +242,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // BACKGROUND
-    public void CloseBackgroundUI()
-    {
-        backgrundUI.SetActive(false);
-    }
-
     // BACK BUTTON
     public void OpenBackButtonUI()
     {
@@ -262,6 +262,9 @@ public class UIManager : MonoBehaviour
             CloseInteractiveUI();
             startMenuUI.SetActive(true); // Show the pause menu
 
+            if (backgrundUI == enabled)
+                CloseBackground();
+
         }
     }
     public void CloseStartMenu()
@@ -281,6 +284,9 @@ public class UIManager : MonoBehaviour
             CloseInteractiveUI();
             pauseMenuUI.SetActive(true); // Show the pause menu
 
+
+            if (backgrundUI == enabled)
+                CloseBackground();
         }
     }
     public void ClosePauseMenu()
@@ -323,6 +329,8 @@ public class UIManager : MonoBehaviour
             UIMenuActive = true;
             CheckUIState();
             CheckTimeScaleDuringScene(0);
+
+            OpenBackground();
         }
     }
 
@@ -331,6 +339,7 @@ public class UIManager : MonoBehaviour
         if (optionMenuUI)
         {
             optionMenuUI.SetActive(false);
+
         }
     }
 
@@ -347,6 +356,8 @@ public class UIManager : MonoBehaviour
     public void CloseControllsUI()
     {
         controllsUI.SetActive(false);
+
+
     }
 
     // AUDIO UI
@@ -503,7 +514,7 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         CheckUIState();
     }
-    
+
     public void CloseLorePageUI()
     {
         lorePageUI.SetActive(false);
@@ -619,6 +630,18 @@ public class UIManager : MonoBehaviour
         OpenWeaponIconUI();
     }
 
+    // BACKGROUND
+
+    public void OpenBackground()
+    {
+        backgrundUI.gameObject.SetActive(true);
+    }
+
+    public void CloseBackground()
+    {
+        backgrundUI.gameObject.SetActive(false);
+    }
+
 
     public void GoBackFromOptions()
     {
@@ -696,5 +719,24 @@ public class UIManager : MonoBehaviour
             CloseSoulUI();
             CloseCupUI();
         }
+    }
+
+    void SetCursorBasedOnDevice()
+    {
+        if (InputManager.Instance.usingGamepad)
+        {
+            Cursor.lockState = CursorLockMode.Locked; // Unlock the cursor when paused
+            Cursor.visible = false; // Show the cursor when paused
+        }
+        else
+        {
+            if (UIMenuActive)
+            {
+                Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
+                Cursor.visible = true; // Show the cursor when paused
+            }
+
+        }
+
     }
 }

@@ -19,8 +19,11 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
     protected override void OnEnable()
     {
         base.OnEnable();
+    }
 
-        if(defaultFamily != null)
+    public void Awake()
+    {
+        if (defaultFamily != null)
         {
             SelectFamily(defaultFamily);
         }
