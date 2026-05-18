@@ -481,6 +481,8 @@ public class SwitchBodyParts : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
         {
+            canStartGame = false;
+            startGame = false;
             Event_System.instance.OnSceneTransitionDone += OnBlackFadeDone;
         }
         else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])

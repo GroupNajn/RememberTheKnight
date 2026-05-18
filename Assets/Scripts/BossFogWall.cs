@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FogWall : MonoBehaviour
+public class BossFogWall : MonoBehaviour
 {
     GameObject wall;
 
