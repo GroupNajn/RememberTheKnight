@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.AppUI.Redux;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopBoardCardSlot : MonoBehaviour
 {
@@ -12,6 +10,14 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     [Header("Visual indicators")]
     [SerializeField] private GameObject hoverVisual;
+    [SerializeField] private GameObject candleVisual;
+    [SerializeField] private GameObject boardSlot;
+    [SerializeField] private float animationDuration = 0.3f;
+    [SerializeField] private bool isAnimating;
+
+    [SerializeField] private Vector3 startRot;
+    [SerializeField] private Vector3 endRot;
+
     private bool isSelected;
 
     private void Awake()
@@ -40,14 +46,41 @@ public class ShopBoardCardSlot : MonoBehaviour
         board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
     }
 
+    public void AnimateHoverRotation(System.Action onComplete = null)
+    {
+        LeanTween.rotateLocal(boardSlot, endRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    public void AnimateUnHoverRotation(System.Action onComplete = null)
+    {
+        LeanTween.rotateLocal(boardSlot, startRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
 
     public void SetHoverVisual(bool active)
     {
         if (isSelected)
             return;
 
-        if (hoverVisual != null)
-            hoverVisual.SetActive(active);
+        if (active)
+        {
+            AnimateHoverRotation(() =>
+            {
+                // Enable Info
+            });
+        }
+        else
+        {
+            AnimateUnHoverRotation(() =>
+            {
+                // Disable info
+            });
+        }
     }
 
     public void SetSelectedVisual(bool selected)

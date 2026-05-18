@@ -51,6 +51,9 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
+
+        if (linkedBoardSlot != null)
+            linkedBoardSlot.SetSelectedVisual(selected);
     }
 
     public void SetUnlockable(bool unlockable)
