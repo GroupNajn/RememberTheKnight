@@ -47,7 +47,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject staminaBar;
     [SerializeField] private GameObject cupUI;
-    [SerializeField] private GameObject weaponIconUI;
+    [SerializeField] private GameObject weaponHUDUI;
+    [SerializeField] private GameObject bookHUDUI;
 
 
     public bool UIMenuActive = true;
@@ -602,14 +603,25 @@ public class UIManager : MonoBehaviour
     }
 
     // WEAPON ICON UI
-    public void OpenWeaponIconUI()
+    public void OpenWeaponHUDUI()
     {
-        weaponIconUI.SetActive(true);
+        weaponHUDUI.SetActive(true);
     }
 
-    public void CloseWeaponIconUI()
+    public void CloseWeaponHUDUI()
     {
-        weaponIconUI.SetActive(false);
+        weaponHUDUI.SetActive(false);
+    }
+
+    // BOOK HUD UI
+    public void OpenBookHUDUI()
+    {
+        bookHUDUI.SetActive(true);
+    }
+
+    public void CloseBookHUDUI()
+    {
+        bookHUDUI.SetActive(false);
     }
 
 
@@ -619,7 +631,8 @@ public class UIManager : MonoBehaviour
         CloseSoulUI();
         ClosePlayerBars();
         CloseCupUI();
-        CloseWeaponIconUI();
+        CloseWeaponHUDUI();
+        CloseBookHUDUI();
     }
 
     public void OpenUIOnMenuClose()
@@ -627,7 +640,8 @@ public class UIManager : MonoBehaviour
         OpenSoulUI();
         OpenPlayerBars();
         OpenCupUI();
-        OpenWeaponIconUI();
+        OpenWeaponHUDUI();
+        OpenBookHUDUI();
     }
 
     // BACKGROUND
