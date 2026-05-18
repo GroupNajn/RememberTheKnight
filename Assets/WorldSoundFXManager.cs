@@ -26,6 +26,10 @@ public class WorldSoundFXManager : MonoBehaviour
 
     [Header("Button Sounds")]
     public EventReference cardFlipEvent;
+    public EventReference bookOpenEvent;
+    public EventReference bookCloseEvent;
+    public EventReference bookPageFlipEvent;
+    public EventReference bookSlideEvent;
 
     [Header("VCA")]
     private VCA masterVCA;

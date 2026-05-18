@@ -1,3 +1,4 @@
+using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -258,6 +259,7 @@ public class BookUi : MonoBehaviour
         if (currentIndex + 2 < currentPages.Count)
         {
             currentIndex += 2;
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookPageFlipEvent);
             ShowPages();
         }
     }
@@ -271,7 +273,9 @@ public class BookUi : MonoBehaviour
         if (currentIndex - 2 >= 0)
         {
             currentIndex -= 2;
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookPageFlipEvent);
             ShowPages();
+
         }
     }
 
@@ -330,6 +334,8 @@ public class BookUi : MonoBehaviour
 
     public void AnimateMove(Action onComplete = null)
     {
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookSlideEvent);
+
         LeanTween.moveLocal(movingBook.gameObject, targetPos, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
         {
             onComplete?.Invoke();
@@ -338,6 +344,8 @@ public class BookUi : MonoBehaviour
 
     public void AnimateOpen(Action onComplete = null)
     {
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookOpenEvent);
+
         LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
         {
             onComplete?.Invoke();
@@ -346,6 +354,8 @@ public class BookUi : MonoBehaviour
 
     public void AnimateClose(Action onComplete = null)
     {
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookCloseEvent);
+
         LeanTween.rotateAroundLocal(movingPage.gameObject, Vector3.forward, -rotationAngle, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
         {
             onComplete?.Invoke();
