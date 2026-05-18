@@ -9,7 +9,7 @@ public class ShopBoardCardSlot : MonoBehaviour
     [SerializeField] public CardData CurrentCard;
 
     [Header("Visual indicators")]
-    [SerializeField] private GameObject hoverVisual;
+    [SerializeField] private GameObject selectedVisual;
     [SerializeField] private GameObject candleVisual;
     [SerializeField] private GameObject boardSlot;
     [SerializeField] private float animationDuration = 0.3f;
@@ -22,8 +22,8 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     private void Awake()
     {
-        if (hoverVisual != null)
-            hoverVisual.SetActive(false);
+        if (selectedVisual != null)
+            selectedVisual.SetActive(false);
     }
 
     public void SetCard(CardData card)
@@ -64,9 +64,6 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     public void SetHoverVisual(bool active)
     {
-        if (isSelected)
-            return;
-
         if (active)
         {
             AnimateHoverRotation(() =>
@@ -87,8 +84,27 @@ public class ShopBoardCardSlot : MonoBehaviour
     {
         isSelected = selected;
 
-        if (hoverVisual != null)
-            hoverVisual.SetActive(selected);
+        LeanTween.cancel(boardSlot);
+
+        if (selected)
+        {
+            AnimateUnHoverRotation(() =>
+            {
+                if (selectedVisual != null)
+                    selectedVisual.SetActive(true);
+
+                if (candleVisual != null)
+                    candleVisual.SetActive(true);
+            });
+        }
+        else
+        {
+            if (selectedVisual != null)
+                selectedVisual.SetActive(false);
+
+            if (candleVisual != null)
+                candleVisual.SetActive(false);
+        }
     }
     public void SetLocked(bool value)
     {

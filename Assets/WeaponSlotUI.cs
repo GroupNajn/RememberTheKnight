@@ -40,28 +40,28 @@ public class WeaponSlotUI : MonoBehaviour
         if (newWeapon == null)
             return;
 
-        weaponIcon.sprite = newWeapon.WeaponIcon;
+        //weaponIcon.sprite = newWeapon.WeaponIcon;
 
-        //if (newWeapon == swordData)
-        //{
-        //    spear.SetActive(false);
-        //    swordLarge.SetActive(false);
-        //    sword.SetActive(true);
-        //}
+        if (newWeapon == swordData)
+        {
+            spear.SetActive(false);
+            swordLarge.SetActive(false);
+            sword.SetActive(true);
+        }
 
-        //if (newWeapon == spearData)
-        //{
-        //    sword.SetActive(false);
-        //    swordLarge.SetActive(false);
-        //    spear.SetActive(true);
-        //}
+        if (newWeapon == spearData)
+        {
+            sword.SetActive(false);
+            swordLarge.SetActive(false);
+            spear.SetActive(true);
+        }
 
-        //if (newWeapon == swordLargeData)
-        //{
-        //    sword.SetActive(false);
-        //    spear.SetActive(false);
-        //    swordLarge.SetActive(true);
-        //}
+        if (newWeapon == swordLargeData)
+        {
+            sword.SetActive(false);
+            spear.SetActive(false);
+            swordLarge.SetActive(true);
+        }
 
         // Uncomment this when you want to use it!
     }
