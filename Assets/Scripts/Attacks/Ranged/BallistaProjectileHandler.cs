@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Linq;
 using UnityEngine;
 
@@ -42,5 +43,12 @@ public class BallistaProjectileHandler : MonoBehaviour
 
         proj.GetComponent<Projectile>().direction = direction;
         proj.GetComponent<Projectile>().speed = projectileSpeed;
+
+        
+           RuntimeManager.PlayOneShotAttached (gameObject.GetComponent<BallistaEnemy>().ballistaShootEvent, firePoint.gameObject);
+           RuntimeManager.PlayOneShotAttached (gameObject.GetComponent<BallistaEnemy>().ballistaLoadEvent, firePoint.gameObject);
+
+
+        
     }
 }
