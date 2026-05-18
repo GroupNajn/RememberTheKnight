@@ -14,6 +14,7 @@ public class DonationSoulMover : MonoBehaviour
     public void Initialize(SplineContainer splineContainer, float duration)
     {
         spline = splineContainer;
+        
         moveDuration = duration;
 
         center = FindChildRecursive(transform, "Center");
