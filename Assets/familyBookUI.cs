@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -58,6 +59,8 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
         selected.infoBox.SetActive(true);
         selectedFamily = selected.familyData.cardFamily;
         confirmedFamily = selectedFamily;
+
+        EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
 
     }
     public void OnSignContract()
