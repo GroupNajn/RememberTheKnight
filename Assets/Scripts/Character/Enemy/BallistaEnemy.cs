@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class BallistaEnemy : MonoBehaviour
     [SerializeField] private GameObject destroyedBallista;
     [SerializeField] private GameObject ballistaSoul;
     [SerializeField] private bool IsDestroyed = false;
+    public EventReference ballistaShootEvent;
+    public EventReference ballistaLoadEvent;
 
     void Start()
     {
