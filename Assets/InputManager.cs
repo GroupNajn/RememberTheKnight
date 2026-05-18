@@ -1,6 +1,8 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 using TMPro;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class InputManager : MonoBehaviour
     public bool usingGamepad;
 
     private const string rebindKeys = "input_rebinds";
+
+
 
     private void Awake()
     {
@@ -36,6 +40,7 @@ public class InputManager : MonoBehaviour
         }
 
         LoadBindings();
+
     }
 
     private void Update()
@@ -45,17 +50,31 @@ public class InputManager : MonoBehaviour
 
     private void DetectCurrentDevice()
     {
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
-            usingGamepad = false;
+        bool usedGamepad = usingGamepad;
 
-        if (Mouse.current != null &&
-            (Mouse.current.leftButton.wasPressedThisFrame ||
-             Mouse.current.rightButton.wasPressedThisFrame ||
-             Mouse.current.middleButton.wasPressedThisFrame))
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+        {
             usingGamepad = false;
+        }
+
+        if (Mouse.current != null && (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame))
+        {
+            usingGamepad = false;
+        }
 
         if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+        {
             usingGamepad = true;
+
+            
+        }
+
+        if (usingGamepad != usedGamepad)
+        {
+            Event_System.instance.OnDeviceChanged.Invoke();
+            Debug.Log("yo");
+        }
+
     }
 
     public void SaveAndApplyBindingsFrom(PlayerInput sourcePlayerInput)
@@ -158,4 +177,5 @@ public class InputManager : MonoBehaviour
     {
         return rebindKeys + "_" + input.gameObject.name;
     }
+
 }

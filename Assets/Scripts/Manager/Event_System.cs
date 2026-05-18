@@ -49,6 +49,9 @@ public class Event_System : MonoBehaviour
     public Action OnSpawnBoss;
     public Action OnBossDeath;
 
+    // UI Related
+    public Action OnDeviceChanged;
+
     /*
      * 
      * Managers need to be initialized via Awake to get priority,
