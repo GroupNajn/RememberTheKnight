@@ -13,7 +13,6 @@ public class Event_System : MonoBehaviour
 
     //Events 
     public Action OnWin;
-    public Action OnLevelCompleted;
 
     //Player Related
     public Action OnPlayerDeath;
@@ -22,7 +21,6 @@ public class Event_System : MonoBehaviour
     //Enemy Related
     public Action<Transform, DamageInfo> OnEnemyDamage;
     public Action<EnemyDamage> OnEnemySpawn;
-    public Action<EnemyDamage> OnEnemyKilled;
     public Action<EnemyLootProfile, Vector3> OnEnemyKilledNew;
 
     //UI & Shop Related
