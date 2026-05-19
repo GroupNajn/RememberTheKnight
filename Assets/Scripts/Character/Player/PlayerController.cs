@@ -164,11 +164,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             if (playerStats.currentStamina <= 0)
                 return;
-
+            bool isSprintingLocked = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Sprinting;
             bool isbackstepLocked = lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47;
             bool isbackstepUnlocked = !lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.magnitude <= 0.1f;
 
-            if (isbackstepLocked || isbackstepUnlocked)
+            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked)
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
