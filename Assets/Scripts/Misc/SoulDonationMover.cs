@@ -11,6 +11,10 @@ public class DonationSoulMover : MonoBehaviour
     private float timer;
     private bool isMoving;
 
+    [SerializeField] private float waveAmplitude = 0.5f;
+    [SerializeField] private float waveFrequency = 8f;
+    [SerializeField] private float rotationSpeed = 180f;
+
     public void Initialize(SplineContainer splineContainer, float duration)
     {
         spline = splineContainer;
@@ -53,8 +57,14 @@ public class DonationSoulMover : MonoBehaviour
         float3 localPos = spline.Spline.EvaluatePosition(t);
         Vector3 worldPos = spline.transform.TransformPoint(localPos);
 
-        Vector3 offset = worldPos - center.position;
+        float sinOffset = Mathf.Sin(t * waveFrequency * Mathf.PI * 2f) * waveAmplitude;
+
+        Vector3 wavePos = worldPos + Vector3.up * sinOffset;
+
+        Vector3 offset = wavePos - center.position;
         transform.position += offset;
+
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
     }
 
     private Transform FindChildRecursive(Transform parent, string childName)
