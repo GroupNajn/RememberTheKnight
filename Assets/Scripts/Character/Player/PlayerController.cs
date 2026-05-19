@@ -157,18 +157,20 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleDodge(bool isDodging)
     {
+
         AnimatorStateInfo stateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
         bool isKnockedBack = stateInfo.tagHash == knockbackHash || PlayerAnimator.IsInTransition(0) && playerState.CurrentMoveState == MoveState.Knockedback;
 
         if (playerLocomotionInput.DodgePressed && dodgeCoolDownRemaining <= 0 && animCancelable && !isKnockedBack)
         {
-            if (playerStats.currentStamina <= 0)
+            if (playerStats.currentStamina <= 0 || !animCancelable)
                 return;
+
             bool isSprintingLocked = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Sprinting;
             bool isbackstepLocked = lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47;
             bool isbackstepUnlocked = !lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.magnitude <= 0.1f;
 
-            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked)
+            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked )
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
@@ -188,7 +190,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 playerCombatManager.DrainStamina();
 
             }
-            playerCombatManager.SetAnimationCancelebleFalse();
+            //playerCombatManager.SetAnimationCancelebleFalse();
             playerCombatManager.SetStaminaState(StaminaAction.Dodge);
         }
 
@@ -221,7 +223,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             playerState.SetMoveState(MoveState.Idling);
             PlayerAnimator.ResetTrigger("Dodge");
             PlayerAnimator.ResetTrigger("BackStep");
-            playerCombatManager.SetAnimationCancelebleTrue();
+           // playerCombatManager.SetAnimationCancelebleTrue();
         }
     }
 
@@ -253,7 +255,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         if (playerState.CurrentMoveState == MoveState.Attacking && !PlayerAnimator.IsInTransition(0) && stateInfo.tagHash != attackHash)
         {
             playerState.SetMoveState(MoveState.Idling);
-            playerCombatManager.SetAnimationCancelebleTrue();
+            //playerCombatManager.SetAnimationCancelebleTrue();
         }
 
         if (playerCombatManager.canCharge && playerCombatManager.fullyCharged) // if you can charge attack and you are fully charged, do a charge attack
