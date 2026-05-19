@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CardShopUI : AutoSelectFirstButtonOnEnable
 {
@@ -12,6 +13,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     public ShopBoard shopBoard;
 
     [SerializeField] private TextMeshProUGUI errorText;
+
+    [Header("Card Information")]
     [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
     [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
 

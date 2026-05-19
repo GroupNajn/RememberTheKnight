@@ -1,9 +1,14 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [Header("CardData information")]
+    [SerializeField] private GameObject cardInfo;
+    [SerializeField] private Image cardInfoImage;
+
     [SerializeField] TextMeshProUGUI soulCostText;
     [SerializeField] GameObject soulCostDisplay;
 
@@ -42,6 +47,8 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
 
         cardData = card;
+        cardInfoImage = cardInfo.GetComponent<Image>();
+        cardInfoImage.sprite = cardData.cardInfoImage;
         soulCostText.text = card.cardSoulCost.ToString();
     }
     public void SetBoardSlot(ShopBoardCardSlot slot)
@@ -51,6 +58,8 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
+
+        cardInfo.SetActive(selected);
 
         if (linkedBoardSlot != null)
             linkedBoardSlot.SetSelectedVisual(selected);

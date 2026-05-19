@@ -162,10 +162,34 @@ public class BookUi : MonoBehaviour
                 lorePages.Add(new PageData
                 {
                     type = PageData.PageType.Lore,
-                    loreText = unlocked ? page : "???"
+                    loreText = unlocked ? page : ScrambleText(page)
                 });
             }
         }
+    }
+
+    // Helper method for scrambling text
+
+    private string ScrambleText(string text)
+    {
+        char[] chars = text.ToCharArray();
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (char.IsWhiteSpace(chars[i]))
+                continue;
+
+            int randomIndex = UnityEngine.Random.Range(0, chars.Length);
+
+            while (char.IsWhiteSpace(chars[randomIndex]))
+            {
+                randomIndex = UnityEngine.Random.Range(0, chars.Length);
+            }
+
+            (chars[i], chars[randomIndex]) = (chars[randomIndex], chars[i]);
+        }
+
+        return new string(chars);
     }
 
     public void ChangeTab(BookTabEnum tab)
