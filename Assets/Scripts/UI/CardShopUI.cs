@@ -28,6 +28,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     void Awake()
     {
         uiSlots.AddRange(GetComponentsInChildren<CardSlotShopUI>(true));
+
+        base.Awake();
     }
     protected override void OnEnable()
     {
@@ -39,8 +41,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
-
-        base.Start();
     }
 
     public void PopulateSlots()

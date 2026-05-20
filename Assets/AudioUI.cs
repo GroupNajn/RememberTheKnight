@@ -20,7 +20,12 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     private float baseMusicVolume;
     private float baseSFXVolume;
 
-    protected override void Start()
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    public void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
 
@@ -36,7 +41,6 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
         musicVolumeSlider.value = baseMusicVolume;
         SoundsFXVolumeSlider.value = baseSFXVolume;
 
-        base.Start();
     }
 
     public void SetMasterVolume(float volume)

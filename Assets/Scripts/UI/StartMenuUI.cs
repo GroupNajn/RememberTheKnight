@@ -16,9 +16,14 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
         canUseInput = true;
 
     }
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
+    }
+
+    public void Start()
+    {
+
         uiManager = GetComponentInParent<UIManager>();
 
     }

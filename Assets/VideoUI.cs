@@ -33,7 +33,12 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     float baseFilmValue;
 
     bool sliderInput = false;
-    protected override void Start()
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+    public void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
 
@@ -48,7 +53,7 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         SetupResolutionDropdown();
         fullScreenToggle.isOn = Screen.fullScreen;
 
-        base.Start();
+
     }
 
 

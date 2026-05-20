@@ -4,17 +4,15 @@ using UnityEngine.EventSystems;
 public class AutoSelectFirstButtonOnEnable : MonoBehaviour
 {
     [SerializeField] protected GameObject FirstSelectedButton;
-    //[SerializeField] protected GameObject lastSelected;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void OnEnable()
     {
-        EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
+        HandleInputChanged();
     }
-    protected virtual void Start()
+
+    protected virtual void Awake()
     {
         HandleInputChanged();
-        //Event_System.instance.OnDeviceChanged += HandleInputChanged;
+        Event_System.instance.OnDeviceChanged += HandleInputChanged;
     }
 
     public void HandleInputChanged()

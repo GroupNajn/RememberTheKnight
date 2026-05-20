@@ -16,23 +16,21 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
 
 
     [SerializeField] private FamilyUI defaultFamily;
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    public void Awake()
+    protected override void Awake()
     {
         if (defaultFamily != null)
         {
             SelectFamily(defaultFamily);
         }
     }
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();
+        base.OnEnable();
+    }
 
+
+    public void Start()
+    {
         uiManager = FindFirstObjectByType<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
