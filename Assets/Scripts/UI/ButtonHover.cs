@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,8 +28,9 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnEnable()
     {
+        LeanTween.scale(rect, Vector3.one, 0f);
+        text.color = originalColor;
         tweenID = -1;
-        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
