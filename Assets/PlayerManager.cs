@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerColllection = GetComponent<PlayerCollection>();
 
         playerStats = GetComponent<PlayerStats>();
-        Event_System.instance.OnLoadScenes += OnSceneLoaded;
+        Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         Event_System.instance.OnSceneTransitionDone += ReApplyStats;
 
         //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
@@ -206,7 +206,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         NotifyStaminaChanged();
     }
 
-    private void OnSceneLoaded()
+    private void OnLobbyLoaded()
     {
         if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
         {

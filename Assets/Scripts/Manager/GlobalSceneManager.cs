@@ -13,7 +13,7 @@ public class GlobalSceneManager : MonoBehaviour
 
     Animator transitionAnimator;
     bool useTransition;
-    bool isTransitioning;
+    public bool isTransitioning { get; private set; } = false;
 
     private void Awake()
     {
@@ -212,6 +212,11 @@ public class GlobalSceneManager : MonoBehaviour
         }
 
         Event_System.instance.OnLoadScenes.Invoke();
+
+        if (sceneName == SceneData.Instance[2]) // Lobby loaded
+        {
+            Event_System.instance.OnLobbyLoaded?.Invoke();
+        }
 
         try // setting parameter for FMOD
         {

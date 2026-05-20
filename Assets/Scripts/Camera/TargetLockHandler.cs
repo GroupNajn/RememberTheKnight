@@ -347,7 +347,7 @@ public class TargetLockHandler : MonoBehaviour
 
         if (agent != null)
         {
-            agent.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
+            agent.GetComponentInChildren<EnemyHealthBarCanvas>()?.ShowHealthBar();
         }
 
         //currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
@@ -360,7 +360,7 @@ public class TargetLockHandler : MonoBehaviour
 
             if (agent != null)
             {
-                agent.GetComponentInChildren<EnemyHealthBarCanvas>().HideHealthBar();
+                agent.GetComponentInChildren<EnemyHealthBarCanvas>()?.HideHealthBar();
             }
         }
 

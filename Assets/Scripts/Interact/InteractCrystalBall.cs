@@ -22,7 +22,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 
     public void Interact()
     {
-        if (sceneToLoadIndex < 0)
+        if (sceneToLoadIndex < 0 || GlobalSceneManager.Instance.isTransitioning)
         {
             return;
         }
@@ -30,6 +30,8 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
         RuntimeManager.PlayOneShotAttached (WorldSoundFXManager.instance.teleportEvent,GameObject.FindGameObjectWithTag("Player")); // teleport sound effect
 
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
+
+        RunGameData.Instance.IncrementLevelCounter();
     }
 
     private void OnLoadScenes()
@@ -41,7 +43,14 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
 
         if (preLoadScene)
         {
-            GlobalSceneManager.Instance.LoadScene(sceneName);
+            if (RunGameData.Instance.LevelCounter == RunGameData.Instance.LevelsBeforeBoss)
+            {
+                GlobalSceneManager.Instance.LoadScene(SceneData.Instance[7]);
+            }
+            else
+            {
+                GlobalSceneManager.Instance.LoadScene(sceneName);
+            }
         }
 
         Event_System.instance.OnLoadScenes -= OnLoadScenes;
