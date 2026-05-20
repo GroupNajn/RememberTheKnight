@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 public class EnemyHealthBarCanvas : MonoBehaviour
 {
-    //Editied by Michaëla 2026-05-06
+    // Edited by Michaëla 2026-05-06
+    // Edited by Lukas 2026-05-20
     [SerializeField] float displayDuration = 2f; // Duration to show the health bar after taking damage
 
     EnemyDamage enemyDamage;
     Slider healthBar;
     bool isOnCooldown = false;
+    [SerializeField] bool allowCoolDown = false;
     Coroutine hideCoroutine;
 
     void Awake() //Gets references to the healthbar and enemydamage component
@@ -33,14 +35,19 @@ public class EnemyHealthBarCanvas : MonoBehaviour
     public void ShowHealthBar() // Used for locking on target
     {
         healthBar.gameObject.SetActive(true);
+        allowCoolDown = false;
         if (hideCoroutine != null)
             StopCoroutine(hideCoroutine);
-
-        hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
+
     public void ShowHealthBarForDuration(float current, float max) // Used for showing the healthbar when taking damage
     {
-        if (healthBar == null) return;
+        if (current <= 0)
+        {
+            allowCoolDown = true;
+        }
+
+        if (healthBar == null || !allowCoolDown) return;
 
         healthBar.gameObject.SetActive(true);
 
@@ -49,9 +56,10 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
         hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
+
     public void ShowHealthBarForDuration(Transform target, DamageInfo damage) // Used for showing the healthbar when taking damage, called from the event system
     {
-        if (healthBar == null || target != transform.parent) return;
+        if (healthBar == null || target != transform.parent || !allowCoolDown) return;
 
         healthBar.gameObject.SetActive(true);
 
@@ -60,10 +68,13 @@ public class EnemyHealthBarCanvas : MonoBehaviour
 
         hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
+
     public void HideHealthBar()
     {
         if (healthBar == null || isOnCooldown)
-            return;
+        { return; }
+
+        allowCoolDown = true;
 
         healthBar.gameObject.SetActive(false);
     }
@@ -73,16 +84,22 @@ public class EnemyHealthBarCanvas : MonoBehaviour
         isOnCooldown = true;
         yield return new WaitForSeconds(displayDuration);
         isOnCooldown = false;
-        HideHealthBar();
+
+        if (allowCoolDown)
+        {
+            HideHealthBar();
+        }
     }
 
     private void OnDisable() // Unsubscribes from the events when the object is disabled to prevent memory leaks
     {
+        enemyDamage.OnHealthChanged -= ShowHealthBarForDuration;
         Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
     }
 
     private void OnDestroy() // Unsubscribes from the events when the object is destroyed to prevent memory leaks
     {
+        enemyDamage.OnHealthChanged -= ShowHealthBarForDuration;
         Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
     }
 }

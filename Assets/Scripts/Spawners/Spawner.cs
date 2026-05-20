@@ -114,7 +114,6 @@ public class Spawner : MonoBehaviour
 
             if (Random.Range(0f, 1f) > spawnChance)
             {
-                Debug.Log("Doesn't spawn object");
                 continue;
             }
 

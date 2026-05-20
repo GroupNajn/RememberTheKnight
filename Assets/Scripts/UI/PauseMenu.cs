@@ -17,7 +17,7 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
         GetText();
         returnButtonDefaultText = returnButtonText.text; // Store the default text of the return button
 
-        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the scene loaded event   
+        Event_System.instance.OnLoadScenes += OnSceneLoaded; // Can't use the lobby loaded event as the button text needs to be updated for both the lobby and other scenes
     }
 
     protected override void OnEnable()
@@ -39,9 +39,9 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded()
     {
-        if (scene.name == SceneData.Instance[2])
+        if ( SceneManager.GetActiveScene().name == SceneData.Instance[2])
         {
             returnButtonText.text = returnButtonLobbyText; // Update the return button text for the lobby scene
 
