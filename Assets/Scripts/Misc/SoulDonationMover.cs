@@ -51,7 +51,14 @@ public class DonationSoulMover : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    /// <summary>
+    /// Moves the object to a position along the spline at the specified normalized parameter, applying a vertical wave
+    /// offset and rotation.
+    /// </summary>
+    /// <remarks>This method adjusts the object's position and orientation based on the spline's shape and
+    /// applies a sinusoidal vertical offset for a wave effect. The object's position is updated relative to a central
+    /// reference point, and it is rotated around the Y-axis each time the method is called.</remarks>
+    /// <param name="t">The normalized position along the spline, where 0 represents the start and 1 represents the end of the spline.</param>
     private void MoveToSplinePosition(float t)
     {
         float3 localPos = spline.Spline.EvaluatePosition(t);

@@ -15,7 +15,7 @@ public class SplineController : MonoBehaviour
     [Header("Move duration")]
     [SerializeField] private float minMoveDuration = 5f;
     [SerializeField] private float maxMoveDuration = 10f;
-
+//Made 2026-05-19 Made by Henric
     private void Start()
     {
         StartCoroutine(SpawnSoulsRoutine());
@@ -31,7 +31,12 @@ public class SplineController : MonoBehaviour
             SpawnSoul();
         }
     }
-
+    /// <summary>
+    /// Spawns a new soul GameObject and initializes its movement along a randomly selected spline.
+    /// </summary>
+    /// <remarks>Does nothing if the soul prefab is not assigned or if there are no available splines. The
+    /// spawned soul is assigned a random movement duration within the configured range and is ensured to have a
+    /// DonationSoulMover component for movement initialization.</remarks>
     private void SpawnSoul()
     {
         if (soulPrefab == null || splines.Count == 0)
