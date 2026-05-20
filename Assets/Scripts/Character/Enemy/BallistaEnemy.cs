@@ -59,6 +59,7 @@ public class BallistaEnemy : MonoBehaviour
         foreach (GameObject barrel in barrels)
         {
             barrel.GetComponent<ExplodingBarrel>().Explode();
+            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.explosionEvent, barrel);
             yield return new WaitForSeconds(0.1f);
         }
 

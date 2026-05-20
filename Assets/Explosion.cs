@@ -2,6 +2,7 @@ using System.Threading;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using FMODUnity;
 
 public class Explosion : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class Explosion : MonoBehaviour
             {
                 exploded = true;
                 ParticleSystem explosion = Instantiate(this.explosion, transform.position, Quaternion.identity);
+                RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.explosionEvent);
             }
             if (damageableHit)
             {
