@@ -8,6 +8,9 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
 
+    [SerializeField] private bool hasBoughtCard = false;
+    public bool HasBoughtCard => hasBoughtCard;
+
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
     [SerializeField] private Transform cameraLookAtTransform;
@@ -17,9 +20,11 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     private CardShopUI cardShopUI;
     private ShopBoard board;
 
-    private bool canShowUI = false;
+   public void SetBought()
+    {
+        hasBoughtCard = true;
+    }
 
-   
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
@@ -38,6 +43,9 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     }
     public void Interact()
     {
+        if (hasBoughtCard)
+            return;
+
         if (!InteractableSaveSystem.HasInteracted(interactableID))
         {
             InteractableSaveSystem.SetInteracted(interactableID);
@@ -48,6 +56,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
 
         interactCameraHandler.InteractCamSwitch(transform, preset);
         cardShopUI.shopBoard = board;
+        cardShopUI.interactCardShop = this;
         StartCoroutine(OpenUI());
     }
 
@@ -62,6 +71,13 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+
+        if (hasBoughtCard)
+        {
+            UIData.CanInteract = false;
+            UIData.InfoText = "Card already purchased.";
+            return UIData;
+        }
 
         UIData.InfoText = "[F]: Buy a Card.";
         return UIData;

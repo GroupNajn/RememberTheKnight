@@ -13,9 +13,10 @@ public class UIManager : MonoBehaviour
     //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
-    [Header("General References")]
+    [Header("Script References")]
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
+    [SerializeField] private BookUi bookUIScript; 
     [SerializeField] private InteractCameraHandler interactCameraHandler;
 
     [SerializeField] private GameObject backButtonUI;
@@ -500,10 +501,20 @@ public class UIManager : MonoBehaviour
 
     public void CloseBookUI()
     {
-        bookUI.SetActive(false);
+        bookUIScript.AnimateClose(() =>
+        {
+            bookUIScript.AnimateMove(() =>
+            {
+                StartCoroutine(bookUIScript.AnimateSize(() =>
+                {
+                    bookUI.SetActive(false);
 
-        UIMenuActive = false;
-        CheckUIState();
+                    UIMenuActive = false;
+                    CheckUIState();
+
+                }, true));
+            }, true);
+        });
     }
 
     // LORE PAGE UI

@@ -1,8 +1,13 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    private TextMeshProUGUI text;
+    private Color originalColor;
+    private Color hoverColor = Color.white;
+
     private RectTransform rect;
     LTDescr currentTween;
     private int tweenID;
@@ -10,11 +15,14 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     void Start()
     {
         rect = GetComponent<RectTransform>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
+        originalColor = text.color;
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
 
     private void OnEnable()
@@ -28,7 +36,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         LeanTween.cancel(gameObject);
 
         tweenID = LeanTween.scale(rect, Vector3.one * 1.05f, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
-
+        text.color = hoverColor;
     }
 
     private void OnDisable()
@@ -49,5 +57,6 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         LeanTween.cancel(gameObject);
 
         tweenID = LeanTween.scale(rect, Vector3.one, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
+        text.color = originalColor;
     }
 }
