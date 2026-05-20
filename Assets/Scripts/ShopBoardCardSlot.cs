@@ -33,9 +33,10 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     public void SetCard(CardData card)
     {
+
         CurrentCard = card;
 
-        if (isLocked)
+        if (isLocked || card == null)
         {
             int randomIndex = Random.Range(0, board.RandomPosters.Count);
             GameObject randomPoster = board.RandomPosters[randomIndex];
@@ -48,18 +49,20 @@ public class ShopBoardCardSlot : MonoBehaviour
             return;
         }
 
-        spawnedCard = board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
+        //if (card == null) return;
+
+        board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
     }
 
     public void RemoveCard()
     {
-         if (spawnedCard != null)
+        if (spawnedCard != null)
         {
             Destroy(spawnedCard);
             spawnedCard = null;
         }
 
-         CurrentCard = null;
+        CurrentCard = null;
     }
 
     public void AnimateSelectSpin(System.Action onComplete = null)
@@ -114,7 +117,7 @@ public class ShopBoardCardSlot : MonoBehaviour
     public void SetSelectedVisual(bool selected)
     {
         isSelected = selected;
-        
+
         StartCoroutine(ShowVisuals(selected));
     }
     public void SetLocked(bool value)
