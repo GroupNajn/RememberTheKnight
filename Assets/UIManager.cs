@@ -88,8 +88,7 @@ public class UIManager : MonoBehaviour
 
         backButtonUI.gameObject.SetActive(false);
 
-        UIMenuActive = true;
-        startMenuUI.gameObject.SetActive(true);
+        OpenStartMenu();
         Event_System.instance.OnLootPickedUp += OpenCardPickupUI;
         Event_System.instance.OnSacrificeSuccessful += OpenCardUnlockUI;
 
@@ -189,7 +188,7 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
-        CloseBookUI(); // Hide the book UI
+        //CloseBookUI(); // Hide the book UI
         CloseLorePageUI(); // Hide the lore page UI
 
         CheckUIState();
@@ -261,8 +260,11 @@ public class UIManager : MonoBehaviour
         if (startMenuUI)
         {
             UIMenuActive = true;
-            CloseInteractiveUI();
+
             startMenuUI.SetActive(true); // Show the pause menu
+
+            if(backgrundUI == enabled)
+                CloseInteractiveUI();
 
             if (backgrundUI == enabled)
                 CloseBackground();
@@ -395,7 +397,9 @@ public class UIManager : MonoBehaviour
     // CARD SELECT UI
     public void OpenCardSelectUI()
     {
-        CloseInteractiveUI();
+        if(interactUI == enabled)
+            CloseInteractiveUI();
+
         cardSelectUI.SetActive(true);
 
         UIMenuActive = true;
@@ -415,7 +419,9 @@ public class UIManager : MonoBehaviour
     // FAMILY SELECT UI
     public void OpenFamilySelectUI()
     {
-        CloseInteractiveUI();
+        if (interactUI == enabled)
+            CloseInteractiveUI();
+
         familySelectUI.SetActive(true);
 
         UIMenuActive = true;
@@ -501,6 +507,7 @@ public class UIManager : MonoBehaviour
 
     public void CloseBookUI()
     {
+
         bookUIScript.AnimateClose(() =>
         {
             bookUIScript.AnimateMove(() =>

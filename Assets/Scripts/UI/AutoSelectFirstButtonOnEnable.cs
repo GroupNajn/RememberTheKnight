@@ -14,7 +14,7 @@ public class AutoSelectFirstButtonOnEnable : MonoBehaviour
     protected virtual void Start()
     {
         HandleInputChanged();
-        Event_System.instance.OnDeviceChanged += HandleInputChanged;
+        //Event_System.instance.OnDeviceChanged += HandleInputChanged;
     }
 
     public void HandleInputChanged()
