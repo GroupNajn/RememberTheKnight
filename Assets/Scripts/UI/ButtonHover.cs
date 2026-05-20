@@ -1,6 +1,8 @@
 using TMPro;
+//using Unity.AppUI.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
@@ -8,6 +10,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private TextMeshProUGUI text;
     private Color originalColor;
     private Color hoverColor = Color.white;
+    public Button button;
 
     private RectTransform rect;
     LTDescr currentTween;
@@ -17,7 +20,10 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         rect = GetComponent<RectTransform>();
         text = GetComponentInChildren<TextMeshProUGUI>();
-        originalColor = text.color;
+        originalColor = text.color;        
+        button = GetComponent<Button>();
+        button.onClick.AddListener(ResetValues);
+        
     }
 
     // Update is called once per frame
@@ -28,9 +34,10 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnEnable()
     {
-        LeanTween.scale(rect, Vector3.one, 0f);
-        text.color = originalColor;
+        //LeanTween.scale(rect, Vector3.one, 0f);
+        //text.color = originalColor;
         tweenID = -1;
+        //button.clicked += ResetValues;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -59,6 +66,13 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
+    private void ResetValues()
+    {
+        LeanTween.cancel(gameObject);
+        LeanTween.scale(rect, Vector3.one, 0f);
+        text.color = originalColor;
+    }
+
     public void OnDeselect(BaseEventData eventData)
     {
         if (InputManager.Instance.usingGamepad)
@@ -72,7 +86,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnDisable()
     {
-        
+        //button.clicked -= ResetValues;
         LeanTween.cancel(gameObject);
         tweenID = -1;
     }
@@ -81,6 +95,7 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         LeanTween.cancel(gameObject);
         tweenID = -1;
+        //button.clicked -= ResetValues;
     }
 
 

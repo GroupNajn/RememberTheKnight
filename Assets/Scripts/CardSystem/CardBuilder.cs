@@ -27,6 +27,18 @@ public class CardBuilder : MonoBehaviour
     void Update()
     {
     }
+
+    /// <summary>
+    /// Instantiates a card GameObject as a child of the specified parent transform, without enabling any attached
+    /// scripts.
+    /// </summary>
+    /// <remarks>The returned GameObject will have its scripts turned off and will include a particle effect
+    /// based on the card's rarity. Use this method when you need a visual representation of a card without interactive
+    /// behavior, such as for previews or display purposes.</remarks>
+    /// <param name="cardData">The data object containing information about the card to instantiate. Must not be null.</param>
+    /// <param name="parentTransform">The transform under which the card GameObject will be instantiated. Determines the position and rotation of the
+    /// new card.</param>
+    /// <returns>A reference to the newly instantiated card GameObject with scripts disabled.</returns>
     public GameObject InstantiateCardWithoutScripts(CardData cardData, Transform parentTransform)
     {
         Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y, parentTransform.rotation.eulerAngles.z);
@@ -50,7 +62,13 @@ public class CardBuilder : MonoBehaviour
         backMesh.material = cardData.backMaterial;
 
     }
-
+/// <summary>
+/// Disables specific scripts and components on the specified card prefab to prevent interactive behaviors and effects.
+/// </summary>
+/// <remarks>This method disables common interactive components such as rotation, hover effects, colliders,
+/// bouncing, gravity, and lighting on the card prefab. Use this method when the card should be displayed without user
+/// interaction or visual effects, such as when it is inactive or being removed from play.</remarks>
+/// <param name="cardPrefab">The card prefab GameObject whose scripts and components will be disabled. Cannot be null.</param>
     private void TurnOffScriptsOnCard(GameObject cardPrefab)
     {
         ObjectRotation objectRotation = cardPrefab.GetComponent<ObjectRotation>();
