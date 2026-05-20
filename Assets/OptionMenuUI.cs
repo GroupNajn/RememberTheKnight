@@ -4,6 +4,11 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
 {
     UIManager uiManager;
     //SceneData sceneData;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -12,7 +17,6 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
     {
         uiManager = GetComponentInParent<UIManager>();
 
-        base.Start();
     }
 
     public void OpenControlls()

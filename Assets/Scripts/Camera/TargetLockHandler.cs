@@ -340,7 +340,7 @@ public class TargetLockHandler : MonoBehaviour
 
         targetGroup.Targets.Clear();
 
-        targetGroup.AddMember(playerTransform, 0.75f, 1f);
+        targetGroup.AddMember(playerTransform, 0.5f, 1f);
         targetGroup.AddMember(currentTarget, 1f, 1);
 
         BehaviorGraphAgent agent = currentTarget.GetComponentInParent<BehaviorGraphAgent>();

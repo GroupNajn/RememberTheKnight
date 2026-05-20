@@ -29,7 +29,7 @@ public class CardBuilder : MonoBehaviour
     }
     public GameObject InstantiateCardWithoutScripts(CardData cardData, Transform parentTransform)
     {
-        Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y + 180, parentTransform.rotation.eulerAngles.z);
+        Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y, parentTransform.rotation.eulerAngles.z);
 
         GameObject cardInstance = Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
         Instantiate(ReturnParticleShopboard(LootManager.instance.GetRarityFromTier(cardData.cardTier)), cardInstance.transform.position, Quaternion.identity, cardInstance.transform);

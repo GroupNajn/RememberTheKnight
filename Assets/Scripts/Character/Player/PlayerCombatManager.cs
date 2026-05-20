@@ -24,7 +24,7 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] public bool canCharge = false;
     [SerializeField] public bool fullyCharged = false;
     [SerializeField] public bool isAttackRotationSpeed = false;
-    [SerializeField] public bool animationCanceleble = true;
+    [SerializeField] public bool animationCanceleble { get; private set; } = true;
     public bool InCombat = false;
     [SerializeField] public StaminaAction currentAction;
     [SerializeField] public StaminaAction lastAttackAction;
@@ -66,13 +66,14 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void ResetValues()
     {
+        Debug.Log("Animation canceleble due to resetting combat values");
         isInvulnerable = false;
         canCombo = false;
         canCharge = false;
         fullyCharged = false;
         isAttackRotationSpeed = false;
         animationCanceleble = true;
-        InCombat = false;
+        //InCombat = false;
     }
 
     public bool CheckInCombat()
@@ -134,7 +135,6 @@ public class PlayerCombatManager : MonoBehaviour
         fullyCharged = false;
     }
 
-
     public void SetAttackRotationSpeed()
     {
         isAttackRotationSpeed = true;
@@ -147,10 +147,13 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void SetAnimationCancelebleFalse()
     {
+        Debug.Log("Animation cancelebale set to false");
         animationCanceleble = false;
     }
     public void SetAnimationCancelebleTrue()
     {
+        Debug.Log("Animation cancelebale set to true");
+
         animationCanceleble = true;
     }
 

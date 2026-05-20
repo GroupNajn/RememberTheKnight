@@ -10,7 +10,7 @@ using static IPickupable;
 
 
 // Script Updated by Henric 2026-04-17
-public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlocked { get; private set; } = false;
@@ -199,6 +199,32 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             StartCoroutine(UnFlipCard());
         }
 
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (InputManager.Instance.usingGamepad)
+        {
+            nameText.text = cardData.cardName;
+
+            if (IsUnlocked)
+            {
+                CheckStatsForString();
+                // infoBox.SetActive(true);
+                StartCoroutine(FlipCard());
+            }
+        }
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        if (InputManager.Instance.usingGamepad)
+        {
+            if (IsUnlocked)
+            {
+                StartCoroutine(UnFlipCard());
+            }
+        }
     }
 
     IEnumerator FlipCard()

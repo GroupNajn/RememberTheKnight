@@ -4905,6 +4905,8 @@ GameObject:
   - component: {fileID: 8621613600709123122}
   - component: {fileID: 1661614160723579487}
   - component: {fileID: 3899171705786581615}
+  - component: {fileID: 4175716898667298922}
+  - component: {fileID: -924219923983800407}
   m_Layer: 0
   m_Name: fireballProjectile
   m_TagString: Projectile
@@ -4992,7 +4994,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.05
   direction: {x: 0, y: 0, z: 0}
-  FlyingEvent:
+  <enemyWeaponManager>k__BackingField: {fileID: 0}
+  flyingEvent:
     Guid:
       Data1: -1047529708
       Data2: 1244432877
@@ -5025,6 +5028,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
+--- !u!114 &4175716898667298922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3129132563675642798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1748560637
+      Data2: 1163059513
+      Data3: 254123405
+      Data4: -1114829556
+    Path: event:/SFX/HitMarker/Enemy/FireBallHit
+  Event: 
+  EventPlayTrigger: 2
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 40
+--- !u!114 &-924219923983800407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3129132563675642798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1047529708
+      Data2: 1244432877
+      Data3: 722682814
+      Data4: 160147604
+    Path: event:/SFX/Attacks/Enemy/FireBallFlying
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 15
 --- !u!1 &7024317816316481453
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,7 +74,7 @@ public class BookUi : MonoBehaviour
         BaseBookSetup(playerStats);
 
         DisableTabButtonsTemporarily();
-        StartCoroutine(ScaleBouncePickUpWindow(() =>
+        StartCoroutine(AnimateSize(() =>
         {
             AnimateMove(() =>
             {
@@ -162,10 +162,34 @@ public class BookUi : MonoBehaviour
                 lorePages.Add(new PageData
                 {
                     type = PageData.PageType.Lore,
-                    loreText = unlocked ? page : "???"
+                    loreText = unlocked ? page : ScrambleText(page)
                 });
             }
         }
+    }
+
+    // Helper method for scrambling text
+
+    private string ScrambleText(string text)
+    {
+        char[] chars = text.ToCharArray();
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (char.IsWhiteSpace(chars[i]))
+                continue;
+
+            int randomIndex = UnityEngine.Random.Range(0, chars.Length);
+
+            while (char.IsWhiteSpace(chars[randomIndex]))
+            {
+                randomIndex = UnityEngine.Random.Range(0, chars.Length);
+            }
+
+            (chars[i], chars[randomIndex]) = (chars[randomIndex], chars[i]);
+        }
+
+        return new string(chars);
     }
 
     public void ChangeTab(BookTabEnum tab)
@@ -281,8 +305,6 @@ public class BookUi : MonoBehaviour
 
     public void CloseBook()
     {
-        ResetBookState();
-
         uiManager.CloseBookUI();
     }
 
@@ -332,11 +354,13 @@ public class BookUi : MonoBehaviour
         movingPage.localEulerAngles = closedRotation;
     }
 
-    public void AnimateMove(Action onComplete = null)
+    public void AnimateMove(Action onComplete = null, bool reverse = false)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookSlideEvent);
 
-        LeanTween.moveLocal(movingBook.gameObject, targetPos, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
+        Vector3 pos = reverse ? startPos : targetPos;
+
+        LeanTween.moveLocal(movingBook.gameObject, pos, animationDurationOpening).setEase(LeanTweenType.easeInOutQuad).setIgnoreTimeScale(true).setOnComplete(() =>
         {
             onComplete?.Invoke();
         });
@@ -362,25 +386,22 @@ public class BookUi : MonoBehaviour
         });
     }
 
-    private IEnumerator ScaleBouncePickUpWindow(Action onComplete = null)
+    public IEnumerator AnimateSize(Action onComplete = null, bool reverse = false)
     {
         float timer = 0f;
-        // 300 x 450
-        // 300 x 1.5
-        // 350 x 525
         while (timer < animationDurationMoving)
         {
             timer += Time.unscaledDeltaTime;
 
             float t = timer / animationDurationMoving;
-            float curvevalue = bounceCurve.Evaluate(t);
+
+            float curvevalue = reverse ? bounceCurve.Evaluate(1f - t) : bounceCurve.Evaluate(t);
 
             movingBook.transform.localScale = Vector3.one * curvevalue;
 
             yield return null;
         }
-        movingBook.transform.localScale = Vector3.one;
-        //LeanTween.scale(rescaleRect, new Vector3(0.95f, 0.95f, 0.95f), 1.5f).setEaseInBack().setLoopPingPong().setIgnoreTimeScale(true);
+        movingBook.transform.localScale = reverse  ? Vector3.zero : Vector3.one;
 
         onComplete?.Invoke();
     }

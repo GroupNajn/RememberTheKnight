@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
-public class CardPickupUI : MonoBehaviour
+public class CardPickupUI : AutoSelectFirstButtonOnEnable
 {
 
     [Header("TextMesh")]
@@ -48,6 +48,7 @@ public class CardPickupUI : MonoBehaviour
 
     void Start()
     {
+
         this.transform.localScale = new Vector3(0, 0, 0);
         targetScale = new Vector3(1, 1, 1);
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
@@ -55,6 +56,8 @@ public class CardPickupUI : MonoBehaviour
 
     private void OnEnable()
     {
+        base.OnEnable();
+
         SetFamilyText();
         SetTierText();
         SetInfoBoxText();

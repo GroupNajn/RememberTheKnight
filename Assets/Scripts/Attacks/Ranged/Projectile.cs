@@ -13,12 +13,12 @@ public class Projectile : MonoBehaviour
     public Vector3 direction;
     List<ParticleSystem> projectiles = new();
 
-    [field:SerializeField] public EnemyWeaponManager enemyWeaponManager { get; set; }
+    [field: SerializeField] public EnemyWeaponManager enemyWeaponManager { get; set; }
 
     Collider projectileCollider;
     Vector3 origin;
     [Header("SFX")]
-    public EventReference FlyingEvent;
+    public EventReference flyingEvent;
 
 
     private void Awake()
@@ -31,11 +31,9 @@ public class Projectile : MonoBehaviour
     private void Start()
     {
         origin = transform.position;
-        if (isArrow)
-        {
-            RuntimeManager.PlayOneShotAttached(FlyingEvent, gameObject);
-        }
-        
+
+        if(isArrow)
+        RuntimeManager.PlayOneShotAttached(flyingEvent, gameObject);
     }
 
     void Update()
@@ -47,7 +45,7 @@ public class Projectile : MonoBehaviour
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
-            if(isArrow && other.gameObject.CompareTag("Player"))
+            if (isArrow && other.gameObject.CompareTag("Player"))
             {
                 Vector3 contactPoint = other.ClosestPoint(transform.position);
                 GameObject.FindWithTag("Player").GetComponent<PlayerVFX>().PlayArrowVFX(contactPoint);

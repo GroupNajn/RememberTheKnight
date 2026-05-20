@@ -1,7 +1,7 @@
+using FMOD.Studio;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.AppUI.Redux;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopBoardCardSlot : MonoBehaviour
 {
@@ -9,22 +9,34 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     [SerializeField] private ShopBoard board;
     [SerializeField] public CardData CurrentCard;
+    [SerializeField] private GameObject spawnedCard;
 
     [Header("Visual indicators")]
-    [SerializeField] private GameObject hoverVisual;
+    [SerializeField] private GameObject selectedVisual;
+    [SerializeField] private GameObject candleVisual;
+    [SerializeField] private GameObject boardSlot;
+    [SerializeField] private float animationDuration = 0.3f;
+    [SerializeField] private bool isAnimating;
+    public float AnimationDuration => animationDuration;
+    public bool IsAnimating => isAnimating;
+
+    [SerializeField] private Vector3 startRot;
+    [SerializeField] private Vector3 endRot;
+
     private bool isSelected;
 
     private void Awake()
     {
-        if (hoverVisual != null)
-            hoverVisual.SetActive(false);
+        if (selectedVisual != null)
+            selectedVisual.SetActive(false);
     }
 
     public void SetCard(CardData card)
     {
+
         CurrentCard = card;
 
-        if (isLocked)
+        if (isLocked || card == null)
         {
             int randomIndex = Random.Range(0, board.RandomPosters.Count);
             GameObject randomPoster = board.RandomPosters[randomIndex];
@@ -37,25 +49,76 @@ public class ShopBoardCardSlot : MonoBehaviour
             return;
         }
 
+        //if (card == null) return;
+
         board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
     }
 
+    public void RemoveCard()
+    {
+        if (spawnedCard != null)
+        {
+            Destroy(spawnedCard);
+            spawnedCard = null;
+        }
+
+        CurrentCard = null;
+    }
+
+    public void AnimateSelectSpin(System.Action onComplete = null)
+    {
+        LeanTween.rotateAroundLocal(boardSlot, endRot, 360f, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    public void AnimateHoverRotation(System.Action onComplete = null)
+    {
+        LeanTween.rotateLocal(boardSlot, endRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            isAnimating = false;
+            onComplete?.Invoke();
+        });
+    }
+
+    public void AnimateUnHoverRotation(System.Action onComplete = null)
+    {
+        LeanTween.rotateLocal(boardSlot, startRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    IEnumerator ShowVisuals(bool active)
+    {
+        yield return new WaitForSeconds(animationDuration);
+
+        selectedVisual?.SetActive(active);
+        candleVisual?.SetActive(active);
+    }
 
     public void SetHoverVisual(bool active)
     {
-        if (isSelected)
-            return;
+        LeanTween.cancel(boardSlot);
 
-        if (hoverVisual != null)
-            hoverVisual.SetActive(active);
+        if (isSelected)
+        {
+            AnimateHoverRotation();
+            return;
+        }
+
+        if (active)
+            AnimateHoverRotation();
+        else
+            AnimateUnHoverRotation();
     }
 
     public void SetSelectedVisual(bool selected)
     {
         isSelected = selected;
 
-        if (hoverVisual != null)
-            hoverVisual.SetActive(selected);
+        StartCoroutine(ShowVisuals(selected));
     }
     public void SetLocked(bool value)
     {

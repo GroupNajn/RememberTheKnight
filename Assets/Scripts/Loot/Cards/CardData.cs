@@ -21,6 +21,7 @@ public class CardData : ScriptableObject
 
     public GameObject CardPrefab;
     public Sprite cardImage;
+    public Sprite cardInfoImage;
 
     [Header("Card Material")]
     [SerializeField] public Material frontMaterial;
