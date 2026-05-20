@@ -130,8 +130,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
             Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
 
-            CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
-            uiSlot?.LinkedBoardSlot?.RemoveCard();
+            //CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
+            //uiSlot?.LinkedBoardSlot?.RemoveCard();
 
         }
         Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
