@@ -30,8 +30,8 @@ public class ShopBoard : MonoBehaviour
 
     void PopulateSlots()
     {
-        //var allCards = LootManager.instance.RollSevenRewardCards();
-        var allCards = cardSystem.GetAllCards();
+        var allCards = LootManager.instance.RollSevenRewardCards();
+        //var allCards = cardSystem.GetAllCards();
 
         if (allCards == null || allCards.Count == 0)
             return;

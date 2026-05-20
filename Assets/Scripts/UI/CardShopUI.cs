@@ -11,6 +11,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     private UIManager uiManager;
     private InteractCameraHandler interactCameraHandler;
     public ShopBoard shopBoard;
+    public InteractCardShop interactCardShop;
 
     [SerializeField] private TextMeshProUGUI errorText;
 
@@ -18,7 +19,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
     [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
 
-    private Dictionary<string, CardData> spendCards = new Dictionary<string, CardData>();
     [SerializeField] private int maxPurchased = 1;
 
     private float errorTimer = 0f;
@@ -130,9 +130,21 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
             Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
 
+            CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
+            uiSlot?.LinkedBoardSlot?.RemoveCard();
+
         }
         Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
 
+        interactCardShop?.SetBought();
+
+        ResetSlots();
+        uiManager.CloseCardShopUI();
+        interactCameraHandler.InteractCamReset();
+    }
+
+    public void OnLeaveShop()
+    {
         ResetSlots();
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
@@ -178,9 +190,13 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             if (collecton.CardIsPickedUp(uislot.CardData))
             {
                 uislot.SetSelected(false);
+                uislot.cardInfo.transform.localScale = Vector3.zero;
 
                 if (uislot.LinkedBoardSlot != null)
+                {
+                    uislot.LinkedBoardSlot.SetHoverVisual(false);
                     uislot.LinkedBoardSlot.SetSelectedVisual(false);
+                }
             }
         }
         purchasedCardData.Clear();
@@ -190,11 +206,14 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     {
         foreach (CardSlotShopUI uislot in uiSlots)
         {
-            
             uislot.SetSelected(false);
+            uislot.cardInfo.transform.localScale = Vector3.zero;
 
             if (uislot.LinkedBoardSlot != null)
+            {
+                uislot.LinkedBoardSlot.SetHoverVisual(false);
                 uislot.LinkedBoardSlot.SetSelectedVisual(false);
+            }
         }
         purchasedCardData.Clear();
 

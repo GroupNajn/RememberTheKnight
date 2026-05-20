@@ -17,6 +17,9 @@ public class InteractCameraHandler : MonoBehaviour
     private GameObject freeLookCam;
     private CinemachineInputAxisController cinemachineInputAxisController;
 
+    private GameObject mainCamera;
+    private Camera mainCameraComponent;
+
     void Start()
     {
         cameraAnimator = GetComponentInChildren<Animator>();
@@ -28,6 +31,9 @@ public class InteractCameraHandler : MonoBehaviour
         
         freeLookCam = GameObject.FindGameObjectWithTag("FreeLookCamera");
         cinemachineInputAxisController = freeLookCam.GetComponent<CinemachineInputAxisController>();
+
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        mainCameraComponent = mainCamera.GetComponent<Camera>();
 
         if (playerTransform == null) 
         {
@@ -55,6 +61,10 @@ public class InteractCameraHandler : MonoBehaviour
 
         cameraAnimator.Play(stateName: "InteractCamera");
         cinemachineInputAxisController.enabled = false;
+
+        // Set the culling mask to hide the player layer
+        int playerLayer = LayerMask.NameToLayer("Player");
+        mainCameraComponent.cullingMask &= ~(1 << playerLayer);
     }
 
     public void InteractCamReset()
@@ -62,7 +72,11 @@ public class InteractCameraHandler : MonoBehaviour
         if (cinemachineInputAxisController == null || cinemachineInteractCam == null || playerTransform == null)
         {
             return;
-        }   
+        }
+
+        // Reset the culling mask to show the player layer again
+        int playerLayer = LayerMask.NameToLayer("Player");
+        mainCameraComponent.cullingMask |= (1 << playerLayer);
 
         cinemachineInputAxisController.enabled = true;
         cameraAnimator.Play(stateName: "FreeLookCamera");
