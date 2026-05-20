@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     private TextMeshProUGUI text;
     private Color originalColor;
@@ -38,6 +38,35 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         tweenID = LeanTween.scale(rect, Vector3.one * 1.05f, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
         text.color = hoverColor;
     }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        LeanTween.cancel(gameObject);
+
+        tweenID = LeanTween.scale(rect, Vector3.one, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
+        text.color = originalColor;
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (InputManager.Instance.usingGamepad)
+        {
+            LeanTween.cancel(gameObject);
+
+            tweenID = LeanTween.scale(rect, Vector3.one * 1.05f, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
+            text.color = hoverColor;
+        }
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        if (InputManager.Instance.usingGamepad)
+        {
+            LeanTween.cancel(gameObject);
+
+            tweenID = LeanTween.scale(rect, Vector3.one, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
+            text.color = originalColor;
+        }
+    }
 
     private void OnDisable()
     {
@@ -52,11 +81,5 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         tweenID = -1;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        LeanTween.cancel(gameObject);
 
-        tweenID = LeanTween.scale(rect, Vector3.one, 0.2f).setEaseOutQuad().setIgnoreTimeScale(true).id;
-        text.color = originalColor;
-    }
 }
