@@ -168,7 +168,7 @@ public class UIManager : MonoBehaviour
         {
             if (bookUI.activeSelf)
             {
-                //CloseBookUI();
+                CloseBookUI();
             }
         }
     }
@@ -411,7 +411,6 @@ public class UIManager : MonoBehaviour
     public void CloseCardSelectUI()
     {
         OpenUIOnMenuClose();
-        Debug.Log("3");
         cardSelectUI.SetActive(false);
 
         UIMenuActive = false;
@@ -437,7 +436,6 @@ public class UIManager : MonoBehaviour
     public void CloseFamilySelectUI()
     {
         OpenUIOnMenuClose();
-        Debug.Log("4");
         familySelectUI.SetActive(false);
 
         UIMenuActive = false;
@@ -513,29 +511,29 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
-    //public void CloseBookUI()
-    //{
-    //    BookUi bookScript = bookUI.GetComponent<BookUi>();
-    //    if (!bookScript.isAnimating)
-    //    {
-    //        bookScript.isAnimating = true;
-    //        bookScript.AnimateClose(() =>
-    //        {
-    //            bookScript.AnimateMove(() =>
-    //            {
-    //                StartCoroutine(bookScript.AnimateSize(() =>
-    //                {
-    //                    bookScript.isAnimating = false;
-    //                    bookUI.SetActive(false);
+    public void CloseBookUI()
+    {
+        BookUi bookScript = bookUI.GetComponent<BookUi>();
+        if (!bookScript.isAnimating)
+        {
+            bookScript.isAnimating = true;
+            bookScript.AnimateClose(() =>
+            {
+                bookScript.AnimateMove(() =>
+                {
+                    StartCoroutine(bookScript.AnimateSize(() =>
+                    {
+                        bookScript.isAnimating = false;
+                        bookUI.SetActive(false);
 
-    //                    UIMenuActive = false;
-    //                    CheckUIState();
+                        UIMenuActive = false;
+                        CheckUIState();
 
-    //                }, true));
-    //            }, true);
-    //        });
-    //    }
-    //}
+                    }, true));
+                }, true);
+            });
+        }
+    }
 
     // LORE PAGE UI
     public void OpenLorePageUI()
@@ -551,7 +549,6 @@ public class UIManager : MonoBehaviour
     public void CloseLorePageUI()
     {
         OpenUIOnMenuClose();
-        Debug.Log("1");
         lorePageUI.SetActive(false);
 
         UIMenuActive = false;
@@ -707,7 +704,6 @@ public class UIManager : MonoBehaviour
 
             CloseBackButtonUI();
             OpenUIOnMenuClose(); // SHOW BARS ETC
-            Debug.Log("2");
         }
     }
     public void GoBackFromControlls()
