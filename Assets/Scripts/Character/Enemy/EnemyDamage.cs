@@ -22,7 +22,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
     public Action<float, float> OnHealthChanged { get; set; }
-    [SerializeField, Tooltip("When current threat is zero incoming damage is multiplied by this value")] public float SneakMultiplier = 1.3f;
+    [SerializeField, Tooltip("When current threat is zero incoming damage is multiplied by this value")] public float SneakMultiplier = 1.5f;
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
     float damageCooldownTimer;
@@ -34,8 +34,11 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     private EnemyVFX enemyVFX;
     private CharacterSoundFXManager enemySFX;
     private Animator animator;
-    private BlackboardVariable<float> threat;
     private List<Transform> childObjects;
+    private BlackboardVariable<bool> hasSight;
+    private BlackboardVariable<bool> hasAggro;
+    private BehaviorGraphAgent behaviorGraphAgent;
+
 
     public void SetHealthModifier(int level)
     {
@@ -50,13 +53,14 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
-        float incomingDamage = damageInfo.DamageAmount;
         if (CanTakeDamage && Health > 0)
         {
-            if (!animator.GetBool(HasSightHash) && !animator.GetBool(HasAggroHash))
-                incomingDamage *= SneakMultiplier;
-
-            Health -= incomingDamage;
+            if (!hasSight.Value && !hasAggro.Value)
+            {
+                damageInfo.SetDamageAmount(damageInfo.DamageAmount * SneakMultiplier);
+                damageInfo.IsSneak = true;
+            }
+            Health -= damageInfo.DamageAmount;
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
@@ -107,7 +111,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         onDeath = GetComponent<ITriggerable>();
         childObjects = GetComponentsInChildren<Transform>().ToList();
         animator = GetComponent<Animator>();
-        if (GetComponent<BehaviorGraphAgent>().BlackboardReference.GetVariable<float>("currentThreat", out threat)) { }
+        behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Sight", out hasSight)) { }
+        if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Aggro", out hasAggro)) { }
 
 
     }

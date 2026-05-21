@@ -20,10 +20,10 @@ public partial class CircleTargetAction : Action
 
     [SerializeReference] public BlackboardVariable<int> Priority;
     [SerializeReference] public BlackboardVariable<float> Duration;
+    [SerializeReference] public BlackboardVariable<float> SpeedMultiplier = new(0.75f);
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
-    private CharacterController characterController;
     private bool isClockwise;
     private Vector3 lastTargetPos;
 
@@ -35,8 +35,7 @@ public partial class CircleTargetAction : Action
     protected override Status OnStart()
     {
         navMeshAgent = Self.Value;
-        animator = Self.Value.gameObject.GetComponent<Animator>();
-        characterController = Self.Value.gameObject.GetComponent<CharacterController>();
+        animator = Self.Value.GetComponent<Animator>();
 
         lastTargetPos = Target.Value.position;
         navMeshAgent.updatePosition = false;
@@ -73,6 +72,7 @@ public partial class CircleTargetAction : Action
         if (shouldCorrect && !isCorrecting)
         {
             currentCirclePoint = SampleCirclePoints(10);
+            navMeshAgent.SetDestination(currentCirclePoint);
             isCorrecting = true;
         }
 
@@ -101,7 +101,7 @@ public partial class CircleTargetAction : Action
             Vector3 desiredVelocity = navMeshAgent.desiredVelocity;
             Vector3 localDesiredVelocity = Vector3.zero;
             if (desiredVelocity != Vector3.zero)
-                localDesiredVelocity = Self.Value.transform.InverseTransformDirection(desiredVelocity).normalized;
+                localDesiredVelocity = Self.Value.transform.InverseTransformDirection(desiredVelocity).normalized * SpeedMultiplier.Value;
 
             float desiredSpeedX = localDesiredVelocity.x;
             float desiredSpeedZ = localDesiredVelocity.z;
@@ -167,7 +167,7 @@ public partial class CircleTargetAction : Action
                 !navMeshAgent.CalculatePath(Self.Value.transform.position + (Self.Value.transform.right * navMeshAgent.radius / 2), new NavMeshPath());
         }
 
-        float targetSpeedX = isClockwise ? -0.75f : 0.75f;
+        float targetSpeedX = isClockwise ? -SpeedMultiplier.Value : SpeedMultiplier.Value;
         animator.SetFloat(XHash, Mathf.Lerp(currentSpeedX, targetSpeedX, navMeshAgent.acceleration * Time.deltaTime));
         animator.SetFloat(YHash, Mathf.Lerp(currentSpeedZ, 0, navMeshAgent.acceleration * Time.deltaTime));
 
@@ -186,7 +186,7 @@ public partial class CircleTargetAction : Action
         Vector3 dir = navMeshAgent.transform.position - Target.Value.position;
         dir.y = 0;
         dir.Normalize();
-        dir *= CircleRadius.Value;
+        dir *= (CircleRadius.Value + navMeshAgent.stoppingDistance);
         for (int i = 0; i < sampleDensity; i++)
         {
 

@@ -2248,8 +2248,7 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 4680590414493778371
   - rid: 4680590414493778372
-  - rid: 4680590414493778374
-  - rid: 6699910492161573659
+  - rid: 6699910881053507900
   - rid: 6699910682355172081
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
@@ -2271,24 +2270,8 @@ MonoBehaviour:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: threatRadius
+        Name: sightRadius
         m_Value: 20
-    - rid: 4680590414493778374
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 424389198254072288
-          m_Value1: 15845654370886051948
-        Name: attackTriggerName
-        m_Value: Attack
-    - rid: 6699910492161573659
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 4042726441812549289
-          m_Value1: 3200433524896484858
-        Name: View Origin
-        m_Value: {fileID: 2952177284480363168}
     - rid: 6699910682355172081
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2297,6 +2280,14 @@ MonoBehaviour:
           m_Value1: 8529721407760455051
         Name: Attack
         m_Value: {fileID: 8474475611851264633, guid: 5824163de26e4636aaad39db59d2147d, type: 2}
+    - rid: 6699910881053507900
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12531201339673329773
+          m_Value1: 3705873791309262495
+        Name: aggroRadius
+        m_Value: 15
 --- !u!136 &6255614598257230917
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2399,7 +2390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 30
-  SneakMultiplier: 1.3
+  SneakMultiplier: 1.4
   damageCooldown: 0
   healthModifierPercentagePerLevel: 1.2
   tier: 1

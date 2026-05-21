@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: Attack Blackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 639142350111011650
+  VersionTimestamp: 639149914487425360
   AssetID:
     m_Value0: 5510740061933883226
     m_Value1: 6237513356610621338
@@ -25,6 +25,7 @@ MonoBehaviour:
     - rid: 6699910676364657415
     - rid: 6699910681786057042
     - rid: 6699910681786057374
+    - rid: 6699910880629883260
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -85,6 +86,14 @@ MonoBehaviour:
           m_Value1: 1652674451623927022
         Name: Attack Radius
         m_Value: 0
+    - rid: 6699910880629883260
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16214223284634341133
+          m_Value1: 548321675361048974
+        Name: Aggro Radius
+        m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,9 +115,10 @@ MonoBehaviour:
   - rid: 6699910682272072434
   - rid: 6699910676364657410
   - rid: 6699910676364657414
+  - rid: 6699910880629883019
   - rid: 6699910681786057041
   - rid: 6699910681786057373
-  m_VersionTimestamp: 639142350111011650
+  m_VersionTimestamp: 639149914487425360
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -3976490740413032565}
@@ -182,6 +192,16 @@ MonoBehaviour:
           m_Value0: 12004437389443161721
           m_Value1: 1652674451623927022
         Name: Attack Radius
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 0
+    - rid: 6699910880629883019
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16214223284634341133
+          m_Value1: 548321675361048974
+        Name: Aggro Radius
         IsExposed: 1
         m_IsShared: 0
         m_Value: 0
