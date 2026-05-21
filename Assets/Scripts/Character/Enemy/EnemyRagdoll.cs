@@ -2,6 +2,7 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(EnemyWeaponManager))]
 [RequireComponent(typeof(Animator), typeof(BehaviorGraphAgent), typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody), typeof(CharacterController), typeof(CapsuleCollider))]
 [System.Serializable]
@@ -18,7 +19,7 @@ public class EnemyRagdoll : MonoBehaviour
         characterLimbs = GetComponentsInChildren<Rigidbody>();
         characterController = GetComponent<CharacterController>();
         navmeshAgent = GetComponent<NavMeshAgent>();
-
+        enemyWeaponManager = GetComponent<EnemyWeaponManager>();
 
         DisableRagdoll();
     }
@@ -41,6 +42,8 @@ public class EnemyRagdoll : MonoBehaviour
         capsuleCollider.enabled = false;
         characterController.enabled = false;
         navmeshAgent.enabled = false;
+        enemyWeaponManager.DeactivateLeftDamageCollider();
+        enemyWeaponManager.DeactivateRightDamageCollider();
         isRagdolled = true;
     }
 
@@ -72,6 +75,7 @@ public class EnemyRagdoll : MonoBehaviour
     private CapsuleCollider capsuleCollider;
     private CharacterController characterController;
     private NavMeshAgent navmeshAgent;
+    private EnemyWeaponManager enemyWeaponManager;
 
     private bool isRagdolled = false;
 }
