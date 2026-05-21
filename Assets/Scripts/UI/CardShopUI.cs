@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -87,6 +88,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                 slot.LinkedBoardSlot.SetSelectedVisual(false);
 
             purchasedCardData.Remove(card);
+
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopDeselectCardEvent);
             return;
         }
 
@@ -110,12 +113,15 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
         if (!CanAfford(card))
         {
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.errorEvent);
             ShowError("Not enough souls!", 2f);
+
             return;
         }
 
         if (collection.CardIsPickedUp(card)) // Checks if the card is in equiped lists and temporary lists.
         {
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.errorEvent);
             ShowError("You already have that card", 2f);
             return;
         }
@@ -138,6 +144,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             if (collection.CardIsPickedUp(purchasedCard)) // Checks if the card is in equiped lists and temporary lists.
             {
                 ShowError($"You already have {purchasedCard.cardName}", 2f);
+                RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.errorEvent);
                 return;
             }
             Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
@@ -150,6 +157,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
         interactCardShop?.SetBought();
 
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopBuyCardEvent);
         ResetSlots();
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
