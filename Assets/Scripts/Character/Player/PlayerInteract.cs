@@ -65,11 +65,12 @@ public class PlayerInteract : MonoBehaviour
 
                 if (!UIManager.Instance.UIMenuActive)
                 {
-                    string interactableUIText = "[F]";
+                    string keybind = InputManager.Instance.SetInteractBinding();
+                    string interactableUIText = $"[{keybind}]  ";
                     if (interactable is IInteractableUIText)
                     {
                         IInteractableUIText interactableUI = (IInteractableUIText)interactable;
-                        interactableUIText = interactableUI.GetUIData().InfoText;
+                        interactableUIText = interactableUIText + interactableUI.GetUIData().InfoText;
                     }
                     UIManager.Instance.OpenInteractiveUI(interactableUIText);
                 }

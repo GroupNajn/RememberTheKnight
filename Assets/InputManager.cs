@@ -1,3 +1,4 @@
+using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
+    public BindKey formatter;
 
     [Header("Input Actions")]
     public InputActionAsset inputActions;
@@ -18,8 +20,6 @@ public class InputManager : MonoBehaviour
     public bool usingGamepad;
 
     private const string rebindKeys = "input_rebinds";
-
-
 
     private void Awake()
     {
@@ -176,5 +176,29 @@ public class InputManager : MonoBehaviour
     {
         return rebindKeys + "_" + input.gameObject.name;
     }
+
+    public string SetInteractBinding()
+    {
+        InputAction interactAction = playerInputs[0].actions.FindAction("Interact");
+
+        if (interactAction == null)
+            return "F/Y";
+
+        int bindingIndex = usingGamepad ? 1 : 0;
+
+        if (bindingIndex >= interactAction.bindings.Count)
+            return "F/Y";
+
+        //string path = interactAction.bindings[bindingIndex].effectivePath;
+        string key = interactAction.GetBindingDisplayString(bindingIndex);
+
+        if (formatter != null)
+            return formatter.GetEnglishBindingName(key);
+
+
+        return key;
+    }
+
+
 
 }

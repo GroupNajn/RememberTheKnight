@@ -33,13 +33,13 @@ public class InteractCardPickup : MonoBehaviour, IInteractable, IInteractableUIT
 
         if (collection.CardIsPickedUp(cardData))
         {
-            data.InfoText = $"[F]: {cardData.cardName} is already picked up.";
+            data.InfoText = $"{cardData.cardName} is already picked up.";
             data.ErrorText = $"{cardData.cardName} will be sacrificed and you will gain souls.";
             data.CanInteract = true;
         }
         else if (!collection.CardIsPickedUp(cardData))
         {
-            data.InfoText = $"[F]: Pickup: {cardData.cardName}.";
+            data.InfoText = $"Pickup: {cardData.cardName}.";
             data.CanInteract = true;
         }
         else

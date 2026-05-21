@@ -128,6 +128,9 @@ public class UIManager : MonoBehaviour
             if (bookUI.activeSelf)
                 return;
 
+            if(cardShopUI.activeSelf)
+                return;
+
             if (optionMenuUI.activeSelf)
             {
                 GoBackFromOptions();

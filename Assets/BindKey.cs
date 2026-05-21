@@ -193,7 +193,7 @@ public class BindKey : MonoBehaviour
 
     }
 
-    private string GetEnglishBindingName(string path)
+    public string GetEnglishBindingName(string path)
     {
         if (string.IsNullOrEmpty(path))
             return "Invalid";
@@ -259,7 +259,7 @@ public class BindKey : MonoBehaviour
     }
 
 
-    private string FormatKeyboardKey(string key) //MAKES NUMBER LOOK BETTER
+    public string FormatKeyboardKey(string key) //MAKES NUMBER LOOK BETTER
     {
         if (key.StartsWith("digit"))
             return key.Replace("digit", ""); // MAKE DIGIT KEYS ONLY SAY THE NUMBER
@@ -271,7 +271,7 @@ public class BindKey : MonoBehaviour
     }
 
 
-    private string FormatName(string value) // MAKES TEXT LOOK BETTER
+    public string FormatName(string value) // MAKES TEXT LOOK BETTER
     {
         if (string.IsNullOrEmpty(value))
             return "Invalid";
@@ -290,7 +290,7 @@ public class BindKey : MonoBehaviour
         return char.ToUpper(result[0]) + result.Substring(1); // MAKE FIRST LETTER UPPERCASE
     }
 
-    private string GetGamepadFaceButton(string direction)
+    public string GetGamepadFaceButton(string direction)
     {
         ControllerType type = GetCurrentControllerType();
 
@@ -329,7 +329,7 @@ public class BindKey : MonoBehaviour
 
     }
 
-    private string GetShoulderButton(bool left)
+    public string GetShoulderButton(bool left)
     {
         ControllerType type = GetCurrentControllerType();
 
@@ -347,7 +347,7 @@ public class BindKey : MonoBehaviour
 
     }
 
-    private string GetTriggerButton(bool left)
+    public string GetTriggerButton(bool left)
     {
         ControllerType type = GetCurrentControllerType();
 
@@ -363,14 +363,14 @@ public class BindKey : MonoBehaviour
         return left ? "LT" : "RT";
     }
 
-    private enum ControllerType
+    public enum ControllerType
     {
         Xbox,
         PlayStation,
         Offbrand
     }
 
-    private ControllerType GetCurrentControllerType()
+    public ControllerType GetCurrentControllerType()
     {
         Gamepad gamepad = Gamepad.current;
 

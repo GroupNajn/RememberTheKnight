@@ -55,7 +55,7 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Choose Your Faith";
+        UIData.InfoText = "Choose Your Faith";
         return UIData;
     }
 }
