@@ -113,6 +113,7 @@ public class CardUnlockUI : MonoBehaviour
         cardSystem.UnlockCardFromDonation(cardData);
         donation.SetNextCard();
         donation.SetNetCardCost();
+        donation.SetSoulnsDonateForNextUnlock();
 
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
