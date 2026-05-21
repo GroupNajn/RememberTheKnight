@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -20,7 +21,11 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     private CardShopUI cardShopUI;
     private ShopBoard board;
 
-   public void SetBought()
+    [Header("SFX")]
+   
+    [SerializeField] private EventReference igniteLighterCardEvent;
+
+    public void SetBought()
     {
         hasBoughtCard = true;
     }
@@ -63,7 +68,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     IEnumerator OpenUI()
     {
         yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
-
+        RuntimeManager.PlayOneShot(igniteLighterCardEvent);
         playerUIManager.OpenCardShopUI();
         cardShopUI.PopulateSlots();
     }

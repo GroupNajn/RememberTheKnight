@@ -1,4 +1,5 @@
 using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +68,7 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     public void AnimateSelectSpin(System.Action onComplete = null)
     {
+
         LeanTween.rotateAroundLocal(boardSlot, endRot, 360f, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
         {
             onComplete?.Invoke();
@@ -75,6 +77,7 @@ public class ShopBoardCardSlot : MonoBehaviour
 
     public void AnimateHoverRotation(System.Action onComplete = null)
     {
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.cardFlipEvent);
         LeanTween.rotateLocal(boardSlot, endRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
         {
             isAnimating = false;
@@ -82,8 +85,14 @@ public class ShopBoardCardSlot : MonoBehaviour
         });
     }
 
+    //public bool GetCandleVisualEnabled()
+    //{       
+    //    return candleVisual != null && candleVisual.activeSelf;
+    //}
     public void AnimateUnHoverRotation(System.Action onComplete = null)
     {
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.cardFlipEvent);
+
         LeanTween.rotateLocal(boardSlot, startRot, animationDuration).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
         {
             onComplete?.Invoke();
@@ -93,7 +102,8 @@ public class ShopBoardCardSlot : MonoBehaviour
     IEnumerator ShowVisuals(bool active)
     {
         yield return new WaitForSeconds(animationDuration);
-
+        if(active) 
+            RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopSelectCardEvent);
         selectedVisual?.SetActive(active);
         candleVisual?.SetActive(active);
     }
