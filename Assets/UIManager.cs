@@ -16,7 +16,6 @@ public class UIManager : MonoBehaviour
     [Header("Script References")]
     [SerializeField] private PlayerCollection playerCollection; //meike tbc
     [SerializeField] private PlayerStats playerStats; //meike tbc
-    [SerializeField] private BookUi bookUIScript; 
     [SerializeField] private InteractCameraHandler interactCameraHandler;
 
     [SerializeField] private GameObject backButtonUI;
@@ -169,7 +168,7 @@ public class UIManager : MonoBehaviour
         {
             if (bookUI.activeSelf)
             {
-                CloseBookUI();
+                //CloseBookUI();
             }
         }
     }
@@ -189,7 +188,6 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI(); // Hide the interact UI
         CloseDeathScreen(); // Hide the death screen
         CloseCharacterSelectUI(); // Hide the character select UI
-        //CloseBookUI(); // Hide the book UI
         CloseLorePageUI(); // Hide the lore page UI
 
         CheckUIState();
@@ -498,9 +496,7 @@ public class UIManager : MonoBehaviour
     public void CloseCardShopUI()
     {
         OpenUIOnMenuClose();
-        Debug.Log("5");
 
-        cardShopUI.GetComponent<CardShopUI>().ForceReset();
         cardShopUI.SetActive(false);
 
         UIMenuActive = false;
@@ -518,24 +514,29 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
-    public void CloseBookUI()
-    {
+    //public void CloseBookUI()
+    //{
+    //    BookUi bookScript = bookUI.GetComponent<BookUi>();
+    //    if (!bookScript.isAnimating)
+    //    {
+    //        bookScript.isAnimating = true;
+    //        bookScript.AnimateClose(() =>
+    //        {
+    //            bookScript.AnimateMove(() =>
+    //            {
+    //                StartCoroutine(bookScript.AnimateSize(() =>
+    //                {
+    //                    bookScript.isAnimating = false;
+    //                    bookUI.SetActive(false);
 
-        bookUIScript.AnimateClose(() =>
-        {
-            bookUIScript.AnimateMove(() =>
-            {
-                StartCoroutine(bookUIScript.AnimateSize(() =>
-                {
-                    bookUI.SetActive(false);
+    //                    UIMenuActive = false;
+    //                    CheckUIState();
 
-                    UIMenuActive = false;
-                    CheckUIState();
-
-                }, true));
-            }, true);
-        });
-    }
+    //                }, true));
+    //            }, true);
+    //        });
+    //    }
+    //}
 
     // LORE PAGE UI
     public void OpenLorePageUI()

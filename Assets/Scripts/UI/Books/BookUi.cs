@@ -305,7 +305,7 @@ public class BookUi : MonoBehaviour
 
     public void CloseBook()
     {
-        uiManager.CloseBookUI();
+        //uiManager.CloseBookUI();
     }
 
     // Tab buttons
