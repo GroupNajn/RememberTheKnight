@@ -108,7 +108,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                 }
             }
 
-            purchasedCardData.Remove(card);
+            purchasedCardData.Clear();
         }
 
         if (!CanAfford(card))
