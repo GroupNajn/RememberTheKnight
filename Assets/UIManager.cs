@@ -480,7 +480,6 @@ public class UIManager : MonoBehaviour
         CloseInteractiveUI();
         cardShopUI.SetActive(true);
 
-        UIMenuActive = true;
         CheckUIState();
         CheckTimeScaleUI(true);
     }

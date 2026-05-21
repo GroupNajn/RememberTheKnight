@@ -3,6 +3,7 @@ using FMODUnity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour, IDamageable
@@ -92,7 +93,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        Debug.Log("DIE!");
         playerAnimator.SetBool("IsDead", true);
     }
 
@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void OnHeal()
     {
         Debug.Log("Attempting to heal. Current Charges: " + playerStats.currentHealingCharges);
-        if (playerStats.currentHealingCharges >= playerStats.healingChargeCost)
+        if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
         {
             Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
             playerStats.currentHealingCharges -= playerStats.healingChargeCost;

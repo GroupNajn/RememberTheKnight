@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 5464256600033538900}
   - component: {fileID: 8390920631166758820}
   - component: {fileID: -685104313974388154}
+  - component: {fileID: 3617831100201324557}
   m_Layer: 3
   m_Name: Mace
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3833202269244107968
 Transform:
   m_ObjectHideFlags: 0
@@ -67,10 +68,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 0.86
+  m_Radius: 0.12
+  m_Height: 0.76
   m_Direction: 1
-  m_Center: {x: 0.00000015650781, y: 0.4, z: -0.00000003041591}
+  m_Center: {x: 0.00000015650781, y: 0.46, z: -0.00000003041591}
 --- !u!114 &-685104313974388154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +85,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
+--- !u!54 &3617831100201324557
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6030414680109792853}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &6356467486177299265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -140,7 +168,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2033737173, guid: 2ab782ce5a2101749a03ed59a147efe8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

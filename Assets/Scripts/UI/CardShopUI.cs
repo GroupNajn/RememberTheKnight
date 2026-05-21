@@ -228,7 +228,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
         }
         purchasedCardData.Clear();
-
     }
 
 }

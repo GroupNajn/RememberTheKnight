@@ -22,7 +22,7 @@ public class TargetLockHandler : MonoBehaviour
     public float lockBreakMouseXThreshold = 300f;
 
     private float lostSightTimer = 0f;
-    public float loseSightDelay = 0.1f;
+    public float loseSightDelay = 1f;
 
     public bool AutomaticlyFindNewTarget = true;
     public bool CenterCameraOnTab = false;
@@ -92,7 +92,7 @@ public class TargetLockHandler : MonoBehaviour
                         Unlock();
                         return;
                     }
-                }
+                } 
                 else
                 {
                     lostSightTimer = 0f;
@@ -191,11 +191,6 @@ public class TargetLockHandler : MonoBehaviour
                 //Debug.Log("Best target: " + bestTarget);
             }
         }
-        //if (enemiesInRange.Count == 0) // No valid targets found, just center the camera and return
-        //{
-        //    //SmoothCenterCamera();
-        //    return;
-        //}
 
 
         currentTarget = bestTarget;
@@ -237,12 +232,12 @@ public class TargetLockHandler : MonoBehaviour
         // Filter by direction / line of sight / current target
         for (int i = enemiesInRange.Count - 1; i >= 0; i--)
         {
-            Transform enemy = enemiesInRange[i].transform;
-            Vector3 directionToEnemy = (enemy.position - playerTransform.position).normalized;
+            Transform enemyLookAt = enemiesInRange[i].GetComponentInParent<BehaviorGraphAgent>().transform.Find("EnemyLookAt");
+            Vector3 directionToEnemy = (enemyLookAt.position - playerTransform.position).normalized;
 
             float dotfwd = Vector3.Dot(Camera.main.transform.forward, directionToEnemy);
 
-            if (dotfwd < minDotProduct || currentTarget == enemy)
+            if (dotfwd < minDotProduct || currentTarget == enemyLookAt)
             {
                 //      Debug.Log("Enemy Removed due outside minDot or already being target: " + enemy.name);
                 enemiesInRange.RemoveAt(i);
@@ -293,6 +288,12 @@ public class TargetLockHandler : MonoBehaviour
             }
         }
 
+        BehaviorGraphAgent previousTarget = currentTarget.GetComponentInParent<BehaviorGraphAgent>();
+
+        if (previousTarget != null)
+        {
+            previousTarget.GetComponentInChildren<EnemyHealthBarCanvas>()?.HideHealthBar();
+        }
 
         currentTarget = bestTarget;
         AddTargets();
@@ -331,26 +332,24 @@ public class TargetLockHandler : MonoBehaviour
     }
     void AddTargets()
     {
-        if (currentTarget == null)
-        {
-            if(CenterCameraOnTab)
-                StartCoroutine(SmoothCenterCamera());
-            return;
-        }
+        //if (currentTarget == null)
+        //{
+        //    if(CenterCameraOnTab)
+        //        StartCoroutine(SmoothCenterCamera());
+        //    return;
+        //}
 
         targetGroup.Targets.Clear();
 
         targetGroup.AddMember(playerTransform, 0.5f, 1f);
         targetGroup.AddMember(currentTarget, 1f, 1);
 
-        BehaviorGraphAgent agent = currentTarget.GetComponentInParent<BehaviorGraphAgent>();
+        BehaviorGraphAgent agent = currentTarget?.GetComponentInParent<BehaviorGraphAgent>();
 
         if (agent != null)
         {
             agent.GetComponentInChildren<EnemyHealthBarCanvas>()?.ShowHealthBar();
         }
-
-        //currentTarget.gameObject.GetComponentInChildren<EnemyHealthBarCanvas>().ShowHealthBar();
     }
     void ClearTarget()
     {

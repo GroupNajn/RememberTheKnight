@@ -40,7 +40,7 @@ public class BookUi : MonoBehaviour
 
     [SerializeField] private float animationDurationMoving = 1f;
     [SerializeField] private float animationDurationOpening = 0.5f;
-    [SerializeField] private bool isAnimating;
+    [SerializeField] public bool isAnimating;
     [SerializeField] private AnimationCurve bounceCurve;
 
     [SerializeField] private Vector3 startPos;
@@ -81,7 +81,7 @@ public class BookUi : MonoBehaviour
                 AnimateOpen(() =>
                 {
                     isAnimating = false;
-
+                    Debug.Log($"isAnimating is: {false}");
                     EnableTabButtons();
                     UpdateTabButtons();
                 });
@@ -389,11 +389,12 @@ public class BookUi : MonoBehaviour
     public IEnumerator AnimateSize(Action onComplete = null, bool reverse = false)
     {
         float timer = 0f;
+        float animationSpeed;
         while (timer < animationDurationMoving)
         {
             timer += Time.unscaledDeltaTime;
 
-            float t = timer / animationDurationMoving;
+            float t = timer / (animationSpeed = reverse ? animationDurationMoving * 0.75f : animationDurationMoving);
 
             float curvevalue = reverse ? bounceCurve.Evaluate(1f - t) : bounceCurve.Evaluate(t);
 
