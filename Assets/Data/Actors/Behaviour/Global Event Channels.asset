@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4380149837683060585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: Global Event Channels
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 639149927116629250
+  AssetID:
+    m_Value0: 7307492149503722764
+    m_Value1: 14268530095150254539
+  m_Blackboard:
+    m_Variables:
+    - rid: 6699910880918504295
+    - rid: 6699910880918504297
+    - rid: 6699910880918504299
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6699910880918504295
+      type: {class: 'BlackboardVariable`1[[GiveAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11437913531093205515
+          m_Value1: 10767466550710060193
+        Name: Engage
+        m_Value: {fileID: 11400000, guid: ba77ede5dd4e09aedb1e812f84f572db, type: 2}
+    - rid: 6699910880918504297
+      type: {class: 'BlackboardVariable`1[[LostAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11886348146086365761
+          m_Value1: 9009774328925353311
+        Name: Disengage
+        m_Value: {fileID: 11400000, guid: 22561f7fe4249ec62b85231f99ed633f, type: 2}
+    - rid: 6699910880918504299
+      type: {class: 'BlackboardVariable`1[[RequestAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5060204194064917607
+          m_Value1: 6919620935165017574
+        Name: Reqest Aggro
+        m_Value: {fileID: 11400000, guid: c2f6a9bb6d34c0ecc95ec6404bcd9654, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: Global Event Channels
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 7307492149503722764
+    m_Value1: 14268530095150254539
+  m_Variables:
+  - rid: 6699910880918504294
+  - rid: 6699910880918504296
+  - rid: 6699910880918504298
+  m_VersionTimestamp: 639149927116629250
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -4380149837683060585}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6699910880918504294
+      type: {class: 'TypedVariableModel`1[[GiveAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11437913531093205515
+          m_Value1: 10767466550710060193
+        Name: Engage
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 11400000, guid: ba77ede5dd4e09aedb1e812f84f572db, type: 2}
+    - rid: 6699910880918504296
+      type: {class: 'TypedVariableModel`1[[LostAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11886348146086365761
+          m_Value1: 9009774328925353311
+        Name: Disengage
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 11400000, guid: 22561f7fe4249ec62b85231f99ed633f, type: 2}
+    - rid: 6699910880918504298
+      type: {class: 'TypedVariableModel`1[[RequestAggroEvent, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 5060204194064917607
+          m_Value1: 6919620935165017574
+        Name: Reqest Aggro
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 11400000, guid: c2f6a9bb6d34c0ecc95ec6404bcd9654, type: 2}

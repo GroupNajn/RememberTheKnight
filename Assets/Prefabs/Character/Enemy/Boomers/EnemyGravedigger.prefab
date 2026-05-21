@@ -332,9 +332,8 @@ MonoBehaviour:
   m_Graph: {fileID: -8159058737499799650, guid: 8ced71e2183b39466a059aa59d1500f7, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 4680590414493778359
-  - rid: 4680590414493778360
   - rid: 4680590414493778361
-  - rid: 6699910492161573660
+  - rid: 6699910881053507902
   - rid: 6699910682640384199
   - rid: 6699910683727233194
   m_OriginalGraph: {fileID: 0}
@@ -351,30 +350,14 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 738989674375410310}
-    - rid: 4680590414493778360
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 424389198254072288
-          m_Value1: 15845654370886051948
-        Name: attackTriggerName
-        m_Value: Attack
     - rid: 4680590414493778361
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: threatRadius
+        Name: sightRadius
         m_Value: 20
-    - rid: 6699910492161573660
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 4042726441812549289
-          m_Value1: 3200433524896484858
-        Name: View Origin
-        m_Value: {fileID: 1375770541958563364}
     - rid: 6699910682640384199
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -391,6 +374,14 @@ MonoBehaviour:
           m_Value1: 11683010139796066110
         Name: Type
         m_Value: 1
+    - rid: 6699910881053507902
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12531201339673329773
+          m_Value1: 3705873791309262495
+        Name: aggroRadius
+        m_Value: 15
 --- !u!136 &6731758239060804460
 CapsuleCollider:
   m_ObjectHideFlags: 0

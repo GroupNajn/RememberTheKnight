@@ -2539,9 +2539,8 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 4680590414493778375
   - rid: 4680590414493778376
-  - rid: 4680590414493778377
   - rid: 4680590414493778378
-  - rid: 6699910492161573658
+  - rid: 6699910881053507901
   - rid: 6699910682917995115
   - rid: 6699910683727233193
   m_OriginalGraph: {fileID: 0}
@@ -2566,30 +2565,14 @@ MonoBehaviour:
           m_Value1: 7703358295934630559
         Name: attackDelay
         m_Value: 0.7
-    - rid: 4680590414493778377
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 424389198254072288
-          m_Value1: 15845654370886051948
-        Name: attackTriggerName
-        m_Value: Attack
     - rid: 4680590414493778378
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 6804286691919094777
           m_Value1: 8035434306340229786
-        Name: threatRadius
+        Name: sightRadius
         m_Value: 20
-    - rid: 6699910492161573658
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 4042726441812549289
-          m_Value1: 3200433524896484858
-        Name: View Origin
-        m_Value: {fileID: 7552746727488320234}
     - rid: 6699910682917995115
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -2606,6 +2589,14 @@ MonoBehaviour:
           m_Value1: 11683010139796066110
         Name: Type
         m_Value: 2
+    - rid: 6699910881053507901
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12531201339673329773
+          m_Value1: 3705873791309262495
+        Name: aggroRadius
+        m_Value: 20
 --- !u!136 &5379642801479569555
 CapsuleCollider:
   m_ObjectHideFlags: 0
