@@ -60,15 +60,15 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
         if (playerCollection.playerContract != null)
         {
-            UIData.InfoText = "[F]: Donate Souls";
+            UIData.InfoText = "Donate Souls";
         }
         else if(playerCollection.playerContract != null && lootSystem.currentSoulCount<= 0)
         {
-            UIData.InfoText = "[F]: Not enough souls.";
+            UIData.InfoText = "Not enough souls.";
         }
         else if (playerCollection.playerContract == null)
         {
-            UIData.InfoText = "[F]: You do not have a signed Contract";
+            UIData.InfoText = "You do not have a signed Contract";
             UIData.ErrorText = "Go to lobby to sign a contract;";
         }
 

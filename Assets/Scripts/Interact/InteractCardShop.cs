@@ -79,7 +79,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
             return UIData;
         }
 
-        UIData.InfoText = "[F]: Buy a Card.";
+        UIData.InfoText = "Buy a Card.";
         return UIData;
     }
 }

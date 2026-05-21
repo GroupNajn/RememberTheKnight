@@ -54,7 +54,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Choose Minor Arcana.";
+        UIData.InfoText = "Choose Minor Arcana.";
         return UIData;
     }
 }

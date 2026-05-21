@@ -20,18 +20,6 @@ public class LorePageUI : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BookUi book;
     [SerializeField] private PlayerStats playerStats;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
-
     private void OnEnable()
     {
         DisableGameObjects();

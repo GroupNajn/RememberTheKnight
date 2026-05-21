@@ -21,20 +21,16 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
         if (defaultFamily != null)
         {
             SelectFamily(defaultFamily);
-        }
-    }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-
-    public void Start()
-    {
+        }     
+        
         uiManager = FindFirstObjectByType<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
     }
     public void SelectFamily(FamilyUI selected)
     {

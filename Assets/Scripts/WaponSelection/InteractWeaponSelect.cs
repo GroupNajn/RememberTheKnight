@@ -39,7 +39,7 @@ public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableU
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Switch Weapon";
+        UIData.InfoText = "Switch Weapon";
         return UIData;
     }
 }

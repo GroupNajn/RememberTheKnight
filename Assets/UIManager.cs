@@ -77,17 +77,13 @@ public class UIManager : MonoBehaviour
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
 
-        HideActiveUI();
-
-
-
         playerInput.enabled = false;
         //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
 
         backButtonUI.gameObject.SetActive(false);
-
+        ClosePauseMenu();
         OpenStartMenu();
         Event_System.instance.OnLootPickedUp += OpenCardPickupUI;
         Event_System.instance.OnSacrificeSuccessful += OpenCardUnlockUI;
@@ -129,6 +125,11 @@ public class UIManager : MonoBehaviour
             if (lorePageUI.activeSelf)
                 return;
 
+            if (bookUI.activeSelf)
+                return;
+
+            if(cardShopUI.activeSelf)
+                return;
 
             if (optionMenuUI.activeSelf)
             {
@@ -400,6 +401,8 @@ public class UIManager : MonoBehaviour
         if(interactUI == enabled)
             CloseInteractiveUI();
 
+        CloseUIOnMenuOpen();
+
         cardSelectUI.SetActive(true);
 
         UIMenuActive = true;
@@ -409,6 +412,8 @@ public class UIManager : MonoBehaviour
 
     public void CloseCardSelectUI()
     {
+        OpenUIOnMenuClose();
+        Debug.Log("3");
         cardSelectUI.SetActive(false);
 
         UIMenuActive = false;
@@ -421,6 +426,8 @@ public class UIManager : MonoBehaviour
     {
         if (interactUI == enabled)
             CloseInteractiveUI();
+       
+        CloseUIOnMenuOpen();
 
         familySelectUI.SetActive(true);
 
@@ -431,6 +438,8 @@ public class UIManager : MonoBehaviour
 
     public void CloseFamilySelectUI()
     {
+        OpenUIOnMenuClose();
+        Debug.Log("4");
         familySelectUI.SetActive(false);
 
         UIMenuActive = false;
@@ -478,6 +487,7 @@ public class UIManager : MonoBehaviour
     public void OpenCardShopUI()
     {
         CloseInteractiveUI();
+        CloseUIOnMenuOpen();
         cardShopUI.SetActive(true);
 
         UIMenuActive = true;
@@ -487,6 +497,9 @@ public class UIManager : MonoBehaviour
 
     public void CloseCardShopUI()
     {
+        OpenUIOnMenuClose();
+        Debug.Log("5");
+
         cardShopUI.GetComponent<CardShopUI>().ForceReset();
         cardShopUI.SetActive(false);
 
@@ -528,6 +541,7 @@ public class UIManager : MonoBehaviour
     public void OpenLorePageUI()
     {
         CloseInteractiveUI();
+        CloseUIOnMenuOpen();
         lorePageUI.SetActive(true);
 
         UIMenuActive = true;
@@ -536,6 +550,8 @@ public class UIManager : MonoBehaviour
 
     public void CloseLorePageUI()
     {
+        OpenUIOnMenuClose();
+        Debug.Log("1");
         lorePageUI.SetActive(false);
 
         UIMenuActive = false;
@@ -691,6 +707,7 @@ public class UIManager : MonoBehaviour
 
             CloseBackButtonUI();
             OpenUIOnMenuClose(); // SHOW BARS ETC
+            Debug.Log("2");
         }
     }
     public void GoBackFromControlls()

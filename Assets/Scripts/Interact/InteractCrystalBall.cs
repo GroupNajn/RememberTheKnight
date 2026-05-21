@@ -60,7 +60,7 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Touch orb";
+        UIData.InfoText = "Touch orb";
 
         return UIData;
     }

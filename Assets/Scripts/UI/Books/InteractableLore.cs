@@ -50,7 +50,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
     {
         var UIData = new InteractableUIData();
 
-        UIData.InfoText = "[F]: Unveil Lore";
+        UIData.InfoText = "Unveil Lore";
         return UIData;
     }
 }
