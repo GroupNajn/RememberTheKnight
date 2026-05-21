@@ -59,6 +59,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
                 firstTimeEffect.SetActive(false);
         }
 
+        playerUIManager.UIMenuActive = true;
         interactCameraHandler.InteractCamSwitch(transform, preset);
         cardShopUI.shopBoard = board;
         cardShopUI.interactCardShop = this;

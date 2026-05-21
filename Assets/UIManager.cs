@@ -488,7 +488,6 @@ public class UIManager : MonoBehaviour
         CloseUIOnMenuOpen();
         cardShopUI.SetActive(true);
 
-        UIMenuActive = true;
         CheckUIState();
         CheckTimeScaleUI(true);
     }
