@@ -1,4 +1,5 @@
 using FMODUnity;
+using UnityEditor.Searcher;
 using UnityEngine;
 
 public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableUIText
@@ -7,11 +8,12 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     CardSystem cardSystem;
     PlayerCollection playerCollection;
     private DonationMoveSoul moveSoul;
-
+    bool NewCardUnlocked { get; set; } = false;
 
     CardData nextCard;
     int soulsRequired;
     [SerializeField] int soulsDonated;
+    private int soulsDonatedForNextUnlock;
     private int donateAmount = 1;
 
     public EventReference donateEvent;
@@ -29,12 +31,24 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         if (nextCard)
         {
             soulsRequired = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
+            soulsDonatedForNextUnlock = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
+            NewCardUnlocked = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        SetSoulsToNextCardGlobally(soulsDonated);
     }
 
     private void SetSoulsGlobally(int amount)
     {
         GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast += amount;
+    }
+
+    private void SetSoulsToNextCardGlobally(int donationAmount)
+    {
+        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsRemainingToNextUnlock = (soulsDonatedForNextUnlock -= donationAmount);
     }
 
     private void ResetSoulsGlobally()
@@ -53,6 +67,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     }
 
     public int SetNetCardCost() => soulsRequired = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
+    public int SetSoulnsDonateForNextUnlock() => soulsDonatedForNextUnlock = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
 
     public InteractableUIData GetUIData()
     {
@@ -62,7 +77,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         {
             UIData.InfoText = "Donate Souls";
         }
-        else if(playerCollection.playerContract != null && lootSystem.currentSoulCount<= 0)
+        else if (playerCollection.playerContract != null && lootSystem.currentSoulCount <= 0)
         {
             UIData.InfoText = "Not enough souls.";
         }
@@ -92,13 +107,15 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         {
             RuntimeManager.StudioSystem.setParameterByName("CardUnlock", (float)soulsDonated / (float)soulsRequired);
             RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
-            
+
             lootSystem.ConsumeSouls(donateAmount);
             moveSoul.InstantiateSoul();
             SetSoulsGlobally(donateAmount);
+            
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
+                    NewCardUnlocked = true;
                 soulsDonated = 0;
                 SetSoulsGlobally(soulsDonated);
                 ResetSoulsGlobally();
