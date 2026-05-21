@@ -377,6 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayDuration: 2
+  allowCoolDown: 0
 --- !u!114 &3167283245340159643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,6 +1403,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6040ace4f2ff69009bd6e34ae374eea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimConstraint: {fileID: 0}
+  lookAt: {fileID: 0}
 --- !u!114 &6740556643084197616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,6 +1420,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 35
   SneakMultiplier: 1.3
   damageCooldown: 0
+  healthModifierPercentagePerLevel: 1.2
   tier: 0
 --- !u!114 &7996944048650020138
 MonoBehaviour:
@@ -1476,7 +1480,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 397e4182f9c44c4429851ede57300b9b, type: 3}
   - {fileID: 8300000, guid: 35a217bced0da50468b38a15578adb22, type: 3}
   attackGrunts: []
-  deathSounds: []
+  deathEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   footSteps: []
 --- !u!82 &9015378336499196072
 AudioSource:
@@ -1597,6 +1607,7 @@ MonoBehaviour:
   leftDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
+  damageModifierPercentagePerLevel: 1.2
 --- !u!114 &8344313712500509699
 MonoBehaviour:
   m_ObjectHideFlags: 0

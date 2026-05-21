@@ -1,8 +1,8 @@
-using Unity.Behavior;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Behavior;
+using UnityEngine;
 [RequireComponent(typeof(ITriggerable))]
 
 
@@ -28,12 +28,25 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     float damageCooldownTimer;
     [SerializeField] float damageCooldown = 1;
 
+    [SerializeField] float healthModifierPercentagePerLevel = 1.2f;
+
     public RarityTier tier;
     private EnemyVFX enemyVFX;
     private CharacterSoundFXManager enemySFX;
     private Animator animator;
     private BlackboardVariable<float> threat;
     private List<Transform> childObjects;
+
+    public void SetHealthModifier(int level)
+    {
+        float originalMaxHealth = MaxHealth;
+
+        MaxHealth *= Mathf.Pow(healthModifierPercentagePerLevel, level);
+        Health = MaxHealth;
+        OnHealthChanged?.Invoke(Health, MaxHealth);
+
+        Debug.Log($"Enemy {gameObject.name} health modified: {originalMaxHealth} -> {MaxHealth}");
+    }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {

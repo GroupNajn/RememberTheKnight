@@ -495,19 +495,4 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             lockHandler = FindFirstObjectByType<TargetLockHandler>();
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.1f);
-        if (rayHit)
-        {
-            Gizmos.DrawWireSphere(hit.point, _characterController.radius + _characterController.skinWidth);
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(hit.point, 0.1f);
-        }
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position + (_characterController.center + (-transform.up * ((_characterController.height / 2) - _characterController.radius))), _characterController.radius + _characterController.skinWidth);
-    }
 }

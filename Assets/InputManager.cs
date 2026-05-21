@@ -125,8 +125,6 @@ public class InputManager : MonoBehaviour
 
             RefreshInput(input);
         }
-
-        Debug.Log("Bindings loaded");
     }
 
     public void ResetBindings()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class RunGameData : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class RunGameData : MonoBehaviour
 
     bool hasStarted = false;
     public int LevelCounter { get; private set; } = 0;
-    public int LevelsBeforeBoss { get; private set; }
+    public int LevelsBeforeBoss { get; private set; } = 1;
 
     private void Awake()
     {
@@ -37,17 +36,12 @@ public class RunGameData : MonoBehaviour
         {
             hasStarted = true;
             LevelsBeforeBoss = Random.Range(minLevelsBeforeBoss, maxLevelsBeforeBoss + 1);
-            Debug.Log("Run started");
         }
     }
 
     private void OnLobbyLoaded()
     {
-        if (SceneManager.GetActiveScene().name == SceneData.Instance[2]) // Entered lobby
-        {
-            LevelCounter = 0;
-            hasStarted = false;
-            Debug.Log("Entered lobby, Level Counter reset to 0");
-        }
+        LevelCounter = 0;
+        hasStarted = false;
     }
 }

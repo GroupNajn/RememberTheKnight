@@ -37,7 +37,7 @@ public class RegularFogWall : MonoBehaviour
     private void OnEnemyKilled(EnemyLootProfile profile, Vector3 vector)
     {
         killedEnemies++;
-        requiermentText.text = $"Killeth {killedEnemiesToTurnOff - killedEnemies} of thy foes";
+        requiermentText.text = $"{killedEnemiesToTurnOff - killedEnemies} remaining";
         if (killedEnemies >= killedEnemiesToTurnOff)
         {
             TurnOffWall();

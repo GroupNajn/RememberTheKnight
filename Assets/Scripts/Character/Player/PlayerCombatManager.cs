@@ -66,7 +66,6 @@ public class PlayerCombatManager : MonoBehaviour
     }
     public void ResetValues()
     {
-        Debug.Log("Animation canceleble due to resetting combat values");
         isInvulnerable = false;
         canCombo = false;
         canCharge = false;
