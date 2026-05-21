@@ -11,7 +11,8 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
     CardData nextCard;
     int soulsRequired;
-    int soulsDonated;
+    [SerializeField] int soulsDonated;
+    private int donateAmount = 1;
 
     public EventReference donateEvent;
     public EventReference unlockCardEvent;
@@ -24,10 +25,26 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         nextCard = cardSystem.GetNextCardInSelectedFamily();
         moveSoul = GetComponent<DonationMoveSoul>();
+        SetSoulsDonatedSinceLast();
         if (nextCard)
         {
             soulsRequired = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
         }
+    }
+
+    private void SetSoulsGlobally(int amount)
+    {
+        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast += amount;
+    }
+
+    private void ResetSoulsGlobally()
+    {
+        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast = 0;
+    }
+
+    private void SetSoulsDonatedSinceLast()
+    {
+        soulsDonated = GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast;
     }
 
     public bool SetNextCard()
@@ -76,12 +93,15 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
             RuntimeManager.StudioSystem.setParameterByName("CardUnlock", (float)soulsDonated / (float)soulsRequired);
             RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
             
-            lootSystem.ConsumeSouls(1);
+            lootSystem.ConsumeSouls(donateAmount);
             moveSoul.InstantiateSoul();
+            SetSoulsGlobally(donateAmount);
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
                 soulsDonated = 0;
+                SetSoulsGlobally(soulsDonated);
+                ResetSoulsGlobally();
                 RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
 
 
