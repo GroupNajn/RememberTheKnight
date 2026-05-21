@@ -89,6 +89,10 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             return;
 
         StartCoroutine(CardInfoShowcase(selected));
+        if (!selected)
+        {
+            linkedBoardSlot?.AnimateUnHoverRotation();
+        }
     }
 
     public void SetUnlockable(bool unlockable)

@@ -77,6 +77,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             return;
 
         CardData card = slot.CardData;
+        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
 
         if (slot.IsSelected)
         {
@@ -92,7 +93,19 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         if (purchasedCardData.Count >= maxPurchased)
         {
             ShowError($"Max {maxPurchased} cards!", 2f);
-            return;
+            
+            foreach (CardSlotShopUI uiSlot in uiSlots)
+            {
+                if (uiSlot.IsSelected)
+                {
+                    uiSlot.SetSelected(false);
+
+                    if (uiSlot.LinkedBoardSlot != null)
+                        uiSlot.LinkedBoardSlot.SetSelectedVisual(false);
+                }
+            }
+
+            purchasedCardData.Remove(card);
         }
 
         if (!CanAfford(card))
@@ -100,7 +113,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             ShowError("Not enough souls!", 2f);
             return;
         }
-        PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
 
         if (collection.CardIsPickedUp(card)) // Checks if the card is in equiped lists and temporary lists.
         {
