@@ -30,6 +30,7 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnConfirmCardSelection += EquipCard;
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         Event_System.instance.OnPlayerDeath += CleartTemporaryCardsOnPlayerDeath;
+        Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         ResetAllLists();
@@ -42,6 +43,7 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnConfirmCardSelection -= EquipCard;
         Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
         Event_System.instance.OnPlayerDeath -= CleartTemporaryCardsOnPlayerDeath;
+        Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
     }
 
     public void InsertIntoCardCollection(CardData card)
