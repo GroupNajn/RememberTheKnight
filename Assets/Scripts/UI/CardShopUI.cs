@@ -165,7 +165,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
     public void OnLeaveShop()
     {
-        ResetSlots();
+        ForceReset();
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
     }
