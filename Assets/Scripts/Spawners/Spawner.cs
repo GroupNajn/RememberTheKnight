@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     // Made by Lukas 2026-03-24
     // Updated by Lukas 2026-04-24
+    [SerializeField] bool isEnemySpawner = true;
     [SerializeField] bool drawGizmos = true;
     [SerializeField] Color gizmoColor = Color.red;
     [SerializeField] List<GameObject> spawnObjects = new List<GameObject>();
@@ -22,23 +24,7 @@ public class Spawner : MonoBehaviour
         // Subscribe to the OnLoadScenes event to trigger spawning when scenes are loaded
         if (Event_System.instance)
         {
-            Event_System.instance.OnLoadScenes += () =>
-            {
-                randomSpawnPoints = spawnPoints.Count == 0;
-
-                if (randomSpawnPoints)
-                {
-                    Spawn();
-                }
-                else if (randomObjectSpawns)
-                {
-                    RandomSpawn();
-                }
-                else
-                {
-                    Spawn();
-                }
-            };
+            Event_System.instance.OnLoadScenes += InitializeSpawn;
 
             spawnAtStart = false;
         }
@@ -48,18 +34,25 @@ public class Spawner : MonoBehaviour
     {
         if (spawnAtStart)
         {
-            if (randomSpawnPoints)
-            {
-                Spawn();
-            }
-            else if (randomObjectSpawns)
-            {
-                RandomSpawn();
-            }
-            else
-            {
-                Spawn();
-            }
+            InitializeSpawn();
+        }
+    }
+
+    void InitializeSpawn()
+    {
+        randomSpawnPoints = spawnPoints.Count == 0;
+
+        if (randomSpawnPoints)
+        {
+            Spawn();
+        }
+        else if (randomObjectSpawns)
+        {
+            RandomSpawn();
+        }
+        else
+        {
+            Spawn();
         }
     }
 
@@ -101,6 +94,14 @@ public class Spawner : MonoBehaviour
 
             Instantiate(spawnObjects[i], spawnPosition, spawnRotation);
         }
+
+        Debug.Log($"{name}'s isEnemySpawner: {isEnemySpawner}");
+
+        if (isEnemySpawner)
+        {
+            Debug.Log($"Enemies spawned by {name}");
+            StartCoroutine(WaitToInvokeEnemySpawned());
+        }
     }
 
     public void RandomSpawn()
@@ -114,7 +115,6 @@ public class Spawner : MonoBehaviour
 
             if (Random.Range(0f, 1f) > spawnChance)
             {
-                //Debug.Log("Doesn't spawn object");
                 continue;
             }
 
@@ -127,6 +127,23 @@ public class Spawner : MonoBehaviour
 
             Instantiate(randomObject, spawnPosition.position, spawnPosition.rotation);
         }
+
+        if (isEnemySpawner)
+        {
+            Debug.Log($"Enemies spawned by {name}");
+            StartCoroutine(WaitToInvokeEnemySpawned());
+        }
+    }
+
+    IEnumerator WaitToInvokeEnemySpawned()
+    {
+        yield return null;
+        Event_System.instance.OnEnemiesSpawned?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        Event_System.instance.OnLoadScenes -= InitializeSpawn;
     }
 
     private void OnDrawGizmos()

@@ -35,21 +35,12 @@ public class CharacterWeaponManager : MonoBehaviour
             currentRightWeaponData = currentRightHandWeapon.GetComponent<WeaponStats>().WeaponData;
             currentActiveWeaponData = currentRightWeaponData;
         }
-        else
-        {
-            Debug.Log("Current right hand weapon is not assigned in the inspector.");
-        }
 
         if (currentLeftHandWeapon != null)
         {
             leftDamageTrigger = currentLeftHandWeapon.GetComponent<DamageTrigger>();
             currentLeftWeaponData = currentLeftHandWeapon.GetComponent<WeaponStats>().WeaponData;
         }
-        else
-        {
-            Debug.Log("Current left hand weapon is not assigned in the inspector.");
-        }
-
     }
 
     public virtual void Update()
