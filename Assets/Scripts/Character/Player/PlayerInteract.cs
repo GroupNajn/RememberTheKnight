@@ -1,26 +1,32 @@
-using Unity.AppUI.UI;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    private Camera camera;
+    private Camera playerCamera;
     public float InteractDistance = 8f;
     PlayerController playerController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private LayerMask interactMask;
+
+    private HighlightTarget highLight;
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
-        //camera = playerController._playerCamera.GetComponent<Camera>();
+    }
+
+    void Update()
+    {
+        CheckInteractable();
     }
 
     public void OnInteract()
     {
-        camera = playerController._playerCamera.GetComponent<Camera>();
+        playerCamera = playerController._playerCamera.GetComponent<Camera>();
 
-        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * InteractDistance, Color.red, 1f);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, InteractDistance,3))
+        if (Physics.Raycast(ray, out hit, InteractDistance, interactMask))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
@@ -28,6 +34,61 @@ public class PlayerInteract : MonoBehaviour
             {
                 interactable.Interact();
             }
+        }
+    }
+
+    public void CheckInteractable()
+    {
+        playerCamera = playerController._playerCamera.GetComponent<Camera>();
+
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, InteractDistance, interactMask))
+        {
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+
+            if (interactable != null)
+            {
+                HighlightTarget newHighLight = hit.collider.GetComponent<HighlightTarget>();
+
+                if (newHighLight != highLight)
+                {
+                    if (highLight != null)
+                        highLight.SetHighlight(false);
+
+                    highLight = newHighLight;
+
+                    if (highLight != null)
+                        highLight.SetHighlight(true);
+                }
+
+                if (!UIManager.Instance.UIMenuActive)
+                {
+                    string keybind = InputManager.Instance.SetInteractBinding();
+                    string interactableUIText = $"[{keybind}]  ";
+                    if (interactable is IInteractableUIText)
+                    {
+                        IInteractableUIText interactableUI = (IInteractableUIText)interactable;
+                        interactableUIText = interactableUIText + interactableUI.GetUIData().InfoText;
+                    }
+                    UIManager.Instance.OpenInteractiveUI(interactableUIText);
+                }
+                return;
+            }
+        }
+
+        ClearHighLight();
+
+        UIManager.Instance.CloseInteractiveUI();
+    }
+
+    public void ClearHighLight()
+    {
+        if (highLight != null)
+        {
+            highLight.SetHighlight(false);
+            highLight = null;
         }
     }
 }

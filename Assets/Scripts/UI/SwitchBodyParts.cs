@@ -1,102 +1,49 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 
 public class SwitchBodyParts : MonoBehaviour
 {
+    UIManager uiManager;
+
     [SerializeField] private Gender currentGender = Gender.Male;
-    [SerializeField] GameObject MaleObject;
-    [SerializeField] GameObject FemaleObject;
+    public enum Gender
+    {
+        Male,
+        Female
+    }
 
-    // ACTIVE PARENTS
-    private Transform headParent;
-
-    private Transform leftShoulderParent;
-    private Transform rightShoulderParent;
-
-    private Transform leftElbowParent;
-    private Transform rightElbowParent;
-
-    private Transform torsoParent;
-    private Transform leftUppperArmParent;
-    private Transform rightUppperArmParent;
-    private Transform leftLowerArmParent;
-    private Transform rightLowerArmParent;
-    private Transform leftHandParent;
-    private Transform rightHandParent;
-
-    private Transform hipsParent;
-    private Transform leftKneeParent;
-    private Transform rightKneeParent;
-    private Transform leftLegParent;
-    private Transform rightLegParent;
-
-    [Header("General Parents")]
-    [SerializeField] private Transform generalLeftShoulderParent;
-    [SerializeField] private Transform generalRightShoulderParent;
-
-    [SerializeField] private Transform generalLeftElbowParent;
-    [SerializeField] private Transform generalRightElbowParent;
-
-    [SerializeField] private Transform generalLeftKneeParent;
-    [SerializeField] private Transform generalRightKneeParent;
-
-    [Header("Male Parents")]
-    [SerializeField] private Transform maleHeadParent;
-
-    [SerializeField] private Transform maleTorsoParent;
-    [SerializeField] private Transform maleLeftUppperArmParent;
-    [SerializeField] private Transform maleRightUppperArmParent;
-    [SerializeField] private Transform maleLeftLowerArmParent;
-    [SerializeField] private Transform maleRightLowerArmParent;
-    [SerializeField] private Transform maleLeftHandParent;
-    [SerializeField] private Transform maleRightHandParent;
-
-    [SerializeField] private Transform maleHipsParent;
-    [SerializeField] private Transform maleLeftLegParent;
-    [SerializeField] private Transform maleRightLegParent;
-
-    [Header("Female Parents")]
-    [SerializeField] private Transform femaleHeadParent;
-
-    [SerializeField] private Transform femaleTorsoParent;
-    [SerializeField] private Transform femaleLeftUppperArmParent;
-    [SerializeField] private Transform femaleRightUppperArmParent;
-    [SerializeField] private Transform femaleLeftLowerArmParent;
-    [SerializeField] private Transform femaleRightLowerArmParent;
-    [SerializeField] private Transform femaleLeftHandParent;
-    [SerializeField] private Transform femaleRightHandParent;
-
-    [SerializeField] private Transform femaleHipsParent;
-    [SerializeField] private Transform femaleLeftLegParent;
-    [SerializeField] private Transform femaleRightLegParent;
+    [SerializeField] Transform allGenderParts;
+    [SerializeField] Transform maleParts;
+    [SerializeField] Transform femaleParts;
 
     [Header("HEAD")]
-    [SerializeField] List<GameObject> head = new List<GameObject>();
+    [SerializeField] List<GameObject> head = new();
 
     [Header("PADS")]
-    [SerializeField] List<GameObject> rightShoulder = new List<GameObject>();
-    [SerializeField] List<GameObject> leftShoulder = new List<GameObject>();
-    [SerializeField] List<GameObject> rightElbow = new List<GameObject>();
-    [SerializeField] List<GameObject> leftElbow = new List<GameObject>();
+    [SerializeField] List<GameObject> rightShoulder = new();
+    [SerializeField] List<GameObject> leftShoulder = new();
+    [SerializeField] List<GameObject> rightElbow = new();
+    [SerializeField] List<GameObject> leftElbow = new();
 
     [Header("BODY")]
-    [SerializeField] List<GameObject> torso = new List<GameObject>();
-    [SerializeField] List<GameObject> leftUppperArm = new List<GameObject>();
-    [SerializeField] List<GameObject> rightUppperArm = new List<GameObject>();
-    [SerializeField] List<GameObject> leftLowerArm = new List<GameObject>();
-    [SerializeField] List<GameObject> rightLowerArm = new List<GameObject>();
-    [SerializeField] List<GameObject> leftHand = new List<GameObject>();
-    [SerializeField] List<GameObject> rightHand = new List<GameObject>();
+    [SerializeField] List<GameObject> torso = new();
+    [SerializeField] List<GameObject> leftUppperArm = new();
+    [SerializeField] List<GameObject> rightUppperArm = new();
+    [SerializeField] List<GameObject> leftLowerArm = new();
+    [SerializeField] List<GameObject> rightLowerArm = new();
+    [SerializeField] List<GameObject> leftHand = new();
+    [SerializeField] List<GameObject> rightHand = new();
 
     [Header("LEGS")]
-    [SerializeField] List<GameObject> hips = new List<GameObject>();
-    [SerializeField] List<GameObject> leftKnee = new List<GameObject>();
-    [SerializeField] List<GameObject> rightKnee = new List<GameObject>();
-    [SerializeField] List<GameObject> leftLeg = new List<GameObject>();
-    [SerializeField] List<GameObject> rightLeg = new List<GameObject>();
-
+    [SerializeField] List<GameObject> hips = new();
+    [SerializeField] List<GameObject> leftKnee = new();
+    [SerializeField] List<GameObject> rightKnee = new();
+    [SerializeField] List<GameObject> leftLeg = new();
+    [SerializeField] List<GameObject> rightLeg = new();
 
     [HideInInspector] public int currentHead;
 
@@ -145,86 +92,170 @@ public class SwitchBodyParts : MonoBehaviour
 
     [HideInInspector] public bool hasSaved = false;
 
-    public enum Gender
-    {
-        Male,
-        Female
-    }
-
+    bool canStartGame = false;
+    bool startGame = false;
 
     private void Awake()
     {
-        ApplyGenderParents();
+        uiManager = FindFirstObjectByType<UIManager>();
+        FindRoots();
         RebuildParts();
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
 
-    void ApplyGenderParents()
+    private void FindRoots()
     {
-        leftShoulderParent = generalLeftShoulderParent;
-        rightShoulderParent = generalRightShoulderParent;
-
-        leftElbowParent = generalLeftElbowParent;
-        rightElbowParent = generalRightElbowParent;
-
-        leftKneeParent = generalLeftKneeParent;
-        rightKneeParent = generalRightKneeParent;
-
-        if (currentGender == Gender.Male)
+        Transform player = GameObject.FindWithTag("Player").transform;
+        foreach (Transform child in player.GetComponentsInChildren<Transform>(true))
         {
-            headParent = maleHeadParent;
-
-            torsoParent = maleTorsoParent;
-            leftUppperArmParent = maleLeftUppperArmParent;
-            rightUppperArmParent = maleRightUppperArmParent;
-            leftLowerArmParent = maleLeftLowerArmParent;
-            rightLowerArmParent = maleRightLowerArmParent;
-            leftHandParent = maleLeftHandParent;
-            rightHandParent = maleRightHandParent;
-
-            hipsParent = maleHipsParent;
-            leftLegParent = maleLeftLegParent;
-            rightLegParent = maleRightLegParent;
-        }
-        else
-        {
-            headParent = femaleHeadParent;
-
-            torsoParent = femaleTorsoParent;
-            leftUppperArmParent = femaleLeftUppperArmParent;
-            rightUppperArmParent = femaleRightUppperArmParent;
-            leftLowerArmParent = femaleLeftLowerArmParent;
-            rightLowerArmParent = femaleRightLowerArmParent;
-            leftHandParent = femaleLeftHandParent;
-            rightHandParent = femaleRightHandParent;
-
-            hipsParent = femaleHipsParent;
-            leftLegParent = femaleLeftLegParent;
-            rightLegParent = femaleRightLegParent;
-
+            if (child.name == "All_Gender_Parts") allGenderParts = child;
+            if (child.name == "Male_Parts") maleParts = child;
+            if (child.name == "Female_Parts") femaleParts = child;
         }
     }
 
-    public void SwitchGender()
+    Transform FindDeep(Transform root, string name)
     {
-        currentGender = currentGender == Gender.Male ? Gender.Female : Gender.Male;
+        if (root.name == name) return root;
 
-        ApplyGenderParents();
-        SetRootActive();
-        RebuildParts();
+        foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+            if (child.name == name) return child;
 
+        return null;
     }
 
     List<GameObject> GetChildren(Transform parent)
     {
-        List<GameObject> list = new List<GameObject>();
+        var list = new List<GameObject>();
+
+        if (parent == null)
+            return list;
 
         foreach (Transform child in parent)
         {
             list.Add(child.gameObject);
             child.gameObject.SetActive(false);
         }
-
         return list;
+    }
+
+    void RebuildParts()
+    {
+        Transform gender = currentGender == Gender.Male ? maleParts : femaleParts;
+        string genderPrefix = currentGender == Gender.Male ? "Male" : "Female";
+
+        head = GetChildren(gender.Find($"{genderPrefix}_00_Head/{genderPrefix}_Head_No_Elements"));
+        torso = GetChildren(gender.Find($"{genderPrefix}_03_Torso"));
+        rightUppperArm = GetChildren(gender.Find($"{genderPrefix}_04_Arm_Upper_Right"));
+        leftUppperArm = GetChildren(gender.Find($"{genderPrefix}_05_Arm_Upper_Left"));
+        rightLowerArm = GetChildren(gender.Find($"{genderPrefix}_06_Arm_Lower_Right"));
+        leftLowerArm = GetChildren(gender.Find($"{genderPrefix}_07_Arm_Lower_Left"));
+        rightHand = GetChildren(gender.Find($"{genderPrefix}_08_Hand_Right"));
+        leftHand = GetChildren(gender.Find($"{genderPrefix}_09_Hand_Left"));
+        hips = GetChildren(gender.Find($"{genderPrefix}_10_Hips"));
+        rightLeg = GetChildren(gender.Find($"{genderPrefix}_11_Leg_Right"));
+        leftLeg = GetChildren(gender.Find($"{genderPrefix}_12_Leg_Left"));
+
+        rightShoulder = GetChildren(allGenderParts.Find("All_05_Shoulder_Attachment_Right"));
+        leftShoulder = GetChildren(allGenderParts.Find("All_06_Shoulder_Attachment_Left"));
+        rightElbow = GetChildren(allGenderParts.Find("All_07_Elbow_Attachment_Right"));
+        leftElbow = GetChildren(allGenderParts.Find("All_08_Elbow_Attachment_Left"));
+        rightKnee = GetChildren(allGenderParts.Find("All_10_Knee_Attachement_Right"));
+        leftKnee = GetChildren(allGenderParts.Find("All_11_Knee_Attachement_Left"));
+
+        ResetIndex();
+        ActivateStartingBody();
+    }
+
+    void ResetIndex()
+    {
+        currentHead = 0;
+        currentLeftShoulder = 0;
+        currentRightShoulder = 0;
+        currentLeftElbow = 0;
+        currentRightElbow = 0;
+        currentTorso = 0;
+        currentLeftUppperArm = 0;
+        currentRightUppperArm = 0;
+        currentLeftLowerArm = 0;
+        currentRightLowerArm = 0;
+        currentLeftHand = 0;
+        currentRightHand = 0;
+        currentHips = 0;
+        currentLeftKnee = 0;
+        currentRightKnee = 0;
+        currentLeftLeg = 0;
+        currentRightLeg = 0;
+    }
+
+    void ActivateStartingBody()
+    {
+        TryActivate(head, 0);
+        TryActivate(rightShoulder, 0);
+        TryActivate(leftShoulder, 0);
+        TryActivate(rightElbow, 0);
+        TryActivate(leftElbow, 0);
+        TryActivate(torso, 0);
+        TryActivate(rightUppperArm, 0);
+        TryActivate(leftUppperArm, 0);
+        TryActivate(rightLowerArm, 0);
+        TryActivate(leftLowerArm, 0);
+        TryActivate(rightHand, 0);
+        TryActivate(leftHand, 0);
+        TryActivate(hips, 0);
+        TryActivate(rightKnee, 0);
+        TryActivate(leftKnee, 0);
+        TryActivate(rightLeg, 0);
+        TryActivate(leftLeg, 0);
+    }
+
+    void ActivatCurrentBody()
+    {
+        TryActivate(head, currentHead);
+        TryActivate(rightShoulder, currentRightShoulder);
+        TryActivate(leftShoulder, currentLeftShoulder);
+        TryActivate(rightElbow, currentRightElbow);
+        TryActivate(leftElbow, currentLeftElbow);
+        TryActivate(torso, currentTorso);
+        TryActivate(rightUppperArm, currentRightUppperArm);
+        TryActivate(leftUppperArm, currentLeftUppperArm);
+        TryActivate(rightLowerArm, currentRightLowerArm);
+        TryActivate(leftLowerArm, currentLeftLowerArm);
+        TryActivate(rightHand, currentRightHand);
+        TryActivate(leftHand, currentLeftHand);
+        TryActivate(hips, currentHips);
+        TryActivate(rightKnee, currentRightKnee);
+        TryActivate(leftKnee, currentLeftKnee);
+        TryActivate(rightLeg, currentRightLeg);
+        TryActivate(leftLeg, currentLeftLeg);
+    }
+
+    void ActivateSavedBody()
+    {
+        TryActivate(head, currentSavedHead);
+        TryActivate(rightShoulder, currentSavedRightShoulder);
+        TryActivate(leftShoulder, currentSavedLeftShoulder);
+        TryActivate(rightElbow, currentSavedRightElbow);
+        TryActivate(leftElbow, currentSavedLeftElbow);
+        TryActivate(torso, currentSavedTorso);
+        TryActivate(rightUppperArm, currentSavedRightUppperArm);
+        TryActivate(leftUppperArm, currentSavedLeftUppperArm);
+        TryActivate(rightLowerArm, currentSavedRightLowerArm);
+        TryActivate(leftLowerArm, currentSavedLeftLowerArm);
+        TryActivate(rightHand, currentSavedRightHand);
+        TryActivate(leftHand, currentSavedLeftHand);
+        TryActivate(hips, currentSavedHips);
+        TryActivate(rightKnee, currentSavedRightKnee);
+        TryActivate(leftKnee, currentSavedLeftKnee);
+        TryActivate(rightLeg, currentSavedRightLeg);
+        TryActivate(leftLeg, currentSavedLeftLeg);
+
+    }
+
+    void TryActivate(List<GameObject> list, int index)
+    {
+        if (list.Count > index)
+            list[index].SetActive(true);
     }
 
     void SwitchPart(List<GameObject> list, ref int index, int direction)
@@ -233,197 +264,28 @@ public class SwitchBodyParts : MonoBehaviour
 
         list[index].SetActive(false);
 
-        index += direction;
-        if (index < 0) index = list.Count - 1;
-        if (index >= list.Count) index = 0;
+        index = (index + direction + list.Count) % list.Count;
 
         list[index].SetActive(true);
     }
 
-    //next item
-    public void NextHead() => SwitchPart(head, ref currentHead, 1);
-    public void NextTorso()
+    public void SwitchGender()
     {
-        SwitchPart(torso, ref currentTorso, 1);
-    }
+        currentGender = currentGender == Gender.Male ? Gender.Female : Gender.Male;
 
-    public void NextShoulders()
-    {
-        SwitchPart(leftShoulder, ref currentLeftShoulder, 1);
-        SwitchPart(rightShoulder, ref currentRightShoulder, 1);
-    }
-    public void NextUpperArms()
-    {
+        maleParts.gameObject.SetActive(currentGender == Gender.Male);
+        femaleParts.gameObject.SetActive(currentGender == Gender.Female);
+        RebuildParts();
 
-        SwitchPart(leftUppperArm, ref currentLeftUppperArm, 1);
-        SwitchPart(rightUppperArm, ref currentRightUppperArm, 1);
-    }
-
-    public void NextElbows()
-    {
-        SwitchPart(leftElbow, ref currentLeftElbow, 1);
-        SwitchPart(rightElbow, ref currentRightElbow, 1);
-
-    }
-
-    public void NextLowerArms()
-    {
-        SwitchPart(leftLowerArm, ref currentLeftLowerArm, 1);
-        SwitchPart(rightLowerArm, ref currentRightLowerArm, 1);
-    }
-    public void NextHands()
-    {
-        SwitchPart(leftHand, ref currentLeftHand, 1);
-        SwitchPart(rightHand, ref currentRightHand, 1);
-    }
-    public void NextHips() => SwitchPart(hips, ref currentHips, 1);
-    public void NextKnee()
-    {
-        SwitchPart(leftKnee, ref currentLeftKnee, 1);
-        SwitchPart(rightKnee, ref currentRightKnee, 1);
-    }
-    public void NextLegs()
-    {
-        SwitchPart(leftLeg, ref currentLeftLeg, 1);
-        SwitchPart(rightLeg, ref currentRightLeg, 1);
-    }
-
-    // Previous item
-    public void PrevHead() => SwitchPart(head, ref currentHead, -1);
-    public void PrevTorso()
-    {
-        SwitchPart(torso, ref currentTorso, -1);
-    }
-
-    public void PrevShoulders()
-    {
-        SwitchPart(leftShoulder, ref currentLeftShoulder, -1);
-        SwitchPart(rightShoulder, ref currentRightShoulder, -1);
-    }
-    public void PrevUpperArms()
-    {
-
-        SwitchPart(leftUppperArm, ref currentLeftUppperArm, -1);
-        SwitchPart(rightUppperArm, ref currentRightUppperArm, -1);
-    }
-    public void PrevElbows()
-    {
-        SwitchPart(leftElbow, ref currentLeftElbow, -1);
-        SwitchPart(rightElbow, ref currentRightElbow, -1);
-
-
-    }
-    public void PrevLowerArms()
-    {
-        SwitchPart(leftLowerArm, ref currentLeftLowerArm, -1);
-        SwitchPart(rightLowerArm, ref currentRightLowerArm, -1);
-
-    }
-    public void PrevHands()
-    {
-        SwitchPart(leftHand, ref currentLeftHand, -1);
-        SwitchPart(rightHand, ref currentRightHand, -1);
-    }
-    public void PrevHips() => SwitchPart(hips, ref currentHips, -1);
-
-    public void PrevKnee()
-    {
-        SwitchPart(leftKnee, ref currentLeftKnee, -1);
-        SwitchPart(rightKnee, ref currentRightKnee, -1);
-    }
-    public void PrevLegs()
-    {
-        SwitchPart(leftLeg, ref currentLeftLeg, -1);
-        SwitchPart(rightLeg, ref currentRightLeg, -1);
-    }
-
-    void SetRootActive()
-    {
-        bool male = currentGender == Gender.Male;
-
-        MaleObject.SetActive(male);
-        FemaleObject.SetActive(!male);
-    }
-
-    void RebuildParts()
-    {
-        currentHead = 0;
-        currentLeftShoulder = 0;
-        currentRightShoulder = 0;
-
-        currentLeftElbow = 0;
-        currentRightElbow = 0;
-
-        currentTorso = 0;
-        currentLeftUppperArm = 0;
-        currentRightUppperArm = 0;
-        currentLeftLowerArm = 0;
-        currentRightLowerArm = 0;
-        currentLeftHand = 0;
-        currentRightHand = 0;
-
-        currentHips = 0;
-        currentLeftKnee = 0;
-        currentRightKnee = 0;
-        currentLeftLeg = 0;
-        currentRightLeg = 0;
-
-        head = GetChildren(headParent);
-
-        rightShoulder = GetChildren(rightShoulderParent);
-        leftShoulder = GetChildren(leftShoulderParent);
-
-        rightElbow = GetChildren(rightElbowParent);
-        leftElbow = GetChildren(leftElbowParent);
-
-        torso = GetChildren(torsoParent);
-        leftUppperArm = GetChildren(leftUppperArmParent);
-        rightUppperArm = GetChildren(rightUppperArmParent);
-        leftLowerArm = GetChildren(leftLowerArmParent);
-        rightLowerArm = GetChildren(rightLowerArmParent);
-        leftHand = GetChildren(leftHandParent);
-        rightHand = GetChildren(rightHandParent);
-
-        hips = GetChildren(hipsParent);
-        leftKnee = GetChildren(leftKneeParent);
-        rightKnee = GetChildren(rightKneeParent);
-        leftLeg = GetChildren(leftLegParent);
-        rightLeg = GetChildren(rightLegParent);
-
-
-        if (head.Count > 0) head[0].SetActive(true);
-
-        if (leftShoulder.Count > 0) leftShoulder[0].SetActive(true);
-        if (rightShoulder.Count > 0) rightShoulder[0].SetActive(true);
-
-        if (leftElbow.Count > 0) leftElbow[0].SetActive(true);
-        if (rightElbow.Count > 0) rightElbow[0].SetActive(true);
-
-        if (torso.Count > 0) torso[0].SetActive(true);
-        if (leftUppperArm.Count > 0) leftUppperArm[0].SetActive(true);
-        if (rightUppperArm.Count > 0) rightUppperArm[0].SetActive(true);
-        if (leftLowerArm.Count > 0) leftLowerArm[0].SetActive(true);
-        if (rightLowerArm.Count > 0) rightLowerArm[0].SetActive(true);
-        if (leftHand.Count > 0) leftHand[0].SetActive(true);
-        if (rightHand.Count > 0) rightHand[0].SetActive(true);
-
-        if (hips.Count > 0) hips[0].SetActive(true);
-        if (leftKnee.Count > 0) leftKnee[0].SetActive(true);
-        if (rightKnee.Count > 0) rightKnee[0].SetActive(true);
-        if (leftLeg.Count > 0) leftLeg[0].SetActive(true);
-        if (rightLeg.Count > 0) rightLeg[0].SetActive(true);
     }
 
     public void SaveBody()
     {
         currentSavedHead = currentHead;
-
         currentSavedLeftShoulder = currentLeftShoulder;
         currentSavedRightShoulder = currentRightShoulder;
-
         currentSavedLeftElbow = currentLeftElbow;
         currentSavedRightElbow = currentRightElbow;
-
         currentSavedTorso = currentTorso;
         currentSavedLeftUppperArm = currentLeftUppperArm;
         currentSavedRightUppperArm = currentRightUppperArm;
@@ -431,7 +293,6 @@ public class SwitchBodyParts : MonoBehaviour
         currentSavedRightLowerArm = currentRightLowerArm;
         currentSavedLeftHand = currentLeftHand;
         currentSavedRightHand = currentRightHand;
-
         currentSavedHips = currentHips;
         currentSavedLeftKnee = currentLeftKnee;
         currentSavedRightKnee = currentRightKnee;
@@ -444,72 +305,223 @@ public class SwitchBodyParts : MonoBehaviour
 
     public void LoadBody()
     {
-
-        if (head.Count > 0) head[currentHead].SetActive(false);
-
-        if (leftShoulder.Count > 0) leftShoulder[currentLeftShoulder].SetActive(false);
-        if (rightShoulder.Count > 0) rightShoulder[currentRightShoulder].SetActive(false);
-
-        if (leftElbow.Count > 0) leftElbow[currentLeftElbow].SetActive(false);
-        if (rightElbow.Count > 0) rightElbow[currentRightElbow].SetActive(false);
-
-
-        if (torso.Count > 0) torso[currentTorso].SetActive(false);
-        if (leftUppperArm.Count > 0) leftUppperArm[currentLeftUppperArm].SetActive(false);
-        if (rightUppperArm.Count > 0) rightUppperArm[currentRightUppperArm].SetActive(false);
-        if (leftLowerArm.Count > 0) leftLowerArm[currentLeftLowerArm].SetActive(false);
-        if (rightLowerArm.Count > 0) rightLowerArm[currentRightLowerArm].SetActive(false);
-        if (leftHand.Count > 0) leftHand[currentLeftHand].SetActive(false);
-        if (rightHand.Count > 0) rightHand[currentRightHand].SetActive(false);
-
-        if (hips.Count > 0) hips[currentHips].SetActive(false);
-        if (leftKnee.Count > 0) leftKnee[currentLeftKnee].SetActive(false);
-        if (rightKnee.Count > 0) rightKnee[currentRightKnee].SetActive(false);
-        if (leftLeg.Count > 0) leftLeg[currentLeftLeg].SetActive(false);
-        if (rightLeg.Count > 0) rightLeg[currentRightLeg].SetActive(false);
+        TryDeactivateCurrentBody();
 
         currentHead = currentSavedHead;
-
-        currentLeftShoulder = currentSavedLeftShoulder;
         currentRightShoulder = currentSavedRightShoulder;
-
-        currentLeftElbow = currentSavedLeftElbow;
+        currentLeftShoulder = currentSavedLeftShoulder;
         currentRightElbow = currentSavedRightElbow;
-
+        currentLeftElbow = currentSavedLeftElbow;
         currentTorso = currentSavedTorso;
-        currentLeftUppperArm = currentSavedLeftUppperArm;
         currentRightUppperArm = currentSavedRightUppperArm;
-        currentLeftLowerArm = currentSavedLeftLowerArm;
+        currentLeftUppperArm = currentSavedLeftUppperArm;
         currentRightLowerArm = currentSavedRightLowerArm;
-        currentLeftHand = currentSavedLeftHand;
+        currentLeftLowerArm = currentSavedLeftLowerArm;
         currentRightHand = currentSavedRightHand;
-
+        currentLeftHand = currentSavedLeftHand;
         currentHips = currentSavedHips;
-        currentLeftLeg = currentSavedLeftLeg;
+        currentRightKnee = currentSavedRightKnee;
+        currentLeftKnee = currentSavedLeftKnee;
         currentRightLeg = currentSavedRightLeg;
+        currentLeftLeg = currentSavedLeftLeg;
+
+        ActivateSavedBody();
+
+    }
+
+    public void RandomizeBody()
+    {
+        TryDeactivateCurrentBody();
+
+        currentHead = UnityEngine.Random.Range(0, head.Count);
+
+        int shoulderIndex = UnityEngine.Random.Range(0, rightShoulder.Count);
+        currentRightShoulder = shoulderIndex;
+        currentLeftShoulder = shoulderIndex;
+
+        int elbowIndex = UnityEngine.Random.Range(0, rightElbow.Count);
+        currentRightElbow = elbowIndex;
+        currentLeftElbow = elbowIndex;
+
+        currentTorso = UnityEngine.Random.Range(0, torso.Count);
+
+        int upperArmIndex = UnityEngine.Random.Range(0, rightUppperArm.Count);
+        currentRightUppperArm = upperArmIndex;
+        currentLeftUppperArm = upperArmIndex;
+
+        int lowerArmIndex = UnityEngine.Random.Range(0, rightLowerArm.Count);
+        currentRightLowerArm = lowerArmIndex;
+        currentLeftLowerArm = lowerArmIndex;
+
+        int handIndex = UnityEngine.Random.Range(0, rightHand.Count);
+        currentRightHand = handIndex;
+        currentLeftHand = handIndex;
+
+        currentHips = UnityEngine.Random.Range(0, hips.Count);
+
+        int kneeIndex = UnityEngine.Random.Range(0, rightKnee.Count);
+        currentRightKnee = kneeIndex;
+        currentLeftKnee = kneeIndex;
+
+        int legIndex = UnityEngine.Random.Range(0, rightLeg.Count);
+        currentRightLeg = legIndex;
+        currentLeftLeg = legIndex;
 
 
-        if (head.Count > 0) head[currentHead].SetActive(true);
+        ActivatCurrentBody();
+    }
 
-        if (leftShoulder.Count > 0) leftShoulder[currentLeftShoulder].SetActive(true);
-        if (rightShoulder.Count > 0) rightShoulder[currentRightShoulder].SetActive(true);
+    void TryDeactivateCurrentBody()
+    {
+        TryDeactivate(head, currentHead);
+        TryDeactivate(leftShoulder, currentLeftShoulder);
+        TryDeactivate(rightShoulder, currentRightShoulder);
+        TryDeactivate(leftElbow, currentLeftElbow);
+        TryDeactivate(rightElbow, currentRightElbow);
+        TryDeactivate(torso, currentTorso);
+        TryDeactivate(leftUppperArm, currentLeftUppperArm);
+        TryDeactivate(rightUppperArm, currentRightUppperArm);
+        TryDeactivate(leftLowerArm, currentLeftLowerArm);
+        TryDeactivate(rightLowerArm, currentRightLowerArm);
+        TryDeactivate(leftHand, currentLeftHand);
+        TryDeactivate(rightHand, currentRightHand);
+        TryDeactivate(hips, currentHips);
+        TryDeactivate(leftKnee, currentLeftKnee);
+        TryDeactivate(rightKnee, currentRightKnee);
+        TryDeactivate(leftLeg, currentLeftLeg);
+        TryDeactivate(rightLeg, currentRightLeg);
+    }
 
-        if (leftElbow.Count > 0) leftElbow[currentLeftElbow].SetActive(true);
-        if (rightElbow.Count > 0) rightElbow[currentRightElbow].SetActive(true);
+    void TryDeactivate(List<GameObject> list, int index)
+    {
+        if (list.Count > index)
+            list[index].SetActive(false);
+    }
 
-        if (torso.Count > 0) torso[currentTorso].SetActive(true);
-        if (leftUppperArm.Count > 0) leftUppperArm[currentLeftUppperArm].SetActive(true);
-        if (rightUppperArm.Count > 0) rightUppperArm[currentRightUppperArm].SetActive(true);
-        if (leftLowerArm.Count > 0) leftLowerArm[currentLeftLowerArm].SetActive(true);
-        if (rightLowerArm.Count > 0) rightLowerArm[currentRightLowerArm].SetActive(true);
-        if (leftHand.Count > 0) leftHand[currentLeftHand].SetActive(true);
-        if (rightHand.Count > 0) rightHand[currentRightHand].SetActive(true);
+    //NEXT
+    public void NextHead() => SwitchPart(head, ref currentHead, 1);
+    public void NextTorso() => SwitchPart(torso, ref currentTorso, 1);
+    public void NextHips() => SwitchPart(hips, ref currentHips, 1);
+    public void NextShoulders()
+    {
+        SwitchPart(rightShoulder, ref currentRightShoulder, 1);
+        SwitchPart(leftShoulder, ref currentLeftShoulder, 1);
+    }
+    public void NextElbows()
+    {
+        SwitchPart(rightElbow, ref currentRightElbow, 1);
+        SwitchPart(leftElbow, ref currentLeftElbow, 1);
+    }
+    public void NextUpperArms()
+    {
+        SwitchPart(rightUppperArm, ref currentRightUppperArm, 1); SwitchPart(leftUppperArm, ref currentLeftUppperArm, 1);
+    }
+    public void NextLowerArms()
+    {
+        SwitchPart(rightLowerArm, ref currentRightLowerArm, 1);
+        SwitchPart(leftLowerArm, ref currentLeftLowerArm, 1);
+    }
+    public void NextHands()
+    {
+        SwitchPart(rightHand, ref currentRightHand, 1);
+        SwitchPart(leftHand, ref currentLeftHand, 1);
+    }
+    public void NextKnees()
+    {
+        SwitchPart(rightKnee, ref currentRightKnee, 1);
+        SwitchPart(leftKnee, ref currentLeftKnee, 1);
+    }
+    public void NextLegs()
+    {
+        SwitchPart(rightLeg, ref currentRightLeg, 1);
+        SwitchPart(leftLeg, ref currentLeftLeg, 1);
+    }
 
-        if (hips.Count > 0) hips[currentHips].SetActive(true);
-        if (leftKnee.Count > 0) leftKnee[currentLeftKnee].SetActive(true);
-        if (rightKnee.Count > 0) rightKnee[currentRightKnee].SetActive(true);
-        if (leftLeg.Count > 0) leftLeg[currentLeftLeg].SetActive(true);
-        if (rightLeg.Count > 0) rightLeg[currentRightLeg].SetActive(true);
+    // PREVIOUS
+    public void PrevHead() => SwitchPart(head, ref currentHead, -1);
+    public void PrevTorso() => SwitchPart(torso, ref currentTorso, -1);
+    public void PrevHips() => SwitchPart(hips, ref currentHips, -1);
+    public void PrevShoulders()
+    {
+        SwitchPart(rightShoulder, ref currentRightShoulder, -1);
+        SwitchPart(leftShoulder, ref currentLeftShoulder, -1);
+    }
+    public void PrevElbows()
+    {
+        SwitchPart(rightElbow, ref currentRightElbow, -1);
+        SwitchPart(leftElbow, ref currentLeftElbow, -1);
+    }
+    public void PrevUpperArms()
+    {
+        SwitchPart(rightUppperArm, ref currentRightUppperArm, -1);
+        SwitchPart(leftUppperArm, ref currentLeftUppperArm, -1);
+    }
+    public void PrevLowerArms()
+    {
+        SwitchPart(rightLowerArm, ref currentRightLowerArm, -1);
+        SwitchPart(leftLowerArm, ref currentLeftLowerArm, -1);
+    }
+    public void PrevHands()
+    {
+        SwitchPart(rightHand, ref currentRightHand, -1);
+        SwitchPart(leftHand, ref currentLeftHand, -1);
+    }
+    public void PrevKnees()
+    {
+        SwitchPart(rightKnee, ref currentRightKnee, -1);
+        SwitchPart(leftKnee, ref currentLeftKnee, -1);
+    }
+    public void PrevLegs()
+    {
+        SwitchPart(rightLeg, ref currentRightLeg, -1);
+        SwitchPart(leftLeg, ref currentLeftLeg, -1);
+    }
+
+    private void OnLoadScenes()
+    {
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            canStartGame = false;
+            startGame = false;
+            Event_System.instance.OnSceneTransitionDone += OnBlackFadeDone;
+        }
+        else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
+        {
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+
+            // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
+            uiManager.OpenUIOnMenuClose();
+        }
+    }
+
+    private void OnBlackFadeDone()
+    {
+        canStartGame = true;
+
+        if (startGame)
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+        }
+
+        Event_System.instance.OnSceneTransitionDone -= OnBlackFadeDone;
+    }
+
+    public void StartGame()
+    {
+        uiManager.CloseCharacterSelectUI();
+
+        gameObject.SetActive(false);
+
+        // LOAD NEXT SCENE
+        if (canStartGame)
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+        }
+        else
+        {
+            startGame = true;
+        }
     }
 
     public void OnClick()
@@ -517,5 +529,3 @@ public class SwitchBodyParts : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 }
-
-

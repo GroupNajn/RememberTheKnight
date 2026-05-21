@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e633a2065ab3c314a8cb2f3e5cde8638, type: 3}
+  m_Name: SickleEnemy
+  m_EditorClassIdentifier: 
+  WeaponIcon: {fileID: -669392396, guid: 404de6a8d51d9e04e8bdfa94340b27ea, type: 3}
+  WeaponName: Sickle
+  LightDamage: 16
+  LightChargedDamageBonus: 2
+  HeavyDamage: 16
+  HeavyChargedDamage: 3
+  AnimatorSpeed: 1
+  SwooshEvent:
+    Guid:
+      Data1: 329178485
+      Data2: 1228425648
+      Data3: 964673977
+      Data4: 1889427912
+    Path: event:/SFX/Attacks/Enemy/Enemy Blade Attack
+  HitEvent:
+    Guid:
+      Data1: 3874351
+      Data2: 1238672742
+      Data3: -1660445282
+      Data4: -608433377
+    Path: event:/SFX/HitMarker/Player/PlayerHitByBlade
+  WeaponAnimator: {fileID: 22100000, guid: 020ed66d97fcaf9418b1699abc79db52, type: 2}

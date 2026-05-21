@@ -1,21 +1,49 @@
+using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
-public class StartMenuUI : MonoBehaviour
+public class StartMenuUI : AutoSelectFirstButtonOnEnable
 {
-    GameObject startMenu;
-    GameObject characterSwitchUI;
+    UIManager uiManager;
+    //SceneData sceneData;
+    bool canUseInput = true;
 
-    void Awake()
+    protected override void OnEnable()
     {
-        startMenu = transform.Find("StartMenu").gameObject;
-        characterSwitchUI = transform.Find("CharacterSwitchUI").gameObject;
+        base.OnEnable();
+        canUseInput = true;
+
+    }
+    protected override void Awake()
+    {
+        base.Awake();
     }
 
+    public void Start()
+    {
+
+        uiManager = GetComponentInParent<UIManager>();
+
+    }
     public void StartGame()
     {
-        startMenu.SetActive(false);
-        characterSwitchUI.SetActive(true);
+        // LOAD NEXT SCENE
+        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[1]);
+        canUseInput = false;
     }
+
+
+    public void OpenOptions()
+    {
+        if (canUseInput)
+        {
+            uiManager.OpenOptionMenu();
+            uiManager.CloseStartMenu();
+        }
+    }
+
 
     public void ExitGame()
     {

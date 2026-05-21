@@ -19,7 +19,8 @@ public class EnemyRangedBehaviourSync : MonoBehaviour
     {
         if (behaviorAgent.BlackboardReference.GetVariable<GameObject>("Target", out var target))
         {
-            if (target.Value != null || target.Value != previousTarget)
+            if (target.Value == null) return;
+            if (target.Value != previousTarget)
             {
                 Transform spine = null;
                 target.Value.GetComponentsInChildren<Transform>().ToList().ForEach(transform =>

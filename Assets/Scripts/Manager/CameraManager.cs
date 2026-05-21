@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
+
+    [SerializeField] private Camera worldSpaceCamera;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,6 +24,12 @@ public class CameraManager : MonoBehaviour
         FindThings();
     }
 
+    private void Update()
+    {
+        worldSpaceCamera.transform.position = Camera.main.transform.position;
+        worldSpaceCamera.transform.rotation = Camera.main.transform.rotation;
+    }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -34,13 +42,11 @@ public class CameraManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
-        Debug.Log("CameraManager: OnSceneLoaded called for scene " + scene.name);
         FindThings();
     }
 
     void FindThings()
     {
-        Debug.Log("CameraManager: FindThings called");
+
     }
 }

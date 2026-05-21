@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4382340745301478090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2634969065990476537}
+  - component: {fileID: 1294988760804920709}
+  - component: {fileID: 2305483723512926855}
+  m_Layer: 0
+  m_Name: WorldSoundFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2634969065990476537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382340745301478090}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.78559, y: 1.5539198, z: 47.75439}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1294988760804920709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382340745301478090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c0509f13abc1aa47b5103701c01a898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageEvent:
+    Guid:
+      Data1: -741006004
+      Data2: 1217047147
+      Data3: -1666627155
+      Data4: 757506468
+    Path: event:/SFX/HitMarker/Player/PlayerHitByFist
+  rollEvent:
+    Guid:
+      Data1: 624647155
+      Data2: 1158606448
+      Data3: 1839725953
+      Data4: -927475457
+    Path: event:/SFX/Movement/Roll
+  backstepEvent:
+    Guid:
+      Data1: 1429079022
+      Data2: 1205932694
+      Data3: 537686940
+      Data4: 1407690238
+    Path: event:/SFX/Movement/BackStep
+  cardPickupEvent:
+    Guid:
+      Data1: 2109068405
+      Data2: 1324845759
+      Data3: -104894312
+      Data4: -1637046709
+    Path: event:/SFX/Drops/Cards/Card Pickup
+  attackEvent:
+    Guid:
+      Data1: 329178485
+      Data2: 1228425648
+      Data3: 964673977
+      Data4: 1889427912
+    Path: event:/SFX/Attacks/Enemy/Enemy Blade Attack
+  footStepEvent:
+    Guid:
+      Data1: 1087116644
+      Data2: 1171423278
+      Data3: 969314710
+      Data4: 790940891
+    Path: event:/SFX/Movement/FootStep
+  teleportEvent:
+    Guid:
+      Data1: -57978128
+      Data2: 1338958183
+      Data3: 2049427115
+      Data4: -189428773
+    Path: event:/SFX/Crystal Ball/Teleport
+  playerWakeUpEvent:
+    Guid:
+      Data1: 951517895
+      Data2: 1125193636
+      Data3: 296077727
+      Data4: 1507529713
+    Path: event:/SFX/PlayerStateSounds/PlayerWakesUp
+  explosionEvent:
+    Guid:
+      Data1: -1237825201
+      Data2: 1317442101
+      Data3: 412025992
+      Data4: 1261286357
+    Path: event:/SFX/Attacks/Enemy/Explosion
+  fireLoopEvent:
+    Guid:
+      Data1: 1294913939
+      Data2: 1281396664
+      Data3: 249017244
+      Data4: 621418822
+    Path: event:/Ambience/Fire
+  shopBuyCardEvent:
+    Guid:
+      Data1: -702567860
+      Data2: 1210034707
+      Data3: -61957452
+      Data4: 659780531
+    Path: event:/SFX/UI/Shop/PurchaseCard
+  shopSelectCardEvent:
+    Guid:
+      Data1: -702567860
+      Data2: 1210034707
+      Data3: -61957452
+      Data4: 659780531
+    Path: event:/SFX/UI/Shop/PurchaseCard
+  errorEvent:
+    Guid:
+      Data1: -955486084
+      Data2: 1186452493
+      Data3: 1903123103
+      Data4: -1682516038
+    Path: event:/SFX/UI/Pause
+  shopDeselectCardEvent:
+    Guid:
+      Data1: -2037554319
+      Data2: 1130291272
+      Data3: -388197468
+      Data4: 1853328781
+    Path: event:/SFX/UI/Shop/CandleBlowOut
+  cardFlipEvent:
+    Guid:
+      Data1: 1035931787
+      Data2: 1295504066
+      Data3: 1216868793
+      Data4: -1472758669
+    Path: event:/SFX/UI/Card/CardFlip
+  bookOpenEvent:
+    Guid:
+      Data1: -933295387
+      Data2: 1174098426
+      Data3: 1416016572
+      Data4: 586632137
+    Path: event:/SFX/UI/Book/BookOpen
+  bookCloseEvent:
+    Guid:
+      Data1: -623658878
+      Data2: 1325745376
+      Data3: 1604946866
+      Data4: -2141242901
+    Path: event:/SFX/UI/Book/BookClose
+  bookPageFlipEvent:
+    Guid:
+      Data1: 1869957567
+      Data2: 1222042335
+      Data3: 410510977
+      Data4: 56350861
+    Path: event:/SFX/UI/Book/PaperFlip
+  bookSlideEvent:
+    Guid:
+      Data1: 2069289381
+      Data2: 1187013951
+      Data3: -1719395448
+      Data4: -1314630456
+    Path: event:/SFX/UI/Book/BookSlide
+--- !u!114 &2305483723512926855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382340745301478090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 787066667
+      Data2: 1279215718
+      Data3: -799348801
+      Data4: -1599441255
+    Path: event:/Music/Music Loop
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

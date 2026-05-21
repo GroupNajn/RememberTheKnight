@@ -1,25 +1,55 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using FMOD.Studio;
+using UnityEngine.Rendering;
 
 public class WorldSoundFXManager : MonoBehaviour
 {
     public static WorldSoundFXManager instance;
 
     [Header("Damage Sounds")]
-    public AudioClip[] damageSFX;
+   // public AudioClip[] damageSFX;
+    public EventReference damageEvent;
 
     [Header("Action Sounds")]
-    public AudioClip rollSFX;
-    public AudioClip backstepSFX;
-    public AudioClip pickUpSFX;
+   // public AudioClip rollSFX;
+    //public AudioClip backstepSFX;
+    //public AudioClip pickUpSFX;
+    public EventReference rollEvent;
+    public EventReference backstepEvent;
+    public EventReference cardPickupEvent;
+    public EventReference attackEvent;
+    public EventReference footStepEvent;
+    public EventReference teleportEvent;
+    public EventReference playerWakeUpEvent;
+    public EventReference explosionEvent;
+    public EventReference fireLoopEvent;
+    public EventReference shopBuyCardEvent;
+    public EventReference shopSelectCardEvent;
+    public EventReference errorEvent;
+    public EventReference shopDeselectCardEvent;
 
-    [Header("Boss Music")]
-    [SerializeField] AudioSource BossIntroPlayer;
-    [SerializeField] AudioSource BossLoopPlayer;
 
-    [Header("Background Music")]
-    [SerializeField] AudioSource BackgroundIntroPlayer;
-    [SerializeField] AudioSource BackgroundLoopPlayer;
+    [Header("Button Sounds")]
+    public EventReference cardFlipEvent;
+    public EventReference bookOpenEvent;
+    public EventReference bookCloseEvent;
+    public EventReference bookPageFlipEvent;
+    public EventReference bookSlideEvent;
+
+    [Header("VCA")]
+    private VCA masterVCA;
+    private VCA musicVCA;
+    private VCA sfxVCA;
+
+    //[Header("Boss Music")]
+    //[SerializeField] AudioSource BossIntroPlayer;
+    //[SerializeField] AudioSource BossLoopPlayer;
+
+    //[Header("Background Music")]
+    // [SerializeField] AudioSource BackgroundIntroPlayer;
+    //  [SerializeField] AudioSource BackgroundLoopPlayer;
 
 
     private void Awake()
@@ -32,6 +62,18 @@ public class WorldSoundFXManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        try
+        {
+            masterVCA = RuntimeManager.GetVCA("vca:/Master");
+            musicVCA = RuntimeManager.GetVCA("vca:/Music");
+            sfxVCA = RuntimeManager.GetVCA("vca:/SFX");
+        }
+        catch
+        {
+            Debug.Log("Fatal error prevented when setting vca references");
+        }
+       
     }
 
     private void Start()
@@ -39,48 +81,73 @@ public class WorldSoundFXManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void PlayBackgroundTrack(AudioClip introTrack, AudioClip loopTrack)
+    public float GetMasterVolume()
     {
-        BackgroundIntroPlayer.volume = 0.5f;
-        BackgroundIntroPlayer.clip = introTrack;
-        BackgroundIntroPlayer.loop = false;
-        BackgroundIntroPlayer.Play();
+        masterVCA.getVolume(out float volume);
 
-        BackgroundLoopPlayer.volume = 0.5f;
-        BackgroundLoopPlayer.clip = loopTrack;
-        BackgroundLoopPlayer.loop = true;
-        BackgroundLoopPlayer.PlayDelayed(BackgroundIntroPlayer.clip.length);
+        return volume;
+    }
+    public float GetMusicVolume()
+    {
+        musicVCA.getVolume(out float volume);
+
+        return volume;
+    }
+    public float GetSFXVolume()
+    {
+        sfxVCA.getVolume(out float volume);
+
+        return volume;
     }
 
-    public void StopBackgroundMusic()
+    public void SetMasterVolume(float volume)
     {
-        StartCoroutine(FadeOutBackgroundMusicThenStop());
+        masterVCA.setVolume(volume);
+    }
+    public void SetMusicVolume(float volume)
+    {
+        musicVCA.setVolume(volume);
+    }
+    public void SetSFXVolume(float volume)
+    {
+        sfxVCA.setVolume(volume);
     }
 
-    private IEnumerator FadeOutBackgroundMusicThenStop()
-    {
-        while (BackgroundLoopPlayer.volume > 0)
-        {
-            BackgroundIntroPlayer.volume -= Time.deltaTime;
-            BackgroundLoopPlayer.volume -= Time.deltaTime;
-            yield return null;
-        }
+    //public void PlayBackgroundTrack(AudioClip introTrack, AudioClip loopTrack)
+    //{
+    //    BackgroundIntroPlayer.volume = 0.5f;
+    //    BackgroundIntroPlayer.clip = introTrack;
+    //    BackgroundIntroPlayer.loop = false;
+    //    BackgroundIntroPlayer.Play();
 
-        BackgroundIntroPlayer.Stop();
-        BackgroundLoopPlayer.Stop();
-    }
+    //    BackgroundLoopPlayer.volume = 0.5f;
+    //    BackgroundLoopPlayer.clip = loopTrack;
+    //    BackgroundLoopPlayer.loop = true;
+    //    BackgroundLoopPlayer.PlayDelayed(BackgroundIntroPlayer.clip.length);
+    //}
 
-    public AudioClip ChooseRandomSFXFromArray(AudioClip[] array)
-    {
-        int index = Random.Range(0, array.Length);
+    //public void StopBackgroundMusic()
+    //{
+    //    StartCoroutine(FadeOutBackgroundMusicThenStop());
+    //}
 
-        return array[index];
-    }
+    //private IEnumerator FadeOutBackgroundMusicThenStop()
+    //{
+    //    while (BackgroundLoopPlayer.volume > 0)
+    //    {
+    //        BackgroundIntroPlayer.volume -= Time.deltaTime;
+    //        BackgroundLoopPlayer.volume -= Time.deltaTime;
+    //        yield return null;
+    //    }
 
+    //    BackgroundIntroPlayer.Stop();
+    //    BackgroundLoopPlayer.Stop();
+    //}
 
+    //public AudioClip ChooseRandomSFXFromArray(AudioClip[] array)
+    //{
+    //    int index = Random.Range(0, array.Length);
 
-
-
-
-
+    //    return array[index];
+    //}
 }

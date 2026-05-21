@@ -4,27 +4,27 @@ using UnityEngine.UI;
 
 public class EnemyHealthBarCanvas : MonoBehaviour
 {
+    // Edited by Michaëla 2026-05-06
+    // Edited by Lukas 2026-05-20
     [SerializeField] float displayDuration = 2f; // Duration to show the health bar after taking damage
 
     EnemyDamage enemyDamage;
     Slider healthBar;
     bool isOnCooldown = false;
+    [SerializeField] bool allowCoolDown = false;
+    Coroutine hideCoroutine;
 
-    private void Start()
+    void Awake() //Gets references to the healthbar and enemydamage component
     {
         healthBar = GetComponentInChildren<Slider>();
-
         enemyDamage = GetComponentInParent<EnemyDamage>();
-        if (enemyDamage == null)
-        {
-            Debug.Log("EnemyDamage component not found in parent!");
-            return;
-        }
+    }
+    private void Start() // Subscribes to the OnHealthChanged event and the OnEnemyDamage event, and hides the health bar at the start
+    {
         enemyDamage.OnHealthChanged += ShowHealthBarForDuration;
-
         Event_System.instance.OnEnemyDamage += ShowHealthBarForDuration;
 
-        HideHealthBar(); // Start with the canvas hidden immediately
+        HideHealthBar();
     }
 
     void Update()
@@ -35,46 +35,71 @@ public class EnemyHealthBarCanvas : MonoBehaviour
     public void ShowHealthBar() // Used for locking on target
     {
         healthBar.gameObject.SetActive(true);
-        StopCoroutine(HideHealthBarAfterDelay()); // Stop any existing hide coroutine to keep the canvas visible
+        allowCoolDown = false;
+        if (hideCoroutine != null)
+            StopCoroutine(hideCoroutine);
     }
 
-    public void ShowHealthBarForDuration(Transform target, float damage) // Used for showing the canvas when taking damage
+    public void ShowHealthBarForDuration(float current, float max) // Used for showing the healthbar when taking damage
     {
-        if (target.root != transform.root || healthBar == null) 
-            return; // Ensure the event is for this enemy
+        if (current <= 0)
+        {
+            allowCoolDown = true;
+        }
+
+        if (healthBar == null || !allowCoolDown) return;
+
         healthBar.gameObject.SetActive(true);
-        StopCoroutine(HideHealthBarAfterDelay()); // Stop any existing hide coroutine to keep the canvas visible
+
+        if (hideCoroutine != null)
+            StopCoroutine(hideCoroutine);
+
+        hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
 
-    public void ShowHealthBarForDuration(float current = 0, float max = 0) // Parameters are required to match the OnHealthChanged signature, but we don't use them here
+    public void ShowHealthBarForDuration(Transform target, DamageInfo damage) // Used for showing the healthbar when taking damage, called from the event system
     {
+        if (healthBar == null || target != transform.parent || !allowCoolDown) return;
+
         healthBar.gameObject.SetActive(true);
-        StartCoroutine(HideHealthBarAfterDelay());
+
+        if (hideCoroutine != null)
+            StopCoroutine(hideCoroutine);
+
+        hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
 
     public void HideHealthBar()
     {
         if (healthBar == null || isOnCooldown)
-            return;
+        { return; }
+
+        allowCoolDown = true;
 
         healthBar.gameObject.SetActive(false);
     }
 
-    IEnumerator HideHealthBarAfterDelay()
+    IEnumerator HideHealthBarAfterDelay() // Coroutine to hide the health bar after a delay, and sets a cooldown to prevent it from hiding immediately after showing
     {
         isOnCooldown = true;
         yield return new WaitForSeconds(displayDuration);
         isOnCooldown = false;
-        HideHealthBar();
+
+        if (allowCoolDown)
+        {
+            HideHealthBar();
+        }
     }
 
-    private void OnDissable()
+    private void OnDisable() // Unsubscribes from the events when the object is disabled to prevent memory leaks
     {
+        enemyDamage.OnHealthChanged -= ShowHealthBarForDuration;
         Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
     }
 
-    private void OnDestroy()
+    private void OnDestroy() // Unsubscribes from the events when the object is destroyed to prevent memory leaks
     {
+        enemyDamage.OnHealthChanged -= ShowHealthBarForDuration;
         Event_System.instance.OnEnemyDamage -= ShowHealthBarForDuration;
     }
 }

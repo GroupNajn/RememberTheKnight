@@ -1,99 +1,206 @@
+using FMODUnity;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static IPickupable;
 
 public class BounceScript : MonoBehaviour
 {
-    [Header("Bounce")]
-    [SerializeField] private float launchSpeed = 3f;
-    [SerializeField] private float launchHeight = 2f;
-    [SerializeField] private int bounceCount = 3;
-    [SerializeField] private float launchDuration = 0.25f;
-    [SerializeField] private float landDamping = 0.5f;
+    [SerializeField] private float launchForce = 5f;
+    [SerializeField] private float bounceDamping = 0.5f;
+    [SerializeField] private int maxBounces = 2;
+    [SerializeField] private LayerMask environmentMask;
 
-    private Vector3 horizontalDirection;
-    private float groundY;
+    [Header("Physics Collider")]
+    [SerializeField] private Collider physicsCollider;
+
+    [Header("On Enter Collider")]
+    [SerializeField] private Collider pickupCollider;
+
+    public LayerMask EnvironmentMask => environmentMask;
+
+    private bool collisionRestored = false;
+
+    private Rigidbody rb;
+    private int bounceCount = 0;
     private bool hasLanded = false;
-    private Vector3 velocity;
-    private Vector3 velocityBeforeElapsedTime;
-    public Vector3 Velocity => velocityBeforeElapsedTime;
+
+    private Vector3 lastBouncePosition;
+    public Vector3 LastBouncePosition => lastBouncePosition;
+
+    private Vector3 horizontalDir;
+
     public bool HasLanded => hasLanded;
+    public Vector3 Velocity => rb.linearVelocity;
 
-    void Start()
+    private Collider[] playerColliders;
+
+    private void Start()
     {
-        groundY = transform.position.y;
-        horizontalDirection = GetRandomDirection();
-        StartCoroutine(LaunchOnSpawn());
+        rb = GetComponent<Rigidbody>();
 
+        if (physicsCollider == null)
+        {
+            Debug.LogError("PhysicsCollider saknas på " + gameObject.name);
+            return;
+        }
+
+        physicsCollider.isTrigger = false;
+
+        if (pickupCollider != null)
+        {
+            pickupCollider.enabled = false;
+            StartCoroutine(EnablePickupColliderAfterDelay(2.5f));
+        }
+
+        horizontalDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+
+        Vector3 launchVelocity = horizontalDir * launchForce;
+        launchVelocity.y = launchForce;
+
+        rb.linearVelocity = launchVelocity;
+        rb.freezeRotation = true;
     }
 
- 
-
-
-    private IEnumerator LaunchOnSpawn()
+    private void IgnorePlayer()
     {
-        float currentHeight = launchHeight;
-        Vector3 currentPos = transform.position;
+        GameObject player = GameObject.FindWithTag("Player");
 
-        for (int i = 0; i < bounceCount; i++)
+        if (player == null) return;
+
+
+        Transform root = player.transform.root;
+
+
+        playerColliders = root.GetComponentsInChildren<Collider>(true);
+
+        foreach (Collider col in playerColliders)
         {
-            float elapsed = 0f;
-
-            if (velocity == Vector3.zero)
+            if (col != null && physicsCollider != null)
             {
-                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
-                velocity = new Vector3(horizontalVelocity.x, 0f, horizontalVelocity.z);
+                Physics.IgnoreCollision(physicsCollider, col, true);
             }
+        }
+    }
 
-            while (elapsed < launchDuration)
+    private void RestorePlayerCollision()
+    {
+        if (playerColliders == null) return;
+
+        foreach (Collider col in playerColliders)
+        {
+            if (col != null)
             {
-                elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / launchDuration);
-
-                float parabola = 4f * t * (1f - t);
-                float yOffset = parabola * currentHeight;
-
-                // Horizontal velocity
-                Vector3 horizontalVelocity = horizontalDirection * launchSpeed;
-
-                // Derivatan av 4 * t * (1 - t) är 4 - 8t
-                
-                float yVelocity = (4f * currentHeight * (1f - 2f * t)) / launchDuration;
-
-                velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
-
-                currentPos += new Vector3(velocity.x, 0f, velocity.z) * Time.deltaTime;
-
-                transform.position = new Vector3(currentPos.x, groundY + yOffset, currentPos.z);
-
-                if (elapsed > launchDuration) velocityBeforeElapsedTime = velocity; 
-                
-
-                yield return null;
+                Physics.IgnoreCollision(physicsCollider, col, false);
             }
+        }
+    }
 
-            currentPos = new Vector3(currentPos.x, groundY, currentPos.z);
-            transform.position = currentPos;
+    private void Update()
+    {
+        if (!collisionRestored && hasLanded)
+        {
+            RestorePlayerCollision();
+            collisionRestored = true;
+        }
+    }
 
-            currentHeight *= landDamping;
-            launchSpeed *= 0.7f;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (hasLanded) return;
 
-            Vector3 newHorizontalVelocity = horizontalDirection * launchSpeed;
-            velocity = new Vector3(newHorizontalVelocity.x, 0f, newHorizontalVelocity.z);
+        if (!IsEnvironmentLayer(collision.gameObject.layer))
+            return;
+
+        if (TryGetComponent<Soul>(out Soul soul))
+        {
+            RuntimeManager.PlayOneShotAttached(gameObject.GetComponent<Soul>().soulBounceEvent, gameObject);
+        }
+
+        bounceCount++;
+
+        if (bounceCount >= maxBounces)
+        {
+            Land();
+            return;
+        }
+
+        Bounce();
+    }
+
+    private bool IsEnvironmentLayer(int layer)
+    {
+        return collisionLayerIsInMask(layer, environmentMask);
+    }
+
+    private bool collisionLayerIsInMask(int layer, LayerMask mask)
+    {
+        return (mask.value & (1 << layer)) != 0;
+    }
+
+    private void Land()
+    {
+        Vector3 rayStart = physicsCollider.bounds.center + Vector3.up * 2f;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 10f, environmentMask))
+        {
+            float bottomOffset = physicsCollider.bounds.center.y - physicsCollider.bounds.min.y;
+            float safetyOffset = 0.08f;
+
+            Vector3 newPosition = transform.position;
+            newPosition.y = hit.point.y + bottomOffset + safetyOffset;
+
+            float maxSnapDistance = 2f;
+
+            if (Vector3.Distance(transform.position, newPosition) <= maxSnapDistance)
+            {
+                lastBouncePosition = newPosition;
+            }
+            else
+            {
+                lastBouncePosition = transform.position;
+            }
+        }
+        else
+        {
+            lastBouncePosition = transform.position;
         }
 
         hasLanded = true;
+
+        //if (pickupCollider != null)
+        //    pickupCollider.enabled = true;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.isKinematic = true;
+        rb.useGravity = false;
     }
 
-    private Vector3 GetRandomDirection()
+    private IEnumerator EnablePickupColliderAfterDelay(float delay)
     {
-        float x = Random.Range(-1f, 1f);
-        float z = Random.Range(-1f, 1f);
+        yield return new WaitForSeconds(delay);
 
-        Vector3 dir = new Vector3(x, 0f, z).normalized;
+        if (pickupCollider != null)
+        {
+            pickupCollider.enabled = true;
+        }
+    }
 
-        if (dir == Vector3.zero)
-            dir = Vector3.forward;
+    private void Bounce()
+    {
+        if (rb == null) return;
+        float yVel = Mathf.Max(Mathf.Abs(rb.linearVelocity.y) * bounceDamping, 4f);
 
-        return dir;
+        float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z).magnitude;
+
+        horizontalSpeed *= 0.9f;
+        horizontalSpeed = Mathf.Max(horizontalSpeed, 2f);
+
+        Vector3 newVelocity = horizontalDir * horizontalSpeed;
+        newVelocity.y = yVel;
+
+        rb.linearVelocity = newVelocity;
     }
 }

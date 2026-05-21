@@ -2,99 +2,173 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
-using UnityEngine.Rendering;
+using System.Collections.Generic;
 
-public class CardSelectionUI : MonoBehaviour
+
+// Script made by Wilmer some day in april // Henric
+// Script Updated by Henric 2026-04-17
+// Comments added during -> 2026-04-17 session.
+public class CardSelectionUI : AutoSelectFirstButtonOnEnable
 {
-    PlayerInput playerInput;
-    PlayerUIManager playerUIManager;
+    private PlayerInput playerInput;
+    private UIManager uiManager;
+    private InteractCameraHandler interactCameraHandler;
 
-    [SerializeField] ScrollRect cardScrollRect;
-    [SerializeField] float ScrollAmount;
+    [SerializeField] private ScrollRect cardScrollRect;
+    [SerializeField] private float scrollAmount;
 
-    [SerializeField] int maxCardsSelected = 4;
-    [SerializeField] int currentCardsSelected = 0;
-    [SerializeField] TextMeshProUGUI errorText;
+    [SerializeField] private int maxCardsSelected = 4;
+    [SerializeField] private TextMeshProUGUI errorText;
+
+
+    [field: SerializeField] public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
+    [field: SerializeField] public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
-    bool fading = false;
-    bool errorActive = false;
+    private bool errorActive = false;
+
 
     private void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        playerUIManager = GetComponentInParent<PlayerUIManager>();
+        uiManager = GetComponentInParent<UIManager>();
+        interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
         if (cardScrollRect == null)
-            cardScrollRect = playerUIManager.GetComponentInChildren<ScrollRect>();
+            cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
 
         errorText.gameObject.SetActive(false);
+        RebuildSelectionState();
 
-
-        playerUIManager.CloseCardSelectUI();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        currentCardsSelected = 0;
+        base.OnEnable();
+        RebuildSelectionState();
 
-        foreach (Button button in GetComponentsInChildren<Button>())
+    }
+
+    private void OnDisable()
+    {
+        errorText.gameObject.SetActive(false);
+        errorActive = false;
+        errorTimer = 0f;
+        errorText.alpha = 1f;
+    }
+
+    // Method to reset the state of selectes cards. Resets the list, to later check each
+    // Button to potentially re-add them to their respective list, since their boolean 
+    // is still active inside of the class. 
+    private void RebuildSelectionState()
+    {
+        selectedCards.Clear();
+        selectedCardData.Clear();
+
+        foreach (Button button in GetComponentsInChildren<Button>(true))
         {
             CardUI card = button.GetComponent<CardUI>();
-            if (card == null) continue;
+            if (card == null || card.cardData == null)
+                continue;
+            SetUnlockedCards(card.cardData, card);
 
-            if (card.IsSelected)
+
+            if (card.IsSelected && card.IsUnlocked)
             {
-                currentCardsSelected++;
+                if (selectedCards.Count < maxCardsSelected)
+                {
+                    selectedCards.Add(card);
+                    selectedCardData.Add(card.cardData);
+                }
+                else
+                {
+                    card.SetSelected(false);
+                }
             }
-
-            Button btn = button;
-            btn.onClick.AddListener(() => OnCardSelect(btn));
         }
+    }
+
+    private void SetUnlockedCards(CardData cardData, CardUI cardUI)
+    {
+        CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        if(cardData == null)
+        {
+            cardUI.SetUnlocked(false);
+            return;
+        }
+
+        if (cardSystem.CheckUnlocked(cardData))
+        {
+            cardUI.SetUnlocked(true);
+        }
+        else
+        {
+            cardUI.SetUnlocked(false);
+        }
+        
+
+
     }
 
     public void OnArrowUp()
     {
-        cardScrollRect.verticalNormalizedPosition += ScrollAmount;
+        
+
+        cardScrollRect.verticalNormalizedPosition += scrollAmount;
     }
 
     public void OnArrowDown()
     {
-        cardScrollRect.verticalNormalizedPosition -= ScrollAmount;
+        cardScrollRect.verticalNormalizedPosition -= scrollAmount;
     }
 
+    // If a button is pressed and is active, set to to false, otherwise set it to active.
+    // Some if statements inside of the method to check if the selectedCard list is not at its 4 card select limit.
     public void OnCardSelect(Button button)
     {
         CardUI card = button.GetComponent<CardUI>();
+        if (card == null || card.cardData == null)
+            return;
+        
 
-        if (card.IsSelected)
+        if (card.IsSelected && card.IsUnlocked)
         {
             card.SetSelected(false);
-            currentCardsSelected--;
+            selectedCards.Remove(card);
+            selectedCardData.Remove(card.cardData);
+            Debug.Log("Card Deselected");
             return;
         }
-
-        if (currentCardsSelected >= maxCardsSelected)
+        if (!card.IsUnlocked)
         {
-
-
             if (!errorActive)
-            {
-                ShowError($"You can only select {maxCardsSelected} cards!", 5f);
-            }
+                ShowError($"This card is not unlocked!" ,3f);
+            return ;
+        }
+
+        if (selectedCards.Count >= maxCardsSelected)
+        {
+            if (!errorActive)
+                ShowError($"You can only select {maxCardsSelected} cards!", 3f);
 
             return;
         }
 
         card.SetSelected(true);
-        currentCardsSelected++;
-        Debug.Log("CLICK FUNKAR: " + button.name);
-
-
-
+        selectedCards.Add(card);
+        selectedCardData.Add(card.cardData);
     }
+
+    // Confirm the selected cards and send a delegate event to the Event_System of which selectes cards
+    // With the cardData list as a parameter. 
+    public void OnConfirmSelection()
+    {
+        Event_System.instance.OnConfirmCardSelection?.Invoke(selectedCardData);
+        uiManager.CloseCardSelectUI();
+        interactCameraHandler.InteractCamReset();
+    }
+
     private void Update()
     {
         if (!errorActive) return;
@@ -103,17 +177,15 @@ public class CardSelectionUI : MonoBehaviour
 
         if (errorTimer <= fadeDuration)
         {
-            fading = true;
-
             float alpha = Mathf.Clamp01(errorTimer / fadeDuration);
             errorText.alpha = alpha;
         }
+
 
         if (errorTimer <= 0f)
         {
             errorText.gameObject.SetActive(false);
             errorActive = false;
-            fading = false;
             errorText.alpha = 1f;
         }
     }
@@ -121,7 +193,7 @@ public class CardSelectionUI : MonoBehaviour
     private void ShowError(string message, float duration)
     {
         errorText.text = message;
-        fadeDuration = duration * 0.25f; // Fade out over the last 25% of the duration
+        fadeDuration = duration * 0.25f;
         errorText.alpha = 1f;
         errorText.gameObject.SetActive(true);
         errorActive = true;

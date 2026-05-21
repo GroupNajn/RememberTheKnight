@@ -17,20 +17,20 @@ public class LootFollowController : MonoBehaviour
         if (LootManager.instance == null)
             return;
 
-        bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 0;
+        bool hasLootThreshhold = LootManager.instance.DroppedLoot.Count > 1;
 
-        if (Input.GetKeyDown(KeyCode.H) && hasLootThreshhold)
-        {
-            Event_System.instance.OnPullAllLoot?.Invoke();
-            overridden = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.R) && hasLootThreshhold)
+        //{
+        //    Event_System.instance.OnPullAllSouls?.Invoke();
+        //    overridden = true;
+        //}
 
 
         // Start override routine 
-        if (hasLootThreshhold && !overridden && !overrideCoroutineRunning)
-        {
-            overrideRoutine = StartCoroutine(OverrideFollowLogic());
-        }
+        //if (!overridden && !overrideCoroutineRunning)
+        //{
+        //    overrideRoutine = StartCoroutine(OverrideFollowLogic());
+        //}
 
         // Reset if no loot in loot hashSet and in overriden state
         if (!hasLootThreshhold && overridden)
@@ -38,7 +38,7 @@ public class LootFollowController : MonoBehaviour
             ResetFollowLogic();
         }
 
-        // If loot hashSet has no loot, reest override bool and stop Coroutine. 
+        // If loot-hashSet has no loot, reset override bool and stop Coroutine. 
         if (!hasLootThreshhold && overrideCoroutineRunning)
         {
             StopCoroutine(overrideRoutine);
@@ -54,7 +54,7 @@ public class LootFollowController : MonoBehaviour
 
         if (LootManager.instance != null && LootManager.instance.DroppedLoot.Count > 0 && !overridden)
         {
-            Event_System.instance?.OnPullAllLoot?.Invoke();
+            Event_System.instance?.OnPullAllSouls?.Invoke();
             //Debug.Log("INVOKED OVERRIDE LOGIC");
 
             overridden = true;

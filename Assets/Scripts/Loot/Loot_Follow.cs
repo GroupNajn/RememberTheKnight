@@ -1,155 +1,297 @@
-using System.Collections;
 using UnityEngine;
 
-public class Loot_Follow : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class Loot_Follow_Rigidbody : MonoBehaviour
 {
-    [Header("Target")]
+    [Header("References")]
     [SerializeField] private Transform player;
 
-    [SerializeField] private float followRange;
-    [SerializeField] private float followSpeed;
-    [SerializeField] private float hoverSpeed;
-    [SerializeField] private float hoverHeight;
-    [SerializeField] private float growthRate;
-    [SerializeField] private float drag;
-    [SerializeField] private float transitionDuration;
-    [SerializeField] private float blendSpeed;
-    private bool hasLifted = false;
-    private float liftSpeed = 1.5f;
-    private float boostSpeed = 50f;
-    private float liftTargetY;
-    private bool liftInitialized = false;
-    private float maxFollowSpeed = 10.0f;
-    private float hoverOffset;
-    private Vector3 dirVector;
-    private Vector3 distanceVector;
-    private Vector3 velocity;
-    private Vector3 currentVelocity;
-    private Vector3 launchVelocity;
+    [Header("Follow")]
+    [SerializeField] private float followRange = 5f;
+    [SerializeField] private float startFollowSpeed = 1f;
+    [SerializeField] private float growthRate = 5f;
+    [SerializeField] private float drag = 3f;
+    [SerializeField] private float maxFollowSpeed = 10f;
 
-    private Vector3 hoverVelocity = Vector3.zero;
-    private enum FollowLogic { NotOverriten, Overwritten }
-    private FollowLogic followLogic = FollowLogic.NotOverriten;
+    [Header("Hover")]
+    [SerializeField] private float hoverSpeed = 1f;
+    [SerializeField] private float hoverHeight = 1f;
+    [SerializeField] private float baseHoverOffset = 0.8f;
 
-    private Transform mouth;
+    [Header("Hover Transition")]
+    [SerializeField] private float moveToHoverSpeed = 2f;
+    [SerializeField] private float arriveThreshold = 0.05f;
+
+    [Header("Ground Check")]
+    [SerializeField] private float groundCheckDistance = 10f;
+    [SerializeField] private float heightCorrectionSpeed = 3f;
+
+    [Header("Override Follow")]
+    [SerializeField] private float liftSpeed = 3f;
+    [SerializeField] private float boostSpeed = 50f;
+
+    [Header("Collision Push")]
+    [SerializeField] private float collisionPushForce = 2f;
+
+    private Rigidbody rb;
     private Loot loot;
     private BounceScript bounceScript;
 
-    void Start()
+    private Transform centerPoint;
+    private float centerOffsetY;
+    private float hoverOffset;
+
+    private Vector3 basePosition;
+    private Vector3 velocity;
+
+    private float currentFollowSpeed;
+
+    private bool initialized;
+    private bool isMovingToHover;
+    private bool isHovering;
+
+    private bool hasLifted;
+    private bool liftInitialized;
+    private float liftTargetY;
+
+    private enum FollowLogic
     {
-        hoverOffset = Random.Range(0f, Mathf.PI * 2f);
-        //mouth = GameObject.Find("Jaw").transform;
-        player = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+        NotOverwritten,
+        Overwritten
+    }
+
+    private FollowLogic followLogic = FollowLogic.NotOverwritten;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
         loot = GetComponent<Loot>();
         bounceScript = GetComponent<BounceScript>();
-        followLogic = FollowLogic.NotOverriten;
 
-        Event_System.instance.OnPullAllLoot += OverWriteFollowEnum;
-        Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
+        rb.useGravity = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
+        currentFollowSpeed = startFollowSpeed;
+        hoverOffset = Random.Range(0f, Mathf.PI * 2f);
+
+        centerPoint = FindChildByName("Center");
+
+        if (centerPoint != null)
+            centerOffsetY = centerPoint.position.y - transform.position.y;
+    }
+
+    private void Start()
+    {
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+            if (playerObj != null)
+                player = playerObj.transform;
+        }
+
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnPullAllSouls += OverWriteFollowEnum;
+            Event_System.instance.OnResetPullAllLoot += ResetFollowEnum;
+        }
     }
 
     private void OnDestroy()
     {
-        Event_System.instance.OnPullAllLoot -= OverWriteFollowEnum;
-        Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
+        if (Event_System.instance != null)
+        {
+            Event_System.instance.OnPullAllSouls -= OverWriteFollowEnum;
+            Event_System.instance.OnResetPullAllLoot -= ResetFollowEnum;
+        }
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        if (player == null)
+        if (player == null || loot == null || bounceScript == null)
             return;
 
-        if (bounceScript != null && !bounceScript.HasLanded)
+        if (!bounceScript.HasLanded)
+        {
+            rb.useGravity = true;
+            return;
+        }
+
+        rb.useGravity = false;
+        if (!initialized)
+            InitializeHoverTransition();
+
+        if (FollowNoDistanceCheck())
             return;
 
-        distanceVector = player.position - transform.position;
-
-        SetLootFollow();
-
-        bool handledMovement = FollowNoDistanceCheck();
-
-        if (!handledMovement)
+        if (isMovingToHover)
         {
-            transform.position += velocity * Time.deltaTime;
+            MoveToHoverBasePosition();
+            return;
+        }
+
+        if (isHovering)
+        {
+            UpdateFollowVelocity();
+            UpdateBasePositionXZ();
+            CorrectHoverHeight();
+
+            Vector3 targetPosition = GetHoverPosition();
+            rb.MovePosition(targetPosition);
         }
     }
 
-    private bool CanFollow()
+    private void InitializeHoverTransition()
     {
-        float distanceToPlayer = distanceVector.magnitude;
-        return player != null && distanceToPlayer <= followRange;
+        initialized = true;
+
+        Vector3 wantedCenterPosition = bounceScript.LastBouncePosition + Vector3.up * baseHoverOffset;
+
+        basePosition = wantedCenterPosition - Vector3.up * centerOffsetY;
+
+        isMovingToHover = true;
+        isHovering = false;
+
+        rb.linearVelocity = Vector3.zero;
     }
 
-
-    public void SetLootFollow()
+    private void MoveToHoverBasePosition()
     {
-        if (CanFollow() && loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.NotOverriten)
+        Vector3 newPosition = Vector3.MoveTowards(rb.position,basePosition,moveToHoverSpeed * Time.fixedDeltaTime);
+
+        rb.MovePosition(newPosition);
+
+        if (centerPoint == null)
+            return;
+
+        Vector3 targetCenterPosition = bounceScript.LastBouncePosition + Vector3.up * baseHoverOffset;
+
+        if (Vector3.Distance(centerPoint.position, targetCenterPosition) <= arriveThreshold)
         {
-            if (followSpeed < maxFollowSpeed)
-                followSpeed *= Mathf.Exp((growthRate * 0.1f) * Time.deltaTime);
-            dirVector = distanceVector.normalized;
-            velocity = dirVector * followSpeed;
-            HoverSinWave();
-        }
-        else if (!CanFollow() && loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.NotOverriten)
-        {
-            HoverSinWave();
-            velocity *= Mathf.Exp(-drag * Time.deltaTime); followSpeed = 1.0f;
-            
-            followSpeed = 1.0f;
+            isMovingToHover = false;
+            isHovering = true;
         }
     }
 
-
-    private void HoverSinWave()
+    private void CorrectHoverHeight()
     {
+        if (centerPoint == null)
+            return;
+
+        Vector3 rayStart = centerPoint.position + Vector3.up;
+
+        if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, groundCheckDistance, bounceScript.EnvironmentMask))
+        {
+            Debug.DrawRay(rayStart, Vector3.down * groundCheckDistance, Color.red);
+
+            float wantedCenterY = hit.point.y + baseHoverOffset;
+            float currentCenterY = centerPoint.position.y;
+
+            float yDifference = wantedCenterY - currentCenterY;
+
+            basePosition.y += yDifference * heightCorrectionSpeed * Time.fixedDeltaTime;
+        }
+    }
+
+    private Vector3 GetHoverPosition()
+    {
+        float hoverY = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * hoverHeight * 0.01f;
+
+        return basePosition + Vector3.up * hoverY;
+    }
+
+    private void UpdateFollowVelocity()
+    {
+        Vector3 playerFlat = new Vector3(player.position.x, rb.position.y, player.position.z);
+        Vector3 distanceVector = playerFlat - rb.position;
+
         if (loot.Pickable != PickableState.Pickable)
             return;
 
-        float y = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * (hoverHeight * 0.001f);
+        if (followLogic != FollowLogic.NotOverwritten)
+            return;
 
-        // set y-velocity and keep xz velocity
-        hoverVelocity = new Vector3(0f, y, 0f);
+        if (distanceVector.magnitude <= followRange)
+        {
+            currentFollowSpeed *= Mathf.Exp((growthRate * 0.1f) * Time.fixedDeltaTime);
+            currentFollowSpeed = Mathf.Min(currentFollowSpeed, maxFollowSpeed);
 
-        velocity += hoverVelocity;
+            velocity = distanceVector.normalized * currentFollowSpeed;
+        }
+        else
+        {
+            velocity *= Mathf.Exp(-drag * Time.fixedDeltaTime);
+            currentFollowSpeed = startFollowSpeed;
+        }
     }
 
-   
+    private void UpdateBasePositionXZ()
+    {
+        Vector3 move = velocity * Time.fixedDeltaTime;
+
+        basePosition.x += move.x;
+        basePosition.z += move.z;
+    }
+
     private bool FollowNoDistanceCheck()
     {
-        if (loot.Pickable == PickableState.Pickable && followLogic == FollowLogic.Overwritten)
+        if (loot.Pickable != PickableState.Pickable)
+            return false;
+
+        if (followLogic != FollowLogic.Overwritten)
+            return false;
+
+        if (!liftInitialized)
         {
-            if (!liftInitialized)
-            {
-                liftTargetY = transform.position.y + 2f;
-                liftInitialized = true;
-                velocity = Vector3.zero;
-            }
-
-            if (!hasLifted) // bool if lift is completed
-            {
-                Vector3 pos = transform.position;
-                pos.y = Mathf.Lerp(pos.y, liftTargetY, liftSpeed * Time.deltaTime);
-                transform.position = pos;
-
-                velocity = Vector3.zero;
-
-                if (Mathf.Abs(pos.y - liftTargetY) < 0.05f) // Distance check to see if height distance have been reached
-                {
-                    pos.y = liftTargetY;
-                    transform.position = pos;
-                    hasLifted = true;
-                }
-
-                return true; // returns true when moved this frame
-            }
-
-            dirVector = (player.position - transform.position).normalized;
-            velocity = dirVector * boostSpeed;
+            liftTargetY = rb.position.y + 2f;
+            liftInitialized = true;
+            velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
         }
 
-        return false;
+        if (!hasLifted)
+        {
+            Vector3 target = rb.position;
+            target.y = Mathf.MoveTowards(rb.position.y, liftTargetY, liftSpeed * Time.fixedDeltaTime);
+
+            rb.MovePosition(target);
+
+            if (Mathf.Abs(target.y - liftTargetY) < 0.05f)
+                hasLifted = true;
+
+            return true;
+        }
+
+        Vector3 direction = (player.position - rb.position).normalized;
+        Vector3 newPosition = rb.position + direction * boostSpeed * Time.fixedDeltaTime;
+
+        rb.MovePosition(newPosition);
+
+        return true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isHovering)
+            return;
+
+        if (collision.contactCount <= 0)
+            return;
+
+        Vector3 normal = collision.GetContact(0).normal;
+
+        rb.AddForce(normal * collisionPushForce, ForceMode.Impulse);
+    }
+
+    private Transform FindChildByName(string childName)
+    {
+        foreach (Transform t in GetComponentsInChildren<Transform>())
+        {
+            if (t.name == childName)
+                return t;
+        }
+
+        return null;
     }
 
     private void OverWriteFollowEnum()
@@ -159,8 +301,19 @@ public class Loot_Follow : MonoBehaviour
 
     private void ResetFollowEnum()
     {
-        followLogic = FollowLogic.NotOverriten;
+        followLogic = FollowLogic.NotOverwritten;
+
+        hasLifted = false;
+        liftInitialized = false;
+
+        initialized = false;
+        isMovingToHover = false;
+        isHovering = false;
+
+        velocity = Vector3.zero;
+        currentFollowSpeed = startFollowSpeed;
+
+        if (rb != null)
+            rb.linearVelocity = Vector3.zero;
     }
-
-
 }

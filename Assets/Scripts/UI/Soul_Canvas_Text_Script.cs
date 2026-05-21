@@ -8,26 +8,18 @@ public class Soul_Canvas_Text_Script : MonoBehaviour
     void Start()
     {
         tmp = GetComponentInChildren<TextMeshProUGUI>();
-        Event_System.instance.OnLootPickedUp += IncreaseSoulAmount;
         tmp.text = soulAmount.ToString();
     }
 
-    private void OnDisable()
+    public void SetSoulsAmount(int souls)
     {
-        Event_System.instance.OnLootPickedUp -= IncreaseSoulAmount;
+       
+        tmp.text = souls.ToString();
+      
     }
 
 
-    void Update()
-    {
-        
-    }
-
-    private void IncreaseSoulAmount()
-    {
-        soulAmount++;
-        tmp.text = soulAmount.ToString();
-    }
 
     
+
 }

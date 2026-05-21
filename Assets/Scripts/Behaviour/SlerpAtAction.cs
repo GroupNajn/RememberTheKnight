@@ -3,6 +3,7 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
+using NUnit.Framework.Interfaces;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Slerp At", story: "[Transform] slerps at [Target]", category: "Action", id: "d426bda9383a51106e8909c618f3a33f")]
@@ -23,10 +24,9 @@ public partial class SlerpAtAction : Action
             return Status.Failure;
         }
 
-        ProcessSlerpAt();
-        return Continuous.Value ? Status.Running : Status.Success;
+        if (ProcessSlerpAt()) return Status.Running;
+        return Status.Success;
     }
-
     protected override Status OnUpdate()
     {
         if (Continuous.Value)
@@ -34,10 +34,11 @@ public partial class SlerpAtAction : Action
             ProcessSlerpAt();
             return Status.Running;
         }
-        return Status.Success;
+        bool isSlerpFinished = ProcessSlerpAt();
+        return isSlerpFinished ? Status.Success : Status.Running;
     }
 
-    void ProcessSlerpAt()
+    bool ProcessSlerpAt()
     {
         Vector3 direction = Target.Value.position - Transform.Value.position;
         if (LimitToYAxis.Value)
@@ -48,9 +49,12 @@ public partial class SlerpAtAction : Action
         direction = direction.normalized;
         if (direction != Vector3.zero)
         {
+            float dot = Vector3.Dot(Transform.Value.forward, direction);
+            if (dot >= 0.99f) return true;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             Transform.Value.rotation = Quaternion.Slerp(Transform.Value.rotation, targetRotation, SlerpSpeed.Value * Time.deltaTime);
         }
+        return false;
     }
 }
 

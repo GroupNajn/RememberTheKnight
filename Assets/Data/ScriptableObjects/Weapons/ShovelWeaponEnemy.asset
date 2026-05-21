@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e633a2065ab3c314a8cb2f3e5cde8638, type: 3}
+  m_Name: ShovelWeaponEnemy
+  m_EditorClassIdentifier: 
+  WeaponIcon: {fileID: 834488326, guid: 8e7d5d6ef464d424ca2ee11ec86b2a49, type: 3}
+  WeaponName: Shovel
+  LightDamage: 18
+  LightChargedDamageBonus: 2
+  HeavyDamage: 40
+  HeavyChargedDamage: 3
+  AnimatorSpeed: 1
+  SwooshEvent:
+    Guid:
+      Data1: -2027554306
+      Data2: 1094027822
+      Data3: -625242704
+      Data4: 768649808
+    Path: event:/SFX/Attacks/Enemy/Enemy Fist Attack
+  HitEvent:
+    Guid:
+      Data1: -741006004
+      Data2: 1217047147
+      Data3: -1666627155
+      Data4: 757506468
+    Path: event:/SFX/HitMarker/Player/PlayerHitByFist
+  WeaponAnimator: {fileID: 22100000, guid: 020ed66d97fcaf9418b1699abc79db52, type: 2}

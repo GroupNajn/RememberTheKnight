@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LightIntencityController : MonoBehaviour
 {
-    private Light lightToControl;
+    [SerializeField] private Light lightToControl;
 
     [Header("Light Intensity Settings")]
     [SerializeField] private float minIntensity = 0.5f;

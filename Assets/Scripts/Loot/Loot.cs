@@ -1,23 +1,32 @@
 using System.Collections;
+using FMODUnity;
+
 using UnityEngine;
 
 
 // Script made by Henric some random date.
-public class Loot : MonoBehaviour, IPickupable
+public abstract class Loot : MonoBehaviour, IPickupable
 {
-    [SerializeField] private float weight = 5.0f;
-    [SerializeField] private float pickUpDelay;
-    [SerializeField] private string itemName;
+    [SerializeField] protected float weight = 5.0f;
+    [SerializeField] protected float pickUpDelay;
+    [field: SerializeField] public string itemName { get;  private set;}
 
-    [SerializeField] private Tier tier = Tier.Common;
-    public Tier Tier => tier;
+    [SerializeField] protected RarityTier tier = RarityTier.Common;
+    public RarityTier Tier => tier;
 
-    [SerializeField] private PickableState pickable = PickableState.NotPickable;
+    [SerializeField] protected PickableState pickable = PickableState.NotPickable;
+
+   // public EventReference appearEvent;
+
+
+
+
+
     public PickableState Pickable => pickable;
-    private bool followLogicOverritten = false;
+    protected bool followLogicOverritten = false;
     public bool FollowLogicOverritten => followLogicOverritten;
 
-    private Transform playerTransform;
+    protected Transform playerTransform;
 
     public float Weight => weight;
     public string Name
@@ -26,10 +35,10 @@ public class Loot : MonoBehaviour, IPickupable
         set => itemName = value;
     }
 
-    void Start()
+    protected virtual void  Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
-
+        
         if (player != null)
             playerTransform = player.transform;
 
@@ -37,45 +46,34 @@ public class Loot : MonoBehaviour, IPickupable
         if (LootManager.instance != null)
             LootManager.instance.RegisterLoot(this);
 
+
     }
 
     private void OnDestroy()
     {
     }
 
-    private void OnEnable()
-    {
-        //if (LootManager.instance != null)
-        //    LootManager.instance.RegisterLoot(this);
-    }
+    //private void OnEnable()
+    //{
+    //    //if (LootManager.instance != null)
+    //    //    LootManager.instance.RegisterLoot(this);
+    //}
 
-    private void OnDisable()
-    {
-        if (LootManager.instance != null)
-            LootManager.instance.UnregisterLoot(this);
-    }
+    //private void OnDisable()
+    //{
+    //    if (LootManager.instance != null)
+    //        LootManager.instance.UnregisterLoot(this);
+    //}
 
-    IEnumerator WaitForInitialization(float delay)
+    protected IEnumerator WaitForInitialization(float delay)
     {
         yield return new WaitForSeconds(delay);
         pickable = PickableState.Pickable;
     }
 
-    void OnTriggerEnter(Collider other)
+    public virtual void Pickup()
     {
-        //Debug.Log("Triggered by: " + other.name);
-
-        if (other.CompareTag("Player") && pickable == PickableState.Pickable)
-        {
-            Pickup();
-        }
-    }
-
-    public void Pickup()
-    {
-        //Debug.Log($"You picked up {itemName}");
-
         Destroy(gameObject);
-        Event_System.instance?.OnLootPickedUp.Invoke();
+        Event_System.instance?.OnLootPickedUp.Invoke(this);
     }
 }
