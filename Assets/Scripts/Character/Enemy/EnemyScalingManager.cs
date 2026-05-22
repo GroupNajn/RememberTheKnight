@@ -23,7 +23,6 @@ public class EnemyScalingManager : MonoBehaviour
         enemyWeaponManagers = enemies.Select(e => e.GetComponent<EnemyWeaponManager>()).ToList();
         enemyDamages = enemies.Select(e => e.GetComponent<EnemyDamage>()).ToList();
 
-        Debug.Log($"Found {enemies.Count} enemies in the scene.");
         foreach (EnemyDamage enemyDamage in enemyDamages)
         {
             if (enemyDamage != null)

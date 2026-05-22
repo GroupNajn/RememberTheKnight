@@ -7,9 +7,11 @@ public class BallistaEnemy : MonoBehaviour
 {
     // Condition for destroying ballista
     [Header("Enemies")]
-    [SerializeField] private List<GameObject> requiredEnemies = new List<GameObject>();
-    [SerializeField] private List<GameObject> requiredSouls = new List<GameObject>();
+    [SerializeField] int minRequiredEnemies = 4;
+    [SerializeField] int maxRequiredEnemies = 7;
+    private List<GameObject> requiredEnemies = new List<GameObject>();
     [SerializeField] private Vector3 soulOffset;
+    int requiredEnemiesCount;
 
     [Header("Ballista Specifics")]
     private HashSet<GameObject> barrels = new HashSet<GameObject>();
@@ -22,20 +24,43 @@ public class BallistaEnemy : MonoBehaviour
     void Start()
     {
         Event_System.instance.OnEnemyKilledNew += OnEnemyKilled;
+        Event_System.instance.OnEnemiesSpawned += OnEnemiesSpawned;
 
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name.Contains("ExplosiveBarrel")) barrels.Add(child.gameObject);
         }
+    }
+
+    private void OnEnemiesSpawned()
+    {
+        GameObject[] enemiesFound = GameObject.FindGameObjectsWithTag("Enemy");
+
+        requiredEnemiesCount = Random.Range(minRequiredEnemies, maxRequiredEnemies + 1);
+
+        for (int i = 0; i < requiredEnemiesCount; i++)
+        {
+            GameObject randomEnemy;
+            int enemyToAddIndex;
+
+            do
+            {
+                enemyToAddIndex = Random.Range(0, enemiesFound.Length);
+                randomEnemy = enemiesFound[enemyToAddIndex];
+            } while (randomEnemy == null);
+
+            requiredEnemies.Add(enemiesFound[enemyToAddIndex]);
+            enemiesFound[enemyToAddIndex] = null;
+        }
 
         foreach (GameObject e in requiredEnemies)
         {
             GameObject soul = Instantiate(ballistaSoul, e.transform.position + soulOffset, Quaternion.identity, e.transform);
-            requiredSouls.Add(soul);
         }
+
     }
 
-    void OnEnemyKilled(EnemyLootProfile enemy, Vector3 spawnPos) 
+    void OnEnemyKilled(EnemyLootProfile enemy, Vector3 spawnPos)
     {
         if (IsDestroyed) return;
 
