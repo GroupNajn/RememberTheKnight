@@ -169,7 +169,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
-       
+
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -187,8 +187,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     private void ApplySingleCard(CardData card)
     {
-        if(card == null) return;
-       
+        if (card == null) return;
+
         ApplyStatsInternally(card);
 
         playerStats.CurrentHealth = MaxHealth;
@@ -221,7 +221,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private void InitializePlayerBaseStats()
     {
         playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.healthRegen = playerStats.baseStaminaRegeneration;
         playerStats.maxStamina = playerStats.baseStamina;
+        playerStats.staminaRegen = playerStats.baseStaminaRegeneration;
 
         playerStats.currentLuck = playerStats.baseLuck;
         playerStats.currentCritChance = playerStats.baseCritChance;
@@ -235,26 +237,49 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+
+        playerStats.curentActionSpeedModifier = playerStats.baseActionSpeed;
+
+        foreach (WeaponStats weaponStats in GetComponentsInChildren<WeaponStats>(true))
+        {
+            weaponStats.DisableWeaponVFX();
+        }
+
     }
 
     public void ApplyStatsInternally(CardData card)
     {
         playerStats.MaxHealth += card.healthModifier;
+        playerStats.healthRegen += card.healRegeneraion;
         playerStats.maxStamina += card.staminaModifier;
+        playerStats.staminaRegen += card.staminaRegeneraion;
 
         playerStats.currentLuck += card.luckModifier;
         playerStats.currentCritChance += card.critChance;
 
-        playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
-        playerStats.currentSprintSpeedModifier += card.sprintSpeedModifier;
+
         playerStats.currentDodgeSpeedModifier += card.dodgeSpeedModifier;
         playerStats.currentDamageModifier += card.damageModifier;
-
 
         playerStats.currentHealModifier += card.healModifier;
         playerStats.currentKnockbackResistance += card.knockbackModifier;
 
         playerStats.currentWeaponSize += card.weaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+        
+        playerStats.curentActionSpeedModifier += card.actionSpeedModifier;
+        //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
+        playerAnimator.speed = playerStats.curentActionSpeedModifier;
+
+
+        if (card.weaponVFX)
+        {
+            foreach (WeaponStats weaponStats in GetComponentsInChildren<WeaponStats>(true))
+            {
+                weaponStats.SetCardName(card.cardID);
+                weaponStats.EnableWeaponVFX();
+            }
+        }
+
     }
 }

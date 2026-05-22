@@ -67,10 +67,10 @@ public class BookPageUI : MonoBehaviour
           // $"Heavy Damage: {stats.HeavyDamage}\n" +
           // $"Combo Damage Modifier: {stats.ComboDamageModifier}";
           $"Max HP: {stats.MaxHealth}\n" +
-          $"Health Regen: {stats.healthRegenRate}\n" +
+          $"Health Regen: {stats.healthRegen}\n" +
           //$"Total Heal: {stats.TotalHeal}\n" +
           $"Stamina: {stats.maxStamina}\n" +
-          $"Stamina Regen: {stats.staminaRegenRate}\n" +
+          $"Stamina Regen: {stats.staminaRegen}\n" +
           $"Luck: {stats.currentLuck}\n" +
           $"Crit Rate: {stats.currentCritChance}\n";
     }

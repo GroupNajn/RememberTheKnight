@@ -39,8 +39,14 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (cardData.healthModifier > 0)
             stats.AppendLine($"Health + {cardData.healthModifier}");
 
+        if (cardData.healRegeneraion > 0)
+            stats.AppendLine($"Health + {cardData.healRegeneraion}");
+
         if (cardData.staminaModifier > 0)
             stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+
+        if (cardData.staminaRegeneraion > 0)
+            stats.AppendLine($"Stamina + {cardData.staminaRegeneraion}");
 
         if (cardData.luckModifier > 0)
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
@@ -50,12 +56,6 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         if (cardData.critChance > 0)
             stats.AppendLine($"critical chance + {cardData.critChance}%");
-
-        if (cardData.walkSpeedModifier > 0)
-            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
-
-        if (cardData.sprintSpeedModifier > 0)
-            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
 
         if (cardData.dodgeSpeedModifier > 0)
             stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
