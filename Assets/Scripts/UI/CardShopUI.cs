@@ -22,6 +22,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
     [SerializeField] private int maxPurchased = 1;
 
+    [SerializeField] private Button purchaseButton;
+
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
@@ -42,6 +44,12 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
         uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
+
+        UpdatePurchaseButton();
+    }
+    public void UpdatePurchaseButton()
+    {
+        purchaseButton.interactable = purchasedCardData.Count > 0;
     }
 
     public void PopulateSlots()
@@ -89,13 +97,15 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
             purchasedCardData.Remove(card);
 
+            UpdatePurchaseButton();
+
             RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopDeselectCardEvent);
             return;
         }
 
         if (purchasedCardData.Count >= maxPurchased)
         {
-            ShowError($"Max {maxPurchased} cards!", 2f);
+            ShowError($"Max {maxPurchased} card!", 2f);
             
             foreach (CardSlotShopUI uiSlot in uiSlots)
             {
@@ -132,6 +142,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             slot.LinkedBoardSlot.SetSelectedVisual(true);
 
         purchasedCardData.Add(card);
+
+        UpdatePurchaseButton();
     }
 
     public void OnConfirmSelection()
@@ -149,8 +161,9 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
             Event_System.instance.OnSoulsSpent?.Invoke((int)purchasedCard.cardSoulCost);
 
-            //CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
-            //uiSlot?.LinkedBoardSlot?.RemoveCard();
+            CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
+            uiSlot?.LinkedBoardSlot?.RemoveCard();
+            uiSlot?.SetCard(null);
 
         }
         Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
@@ -220,6 +233,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
         }
         purchasedCardData.Clear();
+        UpdatePurchaseButton();
     }
 
     public void ForceReset()
@@ -236,6 +250,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
         }
         purchasedCardData.Clear();
+        UpdatePurchaseButton();
     }
-
 }

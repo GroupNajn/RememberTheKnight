@@ -47,12 +47,11 @@ public class ShopBoardCardSlot : MonoBehaviour
             GameObject instance = Instantiate(randomPoster, this.transform.position, this.transform.rotation, this.transform);
             instance.transform.localPosition = randomPoster.transform.localPosition;
 
+            spawnedCard = instance;
             return;
         }
 
-        //if (card == null) return;
-
-        board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
+        spawnedCard = board.CardBuilder.InstantiateCardWithoutScripts(card, this.transform);
     }
 
     public void RemoveCard()

@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
 
     public bool UIMenuActive = true;
     public bool timeScaleOn = true;
+    public bool cameraTransitioning = false;
 
 
     private void Awake()
@@ -128,6 +129,9 @@ public class UIManager : MonoBehaviour
                 return;
 
             if(cardShopUI.activeSelf)
+                return;
+
+            if (cameraTransitioning)
                 return;
 
             if (optionMenuUI.activeSelf)
@@ -486,6 +490,7 @@ public class UIManager : MonoBehaviour
         CloseUIOnMenuOpen();
         cardShopUI.SetActive(true);
 
+        cameraTransitioning = false;
         CheckUIState();
         CheckTimeScaleUI(true);
     }

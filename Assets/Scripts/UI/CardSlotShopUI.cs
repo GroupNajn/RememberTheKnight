@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [Header("CardData information")]
     [SerializeField] public GameObject cardInfo;
@@ -19,7 +19,6 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlockable { get; private set; } = false;
     [SerializeField] public bool isLocked;
-
 
     [SerializeField] private ShopBoardCardSlot linkedBoardSlot;
     public ShopBoardCardSlot LinkedBoardSlot => linkedBoardSlot;
@@ -41,7 +40,7 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         IsSelected = false;
     }
-   
+
     public void SetCard(CardData card)
     {
         if (isLocked)
@@ -109,6 +108,22 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        if (cardData == null)
+            return;
+
+        linkedBoardSlot?.SetHoverVisual(false);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (cardData == null)
+            return;
+
+        linkedBoardSlot?.SetHoverVisual(true);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
     {
         if (cardData == null)
             return;
