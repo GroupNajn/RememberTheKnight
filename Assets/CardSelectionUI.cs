@@ -113,8 +113,6 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
 
     public void OnArrowUp()
     {
-        
-
         cardScrollRect.verticalNormalizedPosition += scrollAmount;
     }
 
@@ -165,6 +163,11 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
     public void OnConfirmSelection()
     {
         Event_System.instance.OnConfirmCardSelection?.Invoke(selectedCardData);
+        uiManager.CloseCardSelectUI();
+        interactCameraHandler.InteractCamReset();
+    }
+    public void OnExit()
+    {
         uiManager.CloseCardSelectUI();
         interactCameraHandler.InteractCamReset();
     }
