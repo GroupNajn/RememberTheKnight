@@ -229,6 +229,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleAnimationInputs(bool isIdling)
     {
+        PlayerAnimator.SetBool("IsSprinting", playerState.CurrentMoveState == MoveState.Sprinting);
 
         if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
         {
