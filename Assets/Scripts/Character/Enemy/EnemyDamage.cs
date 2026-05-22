@@ -47,8 +47,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         MaxHealth *= Mathf.Pow(healthModifierPercentagePerLevel, level);
         Health = MaxHealth;
         OnHealthChanged?.Invoke(Health, MaxHealth);
-
-        Debug.Log($"Enemy {gameObject.name} health modified: {originalMaxHealth} -> {MaxHealth}");
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)

@@ -130,7 +130,6 @@ public class Spawner : MonoBehaviour
 
         if (isEnemySpawner)
         {
-            Debug.Log($"Enemies spawned by {name}");
             StartCoroutine(WaitToInvokeEnemySpawned());
         }
     }
