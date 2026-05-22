@@ -12,6 +12,7 @@ public class BallistaEnemy : MonoBehaviour
     private List<GameObject> requiredEnemies = new List<GameObject>();
     [SerializeField] private Vector3 soulOffset;
     int requiredEnemiesCount;
+    [SerializeField] List<string> bannedEnemyNames = new List<string>();
 
     [Header("Ballista Specifics")]
     private HashSet<GameObject> barrels = new HashSet<GameObject>();
@@ -47,6 +48,16 @@ public class BallistaEnemy : MonoBehaviour
             {
                 enemyToAddIndex = Random.Range(0, enemiesFound.Length);
                 randomEnemy = enemiesFound[enemyToAddIndex];
+
+                foreach (string name in bannedEnemyNames)
+                {
+                    if (randomEnemy.name.Contains(name))
+                    {
+                        randomEnemy = null;
+                        Debug.Log($"Random enemy name contains {name}");
+                        break;
+                    }
+                }
             } while (randomEnemy == null);
 
             requiredEnemies.Add(enemiesFound[enemyToAddIndex]);
