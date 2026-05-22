@@ -47,7 +47,7 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
             }
         }
 
-        // SETS TAB BUTTON INACTIVE
+        // SETS FAMIILY BUTTON INACTIVE
         selected.gameObject.SetActive(false);
         // SET TEXT ACTIVE
         selected.infoBox.SetActive(true);
@@ -66,6 +66,12 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
             CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
         }
 
+        uiManager.CloseFamilySelectUI();
+        interactCameraHandler.InteractCamReset();
+    }
+
+    public void OnExit()
+    {
         uiManager.CloseFamilySelectUI();
         interactCameraHandler.InteractCamReset();
     }

@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardPickupUI;
     [SerializeField] private GameObject cardUnlockUI;
     [SerializeField] private GameObject lorePageUI;
+    [SerializeField] private GameObject devSecretUI;
 
     [Header("Static UI")]
     [SerializeField] private GameObject winMenuUI;
@@ -726,6 +727,25 @@ public class UIManager : MonoBehaviour
         CloseVideoUI();
         OpenOptionMenu(); ;
 
+    }
+
+    public void OpenDevSecretUI()
+    {
+
+        CloseInteractiveUI();
+        CloseUIOnMenuOpen();
+        devSecretUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+    }
+    public void CloseDevSecretUI()
+    {
+        OpenUIOnMenuClose();
+        devSecretUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
     }
     private void OnDestroy()
     {
