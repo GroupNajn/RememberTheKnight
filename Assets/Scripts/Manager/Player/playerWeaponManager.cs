@@ -57,6 +57,14 @@ public class PlayerWeaponManager : CharacterWeaponManager
         HolsterCheck();
     }
 
+    public override void HolsterCheck()
+    {
+        base.HolsterCheck();
+
+        playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
+        Debug.Log($"");
+    }
+
     public void SwitchWeapon()
     {
         if (Weapons.Count == 0) return;

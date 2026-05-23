@@ -146,13 +146,10 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void SetAnimationCancelebleFalse()
     {
-        Debug.Log("Animation cancelebale set to false");
         animationCanceleble = false;
     }
     public void SetAnimationCancelebleTrue()
     {
-        Debug.Log("Animation cancelebale set to true");
-
         animationCanceleble = true;
     }
 
