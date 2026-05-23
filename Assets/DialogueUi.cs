@@ -1,17 +1,18 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 //Made by Michaëla 22-05-2026
-public class DialogueUi : MonoBehaviour
+public class DialogueUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private TMP_Text moreText;
     [SerializeField] private float typingSpeed = 0.03f;
     private bool canPressInput;
 
-    private Dialoge[] currentLines;
+    private Dialogue[] currentLines;
     private int currentLine;
 
     private bool isTyping;
@@ -19,10 +20,9 @@ public class DialogueUi : MonoBehaviour
 
     private Coroutine typingCoroutine;
 
-
-    public void StartDialogue(CompletDialogue completDialogue)
+    public void StartDialogue(Dialogue[] dialogueLines)
     {
-        currentLines = completDialogue.lines;
+        currentLines = dialogueLines;
         currentLine = 0;
 
         canPressInput = false;

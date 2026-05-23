@@ -9,8 +9,7 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private GameObject firstTimeEffect;
 
     [Header("Dialogue")]
-    [SerializeField] CompletDialogue completDialogue;
-
+    [SerializeField] Dialogue[] dialogueLines;
 
     private UIManager playerUIManager; 
 
@@ -32,7 +31,7 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false); 
         }
-        playerUIManager.OpenDialogueUI(completDialogue);
+        playerUIManager.OpenDialogueUI(dialogueLines);
     }
 
     public InteractableUIData GetUIData() 
