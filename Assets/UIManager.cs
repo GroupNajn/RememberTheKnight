@@ -51,10 +51,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cupUI;
     [SerializeField] private GameObject weaponHUDUI;
     [SerializeField] private GameObject bookHUDUI;
-
-    [Header("Dialogue UI")]
-     private GameObject dialogueUI;
-     private DialogueUi dialogueUIScript;
+    [SerializeField] private GameObject dialogueUI;
 
     public bool UIMenuActive = true;
     public bool timeScaleOn = true;
@@ -81,11 +78,6 @@ public class UIManager : MonoBehaviour
         //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
-        dialogueUIScript = GetComponentInChildren<DialogueUi>(true);
-        if (dialogueUIScript != null)
-        {
-            dialogueUI = dialogueUIScript.gameObject;
-        }
 
         playerInput.enabled = false;
         //UIInput.enabled = false;
@@ -738,7 +730,8 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void OpenDialogueUI(CompletDialogue completDialogue)
+    // Dialogue UI
+    public void OpenDialogueUI(Dialogue[] dialogueLines)
     {
         CloseInteractiveUI();
         CloseUIOnMenuOpen();
@@ -748,21 +741,18 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
 
         CheckUIState();
-        CheckTimeScaleUI(false);
+        CheckTimeScaleUI(true);
 
-        dialogueUIScript.StartDialogue(completDialogue);
+        dialogueUI.GetComponent<DialogueUI>().StartDialogue(dialogueLines);
     }
 
     public void CloseDialogueUI()
     {
         OpenUIOnMenuClose();
-
         dialogueUI.SetActive(false);
 
         UIMenuActive = false;
-
         CheckUIState();
-        CheckTimeScaleUI(true);
     }
 
     public void OpenDevSecretUI()

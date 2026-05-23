@@ -11,7 +11,7 @@ public class GlobalSceneManager : MonoBehaviour
     Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();
     HashSet<string> loadingScenes = new HashSet<string>();
 
-    Animator transitionAnimator;
+    [SerializeField] private Animator transitionAnimator;
     bool useTransition;
     public bool isTransitioning { get; private set; } = false;
 
@@ -26,8 +26,6 @@ public class GlobalSceneManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        transitionAnimator = GameObject.FindGameObjectWithTag("BlackFade").GetComponent<Animator>();
     }
 
     private void Start()
