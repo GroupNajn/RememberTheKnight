@@ -9,7 +9,8 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private GameObject firstTimeEffect;
 
     [Header("Dialogue")]
-    [SerializeField] Dialogue[] dialogueLines;
+    [SerializeField] Dialogue[] customDialogue;
+    [SerializeField] CompleteDialogue presetDialogue;
 
     private UIManager playerUIManager; 
 
@@ -22,7 +23,14 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
                 firstTimeEffect.SetActive(false);
         }
     }
-    
+
+    public Dialogue[] GetDialogue()
+    {
+        if (presetDialogue != null)
+            return presetDialogue.lines;
+
+        return customDialogue;
+    }
     public void Interact() 
     {
         if (!InteractableSaveSystem.HasInteracted(interactableID)) 
@@ -31,7 +39,7 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false); 
         }
-        playerUIManager.OpenDialogueUI(dialogueLines);
+        playerUIManager.OpenDialogueUI(GetDialogue());
     }
 
     public InteractableUIData GetUIData() 
