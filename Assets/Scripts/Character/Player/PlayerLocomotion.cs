@@ -14,6 +14,8 @@ public class PlayerLocomotion : MonoBehaviour
     public Vector2 LookInput { get; private set; }
     public bool DodgePressed { get; private set; }
     public bool SprintToggledOn = false;
+    private bool ignordeNextInput = true; // used for ignoring every second input when using gamepad for sprint toggle
+
 
     //============= Combat =============
     public bool AttackPressed { get; private set; }
@@ -21,7 +23,7 @@ public class PlayerLocomotion : MonoBehaviour
     public bool HeavyAttackPressed { get; private set; }
     public bool HeavyAttackCharging = false;
     #endregion
-    private void LateUpdate() 
+    private void LateUpdate()
     {
         //movment
         DodgePressed = false;
@@ -47,8 +49,18 @@ public class PlayerLocomotion : MonoBehaviour
     }
 
     public void OnToggleSprint(InputValue action)
-    { 
-          SprintToggledOn = action.isPressed;
+    {
+        bool usingGamepad = InputManager.Instance.usingGamepad;
+
+        if (usingGamepad) // if gamepad
+        {
+            ignordeNextInput = !ignordeNextInput; 
+            if (ignordeNextInput) // if true, ignore this input and wait for the next one to toggle sprint
+                return;
+            SprintToggledOn = !SprintToggledOn;
+        }
+        else
+            SprintToggledOn = action.isPressed;
     }
 
     //================ Combat ================
