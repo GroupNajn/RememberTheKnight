@@ -49,6 +49,8 @@ public class BallistaEnemy : MonoBehaviour
                 enemyToAddIndex = Random.Range(0, enemiesFound.Length);
                 randomEnemy = enemiesFound[enemyToAddIndex];
 
+                if (randomEnemy == null) continue;
+
                 foreach (string name in bannedEnemyNames)
                 {
                     if (randomEnemy.name.Contains(name))
