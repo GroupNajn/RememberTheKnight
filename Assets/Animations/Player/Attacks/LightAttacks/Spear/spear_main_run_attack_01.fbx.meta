@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: e05550a73c905a64aa34b4e301a573a4
+guid: fe773830558c68f4bbb5f8f7c855587e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -1461791705121038856
-    second: spear_main_run_F_01
+      74: 5180707915932246738
+    second: spear_main_run_attack_01
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -34,18 +34,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: spear_main_run_F_01
-      takeName: spear_main_run_F_01
+      name: spear_main_run_attack_01
+      takeName: spear_main_run_attack_01
       internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 33
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -58,22 +58,71 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.49305847
-        functionName: PlayFootStep
+      - time: 0.12956686
+        functionName: SetAnimationCancelebleFalse
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7352166
-        functionName: ResetValues
+      - time: 0.20015793
+        functionName: SetHeavyFalse
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.9612957
-        functionName: PlayFootStep
+      - time: 0.38416973
+        functionName: DrainStamina
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.39368513
+        functionName: ActivateRightDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.40423307
+        functionName: SetAttackRotationSpeed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.517029
+        functionName: EnableCanCombo
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6912274
+        functionName: DeactivateRightDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7025024
+        functionName: DisableCanCombo
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7068782
+        functionName: ResetAttackRotationSpeed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.71013325
+        functionName: SetAnimationCancelebleTrue
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
