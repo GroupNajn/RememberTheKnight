@@ -45,11 +45,10 @@ public class WeaponStats : MonoBehaviour
             Debug.Log($"{gameObject.name}");
         }
 
-
         cupsVFX.SetActive(false);
-        //wandsVFX.SetActive(false);
-        //swordVFX.SetActive(false);
-        //pentaclesVFX.SetActive(false);
+        wandsVFX.SetActive(false);
+        swordVFX.SetActive(false);
+        pentaclesVFX.SetActive(false);
     }
 
     public void SetCardName(string name)
