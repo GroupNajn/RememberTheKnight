@@ -160,10 +160,8 @@ public class CardSystem : MonoBehaviour
 
         foreach (CardData data in sortedCards.ToArray())
         {
-            Debug.Log($"Looping through sorted cards");
             if (data.cardFamily != cardContract.CardFamily || unlockedCards.Contains(data))
             {
-                Debug.Log($"Removing {data.name} from sorted cards");
                 sortedCards.Remove(data);
             }
         }

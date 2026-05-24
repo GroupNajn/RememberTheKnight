@@ -30,7 +30,6 @@ public class RunGameData : MonoBehaviour
         if (hasStarted)
         {
             LevelCounter++;
-            Debug.Log($"Level Counter incremented to {LevelCounter}");
         }
         else
         {

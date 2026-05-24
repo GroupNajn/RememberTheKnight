@@ -27,6 +27,13 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
             return;
         }
 
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract == null ||
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
+        {
+            // Add dialouge here
+            return;
+        }
+
         RuntimeManager.PlayOneShotAttached (WorldSoundFXManager.instance.teleportEvent,GameObject.FindGameObjectWithTag("Player")); // teleport sound effect
 
         GlobalSceneManager.Instance.ActivateSceneTransition(sceneName);
@@ -59,8 +66,18 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
-
-        UIData.InfoText = "Touch orb";
+         
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract == null ||
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
+        {
+            UIData.CanInteract = false;
+            UIData.InfoText = "Select a family";
+        }
+        else
+        {
+            UIData.CanInteract = true;
+            UIData.InfoText = "Touch orb";
+        }
 
         return UIData;
     }
