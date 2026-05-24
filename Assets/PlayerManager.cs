@@ -120,7 +120,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void OnHeal()
     {
-        Debug.Log("Attempting to heal. Current Charges: " + playerStats.currentHealingCharges);
         if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
         {
             Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);

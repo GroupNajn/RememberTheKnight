@@ -184,11 +184,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // infoBox.SetActive(true);
             StartCoroutine(FlipCard());
         }
-        else
-        {
-            Debug.Log("this card was locked");
-        }
-
     }
 
     public void OnPointerExit(PointerEventData eventData)

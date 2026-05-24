@@ -90,7 +90,6 @@ public class Loot_System : MonoBehaviour
 
             PlayerManager p = GameObject.Find("Player").GetComponent<PlayerManager>();
             p.GetCharges(healingSoul.HealingChargeAmount);
-            Debug.Log("HEALING SOUL GOT COLLECTED!");
         }
     }
 

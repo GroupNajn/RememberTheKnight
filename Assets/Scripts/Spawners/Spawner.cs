@@ -95,11 +95,8 @@ public class Spawner : MonoBehaviour
             Instantiate(spawnObjects[i], spawnPosition, spawnRotation);
         }
 
-        Debug.Log($"{name}'s isEnemySpawner: {isEnemySpawner}");
-
         if (isEnemySpawner)
         {
-            Debug.Log($"Enemies spawned by {name}");
             StartCoroutine(WaitToInvokeEnemySpawned());
         }
     }
