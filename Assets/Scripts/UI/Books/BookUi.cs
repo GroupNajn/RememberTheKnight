@@ -31,6 +31,7 @@ public class BookUi : MonoBehaviour
     [SerializeField] private List<LoreEntry> allLoreEntries = new();
     [SerializeField] private PlayerCollection playerCollection;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerWeaponManager playerWeaponManager;
     [SerializeField] private LoreManager loreManager;
     [SerializeField] private UIManager uiManager;
 
@@ -71,7 +72,7 @@ public class BookUi : MonoBehaviour
         isAnimating = true;
 
         SetClosedInstant();
-        BaseBookSetup(playerStats);
+        BaseBookSetup();
 
         DisableTabButtonsTemporarily();
         StartCoroutine(AnimateSize(() =>
@@ -101,9 +102,9 @@ public class BookUi : MonoBehaviour
         movingPage.localEulerAngles = closedRotation;
         movingBook.localPosition = startPos;
     }
-    public void BaseBookSetup(PlayerStats stats)
+    public void BaseBookSetup()
     {
-        BuildStatPages(stats);
+        BuildStatPages(playerStats, playerWeaponManager);
         BuildCardPages();
         BuildLorePages();
 
@@ -111,9 +112,9 @@ public class BookUi : MonoBehaviour
         UpdateTabButtons();
     }
 
-    public void SpecificBookSetup(PlayerStats stats, BookTabEnum tab)
+    public void SpecificBookSetup(BookTabEnum tab)
     {
-        BuildStatPages(stats);
+        BuildStatPages(playerStats, playerWeaponManager);
         BuildCardPages();
         BuildLorePages();
 
@@ -121,14 +122,15 @@ public class BookUi : MonoBehaviour
         UpdateTabButtons();
     }
 
-    public void BuildStatPages(PlayerStats stats)
+    public void BuildStatPages(PlayerStats stats, PlayerWeaponManager weaponStats)
     {
         statsPages.Clear();
 
         statsPages.Add(new PageData
         {
             type = PageData.PageType.Stats,
-            stats = stats
+            stats = stats,
+            weaponStats = weaponStats
         });
     }
 

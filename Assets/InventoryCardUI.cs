@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     // Created by Michaëla 2026-05-13
     //refractered from CardUI
@@ -81,6 +81,16 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        ToggleInfo();
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        ToggleInfo();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
     {
         ToggleInfo();
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BookPageUI : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
+    // Reworked by Anton 2026-05-26
 
     [Header("Panels")]
     [SerializeField] private GameObject statsPanel;
@@ -12,7 +13,10 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private GameObject lorePanel;
 
     [Header("Stats")]
-    [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private TextMeshProUGUI statsTextTopLeft;
+    [SerializeField] private TextMeshProUGUI statsTextTopRight;
+    [SerializeField] private TextMeshProUGUI statsTextBottomLeft;
+    [SerializeField] private TextMeshProUGUI statsTextBottomRight;
 
     [Header("Cards")]
     [SerializeField] private Transform cardContainer;
@@ -31,7 +35,7 @@ public class BookPageUI : MonoBehaviour
         {
             case PageData.PageType.Stats:
                 statsPanel.SetActive(true);
-                ShowStats(data.stats);
+                ShowStats(data.stats, data.weaponStats);
                 break;
 
             case PageData.PageType.Cards:
@@ -56,25 +60,34 @@ public class BookPageUI : MonoBehaviour
         lorePanel.SetActive(false);
     }
 
-    private void ShowStats(PlayerStats stats)
+    private void ShowStats(PlayerStats stats, PlayerWeaponManager weaponStats)
     {
         if (stats == null) return;
-        //LightDamage, heavyDamage, CombodamageModifier
-        // MaxHP, HealthRegen, TotalHeal
-        //Stamina, StaminaRegen 
-        //Luck , CritRate
 
-        statsText.text =
-          // $"Light Damage: {stats.LightDamage}\n" +
-          // $"Heavy Damage: {stats.HeavyDamage}\n" +
-          // $"Combo Damage Modifier: {stats.ComboDamageModifier}";
-          $"Max HP: {stats.MaxHealth}\n" +
-          $"Health Regen: {stats.healthRegen}\n" +
-          //$"Total Heal: {stats.TotalHeal}\n" +
-          $"Stamina: {stats.maxStamina}\n" +
-          $"Stamina Regen: {stats.staminaRegen}\n" +
-          $"Luck: {stats.currentLuck}\n" +
-          $"Crit Rate: {stats.currentCritChance}\n";
+        statsTextTopLeft.text =
+        $"-HEALTH-\n" +
+        $"Health: {stats.MaxHealth}\n" +
+        $"Resistance: {stats.currentKnockbackResistance}%\n";
+        //$"Health Regen: {stats.healthRegen}\n" +
+        //$"Total Heal: {stats.TotalHeal}\n" +
+
+        statsTextTopRight.text =
+        $"-STAMINA-\n" +
+        $"Stamina: {stats.maxStamina}\n" +
+        $"Stamina Regen: {stats.staminaRegen}\n" +
+        $"Speed: {stats.curentActionSpeedModifier}\n" +
+        $"Speed bonus: {(stats.curentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
+
+        statsTextBottomLeft.text =
+        $"-COMBAT-\n" +
+        $"Light Damage: {weaponStats.currentActiveWeaponData.LightDamage}\n" +
+        $"Heavy Damage: {weaponStats.currentActiveWeaponData.HeavyDamage}\n" +
+        $"Damage bonus: {(stats.currentDamageModifier - 1) * 100}%\n";
+
+        statsTextBottomRight.text =
+        $"-CHANCE-\n" +
+        $"Luck: {stats.currentLuck}%\n" +
+        $"Crit chance: {stats.currentCritChance}%\n";
     }
     private void ShowCards(List<CardData> cards)
     {
@@ -108,7 +121,6 @@ public class BookPageUI : MonoBehaviour
           
         }
     }
-
 }
 
 

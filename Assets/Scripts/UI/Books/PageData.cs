@@ -8,6 +8,7 @@ public class PageData
     public PageType type;
 
     public PlayerStats stats;
+    public PlayerWeaponManager weaponStats;
     public List<CardData> cards;
 
     public string loreTitle;
