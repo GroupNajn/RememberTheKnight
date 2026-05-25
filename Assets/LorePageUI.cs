@@ -12,9 +12,10 @@ public class LorePageUI : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private RectTransform lorePageWindowRect;
     [SerializeField] private float duration = 1f;
-    [SerializeField] AnimationCurve bounceCurve;
-    [SerializeField] List<GameObject> gameObjectsToDisable;
-    [SerializeField] TextMeshProUGUI loreTextTMP;
+    [SerializeField] private AnimationCurve bounceCurve;
+    [SerializeField] private List<GameObject> gameObjectsToDisable;
+    [SerializeField] private TextMeshProUGUI loreTextTMP;
+    [SerializeField] private TextMeshProUGUI loreTitleTMP;
 
     [Header("References")]
     [SerializeField] private UIManager uiManager;
@@ -68,6 +69,7 @@ public class LorePageUI : MonoBehaviour
     public void SetLoreEntry(LoreEntry entry)
     {
         loreTextTMP.text = entry.GetPages(500)[0];
+        loreTitleTMP.text = entry.title;
     }
 
     void DisableGameObjects()
