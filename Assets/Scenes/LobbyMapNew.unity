@@ -4936,6 +4936,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1555836897017875286, guid: 7922106b0e7638f42b3181fa9457896f, type: 3}
   m_PrefabInstance: {fileID: 651472558}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &651472560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6065835872124463974, guid: 7922106b0e7638f42b3181fa9457896f, type: 3}
+  m_PrefabInstance: {fileID: 651472558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &659544688
 GameObject:
   m_ObjectHideFlags: 0
@@ -15064,6 +15069,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4bcb248bd0cbc04e999b85905aecf2d, type: 3}
+--- !u!1 &1191143388963036705 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5466560788568019311, guid: d4bcb248bd0cbc04e999b85905aecf2d, type: 3}
+  m_PrefabInstance: {fileID: 1191143388963036704}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1781835002728761142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15292,6 +15302,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f26f4b33f5820c4c9f41ce90d70912b, type: 3}
+--- !u!1 &3449406629738749021 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7762751447015090813, guid: 8f26f4b33f5820c4c9f41ce90d70912b, type: 3}
+  m_PrefabInstance: {fileID: 3449406629738749020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5190427439636811454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15397,6 +15412,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.105
       objectReference: {fileID: 0}
+    - target: {fileID: 1832657456791810507, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: isSitting
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832657456791810507, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: oldLadyAnimator
+      value: 
+      objectReference: {fileID: 7121329955012670532}
     - target: {fileID: 5115739157441996401, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
       propertyPath: m_Name
       value: OldLady
@@ -15405,11 +15428,32 @@ PrefabInstance:
       propertyPath: presetDialogue
       value: 
       objectReference: {fileID: 11400000, guid: 71ba419e2b8b7604a9b9f2734559560b, type: 2}
+    - target: {fileID: 8765467629119461421, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: objectsToActivateOnInteract.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8765467629119461421, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: 'objectsToActivateOnInteract.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3449406629738749021}
+    - target: {fileID: 8765467629119461421, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: 'objectsToActivateOnInteract.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1191143388963036705}
+    - target: {fileID: 8765467629119461421, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+      propertyPath: 'objectsToActivateOnInteract.Array.data[2]'
+      value: 
+      objectReference: {fileID: 651472560}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+--- !u!95 &7121329955012670532 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2824963675980886663, guid: 1ac3901bbc348c24f88b1461882ce3cf, type: 3}
+  m_PrefabInstance: {fileID: 7121329955012670531}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8301490704063693080 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2309970628677917517, guid: 0a4c57e33918d8f4c99e96625d826181, type: 3}

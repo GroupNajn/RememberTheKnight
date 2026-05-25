@@ -53,7 +53,7 @@ public class CardBuilder : MonoBehaviour
         return cardInstance;
     }
 
-    private void SetCardMaterial(CardData cardData, Card cardScript)
+    public void SetCardMaterial(CardData cardData, Card cardScript)
     {
 
         MeshRenderer frontMesh = cardScript.CardFront.GetComponent<MeshRenderer>();

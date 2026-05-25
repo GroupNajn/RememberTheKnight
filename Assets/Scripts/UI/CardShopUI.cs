@@ -1,5 +1,6 @@
 using FMODUnity;
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,16 +14,16 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     private InteractCameraHandler interactCameraHandler;
     public ShopBoard shopBoard;
     public InteractCardShop interactCardShop;
-
-    [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private BookUi book;
 
     [Header("Card Information")]
     [field: SerializeField] public List<CardData> purchasedCardData { get; private set; } = new List<CardData>();
     [field: SerializeField] public List<CardSlotShopUI> uiSlots { get; private set; } = new List<CardSlotShopUI>();
 
     [SerializeField] private int maxPurchased = 1;
-
     [SerializeField] private Button purchaseButton;
+
+    [SerializeField] private TextMeshProUGUI errorText;
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
@@ -174,6 +175,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         ResetSlots();
         uiManager.CloseCardShopUI();
         interactCameraHandler.InteractCamReset();
+
+        uiManager.OpenInventoryAfterPurchase();
     }
 
     public void OnLeaveShop()

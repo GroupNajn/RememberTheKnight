@@ -44,6 +44,10 @@ public class BossBar : MonoBehaviour
     public void OnHealthChanged(float current, float max)
     {
         bossBar.value = current;
+        if(bossBar.value <= 0)
+        {
+            Event_System.instance.OnBossDeath?.Invoke();
+        }
     }
 
     private void Update() // Lerp the healthbar fill to the target position
