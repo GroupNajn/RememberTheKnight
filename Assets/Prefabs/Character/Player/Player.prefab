@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 5712160591337018985}
   - component: {fileID: -6542833409895683729}
   - component: {fileID: -1859438076773701937}
+  - component: {fileID: 7620253207887204046}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -736,6 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CurrentMoveState>k__BackingField: 0
   IsGrounded: 0
+  IsHealing: 0
 --- !u!114 &4092648079907110797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,6 +1056,22 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7620253207887204046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590469975317091890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a31a31f26226fe40ae647a46d7031ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 7239316587428880690}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &6594417811358069928
 GameObject:
   m_ObjectHideFlags: 0
