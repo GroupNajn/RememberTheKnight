@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerSoundFXManager playerSFX;
     private PlayerStats playerStats;
     private PlayerCollection playerColllection;
+    private PlayerStates playerStates;
 
     public float MaxHealth => playerStats.MaxHealth;
     public float Health => playerStats.CurrentHealth;
@@ -42,6 +43,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerColllection = GetComponent<PlayerCollection>();
 
         playerStats = GetComponent<PlayerStats>();
+        playerStates = GetComponent<PlayerStates>();
         Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         Event_System.instance.OnSceneTransitionDone += ReApplyStats;
 
@@ -120,19 +122,43 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void OnHeal()
     {
-        if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
+        Debug.Log("Heal Attempted");
+        bool healing = playerStates.CurrentMoveState == MoveState.Healing;
+        bool attacking = playerStates.CurrentMoveState == MoveState.Attacking;
+        bool dodging = playerStates.CurrentMoveState == MoveState.Dodging;
+        
+        if (!healing && !attacking && !dodging)
         {
-            Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
-            playerStats.currentHealingCharges -= playerStats.healingChargeCost;
-            CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+            //CheckHealthCharges();
+            
+            if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
+            {
+                playerAnimator.SetTrigger("Drink");
+                playerStates.SetMoveState(MoveState.Healing); 
+
+            }
         }
+    }
+
+    public void Drink() // used in the animation event of the heal animation
+    {
+        Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
     }
 
     public void Heal(float amount)
     {
+
         float totalHeal = amount * playerStats.currentHealModifier;
+
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
+
+        playerStats.currentHealingCharges -= playerStats.healingChargeCost;
+        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+
+        playerStates.SetMoveState(MoveState.Idling);
+        playerAnimator.ResetTrigger("Drink");
+
     }
 
     public void GetCharges(int amount)

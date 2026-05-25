@@ -11,7 +11,8 @@ public enum MoveState
     Dieing = 5,
     Attacking = 6,
     BackStepping = 7,
-    Knockedback = 8
+    Knockedback = 8,
+    Healing = 9
 }
 
 public class PlayerStates : MonoBehaviour
@@ -48,6 +49,8 @@ public class PlayerStates : MonoBehaviour
                movementState == MoveState.Dieing ||
                movementState == MoveState.Attacking ||
                movementState == MoveState.BackStepping ||
-               movementState == MoveState.Knockedback;
+               movementState == MoveState.Knockedback ||
+               movementState == MoveState.Healing;
+
     }
 }
