@@ -2361,6 +2361,7 @@ GameObject:
   - component: {fileID: 8765467629119461421}
   - component: {fileID: 1203988251161817362}
   - component: {fileID: 1892287556104643128}
+  - component: {fileID: 1832657456791810507}
   m_Layer: 0
   m_Name: OldLady
   m_TagString: Untagged
@@ -2421,14 +2422,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableID: Dialogue_01
   firstTimeEffect: {fileID: 6330555891699116843}
-  dialogueLines:
-  - {fileID: 11400000, guid: 5f7a96412f0ed0f4cb459e675228df2f, type: 2}
-  - {fileID: 11400000, guid: e652ee557ad3a8c4e90986658a930c9c, type: 2}
-  - {fileID: 11400000, guid: 177ba3eebf52f604fa2639d80743f6c4, type: 2}
-  - {fileID: 11400000, guid: 8dff0cf70b97b4444a1dda0e52c6222a, type: 2}
-  - {fileID: 11400000, guid: c5b3c049340004a45b2fec56da1434a3, type: 2}
-  - {fileID: 11400000, guid: 44082608def01e04891d8cace602bcf3, type: 2}
-  - {fileID: 11400000, guid: a7acdf68d3b064f4f95bfa36c637f4dd, type: 2}
+  customDialogue: []
+  presetDialogue: {fileID: 0}
 --- !u!114 &1203988251161817362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2464,6 +2459,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.17, z: 1}
   m_Center: {x: 0, y: 1.15, z: 0}
+--- !u!114 &1832657456791810507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5115739157441996401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f8f1c040997d348a8af6181c215076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldLadyAnimator: {fileID: 2824963675980886663}
+  isSitting: 0
+  checkInterval: 5
+  animationChance: 20
 --- !u!1 &5724575241530023168
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -544,6 +545,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OpenInventoryAfterPurchase()
+    {
+        StartCoroutine(DelayedAction(0.5f, () =>
+        {
+            OpenBookUI();
+            bookUI.GetComponent<BookUi>().OpenTab(BookUi.BookTabEnum.Cards);
+        }));
+    }
+
     // LORE PAGE UI
     public void OpenLorePageUI()
     {
@@ -663,7 +673,6 @@ public class UIManager : MonoBehaviour
     {
         bookHUDUI.SetActive(false);
     }
-
 
     // UI TOGGLE
     public void CloseUIOnMenuOpen()
@@ -833,8 +842,12 @@ public class UIManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
                 Cursor.visible = true; // Show the cursor when paused
             }
-
         }
+    }
 
+    IEnumerator DelayedAction(float delay, System.Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
     }
 }

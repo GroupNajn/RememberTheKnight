@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 
 //Made by Michaëla 22-05-2026
@@ -7,6 +8,7 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     [Header("Saved Data")]
     [SerializeField] private string interactableID; 
     [SerializeField] private GameObject firstTimeEffect;
+    [SerializeField] private List<GameObject> objectsToActivateOnInteract;
 
     [Header("Dialogue")]
     [SerializeField] Dialogue[] customDialogue;
@@ -37,7 +39,12 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
         {
             InteractableSaveSystem.SetInteracted(interactableID); 
             if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false); 
+                firstTimeEffect.SetActive(false);
+
+            foreach (var obj in objectsToActivateOnInteract)
+            {
+                obj.SetActive(true);
+            }
         }
         playerUIManager.OpenDialogueUI(GetDialogue());
     }
