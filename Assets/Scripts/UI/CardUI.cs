@@ -136,8 +136,14 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (cardData.healthModifier > 0)
             stats.AppendLine($"Health + {cardData.healthModifier}");
 
+        if (cardData.healRegeneraion > 0)
+            stats.AppendLine($"Health regen + {cardData.healRegeneraion}");
+
         if (cardData.staminaModifier > 0)
             stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+
+        if (cardData.staminaRegeneraion > 0)
+            stats.AppendLine($"Stamina regen + {cardData.staminaRegeneraion}");
 
         if (cardData.luckModifier > 0)
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
@@ -146,25 +152,22 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");
 
         if (cardData.critChance > 0)
-            stats.AppendLine($"critical chance + {cardData.critChance}%");
-
-        if (cardData.walkSpeedModifier > 0)
-            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
-
-        if (cardData.sprintSpeedModifier > 0)
-            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
+            stats.AppendLine($"Crit chance + {cardData.critChance}%");
 
         if (cardData.dodgeSpeedModifier > 0)
-            stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
+            stats.AppendLine($"Dodge speed + {cardData.dodgeSpeedModifier}%");
 
         if (cardData.healModifier > 0)
-            stats.AppendLine($" heal multiplier + {cardData.healModifier}%");
+            stats.AppendLine($"Heal multiplier + {cardData.healModifier}%");
 
         if (cardData.knockbackModifier > 0)
-            stats.AppendLine($"resistance + {cardData.knockbackModifier}%");
+            stats.AppendLine($"Resistance + {cardData.knockbackModifier}%");
+
+        if (cardData.actionSpeedModifier > 0f)
+            stats.AppendLine($"Speed + {cardData.actionSpeedModifier * 100}%");
 
         if (cardData.weaponSize != Vector3.zero)
-            stats.AppendLine($"weapon size + {cardData.weaponSize.y * 10}");
+            stats.AppendLine($"Weapon size + {cardData.weaponSize.y * 10}");
 
         statsText.text = stats.ToString();
     }
@@ -184,11 +187,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             // infoBox.SetActive(true);
             StartCoroutine(FlipCard());
         }
-        else
-        {
-            Debug.Log("this card was locked");
-        }
-
     }
 
     public void OnPointerExit(PointerEventData eventData)

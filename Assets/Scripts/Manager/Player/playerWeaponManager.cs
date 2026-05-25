@@ -12,6 +12,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
     Animator playerAnimator;
     PlayerCombatManager playerCombatManager;
     PlayerStats playerStats;
+    PlayerManager playerManager;
 
     [SerializeField] public List<GameObject> Weapons;
     int currentWeaponIndex = 0;
@@ -47,6 +48,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator = GetComponent<Animator>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
+        playerManager = GetComponent<PlayerManager>();
 
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
     }
@@ -55,6 +57,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         holsterd = !holsterd;
 
         HolsterCheck();
+        playerManager.ReApplyStats();
     }
 
     public override void HolsterCheck()
@@ -95,7 +98,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         rightDamageTrigger = currentWeapon.GetComponent<DamageTrigger>();
 
         playerAnimator.runtimeAnimatorController = stats.WeaponData.WeaponAnimator;
-        playerAnimator.speed = stats.WeaponData.AnimatorSpeed;
+        playerAnimator.speed = stats.WeaponData.actionSpeed;
 
         equippedWeapon = stats.WeaponData;
 
@@ -105,7 +108,11 @@ public class PlayerWeaponManager : CharacterWeaponManager
         // sätter sedan vapnet till den sizen spelaren stats säger
         currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
+        playerStats.baseActionSpeed = stats.WeaponData.actionSpeed;
+
         OnWeaponChanged?.Invoke(equippedWeapon);
+
+        playerManager.ReApplyStats();
 
         // gå vidare till nästa för nästa interaction
     }
@@ -157,4 +164,6 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         return damageInfo;
     }
+
+
 }

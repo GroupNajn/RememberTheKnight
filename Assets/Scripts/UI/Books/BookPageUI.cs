@@ -19,6 +19,7 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private InventoryCardUI cardPrefab;
 
     [Header("Lore")]
+    [SerializeField] private TextMeshProUGUI loreTitleText;
     [SerializeField] private TextMeshProUGUI loreText;
 
     public void Setup(PageData data)
@@ -40,7 +41,8 @@ public class BookPageUI : MonoBehaviour
 
             case PageData.PageType.Lore:
                 lorePanel.SetActive(true);
-
+                
+                loreTitleText.text = string.IsNullOrEmpty(data.loreTitle) ? "" : data.loreTitle;
                 loreText.text = string.IsNullOrEmpty(data.loreText) ? "" : data.loreText;
 
                 break;
@@ -67,10 +69,10 @@ public class BookPageUI : MonoBehaviour
           // $"Heavy Damage: {stats.HeavyDamage}\n" +
           // $"Combo Damage Modifier: {stats.ComboDamageModifier}";
           $"Max HP: {stats.MaxHealth}\n" +
-          $"Health Regen: {stats.healthRegenRate}\n" +
+          $"Health Regen: {stats.healthRegen}\n" +
           //$"Total Heal: {stats.TotalHeal}\n" +
           $"Stamina: {stats.maxStamina}\n" +
-          $"Stamina Regen: {stats.staminaRegenRate}\n" +
+          $"Stamina Regen: {stats.staminaRegen}\n" +
           $"Luck: {stats.currentLuck}\n" +
           $"Crit Rate: {stats.currentCritChance}\n";
     }

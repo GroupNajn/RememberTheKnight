@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    // Created and edited by Lukas, Wilmer, Michaëla
     public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;
@@ -50,13 +51,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cupUI;
     [SerializeField] private GameObject weaponHUDUI;
     [SerializeField] private GameObject bookHUDUI;
-
+    [SerializeField] private GameObject dialogueUI;
 
     public bool UIMenuActive = true;
     public bool timeScaleOn = true;
     public bool cameraTransitioning = false;
 
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -511,6 +512,7 @@ public class UIManager : MonoBehaviour
     public void OpenBookUI()
     {
         CloseInteractiveUI();
+        CloseUIOnMenuOpen();
         bookUI.SetActive(true);
 
         UIMenuActive = true;
@@ -530,6 +532,7 @@ public class UIManager : MonoBehaviour
                     StartCoroutine(bookScript.AnimateSize(() =>
                     {
                         bookScript.isAnimating = false;
+                        OpenUIOnMenuClose();
                         bookUI.SetActive(false);
 
                         UIMenuActive = false;
@@ -727,6 +730,31 @@ public class UIManager : MonoBehaviour
         CloseVideoUI();
         OpenOptionMenu(); ;
 
+    }
+
+    // Dialogue UI
+    public void OpenDialogueUI(Dialogue[] dialogueLines)
+    {
+        CloseInteractiveUI();
+        CloseUIOnMenuOpen();
+
+        dialogueUI.SetActive(true);
+
+        UIMenuActive = true;
+
+        CheckUIState();
+        CheckTimeScaleUI(true);
+
+        dialogueUI.GetComponent<DialogueUI>().StartDialogue(dialogueLines);
+    }
+
+    public void CloseDialogueUI()
+    {
+        OpenUIOnMenuClose();
+        dialogueUI.SetActive(false);
+
+        UIMenuActive = false;
+        CheckUIState();
     }
 
     public void OpenDevSecretUI()

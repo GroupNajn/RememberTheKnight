@@ -7,7 +7,7 @@ public class CardContract
 
     public CardFamily CardFamily => cardFamily;
 
-   public enum Signed { Not, Signed}
+    public enum Signed { Not, Signed}
 
     public Signed signed { get; set; }
     public CardContract(CardFamily cardFamily)

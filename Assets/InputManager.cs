@@ -65,8 +65,6 @@ public class InputManager : MonoBehaviour
         if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
         {
             usingGamepad = true;
-
-            
         }
 
         if (usingGamepad != usedGamepad)

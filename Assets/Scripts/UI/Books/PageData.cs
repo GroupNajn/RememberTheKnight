@@ -9,6 +9,8 @@ public class PageData
 
     public PlayerStats stats;
     public List<CardData> cards;
+
+    public string loreTitle;
     public string loreText;
 }
 

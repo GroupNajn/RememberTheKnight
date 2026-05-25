@@ -148,6 +148,7 @@ public class PlayerCombatManager : MonoBehaviour
     {
         animationCanceleble = false;
     }
+
     public void SetAnimationCancelebleTrue()
     {
         animationCanceleble = true;
@@ -205,7 +206,7 @@ public class PlayerCombatManager : MonoBehaviour
 
         if (playerStats.currentStamina < playerStats.maxStamina)
         {
-            playerStats.currentStamina += playerStats.staminaRegenRate * Time.deltaTime;
+            playerStats.currentStamina += playerStats.staminaRegen * Time.deltaTime;
 
             if (playerStats.currentStamina > playerStats.maxStamina)
                 playerStats.currentStamina = playerStats.maxStamina;

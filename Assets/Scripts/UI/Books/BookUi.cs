@@ -162,6 +162,7 @@ public class BookUi : MonoBehaviour
                 lorePages.Add(new PageData
                 {
                     type = PageData.PageType.Lore,
+                    loreTitle = entry.title,
                     loreText = unlocked ? page : ScrambleText(page)
                 });
             }

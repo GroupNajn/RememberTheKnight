@@ -29,7 +29,6 @@ public class RegularFogWall : MonoBehaviour
         {
             TurnOffWall();
             Event_System.instance.OnEnemyKilledNew -= OnEnemyKilled;
-            Debug.Log("Invoking OnLevelCompleted event...");
             Event_System.instance.OnLevelCompleted?.Invoke();
         }
     }

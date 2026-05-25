@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private PlayerSoundFXManager playerSFX;
     private PlayerStats playerStats;
     private PlayerCollection playerColllection;
+    private PlayerStates playerStates;
 
     public float MaxHealth => playerStats.MaxHealth;
     public float Health => playerStats.CurrentHealth;
@@ -42,6 +43,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerColllection = GetComponent<PlayerCollection>();
 
         playerStats = GetComponent<PlayerStats>();
+        playerStates = GetComponent<PlayerStates>();
         Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         Event_System.instance.OnSceneTransitionDone += ReApplyStats;
 
@@ -120,20 +122,40 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void OnHeal()
     {
-        Debug.Log("Attempting to heal. Current Charges: " + playerStats.currentHealingCharges);
-        if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
+        Debug.Log("Heal Attempted");
+        
+        bool attacking = playerStates.CurrentMoveState == MoveState.Attacking;
+        bool dodging = playerStates.CurrentMoveState == MoveState.Dodging;
+        
+        if (!playerStates.IsHealing && !attacking && !dodging)
         {
-            Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
-            playerStats.currentHealingCharges -= playerStats.healingChargeCost;
-            CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+            if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
+            {
+                playerAnimator.SetTrigger("Drink");
+                playerStates.IsHealing = false; 
+            }
         }
+    }
+
+    public void Drink() // used in the animation event of the heal animation
+    {
+        Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
     }
 
     public void Heal(float amount)
     {
+
         float totalHeal = amount * playerStats.currentHealModifier;
+
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
+
+        playerStats.currentHealingCharges -= playerStats.healingChargeCost;
+        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+
+        playerStates.IsHealing = false;
+        playerAnimator.ResetTrigger("Drink");
+
     }
 
     public void GetCharges(int amount)
@@ -169,7 +191,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
-       
+
         InitializePlayerBaseStats();
 
         foreach (CardData card in cards)
@@ -187,8 +209,8 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     private void ApplySingleCard(CardData card)
     {
-        if(card == null) return;
-       
+        if (card == null) return;
+
         ApplyStatsInternally(card);
 
         playerStats.CurrentHealth = MaxHealth;
@@ -221,7 +243,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
     private void InitializePlayerBaseStats()
     {
         playerStats.MaxHealth = playerStats.baseHealth;
+        playerStats.healthRegen = playerStats.baseStaminaRegeneration;
         playerStats.maxStamina = playerStats.baseStamina;
+        playerStats.staminaRegen = playerStats.baseStaminaRegeneration;
 
         playerStats.currentLuck = playerStats.baseLuck;
         playerStats.currentCritChance = playerStats.baseCritChance;
@@ -235,26 +259,49 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+
+        playerStats.curentActionSpeedModifier = playerStats.baseActionSpeed;
+
+        foreach (WeaponStats weaponStats in GetComponentsInChildren<WeaponStats>(true))
+        {
+            weaponStats.DisableWeaponVFX();
+        }
+
     }
 
     public void ApplyStatsInternally(CardData card)
     {
         playerStats.MaxHealth += card.healthModifier;
+        playerStats.healthRegen += card.healRegeneraion;
         playerStats.maxStamina += card.staminaModifier;
+        playerStats.staminaRegen += card.staminaRegeneraion;
 
         playerStats.currentLuck += card.luckModifier;
         playerStats.currentCritChance += card.critChance;
 
-        playerStats.currentWalkSpeedModifier += card.walkSpeedModifier;
-        playerStats.currentSprintSpeedModifier += card.sprintSpeedModifier;
+
         playerStats.currentDodgeSpeedModifier += card.dodgeSpeedModifier;
         playerStats.currentDamageModifier += card.damageModifier;
-
 
         playerStats.currentHealModifier += card.healModifier;
         playerStats.currentKnockbackResistance += card.knockbackModifier;
 
         playerStats.currentWeaponSize += card.weaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+        
+        playerStats.curentActionSpeedModifier += card.actionSpeedModifier;
+        //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
+        playerAnimator.speed = playerStats.curentActionSpeedModifier;
+
+
+        if (card.weaponVFX)
+        {
+            foreach (WeaponStats weaponStats in GetComponentsInChildren<WeaponStats>(true))
+            {
+                weaponStats.SetCardName(card.cardID);
+                weaponStats.EnableWeaponVFX();
+            }
+        }
+
     }
 }
