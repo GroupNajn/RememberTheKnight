@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class WeaponSlotUI : MonoBehaviour
@@ -8,10 +7,12 @@ public class WeaponSlotUI : MonoBehaviour
     [SerializeField] public WeaponData lastWeaponData;
     [SerializeField] private Image weaponIcon;
 
+    [SerializeField] private GameObject unarmed;
     [SerializeField] private GameObject sword;
     [SerializeField] private GameObject spear;
     [SerializeField] private GameObject swordLarge;
 
+    [SerializeField] private WeaponData unarmedData;
     [SerializeField] private WeaponData swordData;
     [SerializeField] private WeaponData spearData;
     [SerializeField] private WeaponData swordLargeData;
@@ -40,10 +41,17 @@ public class WeaponSlotUI : MonoBehaviour
         if (newWeapon == null)
             return;
 
-        //weaponIcon.sprite = newWeapon.WeaponIcon;
+        if (newWeapon == unarmedData)
+        {
+            spear.SetActive(false);
+            swordLarge.SetActive(false);
+            sword.SetActive(false);
+            unarmed.SetActive(true);
+        }
 
         if (newWeapon == swordData)
         {
+            unarmed.SetActive(false);
             spear.SetActive(false);
             swordLarge.SetActive(false);
             sword.SetActive(true);
@@ -51,6 +59,7 @@ public class WeaponSlotUI : MonoBehaviour
 
         if (newWeapon == spearData)
         {
+            unarmed.SetActive(false);
             sword.SetActive(false);
             swordLarge.SetActive(false);
             spear.SetActive(true);
@@ -58,11 +67,10 @@ public class WeaponSlotUI : MonoBehaviour
 
         if (newWeapon == swordLargeData)
         {
+            unarmed.SetActive(false);
             sword.SetActive(false);
             spear.SetActive(false);
             swordLarge.SetActive(true);
         }
-
-        // Uncomment this when you want to use it!
     }
 }
