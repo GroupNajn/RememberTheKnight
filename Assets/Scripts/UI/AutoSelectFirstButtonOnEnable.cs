@@ -6,7 +6,7 @@ public class AutoSelectFirstButtonOnEnable : MonoBehaviour
     [SerializeField] protected GameObject FirstSelectedButton;
     protected virtual void OnEnable()
     {
-        HandleInputChanged();
+        //HandleInputChanged();
     }
 
     protected virtual void Awake()

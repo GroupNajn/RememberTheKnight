@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerWeaponManager : CharacterWeaponManager
 {
@@ -58,6 +57,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         HolsterCheck();
         playerManager.ReApplyStats();
+        OnWeaponChanged?.Invoke(currentActiveWeaponData);
     }
 
     public override void HolsterCheck()
@@ -65,7 +65,6 @@ public class PlayerWeaponManager : CharacterWeaponManager
         base.HolsterCheck();
 
         playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
-        Debug.Log($"");
     }
 
     public void SwitchWeapon()
@@ -154,7 +153,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
             damageInfo.SetDamageAmount((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier);
 
         else if (playerController.AttackCharged && damageInfo.IsCrit)
-             damageInfo.SetDamageAmount(((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier) * 2);
+            damageInfo.SetDamageAmount(((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier) * 2);
 
         else if (damageInfo.IsCrit)
             damageInfo.SetDamageAmount((damageAmount * playerStats.currentDamageModifier) * 2);
@@ -164,6 +163,4 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         return damageInfo;
     }
-
-
 }
