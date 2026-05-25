@@ -12,7 +12,6 @@ public enum MoveState
     Attacking = 6,
     BackStepping = 7,
     Knockedback = 8,
-    Healing = 9
 }
 
 public class PlayerStates : MonoBehaviour
@@ -29,6 +28,7 @@ public class PlayerStates : MonoBehaviour
     }
 
     public bool IsGrounded;
+    public bool IsHealing;
     public void SetMoveState(MoveState playerMovementState)
     {
         if(!IsStateActionState(playerMovementState))
@@ -50,7 +50,7 @@ public class PlayerStates : MonoBehaviour
                movementState == MoveState.Attacking ||
                movementState == MoveState.BackStepping ||
                movementState == MoveState.Knockedback ||
-               movementState == MoveState.Healing;
+               IsHealing;
 
     }
 }

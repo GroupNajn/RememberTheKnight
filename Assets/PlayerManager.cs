@@ -123,19 +123,16 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void OnHeal()
     {
         Debug.Log("Heal Attempted");
-        bool healing = playerStates.CurrentMoveState == MoveState.Healing;
+        
         bool attacking = playerStates.CurrentMoveState == MoveState.Attacking;
         bool dodging = playerStates.CurrentMoveState == MoveState.Dodging;
         
-        if (!healing && !attacking && !dodging)
+        if (!playerStates.IsHealing && !attacking && !dodging)
         {
-            //CheckHealthCharges();
-            
             if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
             {
                 playerAnimator.SetTrigger("Drink");
-                playerStates.SetMoveState(MoveState.Healing); 
-
+                playerStates.IsHealing = false; 
             }
         }
     }
@@ -156,7 +153,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentHealingCharges -= playerStats.healingChargeCost;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
 
-        playerStates.SetMoveState(MoveState.Idling);
+        playerStates.IsHealing = false;
         playerAnimator.ResetTrigger("Drink");
 
     }

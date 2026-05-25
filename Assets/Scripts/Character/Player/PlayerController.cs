@@ -132,8 +132,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 rayHit = false;
             }
         }
-
-
     }
 
     private void LateUpdate()
@@ -170,7 +168,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             bool isbackstepLocked = lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47;
             bool isbackstepUnlocked = !lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.magnitude <= 0.1f;
 
-            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked )
+            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked  )
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
@@ -334,7 +332,8 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         bool isDodgeingAndIdle = playerState.CurrentMoveState == MoveState.Dodging && playerLocomotionInput.MovementInput.magnitude == 0;
         bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
-        bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0;
+        bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isHealingAndIdle = playerState.IsHealing && playerLocomotionInput.MovementInput.magnitude == 0; 
         //==========================X + Y=========================
 
         float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
@@ -351,7 +350,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isAttackingAndIdle || isDodgeingAndIdle || isHealingAndIdle)
         {
             targetMagnitudeX = 0f;
         }
@@ -360,7 +359,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle || isHealingAndIdle)
         {
             targetMagnitudeY = 0f;
         }
