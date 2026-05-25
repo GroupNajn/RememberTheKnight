@@ -512,6 +512,7 @@ public class UIManager : MonoBehaviour
     public void OpenBookUI()
     {
         CloseInteractiveUI();
+        CloseUIOnMenuOpen();
         bookUI.SetActive(true);
 
         UIMenuActive = true;
@@ -531,6 +532,7 @@ public class UIManager : MonoBehaviour
                     StartCoroutine(bookScript.AnimateSize(() =>
                     {
                         bookScript.isAnimating = false;
+                        OpenUIOnMenuClose();
                         bookUI.SetActive(false);
 
                         UIMenuActive = false;
