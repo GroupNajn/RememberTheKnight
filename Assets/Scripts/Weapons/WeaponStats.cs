@@ -16,7 +16,7 @@ public class WeaponStats : MonoBehaviour
     {
         switch (cardName)
         {
-            case "cups_01":
+            case "King_Cups":
                 cupsVFX.SetActive(true);
                 break;
 

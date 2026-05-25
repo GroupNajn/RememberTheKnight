@@ -219,7 +219,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
             stats.AppendLine($"Health + {cardData.healRegeneraion}");
 
         if (cardData.staminaModifier > 0)
-            stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+            stats.AppendLine($"Stamina Regeneraion + {cardData.staminaModifier}");
 
         if (cardData.staminaRegeneraion > 0)
             stats.AppendLine($"Stamina + {cardData.staminaRegeneraion}");

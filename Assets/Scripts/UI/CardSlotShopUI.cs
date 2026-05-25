@@ -145,7 +145,7 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             stats.AppendLine($"Stamina + {cardData.staminaModifier}");
 
         if (cardData.staminaRegeneraion > 0)
-            stats.AppendLine($"Stamina + {cardData.staminaRegeneraion}");
+            stats.AppendLine($"Stamina Regeneraion + {cardData.staminaRegeneraion}");
 
         if (cardData.luckModifier > 0)
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
