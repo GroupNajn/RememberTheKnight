@@ -358,7 +358,11 @@ public class LootManager : MonoBehaviour
 
     public void TryToDropLoot(EnemyLootProfile profile, Vector3 spawnPos)
     {
-        if (profile == null) return;
+        if (profile == null)
+        {
+            SpawnSoul(spawnPos);
+            return;
+        } 
 
         if (profile.canDropSouls)
             SpawnSoul(spawnPos);
