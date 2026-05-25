@@ -11,6 +11,8 @@ public class CharacterWeaponManager : MonoBehaviour
     [SerializeField] public WeaponData currentActiveWeaponData;
     [SerializeField] public WeaponData lastActiveWeaponData;
 
+    [SerializeField] public GameObject rightHandWeaponUnarmedWeapon;
+    [SerializeField] public GameObject leftHandWeaponUnarmedWeapon;
     [SerializeField] public WeaponData unarmedWeaponData;
 
     [HideInInspector] public DamageTrigger rightDamageTrigger;
@@ -56,6 +58,9 @@ public class CharacterWeaponManager : MonoBehaviour
 
             lastActiveWeaponData = currentActiveWeaponData;
             currentActiveWeaponData = unarmedWeaponData;
+
+            leftHandWeaponUnarmedWeapon.SetActive(true);
+            rightHandWeaponUnarmedWeapon.SetActive(true);
         }
         else
         {
@@ -64,9 +69,10 @@ public class CharacterWeaponManager : MonoBehaviour
 
             currentActiveWeaponData = lastActiveWeaponData;
             lastActiveWeaponData = unarmedWeaponData;
+
+            leftHandWeaponUnarmedWeapon.SetActive(false);
+            rightHandWeaponUnarmedWeapon.SetActive(false);
         }
-
-
     }
 
     public virtual void ActivateRightDamageCollider()
