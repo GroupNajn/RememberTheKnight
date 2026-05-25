@@ -19,6 +19,7 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private InventoryCardUI cardPrefab;
 
     [Header("Lore")]
+    [SerializeField] private TextMeshProUGUI loreTitleText;
     [SerializeField] private TextMeshProUGUI loreText;
 
     public void Setup(PageData data)
@@ -40,7 +41,8 @@ public class BookPageUI : MonoBehaviour
 
             case PageData.PageType.Lore:
                 lorePanel.SetActive(true);
-
+                
+                loreTitleText.text = string.IsNullOrEmpty(data.loreTitle) ? "" : data.loreTitle;
                 loreText.text = string.IsNullOrEmpty(data.loreText) ? "" : data.loreText;
 
                 break;
