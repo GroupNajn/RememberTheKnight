@@ -17,12 +17,12 @@ public class PlayerStats : MonoBehaviour
     [Header("Health")]
     public float MaxHealth;
     public float CurrentHealth;
-    public float healthRegenRate = 0f;
+    public float healthRegen = 0f;
 
     [Header("Stamina")]
     public float maxStamina = 100f;
     public float currentStamina;
-    public float staminaRegenRate = 1.5f;
+    public float staminaRegen = 20f;
     public float staminaRegenDelay = 0.5f;
 
     [Header("Chance")]
@@ -38,6 +38,7 @@ public class PlayerStats : MonoBehaviour
     public float currentWalkSpeedModifier = 0f;
     public float currentSprintSpeedModifier = 0f;
     public float currentDodgeSpeedModifier = 0f;
+    public float curentActionSpeedModifier = 0f;
     public float currentHealModifier= 1;
 
     [Header("Knockback")]
@@ -66,7 +67,9 @@ public class PlayerStats : MonoBehaviour
     // Base Values used for Applying Stats
     [Header("Base Values")]
     public float baseHealth;
+    public float baseHealthRegeneration;
     public float baseStamina;
+    public float baseStaminaRegeneration;
     public float baseLuck;
     public float baseCritChance;
     public float baseWalkSpeedModifier;
@@ -75,6 +78,7 @@ public class PlayerStats : MonoBehaviour
     public float baseDamageModifier;
     public float baseHealModifier;
     public float baseKnockbackResistance;
+    public float baseActionSpeed;
 
     public Vector3 baseWeaponSize;
 
@@ -91,12 +95,15 @@ public class PlayerStats : MonoBehaviour
 
         playerAnimator = GetComponent<Animator>();
         playerVFX = GetComponentInChildren<PlayerVFX>();
+        playerWeaponManager = GetComponent<PlayerWeaponManager>();
 
         CurrentHealth = MaxHealth;
         baseHealth = MaxHealth;
+        baseHealthRegeneration = staminaRegen;
 
         currentStamina = maxStamina;
         baseStamina = maxStamina;
+        baseStaminaRegeneration = staminaRegen;
 
         baseLuck = currentLuck;
         baseCritChance = currentCritChance;
@@ -110,5 +117,10 @@ public class PlayerStats : MonoBehaviour
         
         baseWeaponSize = new Vector3(1.2f, 1.2f,1.2f);
         currentWeaponSize = baseWeaponSize;
+
+        if (playerWeaponManager == null)
+            Debug.Log("error");
+
+        baseActionSpeed = playerWeaponManager.currentActiveWeaponData.actionSpeed;
     }
 }

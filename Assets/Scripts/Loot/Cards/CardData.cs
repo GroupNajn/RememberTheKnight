@@ -29,20 +29,27 @@ public class CardData : ScriptableObject
 
     [Header("Card Stats")]
     [SerializeField] public float healthModifier = 0f;
+    [SerializeField] public float healRegeneraion = 0f;
     [SerializeField] public float staminaModifier = 0f;
+    [SerializeField] public float staminaRegeneraion = 0f;
 
     [SerializeField] public float luckModifier = 0f;
     [SerializeField] public float critChance = 0f;
 
-    [SerializeField] public float walkSpeedModifier = 0f;
-    [SerializeField] public float sprintSpeedModifier = 0f;
-    [SerializeField] public float dodgeSpeedModifier = 0f;
+    [SerializeField] public float actionSpeedModifier = 0f;
+
+
     [SerializeField] public float damageModifier = 0f;
- 
-    [SerializeField] public float healModifier = 0f;
     [SerializeField] public float knockbackModifier = 0f;
 
     [SerializeField] public Vector3 weaponSize = Vector3.zero;
+    [SerializeField] public float dodgeSpeedModifier = 0f;
+
+    [Header("Special Card Stats")]
+    [SerializeField] public float healModifier = 0f;
+    [SerializeField] public bool weaponVFX = false;
+
+    // LIFE STEAL IF TIME
 
     [Header("Card Prices")]
     [SerializeField] public float cardSoulCost = 0f;

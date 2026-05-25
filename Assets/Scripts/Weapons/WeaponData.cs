@@ -15,7 +15,7 @@ public class WeaponData : ScriptableObject
 
     [SerializeField] public float HeavyDamage = 1f;
     [SerializeField] public float HeavyChargedDamage = 1f;
-    [SerializeField] public float AnimatorSpeed = 1f;
+    [SerializeField] public float actionSpeed = 1f;
 
     [Header("SFX")]
     public EventReference SwooshEvent;
