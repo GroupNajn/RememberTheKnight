@@ -291,6 +291,12 @@ public class PlayerManager : MonoBehaviour, IDamageable
         //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
         playerAnimator.speed = playerStats.curentActionSpeedModifier;
 
+        if(playerStats.currentWeaponSize.y > playerStats.maxWeaponSize.y || playerStats.currentWeaponSize.x > playerStats.maxWeaponSize.x)
+        {
+            playerStats.currentWeaponSize = new Vector3(playerStats.maxWeaponSize.x, playerStats.maxWeaponSize.y, playerStats.maxWeaponSize.z);
+            playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+        }
+
 
         if (card.weaponVFX)
         {
