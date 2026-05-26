@@ -15,14 +15,7 @@ public class HandHeldCup : MonoBehaviour
         playerStates = GetComponentInParent<PlayerStates>();
         layerIndex = playerAnimator.GetLayerIndex("UpperBody");
 
-        if (layerIndex != -1)
-        {
-            Debug.Log("Layer found: " + layerIndex);
-        }
-        else
-        {
-            Debug.Log("Layer not found");
-        }
+        
     }
 
     // Update is called once per frame
