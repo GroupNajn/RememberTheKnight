@@ -63,7 +63,17 @@ public class PlayerWeaponManager : CharacterWeaponManager
         layerIndex = playerAnimator.GetLayerIndex("Holster");
 
        
+        Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
     }
+
+    private void OnLobbyLoaded()
+    {
+        if (!holsterd)
+        {
+            OnHolster(null);
+        }
+    }
+
     public void OnHolster(InputValue action)
     {
         if(!playerStates.InActionState())
@@ -117,7 +127,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         currentWeaponIndex %= Weapons.Count;
 
-        // St‰ng av alla
+        // St√§ng av alla
         foreach (var weapon in Weapons)
         {
             weapon.SetActive(false);
@@ -138,10 +148,10 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         equippedWeapon = stats.WeaponData;
 
-        // s‰tter vapen storleken till base n‰r man byter vapen
+        // s√§tter vapen storleken till base n√§r man byter vapen
         //playerStats.currentWeaponSize = playerStats.baseWeaponSize;
-        //Debug.Log($"base ‰r {playerStats.currentWeaponSize}");
-        // s‰tter sedan vapnet till den sizen spelaren stats s‰ger
+        //Debug.Log($"base √§r {playerStats.currentWeaponSize}");
+        // s√§tter sedan vapnet till den sizen spelaren stats s√§ger
         currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
         playerStats.baseActionSpeed = stats.WeaponData.actionSpeed;
@@ -150,7 +160,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         playerManager.ReApplyStats();
 
-        // gÂ vidare till n‰sta fˆr n‰sta interaction
+        // g√• vidare till n√§sta f√∂r n√§sta interaction
     }
 
     public override void DeactivateRightDamageCollider()
