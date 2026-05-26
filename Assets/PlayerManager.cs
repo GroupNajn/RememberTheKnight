@@ -132,7 +132,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
             if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
             {
                 playerAnimator.SetTrigger("Drink");
-                playerStates.IsHealing = false; 
             }
         }
     }
@@ -153,7 +152,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentHealingCharges -= playerStats.healingChargeCost;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
 
-        playerStates.IsHealing = false;
         playerAnimator.ResetTrigger("Drink");
 
     }

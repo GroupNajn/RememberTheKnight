@@ -28,7 +28,13 @@ public class PlayerStates : MonoBehaviour
     }
 
     public bool IsGrounded;
-    public bool IsHealing;
+    [field: SerializeField]
+    public bool IsHealing { get; private set; } = false;
+
+    public void SetIsHealing(bool isHealing)
+    {
+        IsHealing = isHealing;
+    }
     public void SetMoveState(MoveState playerMovementState)
     {
         if(!IsStateActionState(playerMovementState))
