@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
 {
-    [SerializeField] Collider rightCollider;
-    [SerializeField] Collider leftCollider;
-
     [SerializeField] public GameObject currentRightHandWeapon;
     [SerializeField] public GameObject currentLeftHandWeapon;
     [SerializeField] public WeaponData equippedWeapon;
@@ -83,7 +80,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (currentRightHandWeapon != null)
             {
-                rightCollider = currentRightHandWeapon.GetComponent<Collider>();
+                var rightCollider = currentRightHandWeapon.GetComponent<Collider>();
                 if (rightCollider)
                 {
                     rightCollider.enabled = true;
@@ -101,7 +98,7 @@ public class CharacterWeaponManager : MonoBehaviour
             if (rightHandWeaponUnarmedWeapon != null)
             {
                 Debug.Log("rightHandWeaponUnarmedWeapon");
-                rightCollider = rightHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var rightCollider = rightHandWeaponUnarmedWeapon.GetComponent<Collider>();
                 if (rightCollider)
                 {
                     Debug.Log("Right collider found");
@@ -123,7 +120,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (currentRightHandWeapon != null)
             {
-                rightCollider = currentRightHandWeapon.GetComponent<Collider>();
+                var rightCollider = currentRightHandWeapon.GetComponent<Collider>();
                 if (rightCollider) rightCollider.enabled = false;
             }
         }
@@ -131,7 +128,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (rightHandWeaponUnarmedWeapon != null)
             {
-                rightCollider = rightCollider.GetComponent<Collider>();
+                var rightCollider = rightHandWeaponUnarmedWeapon.GetComponent<Collider>();
                 if (rightCollider) rightCollider.enabled = false;
             }
         }
@@ -143,7 +140,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (currentLeftHandWeapon != null)
             {
-                leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
+                var leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
                 if (leftCollider)
                 {
                     leftCollider.enabled = true;
@@ -163,7 +160,7 @@ public class CharacterWeaponManager : MonoBehaviour
             if (leftHandWeaponUnarmedWeapon != null)
             {
                 Debug.Log("leftHandWeaponUnarmedWeapon is not null");
-                leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
                 if (leftCollider)
                 {
                     Debug.Log("Left collider found");
@@ -185,7 +182,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (currentLeftHandWeapon != null)
             {
-                leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
+                var leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
                 if (leftCollider) leftCollider.enabled = false;
             }
         }
@@ -193,7 +190,7 @@ public class CharacterWeaponManager : MonoBehaviour
         {
             if (leftHandWeaponUnarmedWeapon != null)
             {
-                leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
                 if (leftCollider) leftCollider.enabled = false;
             }
         }

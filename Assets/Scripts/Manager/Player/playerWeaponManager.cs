@@ -50,6 +50,8 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerManager = GetComponent<PlayerManager>();
 
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
+
+        OnHolster(null);
     }
     public void OnHolster(InputValue action)
     {
