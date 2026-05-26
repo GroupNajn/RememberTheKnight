@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class PlayerWeaponManager : CharacterWeaponManager
 {
@@ -12,9 +13,13 @@ public class PlayerWeaponManager : CharacterWeaponManager
     PlayerCombatManager playerCombatManager;
     PlayerStats playerStats;
     PlayerManager playerManager;
+    PlayerStates playerStates;
 
     [SerializeField] public List<GameObject> Weapons;
     int currentWeaponIndex = 0;
+    int layerIndex;
+    AnimatorStateInfo currentState;
+
 
     float damageAmount
     {
@@ -48,11 +53,16 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
         playerManager = GetComponent<PlayerManager>();
+        playerStates = GetComponent<PlayerStates>();
+
 
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
 
         OnHolster(null);
 
+        layerIndex = playerAnimator.GetLayerIndex("Holster");
+
+       
         Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
     }
 
@@ -65,6 +75,12 @@ public class PlayerWeaponManager : CharacterWeaponManager
     }
 
     public void OnHolster(InputValue action)
+    {
+        if(!playerStates.InActionState())
+        playerAnimator.SetTrigger("Holster");
+    }
+
+    public void HolsterEvent() // Called from animation event
     {
         holsterd = !holsterd;
 
@@ -80,6 +96,24 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
     }
 
+    public override void Update()
+    {
+        base.Update();
+
+
+         currentState = playerAnimator.GetCurrentAnimatorStateInfo(layerIndex); // Holster layer
+        bool inTransition = playerAnimator.IsInTransition(layerIndex);
+
+        if (currentState.IsTag("Holstering") || inTransition) // check Holstering tag
+        {
+            playerStates.SetIsHolstering(true);
+        }
+        else
+        {
+            playerStates.SetIsHolstering(false);
+        }
+    }
+
     public void SwitchWeapon()
     {
         if (Weapons.Count == 0) return;
@@ -93,7 +127,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         currentWeaponIndex %= Weapons.Count;
 
-        // St‰ng av alla
+        // St√§ng av alla
         foreach (var weapon in Weapons)
         {
             weapon.SetActive(false);
@@ -114,10 +148,10 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         equippedWeapon = stats.WeaponData;
 
-        // s‰tter vapen storleken till base n‰r man byter vapen
+        // s√§tter vapen storleken till base n√§r man byter vapen
         //playerStats.currentWeaponSize = playerStats.baseWeaponSize;
-        //Debug.Log($"base ‰r {playerStats.currentWeaponSize}");
-        // s‰tter sedan vapnet till den sizen spelaren stats s‰ger
+        //Debug.Log($"base √§r {playerStats.currentWeaponSize}");
+        // s√§tter sedan vapnet till den sizen spelaren stats s√§ger
         currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
         playerStats.baseActionSpeed = stats.WeaponData.actionSpeed;
@@ -126,7 +160,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         playerManager.ReApplyStats();
 
-        // gÂ vidare till n‰sta fˆr n‰sta interaction
+        // g√• vidare till n√§sta f√∂r n√§sta interaction
     }
 
     public override void DeactivateRightDamageCollider()
