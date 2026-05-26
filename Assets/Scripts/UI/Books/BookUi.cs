@@ -132,6 +132,13 @@ public class BookUi : MonoBehaviour
             stats = stats,
             weaponStats = weaponStats
         });
+
+        statsPages.Add(new PageData
+        {
+            type = PageData.PageType.Stats,
+            stats = stats,
+            weaponStats = weaponStats
+        });
     }
 
     public void BuildCardPages()
