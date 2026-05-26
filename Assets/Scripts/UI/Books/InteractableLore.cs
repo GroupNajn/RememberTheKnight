@@ -1,5 +1,6 @@
 using System.Collections;
 using Unity.Cinemachine;
+using UnityEditor.Searcher;
 using UnityEngine;
 
 public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUIText
@@ -49,6 +50,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Unveil Lore";
         return UIData;

@@ -41,6 +41,9 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
                 firstTimeEffect.SetActive(false);
         }
 
+        playerUIManager.UIMenuActive = true;
+        playerUIManager.cameraTransitioning = true;
+
         interactCameraHandler.InteractCamSwitch(cameraLookAtTransform, preset);
         StartCoroutine(OpenUI());
     }
@@ -54,6 +57,7 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Choose Your Faith";
         return UIData;

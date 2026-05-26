@@ -38,6 +38,7 @@ public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableU
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Switch Weapon";
         return UIData;

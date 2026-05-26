@@ -71,6 +71,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         if (playerCollection.playerContract != null)
         {
@@ -78,10 +79,12 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         }
         else if (playerCollection.playerContract != null && lootSystem.currentSoulCount <= 0)
         {
+            UIData.CanInteract = false;
             UIData.InfoText = "Not enough souls.";
         }
         else if (playerCollection.playerContract == null)
         {
+            UIData.CanInteract = false;
             UIData.InfoText = "You do not have a signed Contract";
             UIData.ErrorText = "Go to lobby to sign a contract;";
         }

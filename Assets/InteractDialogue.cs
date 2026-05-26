@@ -8,6 +8,8 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     [Header("Saved Data")]
     [SerializeField] private string interactableID; 
     [SerializeField] private GameObject firstTimeEffect;
+
+    [Header("Interactable Objects")]
     [SerializeField] private List<GameObject> objectsToActivateOnInteract;
 
     [Header("Dialogue")]
@@ -18,7 +20,8 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
 
     void Start() 
     {
-        playerUIManager = FindFirstObjectByType<UIManager>(); 
+        playerUIManager = FindFirstObjectByType<UIManager>();
+
         if (InteractableSaveSystem.HasInteracted(interactableID)) 
         {
             if (firstTimeEffect != null) 
@@ -52,7 +55,9 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     public InteractableUIData GetUIData() 
     {
         var UIData = new InteractableUIData();
-        UIData.InfoText = "Speaketh to The lady of the squeer";
+        UIData.CanInteract = true;
+
+        UIData.InfoText = "The Old Lady";
         return UIData; 
     } 
 }
