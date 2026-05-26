@@ -13,6 +13,7 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private GameObject lorePanel;
 
     [Header("Stats")]
+    [SerializeField] private bool IsPlayerStats;
     [SerializeField] private TextMeshProUGUI statsTextTopLeft;
     [SerializeField] private TextMeshProUGUI statsTextTopRight;
     [SerializeField] private TextMeshProUGUI statsTextBottomLeft;
@@ -25,6 +26,8 @@ public class BookPageUI : MonoBehaviour
     [Header("Lore")]
     [SerializeField] private TextMeshProUGUI loreTitleText;
     [SerializeField] private TextMeshProUGUI loreText;
+
+    private PlayerCollection playerCollection;
 
     public void Setup(PageData data)
     {
@@ -64,30 +67,56 @@ public class BookPageUI : MonoBehaviour
     {
         if (stats == null) return;
 
-        statsTextTopLeft.text =
-        $"-HEALTH-\n" +
-        $"Health: {stats.MaxHealth}\n" +
-        $"Resistance: {stats.currentKnockbackResistance}%\n";
-        //$"Health Regen: {stats.healthRegen}\n" +
-        //$"Total Heal: {stats.TotalHeal}\n" +
+        playerCollection = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>();
 
-        statsTextTopRight.text =
-        $"-STAMINA-\n" +
-        $"Stamina: {stats.maxStamina}\n" +
-        $"Stamina Regen: {stats.staminaRegen}\n" +
-        $"Speed: {stats.curentActionSpeedModifier}\n" +
-        $"Speed bonus: {(stats.curentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
+        if (IsPlayerStats)
+        {
+            statsTextTopLeft.text =
+            $"-HEALTH-\n" +
+            $"Health: {stats.MaxHealth}\n" +
+            $"Resistance: {stats.currentKnockbackResistance}%\n";
+            //$"Health Regen: {stats.healthRegen}\n" +
+            //$"Total Heal: {stats.TotalHeal}\n" +
 
-        statsTextBottomLeft.text =
-        $"-COMBAT-\n" +
-        $"Light Damage: {weaponStats.currentActiveWeaponData.LightDamage}\n" +
-        $"Heavy Damage: {weaponStats.currentActiveWeaponData.HeavyDamage}\n" +
-        $"Damage bonus: {(stats.currentDamageModifier - 1) * 100}%\n";
+            statsTextTopRight.text =
+            $"-STAMINA-\n" +
+            $"Stamina: {stats.maxStamina}\n" +
+            $"Stamina Regen: {stats.staminaRegen}\n" +
+            $"Speed: {stats.curentActionSpeedModifier}\n" +
+            $"Speed bonus: {(stats.curentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
 
-        statsTextBottomRight.text =
-        $"-CHANCE-\n" +
-        $"Luck: {stats.currentLuck}%\n" +
-        $"Crit chance: {stats.currentCritChance}%\n";
+            statsTextBottomLeft.text =
+            $"-DAMAGE-\n" +
+            $"Light Damage: {weaponStats.currentActiveWeaponData.LightDamage}\n" +
+            $"Heavy Damage: {weaponStats.currentActiveWeaponData.HeavyDamage}\n" +
+            $"Damage bonus: {(stats.currentDamageModifier - 1) * 100}%\n";
+
+            statsTextBottomRight.text =
+            $"-CHANCE-\n" +
+            $"Luck: {stats.currentLuck}%\n" +
+            $"Crit chance: {stats.currentCritChance}%\n";
+        }
+        else
+        {
+            statsTextTopLeft.text =
+            $"-FAMILY-\n" +
+            $"Family: {(playerCollection.playerContract != null ? playerCollection.playerContract.CardFamily.ToString() : "None")}\n";
+
+            statsTextTopRight.text =
+            $"-PROGRESSION-\n" +
+            $"Level: {RunGameData.Instance.LevelCounter} \n";
+
+            statsTextBottomLeft.text =
+            $"-COMBAT-\n" +
+            $"Enemies Slain: \n" +
+            $"Bosses Slain: \n";
+
+            statsTextBottomRight.text =
+            $"-LOOT-\n" +
+            $"Souls Collected: \n" +
+            $"Souls Sacrificed: \n" +
+            $"Cards Collected: \n";
+        }
     }
     private void ShowCards(List<CardData> cards)
     {
