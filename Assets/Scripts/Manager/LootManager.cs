@@ -308,7 +308,7 @@ public class LootManager : MonoBehaviour
             RarityTier.Uncommon => (Tier.IV, Tier.V),
             RarityTier.Rare => (Tier.VI, Tier.VII),
             RarityTier.Epic => (Tier.VIII, Tier.IX),
-            RarityTier.Legendary => (Tier.X, Tier.XIII),
+            RarityTier.Legendary => (Tier.X, Tier.X), //  Change Max cap to be able to drop court cards. 
             _ => (Tier.I, Tier.I) // Default case 
         };
     }
