@@ -27,6 +27,7 @@ public class InteractCardPickup : MonoBehaviour, IInteractable, IInteractableUIT
     public InteractableUIData GetUIData()
     {
         var data = new InteractableUIData();
+        data.CanInteract = true;
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
 
         if (cardData == null) return null;
@@ -35,20 +36,15 @@ public class InteractCardPickup : MonoBehaviour, IInteractable, IInteractableUIT
         {
             data.InfoText = $"{cardData.cardName} is already picked up.";
             data.ErrorText = $"{cardData.cardName} will be sacrificed and you will gain souls.";
-            data.CanInteract = true;
         }
         else if (!collection.CardIsPickedUp(cardData))
         {
             data.InfoText = $"Pickup: {cardData.cardName}.";
-            data.CanInteract = true;
         }
         else
             data.InfoText = $"{cardData.name}";
+
         return data;
-
-
-
-        
     }
 
 

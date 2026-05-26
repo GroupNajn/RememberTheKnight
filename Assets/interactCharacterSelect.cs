@@ -53,6 +53,7 @@ public class interactCharacterSelect : MonoBehaviour, IInteractable, IInteractab
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Change your outfit.";
         return UIData;

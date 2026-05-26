@@ -39,6 +39,9 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
                 firstTimeEffect.SetActive(false);
         }
 
+        playerUIManager.UIMenuActive = true;
+        playerUIManager.cameraTransitioning = true;
+
         interactCameraHandler.InteractCamSwitch(cameraLookAtTransform, preset);
         StartCoroutine(OpenUI());
     }
@@ -53,6 +56,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Choose Minor Arcana.";
         return UIData;

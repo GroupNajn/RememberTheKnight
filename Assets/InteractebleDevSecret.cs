@@ -38,6 +38,7 @@ public class InteractebleDevSecret : MonoBehaviour, IInteractable, IInteractable
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         UIData.InfoText = "Read letter";
         return UIData;
