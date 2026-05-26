@@ -336,9 +336,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         bool isHealingAndIdle = playerState.IsHealing && playerLocomotionInput.MovementInput.magnitude == 0; 
         //==========================X + Y=========================
 
-        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
-        if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn)
+        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting && !playerState.IsHealing ? 2f : 1f;
+        if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn )
             targetMagnitude = 1.5f;
+        
+
 
 
         if (isIdling || isAttackingAndIdle || isDodgeingAndIdle)
