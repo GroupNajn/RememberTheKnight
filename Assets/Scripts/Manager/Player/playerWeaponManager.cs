@@ -16,6 +16,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
     PlayerStates playerStates;
 
     [SerializeField] public List<GameObject> Weapons;
+    [SerializeField] public List<GameObject> HolsterdWeapons;
     int currentWeaponIndex = 0;
     int layerIndex;
     AnimatorStateInfo currentState;
@@ -87,6 +88,17 @@ public class PlayerWeaponManager : CharacterWeaponManager
         HolsterCheck();
         playerManager.ReApplyStats();
         OnWeaponChanged?.Invoke(currentActiveWeaponData);
+
+        if(holsterd)
+        {
+            HolsterdWeapons[currentWeaponIndex].SetActive(true);
+        }
+        else
+        {
+                HolsterdWeapons[currentWeaponIndex].SetActive(false);
+        }
+
+
     }
 
     public override void HolsterCheck()
@@ -94,6 +106,8 @@ public class PlayerWeaponManager : CharacterWeaponManager
         base.HolsterCheck();
 
         playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
+        playerAnimator.speed = currentActiveWeaponData.actionSpeed;
+
     }
 
     public override void Update()
@@ -120,7 +134,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         if (Holsterd)
         {
-            OnHolster(null);
+            HolsterEvent();
         }
 
         currentWeaponIndex = (currentWeaponIndex + 1) % Weapons.Count;
