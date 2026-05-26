@@ -486,6 +486,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 30
   SneakMultiplier: 1.4
   damageCooldown: 0
+  healthModifierPercentagePerLevel: 1.2
   tier: 2
 --- !u!114 &4542162012283316038
 MonoBehaviour:
@@ -581,16 +582,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7042e3a57bed0a543945efc8e68678d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightCollider: {fileID: 0}
+  leftCollider: {fileID: 0}
   currentRightHandWeapon: {fileID: 7578719242039332624}
   currentLeftHandWeapon: {fileID: 2212799248323384751}
   equippedWeapon: {fileID: 0}
   currentActiveWeaponData: {fileID: 0}
   lastActiveWeaponData: {fileID: 0}
+  rightHandWeaponUnarmedWeapon: {fileID: 0}
+  leftHandWeaponUnarmedWeapon: {fileID: 0}
   unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
+  damageModifierPercentagePerLevel: 1.2
 --- !u!114 &9003577576219984999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5898,6 +5904,18 @@ PrefabInstance:
     - target: {fileID: 5995187935144783874, guid: 0d4fb2d818837d841b82ce1d9f11472b, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Barrel_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375125671071673016, guid: 0d4fb2d818837d841b82ce1d9f11472b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375125671071673016, guid: 0d4fb2d818837d841b82ce1d9f11472b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375125671071673016, guid: 0d4fb2d818837d841b82ce1d9f11472b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6375125671071673016, guid: 0d4fb2d818837d841b82ce1d9f11472b, type: 3}
       propertyPath: m_LocalPosition.x
