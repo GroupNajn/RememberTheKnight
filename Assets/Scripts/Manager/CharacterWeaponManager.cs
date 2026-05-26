@@ -10,12 +10,14 @@ public class CharacterWeaponManager : MonoBehaviour
     [SerializeField] public WeaponData currentActiveWeaponData;
     [SerializeField] public WeaponData lastActiveWeaponData;
 
-    [SerializeField] public GameObject rightHandWeaponUnarmedWeapon;
-    [SerializeField] public GameObject leftHandWeaponUnarmedWeapon;
+    [SerializeField] public GameObject rightHandUnarmedWeapon;
+    [SerializeField] public GameObject leftHandUnarmedWeapon;
     [SerializeField] public WeaponData unarmedWeaponData;
 
     [HideInInspector] public DamageTrigger rightDamageTrigger;
     [HideInInspector] public DamageTrigger leftDamageTrigger;
+    [HideInInspector] public DamageTrigger rightUnarmedDamageTrigger;
+    [HideInInspector] public DamageTrigger leftUnarmedDamageTrigger;
     [HideInInspector] public WeaponData currentRightWeaponData;
     [HideInInspector] public WeaponData currentLeftWeaponData;
 
@@ -42,6 +44,16 @@ public class CharacterWeaponManager : MonoBehaviour
             leftDamageTrigger = currentLeftHandWeapon.GetComponent<DamageTrigger>();
             currentLeftWeaponData = currentLeftHandWeapon.GetComponent<WeaponStats>().WeaponData;
         }
+
+        if (rightHandUnarmedWeapon != null)
+        {
+            rightUnarmedDamageTrigger = rightHandUnarmedWeapon.GetComponent<DamageTrigger>();
+        }
+
+        if (leftHandUnarmedWeapon != null)
+        {
+            leftUnarmedDamageTrigger = leftHandUnarmedWeapon.GetComponent<DamageTrigger>();
+        }
     }
 
     public virtual void Update()
@@ -58,8 +70,8 @@ public class CharacterWeaponManager : MonoBehaviour
             lastActiveWeaponData = currentActiveWeaponData;
             currentActiveWeaponData = unarmedWeaponData;
 
-            leftHandWeaponUnarmedWeapon.SetActive(true);
-            rightHandWeaponUnarmedWeapon.SetActive(true);
+            leftHandUnarmedWeapon.SetActive(true);
+            rightHandUnarmedWeapon.SetActive(true);
         }
         else
         {
@@ -69,8 +81,8 @@ public class CharacterWeaponManager : MonoBehaviour
             currentActiveWeaponData = lastActiveWeaponData;
             lastActiveWeaponData = unarmedWeaponData;
 
-            leftHandWeaponUnarmedWeapon.SetActive(false);
-            rightHandWeaponUnarmedWeapon.SetActive(false);
+            leftHandUnarmedWeapon.SetActive(false);
+            rightHandUnarmedWeapon.SetActive(false);
         }
     }
 
@@ -94,17 +106,13 @@ public class CharacterWeaponManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Holstered");
-            if (rightHandWeaponUnarmedWeapon != null)
+            if (rightHandUnarmedWeapon != null)
             {
-                Debug.Log("rightHandWeaponUnarmedWeapon");
-                var rightCollider = rightHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var rightCollider = rightHandUnarmedWeapon.GetComponent<Collider>();
                 if (rightCollider)
                 {
-                    Debug.Log("Right collider found");
                     rightCollider.enabled = true;
-                    Debug.Log("Right collider enabled: " + rightCollider.enabled);
-                    rightDamageTrigger.ResetDamage();
+                    rightUnarmedDamageTrigger.ResetDamage();
 
                     RuntimeManager.PlayOneShotAttached(unarmedWeaponData.SwooshEvent, gameObject);
 
@@ -126,9 +134,9 @@ public class CharacterWeaponManager : MonoBehaviour
         }
         else
         {
-            if (rightHandWeaponUnarmedWeapon != null)
+            if (rightHandUnarmedWeapon != null)
             {
-                var rightCollider = rightHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var rightCollider = rightHandUnarmedWeapon.GetComponent<Collider>();
                 if (rightCollider) rightCollider.enabled = false;
             }
         }
@@ -156,17 +164,13 @@ public class CharacterWeaponManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Holstered");
-            if (leftHandWeaponUnarmedWeapon != null)
+            if (leftHandUnarmedWeapon != null)
             {
-                Debug.Log("leftHandWeaponUnarmedWeapon is not null");
-                var leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var leftCollider = leftHandUnarmedWeapon.GetComponent<Collider>();
                 if (leftCollider)
                 {
-                    Debug.Log("Left collider found");
                     leftCollider.enabled = true;
-                    Debug.Log("Left collider enabled: " + leftCollider.enabled);
-                    leftDamageTrigger.ResetDamage();
+                    leftUnarmedDamageTrigger.ResetDamage();
 
                     RuntimeManager.PlayOneShotAttached(unarmedWeaponData.SwooshEvent, gameObject);
 
@@ -188,9 +192,9 @@ public class CharacterWeaponManager : MonoBehaviour
         }
         else
         {
-            if (leftHandWeaponUnarmedWeapon != null)
+            if (leftHandUnarmedWeapon != null)
             {
-                var leftCollider = leftHandWeaponUnarmedWeapon.GetComponent<Collider>();
+                var leftCollider = leftHandUnarmedWeapon.GetComponent<Collider>();
                 if (leftCollider) leftCollider.enabled = false;
             }
         }

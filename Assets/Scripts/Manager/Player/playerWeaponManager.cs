@@ -52,7 +52,18 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
 
         OnHolster(null);
+
+        Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
     }
+
+    private void OnLobbyLoaded()
+    {
+        if (!holsterd)
+        {
+            OnHolster(null);
+        }
+    }
+
     public void OnHolster(InputValue action)
     {
         holsterd = !holsterd;
