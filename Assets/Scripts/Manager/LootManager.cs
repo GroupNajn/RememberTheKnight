@@ -195,7 +195,7 @@ public class LootManager : MonoBehaviour
 
 
     // Boolean to check if A CardTier is within a RarityTier. 
-    public bool IsTierInsideRarity(Tier tier, RarityTier rarity)
+    public bool IsTierInsideRarity(Tier tier, RarityTier rarity) // This method is to be changed if X+ Tier is supposed to be unlocked in the shop.
     {
         return rarity switch
         {
@@ -212,7 +212,7 @@ public class LootManager : MonoBehaviour
                 tier >= Tier.VIII && tier <= Tier.IX,
 
             RarityTier.Legendary =>
-            tier >= Tier.X,
+            tier == Tier.X,
 
             _ => false
         };
