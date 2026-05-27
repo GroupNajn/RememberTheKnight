@@ -72,6 +72,44 @@ public class InputManager : MonoBehaviour
             Event_System.instance.OnDeviceChanged.Invoke();
         }
 
+        ApplyControlScheme();
+
+    }
+
+    public void ApplyControlScheme()
+    {
+        if (playerInputs == null)
+            return;
+
+        foreach (var input in playerInputs)
+        {
+            if (input == null)
+                continue;
+
+            if (!input.isActiveAndEnabled)
+                continue;
+
+            if (usingGamepad)
+            {
+                if (Gamepad.current == null)
+                    continue;
+
+                if (input.currentControlScheme != "Gamepad")
+                {
+                    input.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
+                }
+            }
+            else
+            {
+                if (Keyboard.current == null || Mouse.current == null)
+                    continue;
+
+                if (input.currentControlScheme != "Keyboard&Mouse")
+                {
+                    input.SwitchCurrentControlScheme("Keyboard&Mouse", Keyboard.current, Mouse.current);
+                }
+            }
+        }
     }
 
     public void SaveAndApplyBindingsFrom(PlayerInput sourcePlayerInput)
