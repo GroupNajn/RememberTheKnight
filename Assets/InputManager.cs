@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
     public PlayerInput[] playerInputs;
 
     [Header("Device Detection")]
-    public bool usingGamepad;
+    public bool usingGamepad = false;
 
     private const string rebindKeys = "input_rebinds";
 
@@ -83,10 +83,7 @@ public class InputManager : MonoBehaviour
 
         foreach (var input in playerInputs)
         {
-            if (input == null)
-                continue;
-
-            if (!input.isActiveAndEnabled)
+            if (input == null || !input.isActiveAndEnabled || !input.user.valid)
                 continue;
 
             if (usingGamepad)
