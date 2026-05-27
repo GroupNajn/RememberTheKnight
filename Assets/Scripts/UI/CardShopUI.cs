@@ -29,7 +29,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     private float fadeDuration = 0.5f;
     private bool errorActive = false;
 
-    void Awake()
+    protected override void Awake()
     {
         uiSlots.AddRange(GetComponentsInChildren<CardSlotShopUI>(true));
 

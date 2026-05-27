@@ -1,22 +1,10 @@
-using UnityEngine;
-
 public class OptionMenuUI : AutoSelectFirstButtonOnEnable
 {
     UIManager uiManager;
-    //SceneData sceneData;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
     private void Start()
     {
         uiManager = GetComponentInParent<UIManager>();
-
     }
 
     public void OpenControlls()
@@ -36,5 +24,4 @@ public class OptionMenuUI : AutoSelectFirstButtonOnEnable
         uiManager.CloseOptionMenu();
         uiManager.OpenVideoUI();
     }
-
 }

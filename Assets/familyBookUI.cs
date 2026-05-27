@@ -18,6 +18,8 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
     [SerializeField] private FamilyUI defaultFamily;
     protected override void Awake()
     {
+        base.Awake();
+
         if (defaultFamily != null)
         {
             SelectFamily(defaultFamily);
@@ -28,10 +30,7 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
 
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
+
     public void SelectFamily(FamilyUI selected)
     {
         CardFamily selectedFamily;

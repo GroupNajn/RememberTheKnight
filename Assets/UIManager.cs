@@ -2,7 +2,6 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -58,7 +57,7 @@ public class UIManager : MonoBehaviour
     public bool timeScaleOn = true;
     public bool cameraTransitioning = false;
 
-    
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -131,7 +130,7 @@ public class UIManager : MonoBehaviour
             if (bookUI.activeSelf)
                 return;
 
-            if(cardShopUI.activeSelf)
+            if (cardShopUI.activeSelf)
                 return;
 
             if (cameraTransitioning)
@@ -142,6 +141,7 @@ public class UIManager : MonoBehaviour
                 GoBackFromOptions();
                 return;
             }
+
             if (controllsUI.activeSelf)
             {
                 GoBackFromControlls();
@@ -161,10 +161,9 @@ public class UIManager : MonoBehaviour
             }
 
             HideActiveUI();
-
         }
-
     }
+
     void OnOpenBook()
     {
         if (!UIMenuActive)
@@ -254,11 +253,11 @@ public class UIManager : MonoBehaviour
     {
         backButtonUI.SetActive(true);
     }
+
     public void CloseBackButtonUI()
     {
         backButtonUI.SetActive(false);
     }
-
 
     // START MENU
     public void OpenStartMenu()
@@ -269,7 +268,7 @@ public class UIManager : MonoBehaviour
 
             startMenuUI.SetActive(true); // Show the pause menu
 
-            if(backgrundUI == enabled)
+            if (backgrundUI == enabled)
                 CloseInteractiveUI();
 
             if (backgrundUI == enabled)
@@ -277,6 +276,7 @@ public class UIManager : MonoBehaviour
 
         }
     }
+
     public void CloseStartMenu()
     {
         if (startMenuUI)
@@ -299,6 +299,7 @@ public class UIManager : MonoBehaviour
                 CloseBackground();
         }
     }
+
     public void ClosePauseMenu()
     {
         if (pauseMenuUI)
@@ -319,6 +320,7 @@ public class UIManager : MonoBehaviour
 
         }
     }
+
     public void CloseCharacterSelectUI()
     {
         if (characterSelectUI)
@@ -403,7 +405,7 @@ public class UIManager : MonoBehaviour
     // CARD SELECT UI
     public void OpenCardSelectUI()
     {
-        if(interactUI == enabled)
+        if (interactUI == enabled)
             CloseInteractiveUI();
 
         CloseUIOnMenuOpen();
@@ -430,7 +432,7 @@ public class UIManager : MonoBehaviour
     {
         if (interactUI == enabled)
             CloseInteractiveUI();
-       
+
         CloseUIOnMenuOpen();
 
         familySelectUI.SetActive(true);
@@ -574,7 +576,6 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
-
     //DEATH UI
     public void ShowDeathScreen()
     {
@@ -694,7 +695,6 @@ public class UIManager : MonoBehaviour
     }
 
     // BACKGROUND
-
     public void OpenBackground()
     {
         backgrundUI.gameObject.SetActive(true);
@@ -704,7 +704,6 @@ public class UIManager : MonoBehaviour
     {
         backgrundUI.gameObject.SetActive(false);
     }
-
 
     public void GoBackFromOptions()
     {
@@ -724,21 +723,23 @@ public class UIManager : MonoBehaviour
             OpenUIOnMenuClose(); // SHOW BARS ETC
         }
     }
+
     public void GoBackFromControlls()
     {
         CloseControllsUI();
         OpenOptionMenu();
     }
+
     public void GoBackFromAudio()
     {
         CloseAudioUI();
         OpenOptionMenu();
     }
+
     public void GoBackFromVideo()
     {
         CloseVideoUI();
         OpenOptionMenu(); ;
-
     }
 
     // Dialogue UI
@@ -776,6 +777,7 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         CheckUIState();
     }
+
     public void CloseDevSecretUI()
     {
         OpenUIOnMenuClose();
@@ -784,6 +786,7 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
+    
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;

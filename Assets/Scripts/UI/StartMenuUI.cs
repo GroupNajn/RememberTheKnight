@@ -1,8 +1,4 @@
-using Unity.AppUI.UI;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 
 public class StartMenuUI : AutoSelectFirstButtonOnEnable
 {
@@ -27,6 +23,7 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
         uiManager = GetComponentInParent<UIManager>();
 
     }
+
     public void StartGame()
     {
         // LOAD NEXT SCENE
@@ -39,8 +36,8 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
     {
         if (canUseInput)
         {
-            uiManager.OpenOptionMenu();
             uiManager.CloseStartMenu();
+            uiManager.OpenOptionMenu();
         }
     }
 

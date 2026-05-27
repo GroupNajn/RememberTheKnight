@@ -56,7 +56,6 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
     }
 
-
     // SLIDERS
     public void SetBloomSlider(float value)
     {

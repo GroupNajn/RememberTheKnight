@@ -6,11 +6,12 @@ public class BackButtonUI : MonoBehaviour
 {
     public void GoBack()
     {
+        AutoSelectFirstButtonOnEnable.IsGoingBack = true;
+
         if (UIManager.Instance.controllsUI.activeSelf)
         {
             UIManager.Instance.GoBackFromControlls();
             return;
-
         }
 
         if (UIManager.Instance.audioUI.activeSelf)
@@ -27,5 +28,4 @@ public class BackButtonUI : MonoBehaviour
 
         UIManager.Instance.GoBackFromOptions();
     }
-
 }
