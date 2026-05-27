@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float slideSpeed = 1f;
     RaycastHit hit;
-    bool rayHit;
     #endregion
 
 
@@ -119,17 +118,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             if (Physics.SphereCast(transform.position + _characterController.center, _characterController.radius + _characterController.skinWidth, -transform.up, out hit, _characterController.height / 2 + 1, enemyLayer))
             {
-                rayHit = true;
-
                 // Move player sideways off the enemy
                 Vector3 directionAway = transform.position - hit.collider.ClosestPoint(transform.position);
                 directionAway.y = 0;
                 directionAway.Normalize();
                 _characterController.Move(directionAway * slideSpeed * Time.deltaTime);
-            }
-            else
-            {
-                rayHit = false;
             }
         }
     }
