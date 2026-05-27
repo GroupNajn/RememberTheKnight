@@ -12,15 +12,6 @@ public class RangedEnemyAttack : MonoBehaviour
         projectileHandler = GetComponent<ProjectileHandler>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Debug.Log("Attack");
-            Attack();
-        }
-    }
-
     // Theo please call this method in the behavior tree
     public void Attack()
     {

@@ -1562,11 +1562,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 3398128959082092239}
+    m_SelectOnDown: {fileID: 6767357640100500005}
+    m_SelectOnLeft: {fileID: 2610781428592307184}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -1773,11 +1773,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 6767357640100500005}
+    m_SelectOnDown: {fileID: 272465556943309566}
+    m_SelectOnLeft: {fileID: 2610781428592307184}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -2120,11 +2120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 272465556943309566}
+    m_SelectOnDown: {fileID: 3398128959082092239}
+    m_SelectOnLeft: {fileID: 2610781428592307184}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
@@ -3169,7 +3169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &124046300511843629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3231,7 +3231,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FirstSelectedButton: {fileID: 2934780080861299733}
+  useLastSelectedButton: 1
   returnButtonLobbyText: Quit
+  returnButtonText: {fileID: 8808062811556654850}
 --- !u!1 &6102583890474116837
 GameObject:
   m_ObjectHideFlags: 0
@@ -5111,7 +5113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4989117359077959420, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5082884084620447733, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5139,11 +5141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5949078132396916702, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5949078132396916702, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -590
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6059220996574120416, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
@@ -5351,11 +5353,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7168944758376908605, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7168944758376908605, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -890
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7180806188207863143, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_Color.b
@@ -5467,11 +5469,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793837868241098339, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793837868241098339, guid: 11169bea52c498b43b9c49947d2af835, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -740
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -5772,6 +5774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FirstSelectedButton: {fileID: 1682201814370427689}
+  useLastSelectedButton: 1
 --- !u!1001 &4139098716081963266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12166,7 +12169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb3e39f22d417c4e884068f9182c734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirstSelectedButton: {fileID: 758037412085454926}
+  FirstSelectedButton: {fileID: 2371842324323909313}
+  useLastSelectedButton: 1
 --- !u!1 &7346027323853135639 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3059351727176103052, guid: 888a28ae541889341b72834b2504d3b8, type: 3}
@@ -13939,6 +13943,14 @@ PrefabInstance:
       propertyPath: m_Colors.m_SelectedColor.r
       value: 0.6627451
       objectReference: {fileID: 0}
+    - target: {fileID: 8611365406886253668, guid: 163a9cd702aba2640852e6f3f54f6b7b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetBindings
+      objectReference: {fileID: 0}
+    - target: {fileID: 8611365406886253668, guid: 163a9cd702aba2640852e6f3f54f6b7b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InputManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8847811060351217873, guid: 163a9cd702aba2640852e6f3f54f6b7b, type: 3}
       propertyPath: m_fontSize
       value: 60
@@ -14322,6 +14334,10 @@ PrefabInstance:
     - target: {fileID: 9195251155618766331, guid: 078347249454b614dbc61f3a564ca766, type: 3}
       propertyPath: cardPickupEvent.Path
       value: event:/SFX/Drops/Cards/Card Select
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195251155618766331, guid: 078347249454b614dbc61f3a564ca766, type: 3}
+      propertyPath: useLastSelectedButton
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9195251155618766331, guid: 078347249454b614dbc61f3a564ca766, type: 3}
       propertyPath: cardSacreficeEvent.Path

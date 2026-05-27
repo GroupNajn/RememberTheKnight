@@ -1,4 +1,3 @@
-
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CardPickupUI : AutoSelectFirstButtonOnEnable
 {

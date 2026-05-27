@@ -73,7 +73,6 @@ public class InputManager : MonoBehaviour
         }
 
         ApplyControlScheme();
-
     }
 
     public void ApplyControlScheme()
