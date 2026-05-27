@@ -57,7 +57,7 @@ public class InputManager : MonoBehaviour
             usingGamepad = false;
         }
 
-        if (Mouse.current != null && (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame))
+        if (Mouse.current != null && (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame || Mouse.current.delta.value != Vector2.zero))
         {
             usingGamepad = false;
         }
