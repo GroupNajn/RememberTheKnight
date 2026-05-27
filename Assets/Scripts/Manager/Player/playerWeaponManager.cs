@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Unity.Burst.Intrinsics.X86.Avx;
+using UnityEngine.SceneManagement;
 
 public class PlayerWeaponManager : CharacterWeaponManager
 {
@@ -63,22 +63,27 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         layerIndex = playerAnimator.GetLayerIndex("Holster");
 
-       
-        Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
+
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
 
-    private void OnLobbyLoaded()
+    private void OnLoadScenes()
     {
-        if (!holsterd)
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName == SceneData.Instance[1] || sceneName == SceneData.Instance[1])
         {
-            OnHolster(null);
+            // Make sure player is always holstered when entering lobby and character select screen 
+            if (!holsterd)
+            {
+                OnHolster(null);
+            }
         }
     }
 
     public void OnHolster(InputValue action)
     {
-        if(!playerStates.InActionState())
-        playerAnimator.SetTrigger("Holster");
+        if (!playerStates.InActionState())
+            playerAnimator.SetTrigger("Holster");
     }
 
     public void HolsterEvent() // Called from animation event
@@ -89,13 +94,13 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerManager.ReApplyStats();
         OnWeaponChanged?.Invoke(currentActiveWeaponData);
 
-        if(holsterd)
+        if (holsterd)
         {
             HolsterdWeapons[currentWeaponIndex].SetActive(true);
         }
         else
         {
-                HolsterdWeapons[currentWeaponIndex].SetActive(false);
+            HolsterdWeapons[currentWeaponIndex].SetActive(false);
         }
 
 
@@ -115,7 +120,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         base.Update();
 
 
-         currentState = playerAnimator.GetCurrentAnimatorStateInfo(layerIndex); // Holster layer
+        currentState = playerAnimator.GetCurrentAnimatorStateInfo(layerIndex); // Holster layer
         bool inTransition = playerAnimator.IsInTransition(layerIndex);
 
         if (currentState.IsTag("Holstering") || inTransition) // check Holstering tag

@@ -2,7 +2,6 @@ using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BallistaEnemy : MonoBehaviour
 {
@@ -35,12 +34,13 @@ public class BallistaEnemy : MonoBehaviour
         }
     }
 
+    // Find random enemies to set as required to destry ballista
     private void OnEnemiesSpawned()
     {
         //Debug.Log($"{name} is looking for enemies");
-        GameObject[] enemiesFound = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemiesFound = GameObject.FindGameObjectsWithTag("Enemy"); // Find all enemies
 
-        requiredEnemiesCount = Random.Range(minRequiredEnemies, maxRequiredEnemies);
+        requiredEnemiesCount = Random.Range(minRequiredEnemies, maxRequiredEnemies); // Get a random number as the amount of enemies required to destroy
 
         //Debug.Log($"requiredEnemiesCount: {requiredEnemiesCount}, enemies found: {enemiesFound.Length}");
 
@@ -53,26 +53,29 @@ public class BallistaEnemy : MonoBehaviour
             {
                 if (randomEnemy != null)
                 {
+                    // Random enemy has already been found, look for next random enemy
                     //Debug.Log($"{name} found enemy {randomEnemy.name}");
                     break;
                 }
 
+                // Get a random enemy
                 enemyToAddIndex = Random.Range(0, enemiesFound.Length);
                 randomEnemy = enemiesFound[enemyToAddIndex];
 
-                if (randomEnemy == null) continue;
+                if (randomEnemy == null) continue; // Random enemy has already been set as required enemy and we don't need to check for name match
 
                 foreach (string name in bannedEnemyNames)
                 {
                     if (randomEnemy.name.Contains(name))
                     {
+                        // If the enemy's name contains a banned name don't add to required enemies, mainly used to avoid having ballistas as required enemies
                         //Debug.Log($"{randomEnemy.name} contains {name}");
                         randomEnemy = null;
                         break;
                     }
                 }
 
-                if (randomEnemy == null) continue;
+                if (randomEnemy == null) continue; // Random enemy has failed name check and we don't need to check for child name match
 
                 Transform[] children = randomEnemy.GetComponentsInChildren<Transform>();
                 //Debug.Log($"{randomEnemy.name} has {children.Length} children");
@@ -87,6 +90,7 @@ public class BallistaEnemy : MonoBehaviour
                     {
                         if (children[k].name.Contains(name))
                         {
+                            // If any if the cild objects of the enemy contains a banned child name it will ignore it, mainly used to check if an enemy is required by another ballista
                             //Debug.Log($"Child contains {name}");
                             randomEnemy = null;
                             break;
@@ -106,16 +110,19 @@ public class BallistaEnemy : MonoBehaviour
 
         foreach (GameObject e in requiredEnemies)
         {
+            // Spawn the soul indicating the enemy is a required enemy on the enemy
             GameObject soul = Instantiate(ballistaSoul, e.transform.position + soulOffset, Quaternion.identity, e.transform);
         }
     }
 
+    // Remove enemies after from requierment list when it's killed
     void OnEnemyKilled(EnemyLootProfile enemy, Vector3 spawnPos)
     {
         if (IsDestroyed) return;
 
         if (requiredEnemies.Contains(enemy.gameObject))
         {
+            // Remove enemy from the requerement list if it exists in the list
             requiredEnemies.Remove(enemy.gameObject);
             foreach (Transform child in enemy.GetComponentsInChildren<Transform>(true))
             {
@@ -125,6 +132,7 @@ public class BallistaEnemy : MonoBehaviour
 
         if (requiredEnemies.Count == 0)
         {
+            // All enemies killed, explode
             StartCoroutine(ExplodeBarrels());
         }
     }
@@ -133,11 +141,13 @@ public class BallistaEnemy : MonoBehaviour
     {
         foreach (GameObject barrel in barrels)
         {
+            // Explode all the barrels with a 0.1s interval
             barrel.GetComponent<ExplodingBarrel>().Explode();
             RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.explosionEvent, barrel);
             yield return new WaitForSeconds(0.1f);
         }
 
+        // Spawn the destroyed ballista prefab
         Instantiate(destroyedBallista, transform.position, Quaternion.identity);
         IsDestroyed = true;
         Destroy(gameObject);

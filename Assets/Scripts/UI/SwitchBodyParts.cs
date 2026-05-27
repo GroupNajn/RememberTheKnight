@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,6 +15,7 @@ public class SwitchBodyParts : MonoBehaviour
         Female
     }
 
+    #region Body Parts
     [SerializeField] Transform allGenderParts;
     [SerializeField] Transform maleParts;
     [SerializeField] Transform femaleParts;
@@ -89,6 +89,7 @@ public class SwitchBodyParts : MonoBehaviour
     [SerializeField] private int currentSavedRightKnee;
     [SerializeField] private int currentSavedLeftLeg;
     [SerializeField] private int currentSavedRightLeg;
+    #endregion
 
     [HideInInspector] public bool hasSaved = false;
 
@@ -510,8 +511,6 @@ public class SwitchBodyParts : MonoBehaviour
     public void StartGame()
     {
         uiManager.CloseCharacterSelectUI();
-
-        gameObject.SetActive(false);
 
         // LOAD NEXT SCENE
         if (canStartGame)
