@@ -23,7 +23,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
         loreManager = FindFirstObjectByType<LoreManager>();
         lorePageUI = FindFirstObjectByType<LorePageUI>(FindObjectsInactive.Include);
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {

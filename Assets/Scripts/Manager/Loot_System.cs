@@ -40,9 +40,7 @@ public class Loot_System : MonoBehaviour
         }
         soulsCollected.Clear();
     }
-
-
-
+    
     void Update()
     {
         if(checkForSoundReset)

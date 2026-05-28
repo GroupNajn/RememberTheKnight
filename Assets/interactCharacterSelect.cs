@@ -22,7 +22,7 @@ public class interactCharacterSelect : MonoBehaviour, IInteractable, IInteractab
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {

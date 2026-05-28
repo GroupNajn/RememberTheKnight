@@ -111,6 +111,12 @@ public class CardUnlockUI : MonoBehaviour
         InteractSoulDonation donation = GameObject.FindWithTag("DonationWell").GetComponent<InteractSoulDonation>();
         gameObject.SetActive(false);
         cardSystem.UnlockCardFromDonation(cardData);
+        PlayerPrefsSaveSystem.SetSaveState(cardData.cardID);
+        if(cardData.cardTier >= Tier.X)
+        {
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+        } 
         donation.SetNextCard();
         donation.SetNetCardCost();
         donation.SetSoulnsDonateForNextUnlock();

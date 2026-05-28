@@ -42,22 +42,22 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
     private void SetSoulsGlobally(int amount)
     {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast += amount;
+        GameObject.Find("GlobalData").GetComponent<GameData>().soulsDonatedSinceLast += amount;
     }
 
     private void SetSoulsToNextCardGlobally(int donationAmount)
     {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsRemainingToNextUnlock = (soulsDonatedForNextUnlock -= donationAmount);
+        GameData.SetSoulsRemaingToNextUnlock(playerCollection.playerContract, donationAmount);
     }
 
     private void ResetSoulsGlobally()
     {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast = 0;
+        GameObject.Find("GlobalData").GetComponent<GameData>().soulsDonatedSinceLast = 0;
     }
 
     private void SetSoulsDonatedSinceLast()
     {
-        soulsDonated = GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast;
+        //soulsDonated = GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast;
     }
 
     public bool SetNextCard()
@@ -112,15 +112,15 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
             lootSystem.ConsumeSouls(donateAmount);
             moveSoul.InstantiateSoul();
-            SetSoulsGlobally(donateAmount);
+            //SetSoulsGlobally(donateAmount);
             
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
                     NewCardUnlocked = true;
                 soulsDonated = 0;
-                SetSoulsGlobally(soulsDonated);
-                ResetSoulsGlobally();
+                //SetSoulsGlobally(soulsDonated);
+                //ResetSoulsGlobally();
                 RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
 
 
