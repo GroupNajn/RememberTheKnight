@@ -1,6 +1,5 @@
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor.Searcher;
 using UnityEngine;
 
 public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUIText
