@@ -24,7 +24,7 @@ public class interactCharacterSelect : MonoBehaviour, IInteractable, IInteractab
 
         PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
-        if (InteractableSaveSystem.HasInteracted(interactableID))
+        if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
@@ -33,9 +33,9 @@ public class interactCharacterSelect : MonoBehaviour, IInteractable, IInteractab
 
     public void Interact()
     {
-        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
-            InteractableSaveSystem.SetInteracted(interactableID);
+            PlayerPrefsSaveSystem.SetSaveState(interactableID);
 
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
