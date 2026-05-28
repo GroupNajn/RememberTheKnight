@@ -1,20 +1,17 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GameData))]
+[CustomEditor(typeof(GameDataUpdater))]
+[CanEditMultipleObjects]
 public class GameDataEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
 
-        //GameData gameData = (GameData)target;
-
         if (GUILayout.Button("Reset All GameData"))
         {
-            GameData.ResetGameData();
-
-            //EditorUtility.SetDirty(gameData);
+            GameDataUpdater.ResetGameData();
         }
     }
 }

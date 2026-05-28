@@ -24,18 +24,18 @@ public static class PlayerPrefsSaveSystem
         return PlayerPrefs.GetInt(cardID, 0) == 1;
     }
 
-    public static void SaveSouls(int amount)
+    public static void SaveSouls(string soulValueText,int amount)
     {
-        PlayerPrefs.SetInt("souls", amount);
+        PlayerPrefs.SetInt(soulValueText, amount);
     }
 
     public static void SaveSoulsDonatedToFamily(int amount)
     {
         //PlayerPrefs.
     }
-    public static int GetSavedSouls()
+    public static int GetSavedSouls(string soulValueText)
     {
-        return PlayerPrefs.GetInt("souls");
+        return PlayerPrefs.GetInt(soulValueText);
     }
 
 
