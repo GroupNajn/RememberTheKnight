@@ -58,7 +58,9 @@ public partial class CircleTargetAction : Action
         {
             if (navMeshAgent.hasPath)
             {
-                Self.Value.transform.LookAt(navMeshAgent.steeringTarget);
+                Vector3 lookAt = navMeshAgent.steeringTarget;
+                lookAt.y = Self.Value.transform.position.y;
+                Self.Value.transform.LookAt(lookAt);
                 navMeshAgent.ResetPath();
             }
             return Status.Success;
@@ -68,7 +70,9 @@ public partial class CircleTargetAction : Action
         var dist = (Target.Value.position - Self.Value.transform.position).magnitude;
         shouldCorrect = dist > CircleRadius.Value + navMeshAgent.radius || dist < CircleRadius.Value - navMeshAgent.radius;
 
-        Self.Value.transform.LookAt(Target.Value.position);
+        Vector3 lookAtTarget = Target.Value.position;
+        lookAtTarget.y = Self.Value.transform.position.y;
+        Self.Value.transform.LookAt(lookAtTarget);
         if (shouldCorrect && !isCorrecting)
         {
             currentCirclePoint = SampleCirclePoints(10);
@@ -190,7 +194,7 @@ public partial class CircleTargetAction : Action
         for (int i = 0; i < sampleDensity; i++)
         {
 
-            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, Vector3.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
             {
                 return hit.position;
             }

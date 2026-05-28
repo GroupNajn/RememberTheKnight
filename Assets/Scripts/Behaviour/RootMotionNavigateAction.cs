@@ -121,7 +121,7 @@ public partial class RootMotionNavigateAction : Action
         for (int i = 0; i < sampleDensity; i++)
         {
 
-            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, navMeshAgent.transform.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Quaternion.AngleAxis(sampleDensity / 360 * i, Vector3.up) * dir + Target.Value.position, out NavMeshHit hit, navMeshAgent.radius, navMeshAgent.areaMask))
             {
                 return hit.position;
             }
