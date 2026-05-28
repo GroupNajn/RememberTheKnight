@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
 
+    [SerializeField]
     private float currentInputMagnitude = 0;
     private float currentInputMagnitudeX = 0;
+    [SerializeField]
     private float currentInputMagnitudeY = 0;
 
     private float _verticalVelocity = 0f;
@@ -324,19 +326,19 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void CalculateInputMagnitude()
     {
         bool isDodgeingAndIdle = playerState.CurrentMoveState == MoveState.Dodging && playerLocomotionInput.MovementInput.magnitude == 0;
-        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling || playerLocomotionInput.MovementInput.magnitude == 0;
         bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0; 
         bool isHealingAndIdle = playerState.IsHealing && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isHolstringAndIdle = playerState.IsHolstering && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isActionAndIdle = isDodgeingAndIdle || isAttackingAndIdle || isHealingAndIdle || isHolstringAndIdle ||isHealingAndIdle;
         //==========================X + Y=========================
 
-        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting && !playerState.IsHealing ? 2f : 1f;
+        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting && !playerState.IsHealing && !playerState.IsHolstering ? 2f : 1f;
         if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn )
             targetMagnitude = 1.5f;
         
 
-
-
-        if (isIdling || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.magnitude == 0 || isActionAndIdle)
         {
             targetMagnitude = 0f;
         }
@@ -345,7 +347,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isAttackingAndIdle || isDodgeingAndIdle || isHealingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isActionAndIdle)
         {
             targetMagnitudeX = 0f;
         }
@@ -354,7 +356,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle || isHealingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isActionAndIdle)
         {
             targetMagnitudeY = 0f;
         }
