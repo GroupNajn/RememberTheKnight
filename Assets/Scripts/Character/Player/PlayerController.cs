@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
 
         InitialChecksAndHandlers();
-        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling && playerLocomotionInput.MovementInput.magnitude == 0;
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
         bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
         bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
