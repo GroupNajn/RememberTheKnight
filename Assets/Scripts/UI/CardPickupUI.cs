@@ -52,7 +52,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
 

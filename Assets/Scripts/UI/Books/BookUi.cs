@@ -2,9 +2,10 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
-public class BookUi : MonoBehaviour
+public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
     //Updated by Anton 2026-05-16
@@ -67,8 +68,10 @@ public class BookUi : MonoBehaviour
 
     private BookTabEnum currentTab = BookTabEnum.Stats;
 
-    public void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         isAnimating = true;
 
         SetClosedInstant();

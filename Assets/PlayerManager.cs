@@ -139,6 +139,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void Drink() // used in the animation event of the heal animation
     {
         Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
+
+        playerStats.currentHealingCharges -= playerStats.healingChargeCost;
+        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+
+        playerAnimator.ResetTrigger("Drink");
     }
 
     public void Heal(float amount)
@@ -149,10 +154,10 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
 
-        playerStats.currentHealingCharges -= playerStats.healingChargeCost;
-        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+        //playerStats.currentHealingCharges -= playerStats.healingChargeCost;
+        //CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
 
-        playerAnimator.ResetTrigger("Drink");
+        //playerAnimator.ResetTrigger("Drink");
 
     }
 
