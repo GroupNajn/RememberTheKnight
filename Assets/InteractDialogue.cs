@@ -22,7 +22,7 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
 
-        if (InteractableSaveSystem.HasInteracted(interactableID)) 
+        if (PlayerPrefsSaveSystem.HasInteracted(interactableID)) 
         {
             if (firstTimeEffect != null) 
                 firstTimeEffect.SetActive(false);
@@ -38,9 +38,9 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
     }
     public void Interact() 
     {
-        if (!InteractableSaveSystem.HasInteracted(interactableID)) 
+        if (!PlayerPrefsSaveSystem.HasInteracted(interactableID)) 
         {
-            InteractableSaveSystem.SetInteracted(interactableID); 
+            PlayerPrefsSaveSystem.SetSaveState(interactableID); 
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
 
