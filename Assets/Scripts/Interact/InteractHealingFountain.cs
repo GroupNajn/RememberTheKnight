@@ -29,7 +29,7 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {

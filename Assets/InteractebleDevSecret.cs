@@ -14,7 +14,7 @@ public class InteractebleDevSecret : MonoBehaviour, IInteractable, IInteractable
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {

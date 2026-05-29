@@ -13,7 +13,7 @@ public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableU
         GameObject player = GameObject.FindWithTag("Player");
         weaponManager = player.GetComponent<PlayerWeaponManager>();
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
+        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {

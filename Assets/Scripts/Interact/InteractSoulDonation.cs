@@ -7,6 +7,8 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     CardSystem cardSystem;
     PlayerCollection playerCollection;
     private DonationMoveSoul moveSoul;
+    private CardContract currentContract;
+    private CardContract previousContract;
     bool NewCardUnlocked { get; set; } = false;
 
     CardData nextCard;
@@ -24,12 +26,14 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         lootSystem = LootManager.instance.gameObject.GetComponent<Loot_System>();
         cardSystem = LootManager.instance.gameObject.GetComponentInChildren<CardSystem>();
         playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
+        currentContract = playerCollection.playerContract;
         nextCard = cardSystem.GetNextCardInSelectedFamily();
         moveSoul = GetComponent<DonationMoveSoul>();
-        SetSoulsDonatedSinceLast();
+        SetSoulsDonatedSinceLastToFamily();
+
         if (nextCard)
         {
-            soulsRequired = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
+            soulsRequired = GameDataUpdater.instance.GetSoulCostForIngameRun(playerCollection.playerContract);
             soulsDonatedForNextUnlock = (int)Mathf.Pow(nextCard.cardSoulCost, 2);
             NewCardUnlocked = true;
         }
@@ -37,35 +41,38 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
     private void OnDestroy()
     {
-        SetSoulsToNextCardGlobally(soulsDonated);
+        GameDataUpdater.instance.SetSoulsCostInNextCard(playerCollection.playerContract);
+        GameDataUpdater.instance.SetSoulsRemaingToNextUnlock(playerCollection.playerContract, soulsDonated);
+        SetSoulsDonatedSinceLastToFamily();
     }
 
-    private void SetSoulsGlobally(int amount)
+
+    public void SetSoulsDonatedSinceLastToFamily()
     {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast += amount;
+        GameDataUpdater.instance.SetSoulsDonatedSinceLastToFamily(playerCollection.playerContract, soulsDonated);
     }
 
-    private void SetSoulsToNextCardGlobally(int donationAmount)
-    {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsRemainingToNextUnlock = (soulsDonatedForNextUnlock -= donationAmount);
-    }
 
-    private void ResetSoulsGlobally()
-    {
-        GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast = 0;
-    }
+  
 
-    private void SetSoulsDonatedSinceLast()
-    {
-        soulsDonated = GameObject.Find("GlobalData").GetComponent<GameData>().SoulsDoantedSinceLast;
-    }
+  
+
+    //private void ResetSoulsGlobally()
+    //{
+    //    GameObject.Find("GlobalData").GetComponent<GameData>().soulsDonatedSinceLast = 0;
+    //}
+
+    //private void SetSoulsDonatedSinceLast()
+    //{
+    //    soulsDonated = GameObject.Find("GlobalData").GetComponent<GameData>().soulsDonatedSinceLast;
+    //}
 
     public bool SetNextCard()
     {
         return (nextCard = cardSystem.GetNextCardInSelectedFamily()) != null;
     }
 
-    public int SetNetCardCost() => soulsRequired = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
+    public int SetNextCardCost() => soulsRequired = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
     public int SetSoulnsDonateForNextUnlock() => soulsDonatedForNextUnlock = (int)Mathf.Pow((float)nextCard.cardSoulCost, 2);
 
     public InteractableUIData GetUIData()
@@ -112,15 +119,15 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
 
             lootSystem.ConsumeSouls(donateAmount);
             moveSoul.InstantiateSoul();
-            SetSoulsGlobally(donateAmount);
+            //SetSoulsGlobally(donateAmount);
             
             soulsDonated++;
             if (soulsDonated >= soulsRequired)
             {
                     NewCardUnlocked = true;
                 soulsDonated = 0;
-                SetSoulsGlobally(soulsDonated);
-                ResetSoulsGlobally();
+                //SetSoulsGlobally(soulsDonated);
+                //ResetSoulsGlobally();
                 RuntimeManager.PlayOneShotAttached(unlockCardEvent, gameObject);
 
 

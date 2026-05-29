@@ -53,6 +53,12 @@ public class CardSystem : MonoBehaviour
                     unlockedCards.Add(cardData);
                     hashUnlocked.Add(cardData);
             }
+            if (PlayerPrefsSaveSystem.HasUnlockedCard(cardData.cardID))
+            {
+                unlockedCards.Add(cardData);
+                hashUnlocked.Add(cardData);
+
+            }
         }
     }
 
@@ -120,6 +126,7 @@ public class CardSystem : MonoBehaviour
     {
         return hashUnlocked.Contains(card);
     }
+
 
 
     /*<summary> Method is a test method used for the GameHabitat game show.

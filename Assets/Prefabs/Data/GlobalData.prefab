@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2219594897520776086}
   - component: {fileID: 6801889849702804174}
   - component: {fileID: 3913457017896330064}
+  - component: {fileID: 1583303869132174101}
   m_Layer: 0
   m_Name: GlobalData
   m_TagString: Untagged
@@ -46,6 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd737e572a76ef341802e8d2024dc1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <soulsDonatedSinceLast>k__BackingField: 0
+  <SoulsRemainingToNextUnlockWands>k__BackingField: 4
+  <SoulsRemainingToNextUnlockCups>k__BackingField: 4
+  <SoulsRemainingToNextUnlockPentacles>k__BackingField: 4
+  <SoulsRemainingToNextUnlockSwords>k__BackingField: 4
 --- !u!114 &6801889849702804174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36334489b3f6530488b09c2ac15cdb3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minLevelsBeforeBoss: 5
+  maxLevelsBeforeBoss: 7
 --- !u!114 &3913457017896330064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,5 +76,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83ec8982cb0188f4394b8ee9459af933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1583303869132174101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555635216403438552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21edf27f458a0c343b77f1f9a5248a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
