@@ -9,13 +9,9 @@ public class WorldSoundFXManager : MonoBehaviour
     public static WorldSoundFXManager instance;
 
     [Header("Damage Sounds")]
-   // public AudioClip[] damageSFX;
     public EventReference damageEvent;
 
     [Header("Action Sounds")]
-   // public AudioClip rollSFX;
-    //public AudioClip backstepSFX;
-    //public AudioClip pickUpSFX;
     public EventReference rollEvent;
     public EventReference backstepEvent;
     public EventReference cardPickupEvent;
@@ -29,6 +25,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference shopSelectCardEvent;
     public EventReference errorEvent;
     public EventReference shopDeselectCardEvent;
+    public EventReference ladyTalkingEvent;
 
 
     [Header("Button Sounds")]
@@ -37,6 +34,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference bookCloseEvent;
     public EventReference bookPageFlipEvent;
     public EventReference bookSlideEvent;
+
 
     [Header("VCA")]
     private VCA masterVCA;
