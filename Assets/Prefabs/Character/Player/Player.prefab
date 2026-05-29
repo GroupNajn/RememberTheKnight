@@ -749,7 +749,7 @@ CapsuleCollider:
     m_Bits: 4096
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 1
@@ -796,6 +796,8 @@ MonoBehaviour:
   AttackCharged: 0
   dodgeAcceleration: 1
   dodgeDelay: 0.1
+  currentInputMagnitude: 0
+  currentInputMagnitudeY: 0
   lockHandler: {fileID: 0}
   knockbackCalculationPos: {fileID: 3376499992144017366}
   knockbackForce: {x: 0, y: 0, z: 0}
@@ -940,7 +942,7 @@ MonoBehaviour:
   InteractDistance: 7
   interactMask:
     serializedVersion: 2
-    m_Bits: 8193
+    m_Bits: 270337
 --- !u!114 &8692204682195476090
 MonoBehaviour:
   m_ObjectHideFlags: 0
