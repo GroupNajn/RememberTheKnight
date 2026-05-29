@@ -133,6 +133,9 @@ public class UIManager : MonoBehaviour
             if (lorePageUI.activeSelf)
                 return;
             
+            if (winMenuUI.activeSelf)
+                return;
+
             // ADDED NEWLY
 
             if (cardShopUI.activeSelf)
