@@ -6,6 +6,7 @@ using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
@@ -166,7 +167,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
     public void BuildLorePages()
     {
         lorePages.Clear();
-        foreach (var entry in allLoreEntries) 
+        foreach (var entry in allLoreEntries)
         {
             bool unlocked = loreManager.IsLoreUnlocked(entry.id);
             var entryPages = entry.GetPages(charsPerPage);
@@ -186,26 +187,66 @@ public class BookUi : AutoSelectFirstButtonOnEnable
 
     private string ScrambleText(string text)
     {
-        char[] chars = text.ToCharArray();
+        string symbols = "@#$%&";
 
+        //Remove layout of text
+        string cleanText = new string(text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+        char[] chars = cleanText.ToCharArray();
+
+        //heavy scrable
         for (int i = 0; i < chars.Length; i++)
         {
-            if (char.IsWhiteSpace(chars[i]))
-                continue;
-
             int randomIndex = UnityEngine.Random.Range(0, chars.Length);
-
-            while (char.IsWhiteSpace(chars[randomIndex]))
-            {
-                randomIndex = UnityEngine.Random.Range(0, chars.Length);
-            }
 
             (chars[i], chars[randomIndex]) = (chars[randomIndex], chars[i]);
         }
 
-        return new string(chars);
-    }
+        // Corrupt some letters into symbols
 
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (UnityEngine.Random.value < 0.1f)
+            {
+                chars[i] = (symbols[UnityEngine.Random.Range(0, symbols.Length)]);
+            }
+        }
+
+        // rebuild into block text
+        int lineLenght = 38;
+
+
+        System.Text.StringBuilder builder =
+            new System.Text.StringBuilder();
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            builder.Append(chars[i]);
+
+            // Bigger fragmented spacing
+            if (UnityEngine.Random.value < 0.12f)
+            {
+                int extraSpaces =
+                    UnityEngine.Random.Range(1, 4);
+
+                builder.Append(new string(' ', extraSpaces));
+            }
+
+            // Normal line breaks
+            if ((i + 1) % lineLenght == 0)
+            {
+                builder.Append("\n");
+
+                // Sometimes add completely blank lines
+                if (UnityEngine.Random.value < 0.28f)
+                {
+                    builder.Append("\n");
+                }
+            }
+            
+        }
+        return builder.ToString();
+    }
     public void ChangeTab(BookTabEnum tab)
     {
         if (isAnimating)
