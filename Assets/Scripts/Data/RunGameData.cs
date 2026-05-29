@@ -6,7 +6,8 @@ public class RunGameData : MonoBehaviour
 
     [SerializeField] int minLevelsBeforeBoss = 5;
     [SerializeField] int maxLevelsBeforeBoss = 7;
-
+    [SerializeField] public bool hasSpawnedSecretCard = false;
+ 
     bool hasStarted = false;
     public int LevelCounter { get; private set; } = 0;
     public int LevelsBeforeBoss { get; private set; } = 1;
