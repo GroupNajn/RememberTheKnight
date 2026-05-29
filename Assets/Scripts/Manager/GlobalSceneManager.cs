@@ -216,6 +216,7 @@ public class GlobalSceneManager : MonoBehaviour
             Debug.Log($"FATAL ERROR PREVENTED: No Scene in FMOD called {sceneName}");
         }
 
+        yield return null;
         // Start fading out from black
         yield return StartCoroutine(FadeFromBlack());
 
