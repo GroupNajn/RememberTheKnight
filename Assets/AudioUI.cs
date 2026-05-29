@@ -15,9 +15,9 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     [SerializeField] TextMeshProUGUI musicVolText;
     [SerializeField] TextMeshProUGUI SoundsFXVolText;
 
-    private float baseMasterVolume;
-    private float baseMusicVolume;
-    private float baseSFXVolume;
+    private float baseMasterVolume = 0.75f;
+    private float baseMusicVolume = 0.75f;
+    private float baseSFXVolume = 0.75f;
 
     protected override void Awake()
     {
@@ -28,13 +28,10 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     {
         uiManager = GetComponentInParent<UIManager>();
 
-        //masterVolumeSlider.onValueChanged.AddListener(SetMasterVolume);
-        //musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-        //SoundsFXVolumeSlider.onValueChanged.AddListener(SetSoundFXVolume);
-
-        baseMasterVolume = WorldSoundFXManager.instance.GetMasterVolume();
-        baseMusicVolume = WorldSoundFXManager.instance.GetMusicVolume();
-        baseSFXVolume = WorldSoundFXManager.instance.GetSFXVolume();
+        // VILL VI BÖRJA PÅ 100% UNCOMMENT DETTA
+        //baseMasterVolume = WorldSoundFXManager.instance.GetMasterVolume();
+        //baseMusicVolume = WorldSoundFXManager.instance.GetMusicVolume();
+        //baseSFXVolume = WorldSoundFXManager.instance.GetSFXVolume();
 
         masterVolumeSlider.value = baseMasterVolume;
         musicVolumeSlider.value = baseMusicVolume;
