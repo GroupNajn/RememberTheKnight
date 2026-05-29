@@ -45,7 +45,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats = GetComponent<PlayerStats>();
         playerStates = GetComponent<PlayerStates>();
         Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
-        Event_System.instance.OnSceneTransitionDone += ReApplyStats;
+        Event_System.instance.OnLoadScenes += ReApplyStats;
 
         //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
         //lowStamInstance.start();
