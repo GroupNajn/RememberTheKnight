@@ -1,7 +1,9 @@
-using TMPro;
-using UnityEngine;
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 
 //Made by Michaëla 22-05-2026
@@ -20,6 +22,14 @@ public class DialogueUI : MonoBehaviour
 
     private Coroutine typingCoroutine;
 
+    private EventInstance talkingInstance;
+
+
+    private void Awake()
+    {
+            talkingInstance = RuntimeManager.CreateInstance(WorldSoundFXManager.instance.ladyTalkingEvent);
+    }
+    
     public void StartDialogue(Dialogue[] dialogueLines)
     {
         currentLines = dialogueLines;
@@ -56,7 +66,10 @@ public class DialogueUI : MonoBehaviour
         UpdateMoreText();
 
         if (typingCoroutine != null)
+        {
             StopCoroutine(typingCoroutine);
+            talkingInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
 
         typingCoroutine = StartCoroutine(TypeLine(currentLines[currentLine].text));
     }
@@ -72,6 +85,8 @@ public class DialogueUI : MonoBehaviour
 
         dialogueText.maxVisibleCharacters = 0;
 
+        talkingInstance.start();
+
         int totalCharacters = dialogueText.textInfo.characterCount;
 
         for (int i = 0; i <= totalCharacters; i++)
@@ -80,6 +95,7 @@ public class DialogueUI : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
+        talkingInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
         isTyping = false;
         canContinue = true;
@@ -93,6 +109,9 @@ public class DialogueUI : MonoBehaviour
 
         dialogueText.maxVisibleCharacters =
             dialogueText.textInfo.characterCount;
+
+        talkingInstance.stop(STOP_MODE.ALLOWFADEOUT);
+
 
         isTyping = false;
         canContinue = true;
