@@ -442,6 +442,7 @@ public class UIManager : MonoBehaviour
         cardSelectUI.SetActive(false);
 
         UIMenuActive = false;
+        cameraTransitioning = false;
         CheckUIState();
         interactCameraHandler.InteractCamReset();
     }
@@ -467,6 +468,7 @@ public class UIManager : MonoBehaviour
         familySelectUI.SetActive(false);
 
         UIMenuActive = false;
+        cameraTransitioning = false;
         CheckUIState();
 
         interactCameraHandler.InteractCamReset();
@@ -526,6 +528,7 @@ public class UIManager : MonoBehaviour
         cardShopUI.SetActive(false);
 
         UIMenuActive = false;
+        cameraTransitioning = false;
         CheckUIState();
         interactCameraHandler.InteractCamReset();
     }

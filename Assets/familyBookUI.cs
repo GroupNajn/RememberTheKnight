@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UI;
 
 public class familyBookUI : AutoSelectFirstButtonOnEnable
 {
@@ -14,6 +15,12 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
     private PlayerInput playerInput;
     CardFamily confirmedFamily;
 
+    [SerializeField] Sprite cupsIndicator;
+    [SerializeField] Sprite swordsIndicator;
+    [SerializeField] Sprite pentaclesIndicator;
+    [SerializeField] Sprite wandsIndicator;
+
+    [SerializeField] GameObject familyIndicatorImage;
 
     [SerializeField] private FamilyUI defaultFamily;
     protected override void Awake()
@@ -67,6 +74,34 @@ public class familyBookUI : AutoSelectFirstButtonOnEnable
 
         uiManager.CloseFamilySelectUI();
         interactCameraHandler.InteractCamReset();
+
+        familyIndicatorImage.SetActive(true);
+
+        Image image = familyIndicatorImage.GetComponent<Image>();
+
+        switch (confirmedFamily)
+        {
+            case CardFamily.Cups:
+                image.sprite = cupsIndicator;
+                break;
+            case CardFamily.Swords:
+                image.sprite = swordsIndicator;
+                break;
+            case CardFamily.Pentacles:
+                image.sprite = pentaclesIndicator;
+                break;
+            case CardFamily.Wands:
+                image.sprite = wandsIndicator;
+                break;
+            default:
+                image.sprite = null;
+                break;
+        }
+
+        if (image.sprite == null)
+        {
+            familyIndicatorImage.SetActive(false);
+        }
     }
 
     public void OnExit()
