@@ -99,6 +99,9 @@ public class UIManager : MonoBehaviour
     {
         if (!UIMenuActive)
         {
+            if (GlobalSceneManager.Instance.isTransitioning)
+                return;
+
             if (playerStats.CurrentHealth <= 0)
                 return;
 
@@ -124,17 +127,27 @@ public class UIManager : MonoBehaviour
             if (cardUnlockUI.activeSelf)
                 return;
 
-            if (lorePageUI.activeSelf)
-                return;
-
-            if (bookUI.activeSelf)
-                return;
-
-            if (cardShopUI.activeSelf)
-                return;
-
             if (cameraTransitioning)
                 return;
+
+            if (lorePageUI.activeSelf)
+                return;
+            
+            // ADDED NEWLY
+
+            if (cardShopUI.activeSelf)
+            {
+                //CloseCardShopUI();  
+                return;
+            }
+
+            if (bookUI.activeSelf)
+            {
+                CloseBookUI();
+                return;
+            }
+
+            // TO HERE
 
             if (optionMenuUI.activeSelf)
             {
@@ -157,6 +170,12 @@ public class UIManager : MonoBehaviour
             if (videoUI.activeSelf)
             {
                 GoBackFromVideo();
+                return;
+            }
+
+            if(dialogueUI.activeSelf)
+            {
+                CloseDialogueUI();
                 return;
             }
 

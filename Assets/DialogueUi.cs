@@ -1,7 +1,8 @@
-using TMPro;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 //Made by Michaëla 22-05-2026
@@ -20,6 +21,16 @@ public class DialogueUI : MonoBehaviour
 
     private Coroutine typingCoroutine;
 
+    string interactKey;
+    [SerializeField] private InputActionReference interactAction;
+
+    private void OnEnable()
+    {
+        interactKey = InputManager.Instance.SetInteractBinding();
+
+        if (interactAction != null && interactAction.action != null)
+            interactAction.action.Enable();
+    }
     public void StartDialogue(Dialogue[] dialogueLines)
     {
         currentLines = dialogueLines;
@@ -33,10 +44,12 @@ public class DialogueUI : MonoBehaviour
 
     private void Update()
     {
+        interactKey = InputManager.Instance.SetInteractBinding();
+
         if (!gameObject.activeSelf)
             return;
 
-        if (canPressInput && Input.GetKeyDown(KeyCode.F)) // change to correct key with interact
+        if (canPressInput && interactAction.action.WasPressedThisFrame()) // change to correct key with interact
         {
             if (isTyping)
             {
@@ -47,6 +60,7 @@ public class DialogueUI : MonoBehaviour
                 NextLine();
             }
         }
+
     }
 
     void ShowLine()
@@ -122,9 +136,10 @@ public class DialogueUI : MonoBehaviour
     //If here are more lines shows . . . else nothing to indicate to player more dialogue exists
     void UpdateMoreText()
     {
+
         if (currentLine < currentLines.Length - 1)
         {
-            moreText.text = ". . .";
+            moreText.text = $". . . [{interactKey}]";
         }
         else
         {

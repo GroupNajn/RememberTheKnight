@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class BookUi : AutoSelectFirstButtonOnEnable
 {
@@ -223,6 +224,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
 
                 EnableTabButtons();
                 UpdateTabButtons();
+                EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
             });
         });
     }
