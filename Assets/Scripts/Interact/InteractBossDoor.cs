@@ -10,9 +10,12 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private MeshCollider rightDoorCollider;
     [SerializeField] private float animationDuration = 0.1f;
     [SerializeField] private float rotationAngle = 125f;
+
+    [SerializeField] private bool isAnimating;
     [SerializeField] private bool doorOpen;
 
     [Header("Saved Data")]
+    [SerializeField] private GameData gameData;
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
 
@@ -21,16 +24,29 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
     void Start()
     {
         playerUIManager = FindFirstObjectByType<UIManager>();
+        gameData = FindFirstObjectByType<GameData>();
     }
 
     public void Interact()
     {
+        //gameData.GameCompleted = true; 
+
+        if (!gameData.GameCompleted)
+            return;
+
+        if (isAnimating)
+            return;
+
+        isAnimating = true;
+
         if (doorOpen)
         {
+           
             AnimateCloseDoor(() => 
             {
                 leftDoorCollider.enabled = true;
                 rightDoorCollider.enabled = true;
+                isAnimating = false;
             });
         }
         else
@@ -39,6 +55,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
             {
                 leftDoorCollider.enabled = true;
                 rightDoorCollider.enabled = true;
+                isAnimating = false;
             });
         }
 
@@ -65,6 +82,13 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
     {
         var UIData = new InteractableUIData();
         UIData.CanInteract = true;
+
+        if (!gameData.GameCompleted)
+        {
+            UIData.CanInteract = false;
+            UIData.InfoText = "A memory remains unclaimed";
+            return UIData;
+        }
 
         UIData.InfoText = "Open Door";
         return UIData;

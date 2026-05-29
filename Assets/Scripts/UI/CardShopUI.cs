@@ -1,8 +1,9 @@
 using FMODUnity;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
     [SerializeField] private int maxPurchased = 1;
     [SerializeField] private Button purchaseButton;
+    [SerializeField] private Button leaveButton;
 
     [SerializeField] private TextMeshProUGUI errorText;
 
@@ -35,10 +37,6 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
         base.Awake();
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
     private void Start()
     {
         playerCollection = GameObject.FindWithTag("Player").GetComponent<PlayerCollection>();
@@ -46,11 +44,31 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
 
-        UpdatePurchaseButton();
+        UpdateUIButtons();
     }
-    public void UpdatePurchaseButton()
+    public void UpdateUIButtons()
     {
         purchaseButton.interactable = purchasedCardData.Count > 0;
+
+        foreach (CardSlotShopUI uiSlot in uiSlots)
+        {
+            if (uiSlot.CardData == null)
+            {
+                uiSlot.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                if (uiSlot.IsSelected)
+                {
+                    uiSlot.GetComponent<Button>().interactable = false;
+                    continue;
+                }
+
+                uiSlot.GetComponent<Button>().interactable = true;
+            }
+        }
+
+        //EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
     }
 
     public void PopulateSlots()
@@ -98,7 +116,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
             purchasedCardData.Remove(card);
 
-            UpdatePurchaseButton();
+            UpdateUIButtons();
 
             RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopDeselectCardEvent);
             return;
@@ -144,7 +162,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
         purchasedCardData.Add(card);
 
-        UpdatePurchaseButton();
+        UpdateUIButtons();
     }
 
     public void OnConfirmSelection()
@@ -236,7 +254,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
         }
         purchasedCardData.Clear();
-        UpdatePurchaseButton();
+        UpdateUIButtons();
     }
 
     public void ForceReset()
@@ -252,7 +270,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                 uislot.LinkedBoardSlot.SetSelectedVisual(false);
             }
         }
+
         purchasedCardData.Clear();
-        UpdatePurchaseButton();
+        UpdateUIButtons();
     }
 }

@@ -21,7 +21,9 @@ public class GameDataUpdater : MonoBehaviour
         InitializeDictonaries();
         StartCoroutine(AutoSave());
         SetSoulsFromFile();
+        LoadBossKillCompleted();
         Event_System.instance.OnLobbyLoaded += Save;
+        Event_System.instance.OnBossDeath += SaveAfterBossKill;
     }
 
     private void Awake()
@@ -58,6 +60,7 @@ public class GameDataUpdater : MonoBehaviour
         SaveDonatedSinceLastToPlayerPrefs();
         SaveSoulsRemainingToPlayerPrefs();
         Event_System.instance.OnLobbyLoaded -= Save;
+        Event_System.instance.OnBossDeath -= SaveAfterBossKill;
     }
 
     public static void ResetGameData()
@@ -167,11 +170,22 @@ public class GameDataUpdater : MonoBehaviour
 
     }
 
+    public void SaveBossKillToPlayerPrefs()
+    {
+        PlayerPrefsSaveSystem.SaveBossKill("Boss_Killed");
+        gameData.GameCompleted = true;
+    }
+
     private void Save()
     {
         InitializeDictonaries();
         SaveDonatedSinceLastToPlayerPrefs();
         SaveSoulsRemainingToPlayerPrefs();
+    }
+
+    private void SaveAfterBossKill()
+    {
+        SaveBossKillToPlayerPrefs();
     }
 
     private IEnumerator AutoSave()
@@ -214,6 +228,12 @@ public class GameDataUpdater : MonoBehaviour
         InitializeDictonaries();
     }
 
-
+    public void LoadBossKillCompleted()
+    {
+        if (PlayerPrefsSaveSystem.HasKilledBoss("Boss_Killed"))
+        {
+            gameData.GameCompleted = true;
+        }
+    }
 
 }
