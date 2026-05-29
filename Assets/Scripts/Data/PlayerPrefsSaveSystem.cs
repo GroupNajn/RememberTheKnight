@@ -35,7 +35,15 @@ public static class PlayerPrefsSaveSystem
     }
     public static int GetSavedSouls(string soulValueText)
     {
+        int souls = PlayerPrefs.GetInt(soulValueText);
+        if (souls <= 0) return 4;
+        return souls;
+    }
+
+    public static int GetSavedSoulsDonatedSinecLast(string soulValueText)
+    {
         return PlayerPrefs.GetInt(soulValueText);
+
     }
 
 

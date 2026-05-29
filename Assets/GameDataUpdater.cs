@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using System.Linq;
 
 public class GameDataUpdater : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class GameDataUpdater : MonoBehaviour
         runGameData = GetComponent<RunGameData>();
         InitializeDictonaries();
         StartCoroutine(AutoSave());
+        SetSoulsFromFile();
+        Event_System.instance.OnLobbyLoaded += Save;
     }
 
     private void Awake()
@@ -49,6 +52,12 @@ public class GameDataUpdater : MonoBehaviour
             {"SoulsRemainingToNextUnlockSwords", gameData.SoulsRemainingToNextUnlockSwords }
         };
 
+    }
+    private void OnDestroy()
+    {
+        SaveDonatedSinceLastToPlayerPrefs();
+        SaveSoulsRemainingToPlayerPrefs();
+        Event_System.instance.OnLobbyLoaded -= Save;
     }
 
     public static void ResetGameData()
@@ -158,6 +167,13 @@ public class GameDataUpdater : MonoBehaviour
 
     }
 
+    private void Save()
+    {
+        InitializeDictonaries();
+        SaveDonatedSinceLastToPlayerPrefs();
+        SaveSoulsRemainingToPlayerPrefs();
+    }
+
     private IEnumerator AutoSave()
     {
         while (true)
@@ -167,6 +183,35 @@ public class GameDataUpdater : MonoBehaviour
             SaveDonatedSinceLastToPlayerPrefs();
             SaveSoulsRemainingToPlayerPrefs();
         }
+    }
+
+    public void SetSoulsFromFile()
+    {
+        gameData.soulsDonatedSinceLastCups =
+           PlayerPrefsSaveSystem.GetSavedSoulsDonatedSinecLast("soulsDonatedSinceLastCups");
+
+        gameData.soulsDonatedSinceLastWands =
+            PlayerPrefsSaveSystem.GetSavedSoulsDonatedSinecLast("soulsDonatedSinceLastWands");
+
+        gameData.soulsDonatedSinceLastPentacles =
+            PlayerPrefsSaveSystem.GetSavedSoulsDonatedSinecLast("soulsDonatedSinceLastPentacles");
+
+        gameData.soulsDonatedSinceLastSwords =
+            PlayerPrefsSaveSystem.GetSavedSoulsDonatedSinecLast("soulsDonatedSinceLastSwords");
+
+        gameData.SoulsRemainingsoulToNextUnlockCups =
+            PlayerPrefsSaveSystem.GetSavedSouls("SoulsRemainingsoulToNextUnlockCups");
+
+        gameData.SoulsRemainingToNextUnlockWands =
+            PlayerPrefsSaveSystem.GetSavedSouls("SoulsRemainingToNextUnlockWands");
+
+        gameData.SoulsRemainingToNextUnlockPentacles =
+            PlayerPrefsSaveSystem.GetSavedSouls("SoulsRemainingToNextUnlockPentacles");
+
+        gameData.SoulsRemainingToNextUnlockSwords =
+            PlayerPrefsSaveSystem.GetSavedSouls("SoulsRemainingToNextUnlockSwords");
+
+        InitializeDictonaries();
     }
 
 
