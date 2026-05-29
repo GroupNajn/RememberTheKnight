@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 
 public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    private BookUi bookUi;
+
     [SerializeField] private RectTransform rect;
 
     [Header("Positions")]
@@ -11,6 +13,11 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Vector3 selectedY;
 
     private bool isSelected;
+
+    private void Start()
+    {
+        bookUi = FindFirstObjectByType<BookUi>(FindObjectsInactive.Include);
+    }
 
     public void SetSelected(bool selected)
     {
@@ -26,7 +33,10 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (isSelected)
             return;
-        
+
+        if (bookUi.isAnimating)
+            return;
+
         LeanTween.cancel(rect);
         LeanTween.move(rect, hoverY, 0.3f).setEaseOutQuad().setIgnoreTimeScale(true);
     }
@@ -34,6 +44,9 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         if (isSelected)
+            return;
+
+        if (bookUi.isAnimating)
             return;
 
         LeanTween.cancel(rect);
@@ -45,6 +58,9 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (isSelected)
             return;
 
+        if (bookUi.isAnimating)
+            return;
+
         LeanTween.cancel(rect);
         LeanTween.move(rect, hoverY, 0.3f).setEaseOutQuad().setIgnoreTimeScale(true);
     }
@@ -52,6 +68,9 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnDeselect(BaseEventData eventData)
     {
         if (isSelected)
+            return;
+
+        if (bookUi.isAnimating)
             return;
 
         LeanTween.cancel(rect);

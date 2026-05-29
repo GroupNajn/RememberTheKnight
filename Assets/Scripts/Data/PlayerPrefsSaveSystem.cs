@@ -12,7 +12,6 @@ public static class PlayerPrefsSaveSystem
         return PlayerPrefs.GetInt(unlockedID, 0) == 1;
     }
 
-
     // Returns true if the string id has been interacted with
     public static bool HasInteracted(string interactableID)
     {
@@ -22,6 +21,17 @@ public static class PlayerPrefsSaveSystem
     public static bool HasUnlockedCard(string cardID)
     {
         return PlayerPrefs.GetInt(cardID, 0) == 1;
+    }
+
+    // Returns true if the string id has been killed.
+    public static bool HasKilledBoss(string bossID)
+    {
+        return PlayerPrefs.GetInt(bossID, 0) == 1;
+    }
+
+    public static void SaveBossKill(string bossID)
+    {
+        PlayerPrefs.SetInt(bossID, 1);
     }
 
     public static void SaveSouls(string soulValueText,int amount)
