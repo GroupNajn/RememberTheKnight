@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DevPageUI : MonoBehaviour
+public class DevPageUI : AutoSelectFirstButtonOnEnable
 {
     [Header("Settings")]
     [SerializeField] private RectTransform devPageWindowRect;
@@ -16,8 +16,9 @@ public class DevPageUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private UIManager uiManager;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         DisableGameObjects();
         StartCoroutine(ScaleBouncePickUpWindow());
     }

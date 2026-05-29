@@ -1,8 +1,4 @@
-using System.IO;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
@@ -221,6 +217,72 @@ public class InputManager : MonoBehaviour
 
         //string path = interactAction.bindings[bindingIndex].effectivePath;
         string key = interactAction.GetBindingDisplayString(bindingIndex);
+
+        if (formatter != null)
+            return formatter.GetEnglishBindingName(key);
+
+
+        return key;
+    }
+
+    public string SetOpenBookBinding()
+    {
+        InputAction BookAction = playerInputs[0].actions.FindAction("OpenBook");
+
+        if (BookAction == null)
+            return "F/Y";
+
+        int bindingIndex = usingGamepad ? 1 : 0;
+
+        if (bindingIndex >= BookAction.bindings.Count)
+            return "F/Y";
+
+        //string path = interactAction.bindings[bindingIndex].effectivePath;
+        string key = BookAction.GetBindingDisplayString(bindingIndex);
+
+        if (formatter != null)
+            return formatter.GetEnglishBindingName(key);
+
+
+        return key;
+    }
+
+    public string SetHealBinding()
+    {
+        InputAction BookAction = playerInputs[0].actions.FindAction("Heal");
+
+        if (BookAction == null)
+            return "F/Y";
+
+        int bindingIndex = usingGamepad ? 1 : 0;
+
+        if (bindingIndex >= BookAction.bindings.Count)
+            return "F/Y";
+
+        //string path = interactAction.bindings[bindingIndex].effectivePath;
+        string key = BookAction.GetBindingDisplayString(bindingIndex);
+
+        if (formatter != null)
+            return formatter.GetEnglishBindingName(key);
+
+
+        return key;
+    }
+
+    public string SetHolsterBinding()
+    {
+        InputAction BookAction = playerInputs[0].actions.FindAction("Holster");
+
+        if (BookAction == null)
+            return "F/Y";
+
+        int bindingIndex = usingGamepad ? 1 : 0;
+
+        if (bindingIndex >= BookAction.bindings.Count)
+            return "F/Y";
+
+        //string path = interactAction.bindings[bindingIndex].effectivePath;
+        string key = BookAction.GetBindingDisplayString(bindingIndex);
 
         if (formatter != null)
             return formatter.GetEnglishBindingName(key);

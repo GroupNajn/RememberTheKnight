@@ -7,7 +7,7 @@ using TMPro;
 using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.UI;
-public class LorePageUI : MonoBehaviour
+public class LorePageUI : AutoSelectFirstButtonOnEnable
 {
     [Header("Settings")]
     [SerializeField] private RectTransform lorePageWindowRect;
@@ -21,8 +21,9 @@ public class LorePageUI : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BookUi book;
     [SerializeField] private PlayerStats playerStats;
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         DisableGameObjects();
         StartCoroutine(ScaleBouncePickUpWindow());
     }

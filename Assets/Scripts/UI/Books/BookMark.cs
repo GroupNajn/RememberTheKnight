@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private RectTransform rect;
 
@@ -32,6 +32,24 @@ public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isSelected)
+            return;
+
+        LeanTween.cancel(rect);
+        LeanTween.move(rect, normalY, 0.3f).setEaseOutQuad().setIgnoreTimeScale(true);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if (isSelected)
+            return;
+
+        LeanTween.cancel(rect);
+        LeanTween.move(rect, hoverY, 0.3f).setEaseOutQuad().setIgnoreTimeScale(true);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
     {
         if (isSelected)
             return;
