@@ -41,6 +41,10 @@ public class WorldSoundFXManager : MonoBehaviour
     private VCA musicVCA;
     private VCA sfxVCA;
 
+    [Header("Music")]
+    public EventReference musicEvent;
+    public EventInstance musicInstance;
+
     //[Header("Boss Music")]
     //[SerializeField] AudioSource BossIntroPlayer;
     //[SerializeField] AudioSource BossLoopPlayer;
@@ -71,7 +75,8 @@ public class WorldSoundFXManager : MonoBehaviour
         {
             Debug.Log("Fatal error prevented when setting vca references");
         }
-       
+       musicInstance = RuntimeManager.CreateInstance(musicEvent);
+       musicInstance.start();
     }
 
     private void Start()
