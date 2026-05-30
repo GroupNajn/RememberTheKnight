@@ -513,7 +513,7 @@ public class LootManager : MonoBehaviour
     {
         List<CardData> result = new List<CardData>();
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 6; i++)
         {
             RarityTier rolledRarity = RollRewardRarity(RarityTier.Rare);
 

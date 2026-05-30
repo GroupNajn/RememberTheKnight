@@ -56,6 +56,8 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         cardData = card;
 
+        soulCostDisplay.SetActive(true);
+
         soulCostText.text = card.cardSoulCost.ToString();
     }
 
