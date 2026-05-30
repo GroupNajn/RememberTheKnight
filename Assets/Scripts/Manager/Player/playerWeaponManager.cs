@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -83,7 +84,10 @@ public class PlayerWeaponManager : CharacterWeaponManager
     public void OnHolster(InputValue action)
     {
         if (!playerStates.InActionState())
+        {
+            RuntimeManager.PlayOneShot(holsterd? WorldSoundFXManager.instance.unHolsterEvent : WorldSoundFXManager.instance.holsterEvent);
             playerAnimator.SetTrigger("Holster");
+        }
     }
 
     public void HolsterEvent() // Called from animation event
@@ -137,6 +141,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         if (Weapons.Count == 0) return;
 
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.weaponSwitchEvent);
         if (Holsterd)
         {
             HolsterEvent();
