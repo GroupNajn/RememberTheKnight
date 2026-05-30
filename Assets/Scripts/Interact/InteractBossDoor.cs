@@ -48,7 +48,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
 
         if (doorOpen)
         {
-            RuntimeManager.PlayOneShot(closeEvent);
+            RuntimeManager.PlayOneShotAttached(closeEvent,gameObject);
             AnimateCloseDoor(() => 
             {
                 leftDoorCollider.enabled = true;
@@ -60,7 +60,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
         {
             AnimateOpenDoor(() =>
             {
-                RuntimeManager.PlayOneShot(openEvent);
+                RuntimeManager.PlayOneShotAttached(openEvent,gameObject);
 
                 leftDoorCollider.enabled = false;
                 rightDoorCollider.enabled = false;
