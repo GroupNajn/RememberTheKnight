@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LorePageUI : AutoSelectFirstButtonOnEnable
 {
+    //created by Anton
     [Header("Settings")]
     [SerializeField] private RectTransform lorePageWindowRect;
     [SerializeField] private float duration = 1f;
@@ -21,6 +22,9 @@ public class LorePageUI : AutoSelectFirstButtonOnEnable
     [SerializeField] private UIManager uiManager;
     [SerializeField] private BookUi book;
     [SerializeField] private PlayerStats playerStats;
+
+    private LoreEntry currentLoreEntry;
+
     protected override void OnEnable()
     {
         base.OnEnable();
@@ -53,10 +57,12 @@ public class LorePageUI : AutoSelectFirstButtonOnEnable
 
     public void OnRememberLore()
     {
+        book.SetPendingLoreEntry(currentLoreEntry);
+
         uiManager.CloseLorePageUI();
         uiManager.OpenBookUI();
 
-        book.OpenTab(BookUi.BookTabEnum.Lore);
+        //book.OpenTab(BookUi.BookTabEnum.Lore);
     }
 
     void EnableGameObjects()
@@ -69,6 +75,8 @@ public class LorePageUI : AutoSelectFirstButtonOnEnable
 
     public void SetLoreEntry(LoreEntry entry)
     {
+        currentLoreEntry = entry;
+
         loreTextTMP.text = entry.GetPages(500)[0];
         loreTitleTMP.text = entry.title;
     }

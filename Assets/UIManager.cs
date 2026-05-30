@@ -582,12 +582,16 @@ public class UIManager : MonoBehaviour
     }
 
     // LORE PAGE UI
-    public void OpenLorePageUI()
+    public void OpenLorePageUI(LoreEntry entry)
     {
         CloseInteractiveUI();
         CloseUIOnMenuOpen();
         lorePageUI.SetActive(true);
-
+       
+       
+        BookUi bookUi = FindFirstObjectByType<BookUi>(FindObjectsInactive.Include);
+        bookUi.OpenLoreAtEntry(entry);
+        
         UIMenuActive = true;
         CheckUIState();
     }

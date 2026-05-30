@@ -12,9 +12,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
     //made by Michaëla 2026-04-19
     //Updated by Anton 2026-05-16
     //Overhaul made by Anton 2026-05-17
+    //rewriten scrambledText method and added open on lore entry by Michaëla 2026-05-30
 
-    // Todo - make when pressing tab buttons keep pages on same page as now back does not work if pressed tab if pages stats has only one page.
-    [Header("Pages")]
+     [Header("Pages")]
     [SerializeField] private BookPageUI leftPage;
     [SerializeField] private BookPageUI rightPage;
 
@@ -60,6 +60,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
     private List<PageData> currentPages = new();
 
     private int currentIndex = 0;
+    private LoreEntry pendingLoreEntry;
 
     public enum BookTabEnum
     {
@@ -79,6 +80,12 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         SetClosedInstant();
         BaseBookSetup();
 
+        if (pendingLoreEntry != null)
+        {
+            OpenLoreAtEntry(pendingLoreEntry);
+            pendingLoreEntry = null;
+        }
+
         DisableTabButtonsTemporarily();
         StartCoroutine(AnimateSize(() =>
         {
@@ -87,7 +94,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
                 AnimateOpen(() =>
                 {
                     isAnimating = false;
-                    Debug.Log($"isAnimating is: {false}");
+                    //Debug.Log($"isAnimating is: {false}");
                     EnableTabButtons();
                     UpdateTabButtons();
                 });
@@ -461,5 +468,28 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         movingBook.transform.localScale = reverse  ? Vector3.zero : Vector3.one;
 
         onComplete?.Invoke();
+    }
+    public void OpenLoreAtEntry(LoreEntry entry)
+    {
+        currentTab = BookTabEnum.Lore;
+        currentPages = lorePages;
+
+        int loreIndex = allLoreEntries.IndexOf(entry);
+       
+        if (loreIndex < 0)
+            loreIndex = 0;
+
+        currentIndex = (loreIndex / 2) * 2;
+
+        ShowPages();
+        UpdateTabButtons();
+
+        statsTab.SetSelected(false);
+        cardsTab.SetSelected(false);
+        loreTab.SetSelected(true);
+    }
+    public void SetPendingLoreEntry(LoreEntry entry)
+    {
+        pendingLoreEntry = entry;
     }
 }

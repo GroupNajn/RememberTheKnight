@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    // created by Andton
+    
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
@@ -43,7 +45,8 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
 
         loreManager.UnlockLore(loreEntry.id);
         lorePageUI.SetLoreEntry(loreEntry);
-        playerUIManager.OpenLorePageUI();
+        playerUIManager.OpenLorePageUI(loreEntry);
+
     }
 
     public InteractableUIData GetUIData()
