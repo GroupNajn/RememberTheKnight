@@ -104,7 +104,14 @@ public class BounceScript : MonoBehaviour
             collisionRestored = true;
         }
     }
-
+    /// <summary>
+    /// Handles collision events when the object collides with another collider, triggering bounce or landing behavior
+    /// as appropriate.
+    /// </summary>
+    /// <remarks>This method is typically called by the Unity engine when the object first makes contact with
+    /// another collider. It only processes collisions with objects on specific environment layers and ignores
+    /// subsequent collisions after the object has landed.</remarks>
+    /// <param name="collision">The collision information associated with the contact event.</param>
     private void OnCollisionEnter(Collision collision)
     {
         if (hasLanded) return;
@@ -137,7 +144,14 @@ public class BounceScript : MonoBehaviour
     {
         return (mask.value & (1 << layer)) != 0;
     }
-
+    /// <summary>
+    /// Handles the landing behavior by snapping the object to the ground if possible and updating its physical state to
+    /// indicate it has landed.
+    /// </summary>
+    /// <remarks>This method attempts to position the object safely on the environment surface below it,
+    /// within a limited snap distance. After landing, the object's velocity is reset and it is set to a kinematic state
+    /// with gravity disabled. This method should be called when the object needs to transition from an airborne to a
+    /// landed state.</remarks>
     private void Land()
     {
         Vector3 rayStart = physicsCollider.bounds.center + Vector3.up * 2f;
@@ -187,7 +201,13 @@ public class BounceScript : MonoBehaviour
             pickupCollider.enabled = true;
         }
     }
-
+    /// <summary>
+    /// Applies a bounce effect to the associated rigidbody, adjusting its velocity to simulate a rebound with damping.
+    /// </summary>
+    /// <remarks>This method requires that the rigidbody (rb) is assigned. If rb is null, the method has no
+    /// effect. The bounce effect modifies both the vertical and horizontal components of the velocity, applying damping
+    /// to the vertical velocity and ensuring a minimum speed for both axes. This method is intended to be called when a
+    /// bounce or rebound behavior is needed, such as after a collision with a surface.</remarks>
     private void Bounce()
     {
         if (rb == null) return;
