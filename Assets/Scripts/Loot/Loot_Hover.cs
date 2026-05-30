@@ -24,7 +24,13 @@ public class Loot_Hover : MonoBehaviour
         hoverOffset = Random.Range(0f, Mathf.PI * 2f);
         bounce = GetComponent<BounceScript>();
     }
-
+    /// <summary>
+    /// Updates the object's position and state based on the current bounce and hover logic. Intended to be called once
+    /// per frame to animate transitions after a bounce has landed.
+    /// </summary>
+    /// <remarks>This method should be called regularly, such as from a MonoBehaviour's Update loop, to ensure
+    /// smooth transitions between landing, blending, and hovering states. The method has no effect if the bounce has
+    /// not landed or is not assigned.</remarks>
     void Update()
     {
         if (bounce == null) return;

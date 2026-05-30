@@ -64,6 +64,13 @@ public class Loot_System : MonoBehaviour
 
     // a condition in the method to see if a soul has been collected before, to prevent double souls_collected
     // from the same soul. 
+    /// <summary>
+    /// Adds the specified loot to the collection of collected souls and updates the soul count if the loot is a soul.
+    /// </summary>
+    /// <remarks>If the specified loot has already been collected, this method does not add it again or update
+    /// the soul count. This prevents duplicate collection of the same soul.</remarks>
+    /// <param name="loot">The loot item to be collected. If the loot is of type Soul, its reward value is added to the current soul count.
+    /// Cannot be null.</param>
     public void IncreaseSouls(Loot loot)
     {
         if (soulsCollected.ContainsValue(loot)) return;
@@ -80,7 +87,12 @@ public class Loot_System : MonoBehaviour
         }
         IncreaseCupCharges(loot);
     }
-
+    /// <summary>
+    /// Increases the player's healing cup charges based on the specified loot item, if it contains a HealingSoul
+    /// component.
+    /// </summary>
+    /// <param name="loot">The loot item to check for a HealingSoul component. If present, its healing charge amount is added to the
+    /// player's charges.</param>
     private void IncreaseCupCharges(Loot loot)
     {
         if (loot.TryGetComponent<HealingSoul>(out HealingSoul healingSoul))

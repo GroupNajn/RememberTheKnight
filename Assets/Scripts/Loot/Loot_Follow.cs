@@ -140,7 +140,12 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
             rb.MovePosition(targetPosition);
         }
     }
-
+    /// <summary>
+    /// Initializes the state and position for the hover transition sequence.
+    /// </summary>
+    /// <remarks>Call this method to reset the object's position and state in preparation for entering a hover
+    /// mode. This method should be invoked before starting a new hover transition to ensure consistent
+    /// behavior.</remarks>
     private void InitializeHoverTransition()
     {
         initialized = true;
@@ -154,7 +159,13 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
 
         rb.linearVelocity = Vector3.zero;
     }
-
+    /// <summary>
+    /// Moves the object toward its designated hover base position and updates its hovering state when the target is
+    /// reached.
+    /// </summary>
+    /// <remarks>This method should be called during the physics update cycle to ensure smooth movement and
+    /// accurate state transitions. The method updates internal state flags to indicate when the object has arrived at
+    /// the hover position and is ready to begin hovering.</remarks>
     private void MoveToHoverBasePosition()
     {
         Vector3 newPosition = Vector3.MoveTowards(rb.position,basePosition,moveToHoverSpeed * Time.fixedDeltaTime);
@@ -172,7 +183,13 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
             isHovering = true;
         }
     }
-
+    /// <summary>
+    /// Adjusts the vertical position of the object to maintain the desired hover height above the ground.
+    /// </summary>
+    /// <remarks>This method performs a downward raycast from the object's center point to determine the
+    /// ground level and applies a correction to the object's base position if necessary. It should be called regularly,
+    /// such as within a physics update loop, to ensure stable hovering behavior. The method has no effect if the center
+    /// point is not set.</remarks>
     private void CorrectHoverHeight()
     {
         if (centerPoint == null)
@@ -192,14 +209,22 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
             basePosition.y += yDifference * heightCorrectionSpeed * Time.fixedDeltaTime;
         }
     }
-
+    /// <summary>
+    /// Calculates the current position offset for a hovering effect based on time and configured parameters.
+    /// </summary>
+    /// <returns>A <see cref="Vector3"/> representing the position with the applied hover offset.</returns>
     private Vector3 GetHoverPosition()
     {
         float hoverY = Mathf.Sin(Time.time * hoverSpeed + hoverOffset) * hoverHeight * 0.01f;
 
         return basePosition + Vector3.up * hoverY;
     }
-
+    /// <summary>
+    /// Updates the velocity used to follow the player based on the current distance and follow state.
+    /// </summary>
+    /// <remarks>This method adjusts the follow velocity only when the loot is in a pickable state and the
+    /// follow logic is not overwritten. The velocity increases as the loot approaches the player within the follow
+    /// range, up to a maximum speed, and decays when outside the range.</remarks>
     private void UpdateFollowVelocity()
     {
         Vector3 playerFlat = new Vector3(player.position.x, rb.position.y, player.position.z);
@@ -232,7 +257,10 @@ public class Loot_Follow_Rigidbody : MonoBehaviour
         basePosition.x += move.x;
         basePosition.z += move.z;
     }
-
+    /// <summary>
+    ///     
+    /// </summary>
+    /// <returns></returns>
     private bool FollowNoDistanceCheck()
     {
         if (loot.Pickable != PickableState.Pickable)

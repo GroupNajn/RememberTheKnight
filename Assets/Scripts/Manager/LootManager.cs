@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Script made by Henric some random date
+// Script made by Henric in april
 
 public class LootManager : MonoBehaviour
 {
@@ -329,7 +329,13 @@ public class LootManager : MonoBehaviour
 
         return RarityTier.Legendary;
     }
-
+    /// <summary>
+    /// Filters a list of cards to include only those within the specified rarity tier.
+    /// </summary>
+    /// <param name="cards">The list of cards to filter. Cannot be null.</param>
+    /// <param name="rarity">The rarity tier used to determine which cards to include in the result.</param>
+    /// <returns>A list of cards whose rarity tier falls within the specified range. The list will be empty if no cards match the
+    /// specified rarity.</returns>
     private List<CardData> FilterCardsByRarity(List<CardData> cards, RarityTier rarity)
     {
         List<CardData> result = new List<CardData>();
@@ -355,7 +361,15 @@ public class LootManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Attempts to spawn loot at the specified position based on the provided enemy loot profile. If no profile is
+    /// given, spawns a default soul instead.
+    /// </summary>
+    /// <remarks>If the loot profile does not allow any card families or no cards are available in the
+    /// specified rarities, only a soul may be spawned and a warning is logged. The method may spawn multiple loot items
+    /// depending on the profile and internal chance calculations.</remarks>
+    /// <param name="profile">The loot profile that defines which items and rarities can be dropped. If null, only a default soul is spawned.</param>
+    /// <param name="spawnPos">The world position where loot or souls will be spawned.</param>
     public void TryToDropLoot(EnemyLootProfile profile, Vector3 spawnPos)
     {
         if (profile == null)
@@ -414,7 +428,7 @@ public class LootManager : MonoBehaviour
             droppedLoot.Remove(loot);
     }
 
-
+    //Obsolete method
     public void DropLoot(Loot item, EnemyDamage enemy)
     {
         Vector3 pos = enemy.transform.position;
@@ -434,7 +448,13 @@ public class LootManager : MonoBehaviour
     {
         builder.InstatitateCard(card, spawnPos);
     }
-
+    /// <summary>
+    /// Spawns multiple soul entities at the player's current position based on the specified card's soul cost.
+    /// </summary>
+    /// <remarks>This method always spawns at least one soul, regardless of the card's soul cost. All souls
+    /// are spawned at the player's current position at the time of invocation.</remarks>
+    /// <param name="card">The card data used to determine the number of souls to spawn. The number of souls spawned is calculated as half
+    /// of the card's soul cost, with a minimum of one.</param>
     public void SpawnMultipleSouls(CardData card)
     {
         Vector3 playerPosition = GameObject.Find("Player").transform.position;
@@ -448,7 +468,12 @@ public class LootManager : MonoBehaviour
             SpawnSoul(playerPosition);
         }
     }
-
+    /// <summary>
+    /// Initializes the card pools by categorizing all available cards into loot tables based on their rarity tiers.
+    /// </summary>
+    /// <remarks>This method retrieves all cards from the card system and assigns each card to the appropriate
+    /// loot table according to its rarity. It should be called before any operations that depend on the card pools
+    /// being populated.</remarks>
     private void InitializeCardPools()
     {
         var cards = cardSystem.GetAllCards();
