@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,11 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
 
+    [Header("SFX")]
+    [SerializeField] EventReference openEvent;
+    [SerializeField] EventReference closeEvent;
+
+
     private UIManager playerUIManager;
 
     void Start()
@@ -29,7 +35,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
 
     public void Interact()
     {
-        //gameData.GameCompleted = true; 
+        gameData.GameCompleted = true; 
 
         if (!gameData.GameCompleted)
             return;
@@ -41,7 +47,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
 
         if (doorOpen)
         {
-           
+            RuntimeManager.PlayOneShot(closeEvent);
             AnimateCloseDoor(() => 
             {
                 leftDoorCollider.enabled = true;
@@ -53,8 +59,10 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
         {
             AnimateOpenDoor(() =>
             {
-                leftDoorCollider.enabled = true;
-                rightDoorCollider.enabled = true;
+                RuntimeManager.PlayOneShot(openEvent);
+
+                leftDoorCollider.enabled = false;
+                rightDoorCollider.enabled = false;
                 isAnimating = false;
             });
         }
