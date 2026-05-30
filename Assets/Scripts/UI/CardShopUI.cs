@@ -68,7 +68,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             }
         }
 
-        //EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
+        EventSystem.current.SetSelectedGameObject(purchaseButton.gameObject);
     }
 
     public void PopulateSlots()
