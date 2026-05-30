@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -159,6 +160,7 @@ public class GlobalSceneManager : MonoBehaviour
         }
 
         isTransitioning = true;
+        WorldSoundFXManager.instance.musicInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
         yield return StartCoroutine(FadeToBlack());
 
@@ -210,6 +212,8 @@ public class GlobalSceneManager : MonoBehaviour
         try // setting parameter for FMOD
         {
             RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene", sceneName);
+            WorldSoundFXManager.instance.musicInstance.start();
+
         }
         catch
         {
