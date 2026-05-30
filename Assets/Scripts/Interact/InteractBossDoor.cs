@@ -35,7 +35,8 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
 
     public void Interact()
     {
-        gameData.GameCompleted = true; 
+        // uncoment for door to open without boss defeated
+       // gameData.GameCompleted = true; 
 
         if (!gameData.GameCompleted)
             return;

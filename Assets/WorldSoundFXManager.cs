@@ -26,6 +26,10 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference errorEvent;
     public EventReference shopDeselectCardEvent;
     public EventReference ladyTalkingEvent;
+    public EventReference drinkingEvent;
+    public EventReference holsterEvent;
+    public EventReference unHolsterEvent;
+    public EventReference weaponSwitchEvent;
 
 
     [Header("Button Sounds")]
