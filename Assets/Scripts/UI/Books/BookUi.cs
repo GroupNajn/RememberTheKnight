@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
+
 public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
@@ -254,6 +255,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         }
         return builder.ToString();
     }
+
     public void ChangeTab(BookTabEnum tab)
     {
         if (isAnimating)
@@ -277,10 +279,10 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         });
     }
 
-    public void OpenTab(BookTabEnum tab)
+    public void OpenTab(BookTabEnum tab, int index = 0)
     {
         currentTab = tab;
-        currentIndex = 0;
+        currentIndex = index;
 
         switch (tab)
         {
@@ -365,7 +367,6 @@ public class BookUi : AutoSelectFirstButtonOnEnable
 
         }
     }
-
     public void CloseBook()
     {
         uiManager.CloseBookUI();
@@ -386,6 +387,21 @@ public class BookUi : AutoSelectFirstButtonOnEnable
     public void GoToLore()
     {
         ChangeTab(BookTabEnum.Lore);
+    }
+    public void SetPendingLoreEntry(LoreEntry entry)
+    {
+        pendingLoreEntry = entry;
+    }
+    public void OpenLoreAtEntry(LoreEntry entry)
+    {
+        int loreIndex = allLoreEntries.IndexOf(entry);
+
+        if (loreIndex < 0)
+            loreIndex = 0;
+
+        currentIndex = (loreIndex / 2) * 2;
+
+        OpenTab(BookTabEnum.Lore, currentIndex);
     }
     private void EnableTabButtons()
     {
@@ -468,28 +484,5 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         movingBook.transform.localScale = reverse  ? Vector3.zero : Vector3.one;
 
         onComplete?.Invoke();
-    }
-    public void OpenLoreAtEntry(LoreEntry entry)
-    {
-        currentTab = BookTabEnum.Lore;
-        currentPages = lorePages;
-
-        int loreIndex = allLoreEntries.IndexOf(entry);
-       
-        if (loreIndex < 0)
-            loreIndex = 0;
-
-        currentIndex = (loreIndex / 2) * 2;
-
-        ShowPages();
-        UpdateTabButtons();
-
-        statsTab.SetSelected(false);
-        cardsTab.SetSelected(false);
-        loreTab.SetSelected(true);
-    }
-    public void SetPendingLoreEntry(LoreEntry entry)
-    {
-        pendingLoreEntry = entry;
     }
 }

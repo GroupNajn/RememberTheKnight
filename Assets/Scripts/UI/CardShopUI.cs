@@ -145,6 +145,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
             RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.errorEvent);
             ShowError("Not enough souls!", 2f);
 
+            UpdateUIButtons();
+
             return;
         }
 
@@ -152,6 +154,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         {
             RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.errorEvent);
             ShowError("You already have that card", 2f);
+
+            UpdateUIButtons();
             return;
         }
 
