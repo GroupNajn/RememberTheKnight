@@ -1,27 +1,19 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
 
-
-// Script made by Wilmer some day in april // Henric
-// Script Updated by Henric 2026-04-17
-// Comments added during -> 2026-04-17 session.
-public class CardSelectionUI : AutoSelectFirstButtonOnEnable
+public class BossCardSelectUI : AutoSelectFirstButtonOnEnable
 {
-    private PlayerInput playerInput;
     private UIManager uiManager;
 
-    [SerializeField] private ScrollRect cardScrollRect;
-    [SerializeField] private float scrollAmount;
-
-    [SerializeField] private int maxCardsSelected = 4;
+    [SerializeField] private int maxCardsSelected = 1;
     [SerializeField] private TextMeshProUGUI errorText;
 
-
+    [SerializeField] public BossCardUI CurrentSelectedCard {  get; private set; }
     [field: SerializeField] public List<CardData> selectedCardData { get; private set; } = new List<CardData>();
-    [field: SerializeField] public List<CardUI> selectedCards { get; private set; } = new List<CardUI>();
+    [field: SerializeField] public List<BossCardUI> selectedCards { get; private set; } = new List<BossCardUI>();
 
     private float errorTimer = 0f;
     private float fadeDuration = 0.5f;
@@ -30,22 +22,16 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
 
     private void Start()
     {
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-        uiManager = GetComponentInParent<UIManager>();
-
-        if (cardScrollRect == null)
-            cardScrollRect = uiManager.GetComponentInChildren<ScrollRect>();
+        uiManager = FindAnyObjectByType<UIManager>();
 
         errorText.gameObject.SetActive(false);
         RebuildSelectionState();
-
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         RebuildSelectionState();
-
     }
 
     private void OnDisable()
@@ -66,9 +52,10 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
 
         foreach (Button button in GetComponentsInChildren<Button>(true))
         {
-            CardUI card = button.GetComponent<CardUI>();
+            BossCardUI card = button.GetComponent<BossCardUI>();
             if (card == null || card.cardData == null)
                 continue;
+
             SetUnlockedCards(card.cardData, card);
 
 
@@ -87,60 +74,51 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
         }
     }
 
-    private void SetUnlockedCards(CardData cardData, CardUI cardUI)
+    private void SetUnlockedCards(CardData cardData, BossCardUI bossCardUI)
     {
         CardSystem cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
-        if(cardData == null)
+        if (cardData == null)
         {
-            cardUI.SetUnlocked(false);
+            bossCardUI.SetUnlocked(false);
             return;
         }
 
         if (cardSystem.CheckUnlocked(cardData))
         {
-            cardUI.SetUnlocked(true);
+            bossCardUI.SetUnlocked(true);
         }
         else
         {
-            cardUI.SetUnlocked(false);
+            bossCardUI.SetUnlocked(false);
         }
-        
 
-
-    }
-
-    public void OnArrowUp()
-    {
-        cardScrollRect.verticalNormalizedPosition += scrollAmount;
-    }
-
-    public void OnArrowDown()
-    {
-        cardScrollRect.verticalNormalizedPosition -= scrollAmount;
     }
 
     // If a button is pressed and is active, set to to false, otherwise set it to active.
     // Some if statements inside of the method to check if the selectedCard list is not at its 4 card select limit.
     public void OnCardSelect(Button button)
     {
-        CardUI card = button.GetComponent<CardUI>();
+        BossCardUI card = button.GetComponent<BossCardUI>();
         if (card == null || card.cardData == null)
             return;
-        
+
 
         if (card.IsSelected && card.IsUnlocked)
         {
             card.SetSelected(false);
+
+            if (CurrentSelectedCard == card)
+                CurrentSelectedCard = null;
+
             selectedCards.Remove(card);
             selectedCardData.Remove(card.cardData);
-            Debug.Log("Card Deselected");
             return;
         }
         if (!card.IsUnlocked)
         {
             if (!errorActive)
-                ShowError($"This card is not unlocked!" ,3f);
-            return ;
+                ShowError($"This card is not unlocked!", 3f);
+            return;
         }
 
         if (selectedCards.Count >= maxCardsSelected)
@@ -151,7 +129,17 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
             return;
         }
 
+        if (selectedCards.Count >= maxCardsSelected)
+        {
+            selectedCards[0].SetSelected(false);
+            selectedCardData.Remove(selectedCards[0].cardData);
+            selectedCards.Clear();
+        }
+
         card.SetSelected(true);
+
+        CurrentSelectedCard = card;
+
         selectedCards.Add(card);
         selectedCardData.Add(card.cardData);
     }
@@ -161,11 +149,20 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
     public void OnConfirmSelection()
     {
         Event_System.instance.OnConfirmCardSelection?.Invoke(selectedCardData);
-        uiManager.CloseCardSelectUI();
+        uiManager.CloseBossCardSelectUI();
     }
     public void OnExit()
     {
-        uiManager.CloseCardSelectUI();
+        if (CurrentSelectedCard != null)
+        {
+            CurrentSelectedCard.SetSelected(false);
+            CurrentSelectedCard = null;
+        }
+
+        selectedCards.Clear();
+        selectedCardData.Clear();
+
+        uiManager.CloseBossCardSelectUI();
     }
 
     private void Update()
@@ -179,7 +176,6 @@ public class CardSelectionUI : AutoSelectFirstButtonOnEnable
             float alpha = Mathf.Clamp01(errorTimer / fadeDuration);
             errorText.alpha = alpha;
         }
-
 
         if (errorTimer <= 0f)
         {
