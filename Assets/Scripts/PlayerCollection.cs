@@ -12,6 +12,8 @@ public class PlayerCollection : MonoBehaviour
 
     [SerializeField] private List<CardData> displayEquipedCards = new List<CardData>();
     [SerializeField] private List<CardData> displayTempCards = new List<CardData>();
+    [SerializeField] private List<CardData> displayCourtCards = new List<CardData>();
+
 
     public CardCollection CardCollection
     {
@@ -28,6 +30,7 @@ public class PlayerCollection : MonoBehaviour
     {
         Event_System.instance.OnContractSign += SignContract;
         Event_System.instance.OnConfirmCardSelection += EquipCard;
+        Event_System.instance.OnConfirmCourtCardSelection += EquipCourtCard;
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         Event_System.instance.OnPlayerDeath += CleartTemporaryCardsOnPlayerDeath;
         Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
@@ -42,6 +45,7 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnContractSign -= SignContract;
         Event_System.instance.OnConfirmCardSelection -= EquipCard;
         Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
+        Event_System.instance.OnConfirmCourtCardSelection -= EquipCourtCard;
         Event_System.instance.OnPlayerDeath -= CleartTemporaryCardsOnPlayerDeath;
         Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
     }
@@ -63,6 +67,16 @@ public class PlayerCollection : MonoBehaviour
         playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
         UpdateDisplayCollection();
     }
+    public void EquipCourtCard(List<CardData> cards)
+    {
+        cardCollection.ClearCourtCards();
+        foreach(CardData cardData in cards)
+        {
+            cardCollection.EquipCourtCard(cardData);
+        }
+        playerManager.ApplyStatsFromCardSelection(cardCollection.ReturnCardsForApplyingStats());
+        UpdateDisplayCollection();
+    }
 
     public void AddCardToTempOnPurchase(List<CardData> cards)
     {
@@ -80,6 +94,10 @@ public class PlayerCollection : MonoBehaviour
     public List<CardData> ReturnTempCardCollection()
     {
         return cardCollection.GetTempCardCollection();
+    }
+    public List<CardData> ReturnEquippedCourtCards()
+    {
+        return cardCollection.GetEquippedCourtCards();
     }
     public List<CardData> ReturnPermanentCardCollection()
     {
@@ -163,6 +181,8 @@ public class PlayerCollection : MonoBehaviour
     {
         displayEquipedCards = cardCollection.GetEquippedCards();
         displayTempCards = cardCollection.GetTempCardCollection();
+        displayCourtCards = cardCollection.GetEquippedCourtCards();
+
     }
 
     public bool CardIsPickedUp(CardData card)
