@@ -1,3 +1,4 @@
+using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -65,6 +66,8 @@ public class InteractCameraHandler : MonoBehaviour
         // Set the culling mask to hide the player layer
         int playerLayer = LayerMask.NameToLayer("Player");
         mainCameraComponent.cullingMask &= ~(1 << playerLayer);
+
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.cameraWooshEvent, gameObject);
     }
 
     public void InteractCamReset()

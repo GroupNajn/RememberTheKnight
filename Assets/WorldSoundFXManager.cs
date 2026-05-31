@@ -31,6 +31,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference holsterEvent;
     public EventReference unHolsterEvent;
     public EventReference weaponSwitchEvent;
+    public EventReference cameraWooshEvent;
 
 
     [Header("Button Sounds")]
