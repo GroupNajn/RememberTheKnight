@@ -21,4 +21,9 @@ public class PlayerSoundFXManager : CharacterSoundFXManager
         RuntimeManager.PlayOneShotAttached(outOfBreathEvent, gameObject); // out of breath sound effect
         RuntimeManager.PlayOneShotAttached(lowHealthEvent, gameObject); // out of breath sound effect
     }
+
+    public override void PlayFootStep()
+    {
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.footStepEvent, gameObject);
+    }
 }

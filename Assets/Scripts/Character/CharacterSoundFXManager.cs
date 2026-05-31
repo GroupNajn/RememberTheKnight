@@ -85,7 +85,7 @@ public class CharacterSoundFXManager : MonoBehaviour
 
     public virtual void PlayFootStep()
     {
-            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.footStepEvent, gameObject);
+            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.enemyFootStepEvent, gameObject);
     }
     //public virtual void PlayAttackSwoosh()
     //{

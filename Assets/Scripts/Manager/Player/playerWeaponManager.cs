@@ -60,7 +60,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
 
-        OnHolster(null);
+        HolsterEvent();
 
         layerIndex = playerAnimator.GetLayerIndex("Holster");
 
@@ -76,7 +76,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
             // Make sure player is always holstered when entering lobby and character select screen 
             if (!holsterd)
             {
-                OnHolster(null);
+                HolsterEvent();
             }
         }
     }
@@ -85,7 +85,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         if (!playerStates.InActionState())
         {
-            RuntimeManager.PlayOneShot(holsterd? WorldSoundFXManager.instance.unHolsterEvent : WorldSoundFXManager.instance.holsterEvent);
+            RuntimeManager.PlayOneShotAttached(holsterd? WorldSoundFXManager.instance.unHolsterEvent : WorldSoundFXManager.instance.holsterEvent, gameObject);
             playerAnimator.SetTrigger("Holster");
         }
     }

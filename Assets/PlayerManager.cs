@@ -140,7 +140,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
 
-        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.drinkingEvent);
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.drinkingEvent,gameObject);
 
         playerStats.currentHealingCharges -= playerStats.healingChargeCost;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);

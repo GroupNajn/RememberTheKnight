@@ -17,6 +17,7 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference cardPickupEvent;
     public EventReference attackEvent;
     public EventReference footStepEvent;
+    public EventReference enemyFootStepEvent;
     public EventReference teleportEvent;
     public EventReference playerWakeUpEvent;
     public EventReference explosionEvent;
