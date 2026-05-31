@@ -34,13 +34,14 @@ public class BallistaEnemy : MonoBehaviour
         }
     }
 
+
     // Find random enemies to set as required to destry ballista
     private void OnEnemiesSpawned()
     {
         //Debug.Log($"{name} is looking for enemies");
         GameObject[] enemiesFound = GameObject.FindGameObjectsWithTag("Enemy"); // Find all enemies
 
-        requiredEnemiesCount = Random.Range(minRequiredEnemies, maxRequiredEnemies); // Get a random number as the amount of enemies required to destroy
+        requiredEnemiesCount = Random.Range(minRequiredEnemies, maxRequiredEnemies + 1); // Get a random number as the amount of enemies required to destroy
 
         //Debug.Log($"requiredEnemiesCount: {requiredEnemiesCount}, enemies found: {enemiesFound.Length}");
 
