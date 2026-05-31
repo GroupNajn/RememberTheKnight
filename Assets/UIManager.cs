@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
 
     [Header("In game UI")]
     [SerializeField] private GameObject cardSelectUI;
+    [SerializeField] private GameObject bossCardSelectUI;
     [SerializeField] private GameObject familySelectUI;
     [SerializeField] private GameObject interactUI;
     [SerializeField] private GameObject cardShopUI;
@@ -450,6 +451,32 @@ public class UIManager : MonoBehaviour
         interactCameraHandler.InteractCamReset();
     }
 
+    // BOSS CARD SELECT UI
+    public void OpenBossCardSelectUI()
+    {
+        if (interactUI == enabled)
+            CloseInteractiveUI();
+
+        CloseUIOnMenuOpen();
+
+        bossCardSelectUI.SetActive(true);
+
+        UIMenuActive = true;
+        CheckUIState();
+        CheckTimeScaleUI(true);
+    }
+
+    public void CloseBossCardSelectUI()
+    {
+        OpenUIOnMenuClose();
+        bossCardSelectUI.SetActive(false);
+
+        UIMenuActive = false;
+        cameraTransitioning = false;
+        CheckUIState();
+        interactCameraHandler.InteractCamReset();
+    }
+
     // FAMILY SELECT UI
     public void OpenFamilySelectUI()
     {
@@ -582,15 +609,11 @@ public class UIManager : MonoBehaviour
     }
 
     // LORE PAGE UI
-    public void OpenLorePageUI(LoreEntry entry)
+    public void OpenLorePageUI()
     {
         CloseInteractiveUI();
         CloseUIOnMenuOpen();
         lorePageUI.SetActive(true);
-       
-       
-        BookUi bookUi = FindFirstObjectByType<BookUi>(FindObjectsInactive.Include);
-        bookUi.OpenLoreAtEntry(entry);
         
         UIMenuActive = true;
         CheckUIState();

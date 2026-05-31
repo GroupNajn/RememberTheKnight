@@ -2,12 +2,8 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
+public class InteractBossCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
-    [Header("Saved Data")]
-    [SerializeField] private string interactableID;
-    [SerializeField] private GameObject firstTimeEffect;
-
     private UIManager playerUIManager;
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;
@@ -19,24 +15,10 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
         playerUIManager = FindFirstObjectByType<UIManager>();
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
-
-        if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
-        {
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
-        }
     }
 
     public void Interact()
     {
-        if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
-        {
-            PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
-        }
-
         playerUIManager.UIMenuActive = true;
         playerUIManager.cameraTransitioning = true;
 
@@ -47,8 +29,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
     IEnumerator OpenUI()
     {
         yield return new WaitForSeconds(stateDrivenCamera.DefaultBlend.Time);
-
-        playerUIManager.OpenCardSelectUI();
+        playerUIManager.OpenBossCardSelectUI();
     }
 
     public InteractableUIData GetUIData()
@@ -56,7 +37,7 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
         var UIData = new InteractableUIData();
         UIData.CanInteract = true;
 
-        UIData.InfoText = "Choose Minor Arcana.";
+        UIData.InfoText = "Choose Court Card";
         return UIData;
     }
 }

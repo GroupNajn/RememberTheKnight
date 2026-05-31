@@ -45,7 +45,7 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
 
         loreManager.UnlockLore(loreEntry.id);
         lorePageUI.SetLoreEntry(loreEntry);
-        playerUIManager.OpenLorePageUI(loreEntry);
+        playerUIManager.OpenLorePageUI();
 
     }
 
