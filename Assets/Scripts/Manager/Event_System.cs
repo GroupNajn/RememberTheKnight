@@ -29,6 +29,7 @@ public class Event_System : MonoBehaviour
     public Action<List<CardData>> OnConfirmCardSelection;
     public Action<List<CardData>> OnConfirmPurchase;
     public Action<CardData> OnSacrificeSuccessful;
+    public Action<List<CardData>> OnConfirmCourtCardSelection;
 
     //Loot Related
     public Action <CardData>OnDroopMultipleSouls;

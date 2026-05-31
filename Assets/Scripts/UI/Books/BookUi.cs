@@ -159,6 +159,7 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         cardPages.Clear();
         List<CardData> allCards = new List<CardData>();
 
+        allCards.AddRange(playerCollection.ReturnEquippedCourtCards());
         allCards.AddRange(playerCollection.ReturnPermanentCardCollection());
         allCards.AddRange(playerCollection.ReturnTempCardCollection());
 
