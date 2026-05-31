@@ -1,10 +1,7 @@
-using FMOD.Studio;
 using FMODUnity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour, IDamageable
 {
@@ -122,11 +119,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public void OnHeal()
     {
-        Debug.Log("Heal Attempted");
-        
         bool attacking = playerStates.CurrentMoveState == MoveState.Attacking;
         bool dodging = playerStates.CurrentMoveState == MoveState.Dodging;
-        
+
         if (!playerStates.IsHealing && !attacking && !dodging)
         {
             if (playerStats.currentHealingCharges >= playerStats.healingChargeCost && !isDead && Health < MaxHealth)
@@ -140,7 +135,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         Heal(playerStats.MaxHealth * playerStats.cupHealAmountPercentage);
 
-        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.drinkingEvent,gameObject);
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.drinkingEvent, gameObject);
 
         playerStats.currentHealingCharges -= playerStats.healingChargeCost;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
@@ -152,7 +147,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
 
         float totalHeal = amount * playerStats.currentHealModifier;
-
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
 
@@ -235,14 +229,12 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     private void OnLobbyLoaded()
     {
-        if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
-        {
-            RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.playerWakeUpEvent, gameObject);
-            Heal(playerStats.MaxHealth);
-            playerStats.currentHealingCharges = playerStats.startingCharges;
-            CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
-            Event_System.instance.OnResetSouls.Invoke();
-        }
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.playerWakeUpEvent, gameObject);
+        playerStats.CurrentHealth = 0;
+        Heal(playerStats.MaxHealth);
+        playerStats.currentHealingCharges = playerStats.startingCharges;
+        CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
+        Event_System.instance.OnResetSouls.Invoke();
     }
 
     private void InitializePlayerBaseStats()
@@ -293,12 +285,12 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         playerStats.currentWeaponSize += card.weaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
-        
+
         playerStats.curentActionSpeedModifier += card.actionSpeedModifier;
         //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
         playerAnimator.speed = playerStats.curentActionSpeedModifier;
 
-        if(playerStats.currentWeaponSize.y > playerStats.maxWeaponSize.y || playerStats.currentWeaponSize.x > playerStats.maxWeaponSize.x)
+        if (playerStats.currentWeaponSize.y > playerStats.maxWeaponSize.y || playerStats.currentWeaponSize.x > playerStats.maxWeaponSize.x)
         {
             playerStats.currentWeaponSize = new Vector3(playerStats.maxWeaponSize.x, playerStats.maxWeaponSize.y, playerStats.maxWeaponSize.z);
             playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;

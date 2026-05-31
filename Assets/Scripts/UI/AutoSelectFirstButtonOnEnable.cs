@@ -33,8 +33,6 @@ public class AutoSelectFirstButtonOnEnable : MonoBehaviour
 
     private void SelectButton()
     {
-        Debug.Log($"Selecting button in {name}");
-
         if (FirstSelectedButton == null || !gameObject.activeSelf)
             return;
 
@@ -46,8 +44,6 @@ public class AutoSelectFirstButtonOnEnable : MonoBehaviour
         {
             EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
         }
-
-        Debug.Log($"Selected gameobject set to {EventSystem.current.currentSelectedGameObject.name} in {name}");
 
         IsGoingBack = false;
     }
