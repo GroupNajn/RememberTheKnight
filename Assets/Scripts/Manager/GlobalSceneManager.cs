@@ -201,6 +201,8 @@ public class GlobalSceneManager : MonoBehaviour
             yield return StartCoroutine(UnloadOtherScenes(targetScene));
         }
 
+        yield return null;
+
         // Scene is fully loaded, screen is still black and it's safe to preload scenes now
         Event_System.instance.OnLoadScenes.Invoke();
 
