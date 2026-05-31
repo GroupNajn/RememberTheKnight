@@ -95,6 +95,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         holsterd = !holsterd;
 
         HolsterCheck();
+        playerStats.baseActionSpeed = currentActiveWeaponData.actionSpeed;
         playerManager.ReApplyStats();
         OnWeaponChanged?.Invoke(currentActiveWeaponData);
 
