@@ -38,7 +38,7 @@ public class PlayerStats : MonoBehaviour
     public float currentWalkSpeedModifier = 0f;
     public float currentSprintSpeedModifier = 0f;
     public float currentDodgeSpeedModifier = 0f;
-    public float curentActionSpeedModifier = 0f;
+    public float currentActionSpeedModifier = 0f;
     public float currentHealModifier= 1;
 
     [Header("Knockback")]

@@ -82,8 +82,8 @@ public class BookPageUI : MonoBehaviour
             $"-STAMINA-\n" +
             $"Stamina: {stats.maxStamina}\n" +
             $"Stamina Regen: {stats.staminaRegen}\n" +
-            $"Speed: {stats.curentActionSpeedModifier}\n" +
-            $"Speed bonus: {(stats.curentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
+            $"Speed: {stats.currentActionSpeedModifier}\n" +
+            $"Speed bonus: {(stats.currentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
 
             statsTextBottomLeft.text =
             $"-DAMAGE-\n" +

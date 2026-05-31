@@ -257,7 +257,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentWeaponSize = playerStats.baseWeaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
-        playerStats.curentActionSpeedModifier = playerStats.baseActionSpeed;
+        playerStats.currentActionSpeedModifier = playerStats.baseActionSpeed;
 
         foreach (WeaponStats weaponStats in GetComponentsInChildren<WeaponStats>(true))
         {
@@ -286,9 +286,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentWeaponSize += card.weaponSize;
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
-        playerStats.curentActionSpeedModifier += card.actionSpeedModifier;
+        playerStats.currentActionSpeedModifier += card.actionSpeedModifier;
         //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
-        playerAnimator.speed = playerStats.curentActionSpeedModifier;
+        playerAnimator.speed = playerStats.currentActionSpeedModifier;
 
         if (playerStats.currentWeaponSize.y > playerStats.maxWeaponSize.y || playerStats.currentWeaponSize.x > playerStats.maxWeaponSize.x)
         {
