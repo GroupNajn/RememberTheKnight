@@ -70,6 +70,11 @@ public static class PlayerPrefsSaveSystem
         PlayerPrefs.SetInt(soulValueText, amount);
     }
 
+    public static void SaveSecretCardPickup(string secretCardString)
+    {
+        PlayerPrefs.SetInt(secretCardString, 1);
+    }
+
     public static void SaveSoulsDonatedToFamily(int amount)
     {
         //PlayerPrefs.
