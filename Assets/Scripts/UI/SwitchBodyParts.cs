@@ -12,6 +12,12 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SwitchBodyParts : MonoBehaviour
 {
+    /// <summary>
+    /// Changed by Anton 2026-06-01
+    /// Added logic to save and load character customization using PlayerPrefs, 
+    /// allowing players to retain their chosen appearance across game sessions.
+    /// </summary>
+
     UIManager uiManager;
     private GameData gameData;
 

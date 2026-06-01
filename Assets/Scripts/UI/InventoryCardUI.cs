@@ -19,6 +19,7 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     //refractered from CardUI
     [SerializeField] public CardData cardData;
     [SerializeField] private Image cardImage;
+    [SerializeField] private Image infoboxImage;
 
     [SerializeField] private GameObject infoBox;
     [SerializeField] private TextMeshProUGUI nameText;
@@ -46,7 +47,7 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
 
         CheckStatsForString();
-        cardImage.rectTransform.sizeDelta = new Vector2(300, 100);
+        //cardImage.rectTransform.sizeDelta = new Vector2(300, 100);
     }
 
     /// <summary>
@@ -101,7 +102,8 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        ToggleInfo();
+        //ToggleInfo();
+        ToggleCardInfo();
     }
 
     /// <summary>
@@ -109,7 +111,8 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
-        ToggleInfo();
+        //ToggleInfo();
+        ToggleCardInfo();
     }
 
     /// <summary>
@@ -117,7 +120,8 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     public void OnSelect(BaseEventData eventData)
     {
-        ToggleInfo();
+        //ToggleInfo();
+        ToggleCardInfo();
     }
 
     /// <summary>
@@ -125,7 +129,8 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     public void OnDeselect(BaseEventData eventData)
     {
-        ToggleInfo();
+        //ToggleInfo();
+        ToggleCardInfo();
     }
 
     /// <summary>
@@ -159,6 +164,27 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
             ColorUtility.TryParseHtmlString("#435F28", out var green);
             infoBox.GetComponent<Image>().color = green;
         }
+        infoBox.SetActive(!infoBox.activeSelf);
+    }
+
+    /// <summary>
+    /// Toggles the card information panel and updates its contents.
+    /// Adds image from card data if available, otherwise uses default styling.
+    /// 
+    /// Added by Anton 2026-06-01
+    /// </summary>
+    public void ToggleCardInfo()
+    {
+        if (cardData == null) 
+            return;
+
+        nameText.text = cardData.cardName;
+
+        if (cardData.cardInfoImage != null)
+        {
+            infoboxImage.sprite = cardData.cardInfoImage;
+        }
+
         infoBox.SetActive(!infoBox.activeSelf);
     }
 }
