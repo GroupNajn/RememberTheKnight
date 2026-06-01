@@ -34,6 +34,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
     [SerializeField] Color LegendaryColor;
 
     private UIManager uiManager;
+    private CardSystem cardSystem;
     public bool isNormalScale { get; private set; }
 
 
@@ -50,6 +51,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         this.transform.localScale = new Vector3(0, 0, 0);
         targetScale = new Vector3(1, 1, 1);
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
     }
 
     protected override void OnEnable()
@@ -76,6 +78,17 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
 
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         gameObject.SetActive(false);
+        if(cardData.cardTier == Tier.XIII)
+        {
+            List<CardData> courtCards = new List<CardData>();
+            courtCards.Add(cardData);
+            PlayerPrefsSaveSystem.SetSaveState(cardData.cardID);
+            collection.EquipCourtCard(courtCards);
+            cardSystem.UnlockCardFromDonation(cardData);
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+            return;
+        }
         collection.PickupCard(cardData);
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
