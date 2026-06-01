@@ -58,9 +58,6 @@ public partial class CircleTargetAction : Action
         {
             if (navMeshAgent.hasPath)
             {
-                Vector3 lookAt = navMeshAgent.steeringTarget;
-                lookAt.y = Self.Value.transform.position.y;
-                Self.Value.transform.LookAt(lookAt);
                 navMeshAgent.ResetPath();
             }
             return Status.Success;
