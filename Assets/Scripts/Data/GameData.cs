@@ -5,6 +5,8 @@ public class GameData : MonoBehaviour
 {
     [field: SerializeField] public bool GameCompleted { get; set; } = false;
 
+    [field: SerializeField] public bool FirstTimePlaying { get; set; } = true;
+
     [field: SerializeField] public int soulsDonatedSinceLastCups { get; set; } = 0;
     [field: SerializeField] public int soulsDonatedSinceLastWands { get; set; } = 0;
     [field: SerializeField] public int soulsDonatedSinceLastPentacles { get; set; } = 0;

@@ -7,6 +7,7 @@ public class BossTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Event_System.instance.OnSpawnBoss?.Invoke();
+            gameObject.SetActive(false);
         }
     }
 

@@ -66,8 +66,8 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
             {
                 RuntimeManager.PlayOneShotAttached(openEvent,gameObject);
 
-                leftDoorCollider.enabled = false;
-                rightDoorCollider.enabled = false;
+                leftDoorCollider.enabled = true;
+                rightDoorCollider.enabled = true;
                 isAnimating = false;
             });
         }
