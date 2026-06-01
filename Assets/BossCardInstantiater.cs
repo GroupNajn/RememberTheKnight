@@ -15,7 +15,7 @@ public class BossCardInstantiater : MonoBehaviour
     }
     private void Awake()
     {
-        Event_System.instance.OnBossDeath += EnableObject;
+        //Event_System.instance.OnBossDeath += EnableObject;
     }
 
     void Update()
@@ -28,12 +28,13 @@ public class BossCardInstantiater : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Event_System.instance.OnBossDeath -= EnableObject;
+        //Event_System.instance.OnBossDeath -= EnableObject;
     }
+
 
     private void EnableObject()
     {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     private void SetCardData()

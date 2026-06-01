@@ -34,6 +34,7 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnConfirmPurchase += AddCardToTempOnPurchase;
         Event_System.instance.OnPlayerDeath += CleartTemporaryCardsOnPlayerDeath;
         Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
+        //Event_System.instance.OnLobbyLoaded += ClearEquippedCourtCards;
         playerManager = GetComponent<PlayerManager>();
         playerStats = GetComponent<PlayerStats>();
         ResetAllLists();
@@ -47,7 +48,8 @@ public class PlayerCollection : MonoBehaviour
         Event_System.instance.OnConfirmPurchase -= AddCardToTempOnPurchase;
         Event_System.instance.OnConfirmCourtCardSelection -= EquipCourtCard;
         Event_System.instance.OnPlayerDeath -= CleartTemporaryCardsOnPlayerDeath;
-        Event_System.instance.OnLobbyLoaded += ClearTemporaryCards;
+        Event_System.instance.OnLobbyLoaded -= ClearTemporaryCards; // changed this, if a bug with temporaryCards appear. from + to - 
+        //Event_System.instance.OnLobbyLoaded -= ClearEquippedCourtCards;
     }
 
     public void InsertIntoCardCollection(CardData card)
@@ -157,6 +159,7 @@ public class PlayerCollection : MonoBehaviour
     private void CleartTemporaryCardsOnPlayerDeath()
     {
         cardCollection.ClearTemporaryCards();
+        cardCollection.ClearEquipedCards();
         UpdateDisplayCollection();
     }
 
@@ -171,6 +174,13 @@ public class PlayerCollection : MonoBehaviour
     public void ClearTemporaryCards()
     {
         cardCollection.ClearTemporaryCards();
+        cardCollection.ClearCourtCards();
+        playerManager.ReApplyStats();
+        UpdateDisplayCollection();
+    }
+    public void ClearEquippedCourtCards()
+    {
+        cardCollection.ClearCourtCards();
     }
     public void BreakContract()
     {

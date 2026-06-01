@@ -32,6 +32,7 @@ public class CardCollection : MonoBehaviour
     {
         temporaryCards.Clear();
         equippedCards.Clear();
+        equippedCourtCards.Clear();
     }
 
     public void EquipCards(CardData card)
@@ -76,6 +77,8 @@ public class CardCollection : MonoBehaviour
         temporaryCards.Add(card);
 
     }
+
+    
 
     public void RemoveFromTemporaryCollection(Card card)
     {
