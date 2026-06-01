@@ -14,7 +14,7 @@ public class Random_Card_Spawner : MonoBehaviour
     {
         builder = GameObject.Find("CardSystem").GetComponent<CardBuilder>();
         gameData = GameObject.Find("GlobalData").GetComponent<RunGameData>();
-        SpawnCard(gameData.hasSpawnedSecretCard);
+        SpawnCard(gameData.hasSecrectCardBeenPickedup);
     }
 
     void Update()
@@ -22,15 +22,14 @@ public class Random_Card_Spawner : MonoBehaviour
 
     }
 
-    public void SpawnCard(bool hasSpawnedSecret)
+    public void SpawnCard(bool hasBeenPickedUp)
     {
-        if (!hasSpawnedSecret)
-        {
-            int index = Random.Range(0, secretCards.Count);
-            CardData card = secretCards[index];
-            builder.InstantiateSecretCard(card, spawnTransform);
-            gameData.hasSpawnedSecretCard = true;
-        }
+        if (PlayerPrefsSaveSystem.HasUnlocked(gameData.randomSpawnCardString))
+            return;
+
+        int index = Random.Range(0, secretCards.Count);
+        CardData card = secretCards[index];
+        builder.InstantiateSecretCard(card, spawnTransform);
     }
 
 
