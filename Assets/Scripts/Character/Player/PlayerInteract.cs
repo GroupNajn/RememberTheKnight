@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-04-08
+    /// Initially created as a component script for player, to cast a ray when interacting with objects.
+    /// 
+    /// Created by Anton 2026-05-12
+    /// Changed so that highlighting works with highlight components.
+    /// </summary>
+
     private Camera playerCamera;
     public float InteractDistance = 8f;
     PlayerController playerController;
@@ -37,6 +45,10 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Casts a ray to check components in objects if they are interactable.
+    /// Also checks for highlight components and highlights objects.
+    /// </summary>
     public void CheckInteractable()
     {
         playerCamera = playerController._playerCamera.GetComponent<Camera>();

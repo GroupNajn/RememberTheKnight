@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Created by Anton and Theo 2026-04-13
+    /// Initially created with minor effects and interactale features. Also with the light/particle effect.
+    /// 
+    /// Changed by Anton 2026-05-06
+    /// Added saved data to the interactable, so that a one time effect can be played the first time the player interacts, and not played again after that.
+    /// </summary>
+
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
@@ -28,8 +36,6 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         playerManager = player.GetComponent<PlayerManager>();
         interactCollider = GetComponent<CapsuleCollider>();
         lightSource = lightObject.GetComponent<Light>();
-
-        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
 
         if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
@@ -61,6 +67,10 @@ public class InteractHealingFountain : MonoBehaviour, IInteractable, IInteractab
         }
     }
 
+    /// <summary>
+    /// IEnumerator that fade the light source and particle effect out after interaction.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator FadeOut()
     {
         var fog = lightObject.GetComponentInChildren<ParticleSystem>();

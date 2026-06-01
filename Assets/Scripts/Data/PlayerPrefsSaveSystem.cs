@@ -2,8 +2,14 @@ using UnityEngine;
 
 public static class PlayerPrefsSaveSystem
 {
-    // Created by Anton 2026-05-28
-    // Made a save system for playerprefs to save data locally
+    /// <summary>
+    /// Created by Anton 2026-05-06
+    /// Originally made a save system for interactable objects
+    /// This was to save the state of interactable objects, such as if they have been interacted with or not, and if they have been unlocked or not.
+    /// 
+    /// Change by Anton and Henric 2026-05-28
+    /// Changed the save system to a general system for playerprefs to save data locally
+    /// </summary>
 
 
     // Returns true if the string id has been unlocked.

@@ -5,6 +5,14 @@ using System.Collections.Generic;
 //Made by Michaëla 22-05-2026
 public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUIText
 {
+
+    /// <summary>
+    /// Changed by Anton 2026-05-23
+    /// Added logic to use either custom dialogue or preset dialogue.
+    /// 
+    /// Changed by Anton 2026-05-25
+    /// Added objects to active on interact, this is used to activate indicators on other objects after dialogue.
+    /// </summary>
     [Header("Saved Data")]
     [SerializeField] private string interactableID; 
     [SerializeField] private GameObject firstTimeEffect;
@@ -29,6 +37,10 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
         }
     }
 
+    /// <summary>
+    /// Retrieves an array of dialogue lines from either the preset or custom dialogue source.
+    /// </summary>
+    /// <returns>An array of Dialogue objects containing either preset or custom dialogue lines.</returns>
     public Dialogue[] GetDialogue()
     {
         if (presetDialogue != null)

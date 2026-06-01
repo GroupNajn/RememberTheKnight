@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class ObjectHoverController : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton and Theo 2026-04-17
+    /// Initially created as a component to handle the hovering effect of objects.
+    /// </summary>
+
     private Transform hover;
 
     public float speed = 1f;

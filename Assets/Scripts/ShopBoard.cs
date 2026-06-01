@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ShopBoard : MonoBehaviour
 {
+
+    /// <summary>
+    /// Created by Anton 2026-04-28
+    /// Initially created as a component to handle the shop board, which is the object that the player interacts with to open the card shop UI.
+    /// Also uses the ShopBoardCardSlot component to populate the shop board slots with cards that the player can purchase.
+    /// </summary>
     private GameObject lootManager;
     private CardSystem cardSystem;
     public CardBuilder CardBuilder { get; private set; }

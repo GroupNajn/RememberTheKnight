@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class LockOnUi : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-03-25
+    /// Initially created to have a lock on target on enemies.
+    /// As of now Deprecated
+    /// </summary>
+
     private TargetLockHandler lockHandler;
     private Camera mainCamera;
     private RectTransform indicatorRect;

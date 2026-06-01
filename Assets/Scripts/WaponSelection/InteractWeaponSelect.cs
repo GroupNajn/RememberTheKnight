@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Changed by Anton 2026-05-06
+    /// Added saved data to the interactable, so that a one time effect can be played the first time the player interacts, and not played again after that.
+    /// </summary>
+
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;

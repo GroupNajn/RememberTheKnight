@@ -5,7 +5,17 @@ using UnityEngine;
 
 public class BallistaEnemy : MonoBehaviour
 {
-    // Condition for destroying ballista
+    /// <summary>
+    /// Created by Anton 2026-4-17
+    /// Initially created with a aim at and shoot player function, which was later refactored into new scripts.
+    /// 
+    /// Refactored by Anton 2026-04-24
+    /// Changed to have a new mechanic where the player has to kill a certain amount of enemies to destroy the ballista.
+    /// Also moved logic about shooting to new scripts.
+    /// 
+    /// Changed by Anton and Lukas 2026-05-11
+    /// Added visual effects on enemies in the form of a soul that indicates that they are required to destroy the ballista.
+    /// </summary>
     [Header("Enemies")]
     [SerializeField] int minRequiredEnemies = 4;
     [SerializeField] int maxRequiredEnemies = 7;

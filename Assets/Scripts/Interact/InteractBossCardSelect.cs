@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class InteractBossCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Created by Anton 2026-05-31
+    /// Initially created as a component to handle the boss card select interaction, 
+    /// which is the component that is attached to the boss card select board and handles the interaction with the player.
+    /// </summary>
+
     private UIManager playerUIManager;
     [SerializeField] private InteractCameraPreset preset;
     [SerializeField] private CinemachineStateDrivenCamera stateDrivenCamera;

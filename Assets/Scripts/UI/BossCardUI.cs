@@ -7,6 +7,13 @@ using UnityEngine.UI;
 
 public class BossCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    /// <summary>
+    /// Created by Anton 2026-05-31
+    /// Initially created as a component to handle the individual boss cards in the boss card selection UI, 
+    /// which are populated with cards that the player can choose from after unlocking them.
+    /// This uses animations to show when card is selected.
+    /// </summary>
+
     [field: SerializeField] public bool IsSelected { get; private set; }
     [field: SerializeField] public bool IsUnlocked { get; private set; } = false;
     [field: SerializeField] public bool OverrideLockState { get; private set; } = false;

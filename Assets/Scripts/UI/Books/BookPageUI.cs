@@ -5,7 +5,14 @@ using UnityEngine.UI;
 public class BookPageUI : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
-    // Reworked by Anton 2026-05-26
+
+    /// <summary>
+    /// Changed by Anton 2026-05-16
+    /// Overhauled and refactored some code
+    /// 
+    /// Reworked by Anton 2026-05-26
+    /// Added more stats pages to show more stats.
+    /// </summary>
 
     [Header("Panels")]
     [SerializeField] private GameObject statsPanel;
@@ -136,7 +143,7 @@ public class BookPageUI : MonoBehaviour
         {
             var ui = Instantiate(cardPrefab, cardContainer);
 
-            // You can't modify CardUI → assign directly
+            // You can't modify CardUI, assign directly
             ui.transform.SetAsLastSibling();
             ui.Setup(card, true);
 

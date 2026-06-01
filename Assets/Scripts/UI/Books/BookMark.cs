@@ -3,6 +3,13 @@ using UnityEngine.EventSystems;
 
 public class BookMark : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    /// <summary>
+    /// Created by Anton 2026-05-17
+    /// Initially created as a component to handle the individual bookmarks in the book UI, 
+    /// which are used to switch between different pages in the book.
+    /// Also uses animations to move the bookmark up when hovered or selected, and back down when not hovered or selected.
+    /// </summary>
+
     private BookUi bookUi;
 
     [SerializeField] private RectTransform rect;

@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class HighlightTarget : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-05-12
+    /// Initially created as a component to handle the highlighting of objects when the player interacts with them, or hovers over them.
+    /// </summary>
+
     [SerializeField] private List<GameObject> highlightedObjects = new();
 
     private int originalLayer;
