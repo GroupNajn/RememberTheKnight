@@ -3,19 +3,14 @@ using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations.Rigging;
+
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
 [RequireComponent(typeof(Animator))]
-
-[RequireComponent(typeof(CharacterController))]
 public class EnemyLocomotion : MonoBehaviour
 {
     private static readonly int IsHeavyHash = Animator.StringToHash("IsHeavy");
     private static readonly int RandomHash = Animator.StringToHash("Random");
-    [SerializeField] MultiAimConstraint aimConstraint;
-
-    [SerializeField] Transform lookAt;
     private static readonly int YHash = Animator.StringToHash("Y");
     private static readonly int XHash = Animator.StringToHash("X");
     private static readonly int IsEmotingHash = Animator.StringToHash("IsEmoting");
@@ -25,10 +20,7 @@ public class EnemyLocomotion : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
-        characterController = GetComponent<CharacterController>();
         behaviorAgent = GetComponent<BehaviorGraphAgent>();
-        //lookAt.name = $"{name} {lookAt.name}";
-        //lookAt.SetParent(null);
         if (behaviorAgent.BlackboardReference.GetVariable("stoppingDistance", out stoppingDistance))
             stoppingDistance.Value = navAgent.stoppingDistance;
 
@@ -50,32 +42,6 @@ public class EnemyLocomotion : MonoBehaviour
 
         navAgent.velocity = transform.TransformDirection(localVelocity) * navAgent.speed;
         navAgent.nextPosition = transform.position;
-
-
-
-        // if (aimConstraint == null)
-        //     return;
-
-        // if (behaviorAgent.BlackboardReference.GetVariable<GameObject>("Target", out var target))
-        // {
-        //     if (target.Value)
-        //     {
-        //         if (currentTarget == null || currentTarget != target.Value)
-        //         {
-        //             currentTarget = target.Value;
-        //             currentAimAt = currentTarget.GetComponentsInChildren<Transform>().FirstOrDefault(transform => transform.name == "Head");
-        //         }
-        //     }
-        // }
-
-        // if (currentAimAt != null)
-        //     lookAt.position = currentAimAt.transform.position;
-
-        // float weightTarget;
-        // if (animator.GetBool(IsAttackingHash) || currentAimAt == null) weightTarget = 0;
-        // else weightTarget = 1;
-
-        // aimConstraint.weight = Mathf.Lerp(aimConstraint.weight, weightTarget, 4 * Time.deltaTime);
     }
 
     public void OnAttackStart() => animator.SetBool(IsAttackingHash, true);
@@ -91,20 +57,7 @@ public class EnemyLocomotion : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navAgent;
     private BehaviorGraphAgent behaviorAgent;
-    private CharacterController characterController;
     private BlackboardVariable<float> stoppingDistance;
-    private GameObject currentTarget;
-    private Transform currentAimAt;
-    public bool InCombat
-    {
-        get
-        {
-            if (behaviorAgent.BlackboardReference.GetVariable("currentThreat", out BlackboardVariable<float> threat))
-            {
-                return threat.Value > 0.4;
-            }
-            return false;
-        }
-    }
+
 
 }

@@ -7,7 +7,7 @@ public class EnemyBossDeath : MonoBehaviour, ITriggerable
     [SerializeField] ParticleSystem deathParticles;
     public void Trigger()
     {
-        StartCoroutine(DeleteCorpse(Instantiate(deathParticles, transform.position, Quaternion.identity, transform)));
+        StartCoroutine(DeleteCorpse(Instantiate(deathParticles, transform.position, Quaternion.identity)));
 
     }
     IEnumerator DeleteCorpse(ParticleSystem particles)

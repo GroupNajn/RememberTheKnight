@@ -5,7 +5,6 @@ using Unity.Behavior;
 public enum Phase
 {
 	Initial,
-	Main,
 	Intermission,
 	Execute
 }
