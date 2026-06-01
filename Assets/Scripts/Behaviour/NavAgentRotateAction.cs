@@ -36,7 +36,10 @@ public partial class NavAgentRotateAction : Action
             Self.Value.transform.rotation = Quaternion.RotateTowards(
                 Self.Value.transform.rotation,
                 desiredRotation,
-                Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value
+                Mathf.Min(
+                    Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value,
+                    angle
+                )
             );
             if (Continuous.Value) return Status.Running;
 

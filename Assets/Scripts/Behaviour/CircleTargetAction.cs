@@ -183,6 +183,8 @@ public partial class CircleTargetAction : Action
     {
         if (navMeshAgent.hasPath)
             navMeshAgent.ResetPath();
+
+        navMeshAgent.updateRotation = true;
     }
 
     private Vector3 SampleCirclePoints(int sampleDensity)
