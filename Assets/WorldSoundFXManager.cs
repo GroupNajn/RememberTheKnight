@@ -33,6 +33,16 @@ public class WorldSoundFXManager : MonoBehaviour
     public EventReference weaponSwitchEvent;
     public EventReference cameraWooshEvent;
 
+    [Header("Boss Sounds")]
+    public EventReference bossBlueBubbleAttackEvent;
+    public EventReference bossRedBubbleAttackEvent;
+    public EventReference bossFootStepEvent;
+    public EventReference bossTeleportEvent;
+    public EventReference bossSummonMinionEvent;
+    public EventReference bossPhaseSwitchevent;  
+
+
+
 
     [Header("Button Sounds")]
     public EventReference cardFlipEvent;

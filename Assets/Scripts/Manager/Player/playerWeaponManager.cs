@@ -142,7 +142,6 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         if (Weapons.Count == 0) return;
 
-        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.weaponSwitchEvent);
         if (Holsterd)
         {
             HolsterEvent();

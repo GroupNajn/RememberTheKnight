@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3003523761836366567}
   - component: {fileID: 5447696192765038834}
+  - component: {fileID: -206501316392399025}
   m_Layer: 0
   m_Name: BossAddSpawnPoint
   m_TagString: Untagged
@@ -48,6 +49,37 @@ MonoBehaviour:
   particles: {fileID: 5794458653378723918}
   enemyBossAdd: {fileID: 7493179197623156213, guid: 2549a8173086e2af88af7d62304ad64b, type: 3}
   addSpawnerManager: {fileID: 0}
+--- !u!114 &-206501316392399025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780469235826858731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1653190809
+      Data2: 1129609448
+      Data3: -848358213
+      Data4: 945857300
+    Path: event:/SFX/Attacks/Enemy/Boss/Boss Minion Summon
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 40
 --- !u!1001 &2747921729039296352
 PrefabInstance:
   m_ObjectHideFlags: 0
