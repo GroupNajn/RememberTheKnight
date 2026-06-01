@@ -17,5 +17,6 @@ public class EnemyBossDeath : MonoBehaviour, ITriggerable
         yield return new WaitUntil(() => particles.IsAlive(true));
         Destroy(particles);
         Destroy(gameObject);
+        Event_System.instance.OnBossDeath?.Invoke();
     }
 }

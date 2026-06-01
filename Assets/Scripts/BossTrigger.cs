@@ -17,5 +17,5 @@ public class BossTrigger : MonoBehaviour
         {
             Event_System.instance.OnBossDeath?.Invoke();
         }
-    }
+    } // TO BE REMOVED
 }
