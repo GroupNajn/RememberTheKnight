@@ -35,9 +35,34 @@ public static class PlayerPrefsSaveSystem
         return PlayerPrefs.GetInt(bossID, 0) == 1;
     }
 
+    public static bool HasPlayedGame()
+    {
+        return PlayerPrefs.GetInt("HasPlayedGame", 0) == 1;
+    }
+
     public static void SaveBossKill(string bossID)
     {
         PlayerPrefs.SetInt(bossID, 1);
+    }
+
+    public static void SaveCharactedCustomization(string bodyPartID, int index)
+    {
+        PlayerPrefs.SetInt(bodyPartID, index);
+    }
+
+    public static void SaveGender(SwitchBodyParts.Gender gender)
+    {
+        PlayerPrefs.SetInt("Gender", (int)gender);
+    }
+
+    public static int GetSavedGender()
+    {
+        return PlayerPrefs.GetInt("Gender", 0);
+    }
+
+    public static int GetSavedCharacterCustomization(string bodyPartID)
+    {
+        return PlayerPrefs.GetInt(bodyPartID);
     }
 
     public static void SaveSouls(string soulValueText,int amount)

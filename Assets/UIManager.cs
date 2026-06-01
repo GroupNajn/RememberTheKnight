@@ -374,6 +374,9 @@ public class UIManager : MonoBehaviour
     {
         if (characterSelectUI)
         {
+            UIMenuActive = false;
+            CheckUIState();
+            OpenUIOnMenuClose();
             characterSelectUI.SetActive(false);
         }
     }

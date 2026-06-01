@@ -236,4 +236,12 @@ public class GameDataUpdater : MonoBehaviour
         }
     }
 
+    public void LoadHasPlayedGame()
+    {
+        if (PlayerPrefsSaveSystem.HasPlayedGame())
+        {
+            gameData.FirstTimePlaying = false;
+        }
+    }
+
 }
