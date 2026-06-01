@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : AutoSelectFirstButtonOnEnable
 {
+    /// <summary>
+    /// Made by Lukas 2026-04-02
+    /// Game is paused and menu is toggled when pressing ESC with resume button
+    /// </summary>
+
     string returnButtonDefaultText;
     [SerializeField] string returnButtonLobbyText;
     [SerializeField] TMP_Text returnButtonText;

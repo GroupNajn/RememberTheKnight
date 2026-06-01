@@ -3,6 +3,14 @@ using TMPro;
 
 public class CupCanvas : MonoBehaviour
 {
+    /// <summary>
+    /// Made by Lukas 2026-04-20
+    /// Swapping between a filled and empty cup depending on if it's full or empty
+    /// 
+    /// Updated by Lukas 2026-05-22
+    /// Updates the healing cup colors with a gradient based depending on the current number of charges left, the maximum charges, and the charges per use
+    /// </summary>
+
     public static CupCanvas Instance { get; private set; }
 
     [SerializeField] Gradient cupGradient;

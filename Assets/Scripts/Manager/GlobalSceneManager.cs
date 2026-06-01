@@ -7,6 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class GlobalSceneManager : MonoBehaviour
 {
+    /// <summary>
+    /// Made by Lukas 2026-04-10
+    /// 
+    /// Manages scene loading and transitions for the game
+    /// Asynchronous scene loading with support for pre-loading scenes in the background to reduce load times during scene switches
+    /// The starting of the asynchronous loading is mainly triggered when the screen is black 
+    ///     while showing the king card of the currently selected family but not neccisary
+    ///     
+    /// Updated by Lukas over the next 2-3 weeks
+    /// </summary>
+
     public static GlobalSceneManager Instance { get; private set; }
 
     Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();

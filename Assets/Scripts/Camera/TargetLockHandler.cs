@@ -12,6 +12,9 @@ public class TargetLockHandler : MonoBehaviour
     /// Created by Anton 2026-03-16
     /// Initially created to handle target lock system and switch between cameras.
     /// 
+    /// Changed by Lukas 2026-04-01
+    /// Made Enemy show health bar when locked on
+    /// 
     /// Changed by Anton 2026-04-02
     /// Added line of sight, distance breaks, fov view.
     /// 
