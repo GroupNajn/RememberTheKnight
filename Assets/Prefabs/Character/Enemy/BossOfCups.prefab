@@ -1020,10 +1020,7 @@ GameObject:
   - component: {fileID: 8105721601744756747}
   - component: {fileID: 4435027409138346732}
   - component: {fileID: 4852675796085478844}
-  - component: {fileID: 3442522953305961543}
-  - component: {fileID: 3189754594843471412}
   - component: {fileID: 291564827546963587}
-  - component: {fileID: 2031226361418545177}
   - component: {fileID: 8204602371867014469}
   - component: {fileID: 3762644391458553228}
   - component: {fileID: 1484534544701857862}
@@ -1074,6 +1071,7 @@ Transform:
   - {fileID: 7842616226272492389}
   - {fileID: 2729183923459578668}
   - {fileID: 5550413728415465100}
+  - {fileID: 7886034223550025943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7798714058568851673
@@ -1386,43 +1384,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 1500
   SneakMultiplier: 1.3
   healthModifierPercentagePerLevel: 1
-  tier: 4
---- !u!114 &3442522953305961543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2339039169789421763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7042e3a57bed0a543945efc8e68678d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 4356212746641267590}
-  currentLeftHandWeapon: {fileID: 0}
-  equippedWeapon: {fileID: 0}
-  currentActiveWeaponData: {fileID: 0}
-  lastActiveWeaponData: {fileID: 0}
-  unarmedWeaponData: {fileID: 0}
-  rightDamageTrigger: {fileID: 0}
-  leftDamageTrigger: {fileID: 0}
-  currentRightWeaponData: {fileID: 0}
-  currentLeftWeaponData: {fileID: 0}
-  damageModifierPercentagePerLevel: 1
---- !u!114 &3189754594843471412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2339039169789421763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c9f9781cefe57b45b823c8f238b6c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodSplatterVFX: {fileID: 1870066848782411549, guid: baa7bf940b111f3468dfc2ab18be0bed, type: 3}
+  tier: 5
 --- !u!114 &291564827546963587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,29 +1407,6 @@ MonoBehaviour:
       Data4: -836897982
     Path: event:/SFX/Death/EnemyDeath
   footSteps: []
---- !u!114 &2031226361418545177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2339039169789421763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7042e3a57bed0a543945efc8e68678d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 4356212746641267590}
-  currentLeftHandWeapon: {fileID: 0}
-  equippedWeapon: {fileID: 0}
-  currentActiveWeaponData: {fileID: 0}
-  lastActiveWeaponData: {fileID: 0}
-  unarmedWeaponData: {fileID: 0}
-  rightDamageTrigger: {fileID: 0}
-  leftDamageTrigger: {fileID: 0}
-  currentRightWeaponData: {fileID: 0}
-  currentLeftWeaponData: {fileID: 0}
-  damageModifierPercentagePerLevel: 1
 --- !u!114 &8204602371867014469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1480,7 +1419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9f9781cefe57b45b823c8f238b6c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodSplatterVFX: {fileID: 1870066848782411549, guid: baa7bf940b111f3468dfc2ab18be0bed, type: 3}
+  bloodSplatterVFX: {fileID: 4545752516965069178, guid: dcc699067f2e32e4eaefd49a65965d2c, type: 3}
 --- !u!114 &3762644391458553228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1531,9 +1470,13 @@ MonoBehaviour:
   equippedWeapon: {fileID: 0}
   currentActiveWeaponData: {fileID: 0}
   lastActiveWeaponData: {fileID: 0}
+  rightHandUnarmedWeapon: {fileID: 0}
+  leftHandUnarmedWeapon: {fileID: 0}
   unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
+  rightUnarmedDamageTrigger: {fileID: 0}
+  leftUnarmedDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
   damageModifierPercentagePerLevel: 1
@@ -5210,6 +5153,116 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3833202269244107968, guid: c0460fa1ae88d78109fd5a66cb832eae, type: 3}
   m_PrefabInstance: {fileID: 5565158824343521623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7948052166118010449
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3115997364326085241}
+    m_Modifications:
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1007658234203618862, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: lockOnTransform
+      value: 
+      objectReference: {fileID: 5550413728415465100}
+    - target: {fileID: 1007658234203618862, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: indicatorFollowTarget
+      value: 
+      objectReference: {fileID: 8642348132381601382}
+    - target: {fileID: 6676366249396822126, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+      propertyPath: m_Name
+      value: LockOnCanvas
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+--- !u!224 &7886034223550025943 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 233612194107440774, guid: 10662291accca614fb4f9a6206f06d5b, type: 3}
+  m_PrefabInstance: {fileID: 7948052166118010449}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9196448323535617635
 PrefabInstance:
