@@ -2,6 +2,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+/// <summary>
+/// Handles the visual presentation of a single book page.
+/// Supports displaying:
+/// - Player/Run statistics
+/// - Card collections
+/// - Lore entries
+///
+/// The page type is determined by the supplied PageData object.
+/// </summary>
 public class BookPageUI : MonoBehaviour
 {
     //made by Michaëla 2026-04-19
@@ -36,6 +46,11 @@ public class BookPageUI : MonoBehaviour
 
     private PlayerCollection playerCollection;
 
+    /// <summary>
+    /// Configures the page based on the supplied PageData.
+    /// Activates the correct panel and populates it with content.
+    /// </summary>
+    /// <param name="data">Page information to display.</param>
     public void Setup(PageData data)
     {
         ClearPages();
@@ -63,6 +78,9 @@ public class BookPageUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides all page panels before displaying new content.
+    /// </summary>
     public void ClearPages()
     {
         statsPanel.SetActive(false);
@@ -70,6 +88,12 @@ public class BookPageUI : MonoBehaviour
         lorePanel.SetActive(false);
     }
 
+    /// <summary>
+    /// Displays either player stats or progression statistics,
+    /// depending on the IsPlayerStats bool.
+    /// </summary>
+    /// <param name="stats">Player stat data.</param>
+    /// <param name="weaponStats">Current weapon statistics.</param>
     private void ShowStats(PlayerStats stats, PlayerWeaponManager weaponStats)
     {
         if (stats == null) return;
@@ -125,6 +149,11 @@ public class BookPageUI : MonoBehaviour
             $"Cards Collected: \n";
         }
     }
+    /// <summary>
+    /// Populates the card page with card UI elements.
+    /// Existing card objects are removed before new ones are created.
+    /// </summary>
+    /// <param name="cards">Cards to display on the page.</param>
     private void ShowCards(List<CardData> cards)
     {
         // Safety check
@@ -146,14 +175,6 @@ public class BookPageUI : MonoBehaviour
             // You can't modify CardUI, assign directly
             ui.transform.SetAsLastSibling();
             ui.Setup(card, true);
-
-            //Button button = ui.GetComponent<Button>();
-
-            //if (button != null)
-            //{
-            //    button.onClick.RemoveAllListeners();
-            //    button.onClick.AddListener(ui.ToggleInfo);
-            //}
           
         }
     }

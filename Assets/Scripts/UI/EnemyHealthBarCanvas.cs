@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls visibility of enemy health bars.
+/// Health bars appear when damage is taken or when locked on,
+/// and automatically hide after a delay.
+/// </summary>
 public class EnemyHealthBarCanvas : MonoBehaviour
 {
     // Edited by Michaëla 2026-05-06
@@ -32,6 +37,10 @@ public class EnemyHealthBarCanvas : MonoBehaviour
         transform.LookAt(Camera.main.transform);
     }
 
+    /// <summary>
+    /// Displays the health bar indefinitely.
+    /// Used when the enemy is currently targeted.
+    /// </summary>
     public void ShowHealthBar() // Used for locking on target
     {
         healthBar.gameObject.SetActive(true);
@@ -40,6 +49,9 @@ public class EnemyHealthBarCanvas : MonoBehaviour
             StopCoroutine(hideCoroutine);
     }
 
+    /// <summary>
+    /// Displays the health bar temporarily after damage is taken.
+    /// </summary>
     public void ShowHealthBarForDuration(float current, float max) // Used for showing the healthbar when taking damage
     {
         if (current <= 0)
@@ -69,6 +81,9 @@ public class EnemyHealthBarCanvas : MonoBehaviour
         hideCoroutine = StartCoroutine(HideHealthBarAfterDelay());
     }
 
+    /// <summary>
+    /// Hides the enemy health bar if cooldown conditions allow.
+    /// </summary>
     public void HideHealthBar()
     {
         if (healthBar == null || isOnCooldown)
