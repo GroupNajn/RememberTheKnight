@@ -8,6 +8,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
+/// <summary>
+/// Main controller for the in-game book interface.
+///
+/// Responsible for:
+/// - Building page data
+/// - Tab navigation
+/// - Page turning
+/// - Lore entry display
+/// - Opening/closing animations
+/// </summary>
+
 public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
@@ -126,6 +137,10 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         movingPage.localEulerAngles = closedRotation;
         movingBook.localPosition = startPos;
     }
+
+    /// <summary>
+    /// Builds all page collections and opens the default Stats tab.
+    /// </summary>
     public void BaseBookSetup()
     {
         BuildStatPages(playerStats, playerWeaponManager);
@@ -135,7 +150,10 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         OpenTab(BookTabEnum.Stats);
         UpdateTabButtons();
     }
-
+    /// <summary>
+    /// Builds all page collections and opens a specified tab.
+    /// </summary>
+    /// <param name="tab">Tab to display when opening the book.</param>
     public void SpecificBookSetup(BookTabEnum tab)
     {
         BuildStatPages(playerStats, playerWeaponManager);
@@ -146,6 +164,11 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         UpdateTabButtons();
     }
 
+    /// <summary>
+    /// Creates the statistics pages used by the Stats tab.
+    /// </summary>
+    /// <param name="stats">Player statistics.</param>
+    /// <param name="weaponStats">Current weapon statistics.</param>
     public void BuildStatPages(PlayerStats stats, PlayerWeaponManager weaponStats)
     {
         statsPages.Clear();
@@ -164,7 +187,10 @@ public class BookUi : AutoSelectFirstButtonOnEnable
             weaponStats = weaponStats
         });
     }
-
+    /// <summary>
+    /// Creates card pages from all collected and equipped cards.
+    /// Each page contains up to four cards.
+    /// </summary>
     public void BuildCardPages()
     {
         cardPages.Clear();
@@ -183,7 +209,10 @@ public class BookUi : AutoSelectFirstButtonOnEnable
             });
         }
     }
-
+    /// <summary>
+    /// Generates lore pages from all available lore entries.
+    /// Locked entries are displayed as scrambled text.
+    /// </summary>
     public void BuildLorePages()
     {
         lorePages.Clear();
@@ -203,8 +232,13 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         }
     }
 
-    // Helper method for scrambling text
-
+    /// <summary>
+    /// Produces a corrupted version of text for locked lore entries.
+    /// Whitespace is removed, characters are shuffled,
+    /// and random symbols are inserted.
+    /// </summary>
+    /// <param name="text">Original lore text.</param>
+    /// <returns>Scrambled text representation.</returns>
     private string ScrambleText(string text)
     {
         string symbols = "@#$%&";
@@ -296,7 +330,11 @@ public class BookUi : AutoSelectFirstButtonOnEnable
             });
         });
     }
-
+    /// <summary>
+    /// Opens a book section and displays its pages.
+    /// </summary>
+    /// <param name="tab">Tab to display.</param>
+    /// <param name="index">Starting page index.</param>
     public void OpenTab(BookTabEnum tab, int index = 0)
     {
         currentTab = tab;
@@ -324,7 +362,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         ShowPages();
     }
 
-    // Display current pages
+    /// <summary>
+    /// Displays the current left and right pages based on the active page index.
+    /// </summary>
     public void ShowPages()
     {
         if(currentPages == null || currentPages.Count == 0)
@@ -357,7 +397,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         }
     }
 
-    // Flip forward
+    /// <summary>
+    /// Advances the book by one spread (two pages).
+    /// </summary>
     public void NextPage()
     {
         if (currentPages == null)
@@ -371,7 +413,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         }
     }
 
-    // Flip backward
+    /// <summary>
+    /// Moves back one spread (two pages).
+    /// </summary>
     public void PrevPage()
     {
         if(currentPages == null)
@@ -406,10 +450,16 @@ public class BookUi : AutoSelectFirstButtonOnEnable
     {
         ChangeTab(BookTabEnum.Lore);
     }
+
     public void SetPendingLoreEntry(LoreEntry entry)
     {
         pendingLoreEntry = entry;
     }
+
+    /// <summary>
+    /// Opens the Lore tab at the page containing the specified lore entry.
+    /// </summary>
+    /// <param name="entry">Lore entry to display.</param>
     public void OpenLoreAtEntry(LoreEntry entry)
     {
         int loreIndex = allLoreEntries.IndexOf(entry);
@@ -469,6 +519,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         });
     }
 
+    /// <summary>
+    /// Plays the page-opening animation.
+    /// </summary>
     public void AnimateOpen(Action onComplete = null)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookOpenEvent);
@@ -479,6 +532,9 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         });
     }
 
+    /// <summary>
+    /// Plays the page-closing animation.
+    /// </summary>
     public void AnimateClose(Action onComplete = null)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookCloseEvent);
@@ -489,6 +545,11 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         });
     }
 
+    /// <summary>
+    /// Animates the book scaling in or out using a bounce curve.
+    /// </summary>
+    /// <param name="onComplete">Callback executed when animation finishes.</param>
+    /// <param name="reverse">Whether the animation should play in reverse.</param>
     public IEnumerator AnimateSize(Action onComplete = null, bool reverse = false)
     {
         float timer = 0f;

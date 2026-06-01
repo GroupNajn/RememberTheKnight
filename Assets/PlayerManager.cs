@@ -3,6 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Central controller for player health, stamina,
+/// healing, death handling and stat application.
+///
+/// Implements IDamageable and serves as the main
+/// interface between gameplay systems and player stats.
+/// </summary>
 public class PlayerManager : MonoBehaviour, IDamageable
 {
     /// <summary>
@@ -48,14 +55,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         Event_System.instance.OnLoadScenes += ReApplyStats;
 
-        //lowStamInstance = RuntimeManager.CreateInstance(playerSFX.outOfBreathEvent);
-        //lowStamInstance.start();
-
-
-
-        //Event_System.instance.OnStatsApplied += ApplyStatsFromCardSelection;
-        //Event_System.instance.OnCardPickedUp += ReApplyStats;
-
         GetCharges(0); // Update the material of the cup at the start of the game with the initial healing charges
     }
 
@@ -77,6 +76,12 @@ public class PlayerManager : MonoBehaviour, IDamageable
         RuntimeManager.StudioSystem.setParameterByName("Health", playerStats.CurrentHealth / playerStats.MaxHealth);
     }
 
+    /// <summary>
+    /// Applies incoming damage to the player,
+    /// triggers effects and checks for death.
+    /// </summary>
+    /// <param name="damageInfo">Information about the damage dealt.</param>
+    /// <param name="contactPoint">World position where damage occurred.</param>
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
         if (CanTakeDamage && !isDead)
@@ -88,7 +93,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
             NotifyHealthChanged();
             if (isDead)
             {
-                // MAYBE PLAY DEATH SOUND FX
                 Death();
             }
         }
@@ -101,14 +105,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     private void NotifyHealthChanged()
     {
-
-        //Debug.Log("EVENT TRIGGERED: " + playerStats.Health);
         OnHealthChanged?.Invoke(playerStats.CurrentHealth, playerStats.MaxHealth);
     }
 
     public void NotifyDeath()
     {
-        //Debug.Log("EVENT TRIGGERED: Player Died");
         Event_System.instance.OnPlayerDeath?.Invoke();
     }
 
@@ -120,6 +121,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
         NotifyHealthChanged();
     }
+
 
     public void OnHeal()
     {
@@ -147,20 +149,22 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerAnimator.ResetTrigger("Drink");
     }
 
+    /// <summary>
+    /// Restores health while respecting healing modifiers
+    /// and maximum health limits.
+    /// </summary>
+    /// <param name="amount">Base healing amount.</param>
     public void Heal(float amount)
     {
-
         float totalHeal = amount * playerStats.currentHealModifier;
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
         NotifyHealthChanged();
-
-        //playerStats.currentHealingCharges -= playerStats.healingChargeCost;
-        //CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
-
-        //playerAnimator.ResetTrigger("Drink");
-
     }
 
+    /// <summary>
+    /// Adds healing charges and updates the healing cup UI.
+    /// </summary>
+    /// <param name="amount">Number of charges to add.</param>
     public void GetCharges(int amount)
     {
         playerStats.currentHealingCharges += amount;
@@ -171,7 +175,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void NotifyStaminaChanged()
     {
         onStaminaChanged?.Invoke(playerStats.currentStamina, playerStats.maxStamina);
-
     }
 
     private void OnDisable()
@@ -192,6 +195,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// Rebuilds player statistics based on selected cards.
+    /// Resets current health and stamina afterwards.
+    /// </summary>
+    /// <param name="cards">Selected card collection.</param>
     public void ApplyStatsFromCardSelection(List<CardData> cards)
     {
 
@@ -219,6 +227,11 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.CurrentHealth = MaxHealth;
         playerStats.currentStamina = playerStats.maxStamina;
     }
+
+    /// <summary>
+    /// Recalculates all player stats from the currently owned cards.
+    /// Typically used after scene transitions.
+    /// </summary>
     public void ReApplyStats()
     {
         List<CardData> templist = playerColllection.ReturnAllCards();
@@ -270,6 +283,10 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     }
 
+    /// <summary>
+    /// Applies stat modifiers from a single card.
+    /// </summary>
+    /// <param name="card">Card containing stat modifiers.</param>
     public void ApplyStatsInternally(CardData card)
     {
         playerStats.MaxHealth += card.healthModifier;
@@ -291,7 +308,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
         playerStats.currentActionSpeedModifier += card.actionSpeedModifier;
-        //playerWeaponManager.currentActiveWeaponData.actionSpeed = playerStats.curentActionSpeedModifier;
         playerAnimator.speed = playerStats.currentActionSpeedModifier;
 
         if (playerStats.currentWeaponSize.y > playerStats.maxWeaponSize.y || playerStats.currentWeaponSize.x > playerStats.maxWeaponSize.x)
@@ -299,7 +315,6 @@ public class PlayerManager : MonoBehaviour, IDamageable
             playerStats.currentWeaponSize = new Vector3(playerStats.maxWeaponSize.x, playerStats.maxWeaponSize.y, playerStats.maxWeaponSize.z);
             playerWeaponManager.currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
         }
-
 
         if (card.weaponVFX)
         {
@@ -309,6 +324,5 @@ public class PlayerManager : MonoBehaviour, IDamageable
                 weaponStats.EnableWeaponVFX();
             }
         }
-
     }
 }

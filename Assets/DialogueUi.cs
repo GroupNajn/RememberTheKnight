@@ -6,6 +6,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles dialogue presentation including:
+/// - Typewriter text animation
+/// - Dialogue progression
+/// - Input handling
+/// - Dialogue sound effects
+/// </summary>
 
 //Made by Michaëla 22-05-2026
 public class DialogueUI : MonoBehaviour
@@ -39,7 +46,11 @@ public class DialogueUI : MonoBehaviour
     {
         talkingInstance = RuntimeManager.CreateInstance(WorldSoundFXManager.instance.ladyTalkingEvent);
     }
-    
+
+    /// <summary>
+    /// Begins a dialogue sequence.
+    /// </summary>
+    /// <param name="dialogueLines">Dialogue lines to display.</param>
     public void StartDialogue(Dialogue[] dialogueLines)
     {
         currentLines = dialogueLines;
@@ -72,6 +83,9 @@ public class DialogueUI : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Displays the current dialogue line and starts the typing effect.
+    /// </summary>
     void ShowLine()
     {
         canContinue = false;
@@ -87,6 +101,11 @@ public class DialogueUI : MonoBehaviour
         typingCoroutine = StartCoroutine(TypeLine(currentLines[currentLine].text));
     }
 
+    /// <summary>
+    /// Reveals dialogue characters over time,
+    /// creating a typewriter effect.
+    /// </summary>
+    /// <param name="line">Text to display.</param>
     IEnumerator TypeLine(string line)
     {
         isTyping = true;
@@ -114,7 +133,9 @@ public class DialogueUI : MonoBehaviour
         canContinue = true;
     }
 
-    //if player presses input again auto complete sentance
+    /// <summary>
+    /// Immediately reveals the remainder of the current dialogue line.
+    /// </summary>
     void FinishTyping()
     {
         if (typingCoroutine != null)
@@ -132,6 +153,10 @@ public class DialogueUI : MonoBehaviour
         UpdateMoreText();
     }
 
+    /// <summary>
+    /// Advances to the next dialogue line
+    /// or ends the dialogue if no lines remain.
+    /// </summary>
     void NextLine()
     {
         currentLine++;
@@ -146,12 +171,16 @@ public class DialogueUI : MonoBehaviour
         ShowLine();
     }
 
+    /// <summary>
+    /// Closes the dialogue UI and ends the conversation.
+    /// </summary>
     void EndDialogue()
     {
         UIManager.Instance.CloseDialogueUI();
     }
-
-    //If here are more lines shows . . . else nothing to indicate to player more dialogue exists
+    /// <summary>
+    /// If here are more lines shows . . . else nothing to indicate to player more dialogue exists
+    /// </summary>
     void UpdateMoreText()
     {
 

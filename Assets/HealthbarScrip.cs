@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Updates and animates a health bar for either a player or enemy.
+/// Supports smooth fill transitions and dynamic resizing.
+/// </summary>
 public class HealthbarScrip : MonoBehaviour
 {
     //edited by Michaëla 2026-05-06
@@ -35,6 +39,7 @@ public class HealthbarScrip : MonoBehaviour
         healthbar.value = damageable.MaxHealth;
     }
 
+
     private void Update() // Lerp the healthbar fill to the target position
     {
         bool lerpCondition = lerpingRectTransform.anchorMax.x > healthbar.fillRect.anchorMax.x || lerpingRectTransform.anchorMin.x < healthbar.fillRect.anchorMin.x;
@@ -52,7 +57,12 @@ public class HealthbarScrip : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Updates health values, resizes the bar when necessary,
+    /// and handles enemy health bar visibility.
+    /// </summary>
+    /// <param name="current">Current health.</param>
+    /// <param name="max">Maximum health.</param>
     void UpdateHealthBar(float current, float max) // Updates the healthbar value and max value, and shows the healthbar for a duration if it's an enemy. Also resizes the healthbar based on max health if it's the player. Destroys the healthbar gameobject when health is 0 or below.
     {
         healthbar.maxValue = max;

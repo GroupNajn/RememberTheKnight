@@ -5,6 +5,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Central manager for all user interface systems.
+///
+/// Responsible for:
+/// - Menu navigation
+/// - UI visibility management
+/// - Pausing and resuming gameplay
+/// - Cursor and input state management
+/// - Opening and closing gameplay UI windows
+/// - Scene-specific UI initialization
+///
+/// Implemented as a persistent singleton.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     // Created and edited by Lukas, Wilmer, Michaëla
@@ -19,12 +32,11 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;
-    //PlayerInput UIInput;
     PauseMenu pauseMenu;
     CardSelectionUI cardSelectionUI;
     [Header("Script References")]
-    [SerializeField] private PlayerCollection playerCollection; //meike tbc
-    [SerializeField] private PlayerStats playerStats; //meike tbc
+    [SerializeField] private PlayerCollection playerCollection;
+    [SerializeField] private PlayerStats playerStats; 
     [SerializeField] private InteractCameraHandler interactCameraHandler;
 
     [SerializeField] private GameObject backButtonUI;
@@ -84,12 +96,10 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        //UIInput = GetComponentInChildren<PlayerInput>();
         pauseMenu = GetComponentInChildren<PauseMenu>();
         cardSelectionUI = GetComponentInChildren<CardSelectionUI>();
 
         playerInput.enabled = false;
-        //UIInput.enabled = false;
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
         Cursor.visible = true; // Show the cursor when paused
 
@@ -210,6 +220,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Closes all currently active menus and restores gameplay control.
+    /// Re-enables player input, gameplay UI and normal time scale.
+    /// </summary>
     public void HideActiveUI()
     {
         UIMenuActive = false;
@@ -231,6 +245,10 @@ public class UIManager : MonoBehaviour
         CheckTimeScaleUI(true);
     }
 
+    /// <summary>
+    /// Updates cursor visibility, player input and time scale
+    /// based on whether a UI menu is currently active.
+    /// </summary>
     public void CheckUIState()
     {
         if (!UIMenuActive)
@@ -399,8 +417,6 @@ public class UIManager : MonoBehaviour
     public void CloseControllsUI()
     {
         controllsUI.SetActive(false);
-
-
     }
 
     // AUDIO UI
@@ -571,7 +587,10 @@ public class UIManager : MonoBehaviour
         interactCameraHandler.InteractCamReset();
     }
 
-    // BOOK UI
+    /// <summary>
+    /// Opens the in-game book interface and temporarily hides
+    /// gameplay HUD elements.
+    /// </summary>
     public void OpenBookUI()
     {
         CloseInteractiveUI();
@@ -582,6 +601,10 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
+    /// <summary>
+    /// Closes the book interface using its closing animation sequence,
+    /// then restores gameplay HUD elements and player controls.
+    /// </summary>
     public void CloseBookUI()
     {
         BookUi bookScript = bookUI.GetComponent<BookUi>();
@@ -802,7 +825,11 @@ public class UIManager : MonoBehaviour
         OpenOptionMenu(); ;
     }
 
-    // Dialogue UI
+    /// <summary>
+    /// Opens the dialogue interface and begins displaying
+    /// the supplied dialogue sequence.
+    /// </summary>
+    /// <param name="dialogueLines">Dialogue lines to display.</param>
     public void OpenDialogueUI(Dialogue[] dialogueLines)
     {
         CloseInteractiveUI();
@@ -818,6 +845,9 @@ public class UIManager : MonoBehaviour
         dialogueUI.GetComponent<DialogueUI>().StartDialogue(dialogueLines);
     }
 
+    /// <summary>
+    /// Closes the dialogue interface and restores gameplay HUD elements.
+    /// </summary>
     public void CloseDialogueUI()
     {
         OpenUIOnMenuClose();

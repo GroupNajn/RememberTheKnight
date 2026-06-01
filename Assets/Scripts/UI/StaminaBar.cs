@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls the player's stamina UI.
+/// Updates stamina values, animates stamina loss,
+/// and resizes the bar based on maximum stamina.
+/// </summary>
 public class StaminaBar : MonoBehaviour
 {
     PlayerStats playerStats;
@@ -49,12 +54,13 @@ public class StaminaBar : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-
+    /// <summary>
+    /// Updates stamina values and adjusts the stamina bar width.
+    /// </summary>
+    /// <param name="current">Current stamina.</param>
+    /// <param name="max">Maximum stamina.</param>
     void UpdateStaminaBar(float current, float max)
     {
-
-       // Debug.Log("STAMINA BAR UPDATED");
         staminaBar.maxValue = max;
         staminaBar.value = current;
 
