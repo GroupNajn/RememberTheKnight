@@ -564,6 +564,9 @@ public class SwitchBodyParts : MonoBehaviour
         {
             if (!PlayerPrefsSaveSystem.HasPlayedGame())
             {
+                gameData.FirstTimePlaying = false;
+                PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
+
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
             }
             else
@@ -579,17 +582,14 @@ public class SwitchBodyParts : MonoBehaviour
         SaveBody();
         PlayerPrefsSaveSystem.SaveGender(currentGender);
 
-        if (!PlayerPrefsSaveSystem.HasPlayedGame())
-        {
-            gameData.FirstTimePlaying = false;
-            PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
-        }
-
         // LOAD NEXT SCENE
         if (canStartGame)
         {
             if (!PlayerPrefsSaveSystem.HasPlayedGame())
             {
+                gameData.FirstTimePlaying = false;
+                PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
+
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
             }
             else
@@ -599,6 +599,7 @@ public class SwitchBodyParts : MonoBehaviour
         {
             startGame = true;
         }
+
     }
 
     public void OnClick()
