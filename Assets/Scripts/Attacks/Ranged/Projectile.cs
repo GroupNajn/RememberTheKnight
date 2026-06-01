@@ -32,7 +32,7 @@ public class Projectile : MonoBehaviour
     {
         origin = transform.position;
 
-        if(isArrow)
+       
         RuntimeManager.PlayOneShotAttached(flyingEvent, gameObject);
     }
 

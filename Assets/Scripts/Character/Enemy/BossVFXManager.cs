@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Behavior;
@@ -69,6 +70,8 @@ public class BossVFXManager : MonoBehaviour
         ParticleSystem extraAirEffect = Instantiate(currentAirEffect, airOriginLeft.position, Quaternion.identity);
         extraAirEffect.Play();
         Destroy(extraAirEffect.gameObject, 5f);
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.bossBlueBubbleAttackEvent, extraAirEffect.gameObject);
+
     }
 
     public void PlayAirEffectRight()
@@ -76,6 +79,8 @@ public class BossVFXManager : MonoBehaviour
         ParticleSystem extraAirEffect = Instantiate(currentAirEffect, airOriginRight.position, Quaternion.identity);
         extraAirEffect.Play();
         Destroy(extraAirEffect.gameObject, 5f);
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.bossBlueBubbleAttackEvent, extraAirEffect.gameObject);
+
     }
 
 
@@ -96,5 +101,6 @@ public class BossVFXManager : MonoBehaviour
                 currentAirEffect = executeAirEffect;
                 break;
         }
+        RuntimeManager.PlayOneShotAttached(WorldSoundFXManager.instance.bossPhaseSwitchevent, gameObject);
     }
 }

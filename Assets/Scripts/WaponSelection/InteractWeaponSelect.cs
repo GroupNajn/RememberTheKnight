@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableUIText
@@ -36,7 +37,7 @@ public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableU
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
         }
-
+        RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.weaponSwitchEvent, transform.position);
         weaponManager.SwitchWeapon();
     }
 
