@@ -26,6 +26,8 @@ public class Loot_System : MonoBehaviour
             Event_System.instance.OnSoulsSpent += ConsumeSouls;
 
             Event_System.instance.OnResetSouls += ResetSouls;
+
+            //Event_System.instance.OnBossDeath += EnableBossPedestal;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
     }
@@ -36,7 +38,9 @@ public class Loot_System : MonoBehaviour
         {
             Event_System.instance.OnLootPickedUp -= IncreaseSouls;
             Event_System.instance.OnSoulsSpent -= ConsumeSouls;
-           
+            Event_System.instance.OnResetSouls -= ResetSouls;
+            //Event_System.instance.OnBossDeath -= EnableBossPedestal;
+
         }
         soulsCollected.Clear();
     }
@@ -54,6 +58,12 @@ public class Loot_System : MonoBehaviour
             }
         }
     }
+    //private void EnableBossPedestal()
+    //{
+    //    GameObject bossCardPedestal = GameObject.Find("Boss_Pedestal");
+    //    bossCardPedestal.SetActive(true);
+        
+    //}
 
     public void ConsumeSouls(int souls)
     {

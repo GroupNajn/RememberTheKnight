@@ -93,6 +93,7 @@ public class CardSystem : MonoBehaviour
 
     public void UnlockCardFromDonation(CardData card)
     {
+        if (hashUnlocked.Contains(card) || unlockedCards.Contains(card)) return;
         unlockedCards.Add(card);
         hashUnlocked.Add(card);
     }
