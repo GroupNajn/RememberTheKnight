@@ -54,6 +54,11 @@ public class EnemyDamage : MonoBehaviour, IDamageable
                 damageInfo.SetDamageAmount(damageInfo.DamageAmount * SneakMultiplier);
                 damageInfo.IsSneak = true;
             }
+            else
+            {
+                damageInfo.SetDamageAmount(damageInfo.DamageAmount);
+            }
+
             Health -= damageInfo.DamageAmount;
             OnHealthChanged?.Invoke(Health, MaxHealth);
 
