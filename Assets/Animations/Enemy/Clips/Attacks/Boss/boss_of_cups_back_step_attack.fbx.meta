@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 785e1c412b3200df7bc8428e554265a4
+guid: 53f097164b44b0525bdad0bc870be790
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: boss_of_cups_light_attack_01
-      takeName: spear_main_light_attack_01
-      internalID: -1235777207101998612
+      name: boss_of_cups_back_step_attack
+      takeName: spear_main_back_step_attack_01_release
+      internalID: 1316013566206007685
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -55,15 +55,43 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.3548387
+      - time: 0
+        functionName: OnAttackStart
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.24067165
         functionName: ActivateRightDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5225807
+      - time: 0.43266124
         functionName: DeactivateRightDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.73880595
+        functionName: OnAttackEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.29719627
+        functionName: PlayAirEffectRight
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.047195688
+        functionName: PlaySignalEffect
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -1,8 +1,11 @@
 fileFormatVersion: 2
-guid: c8351e4fd7a7cefdeaf314ef595184ff
+guid: 75009d75f16253b6b81b5a9e68271fb5
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 6854334624626206543
+    second: boss_of_cups_unarmed_light_attack_02
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -14,10 +17,14 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'zombie_light_attack_02' has import animation
+      warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'Ball_R' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\t'Ball_L' is
+      inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -31,11 +38,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: boss_of_cups_light_attack_01_end
-      takeName: spear_main_light_attack_01
-      internalID: -1235777207101998612
+      name: boss_of_cups_unarmed_light_attack_02
+      takeName: zombie_light_attack_02
+      internalID: 0
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 75
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -55,22 +62,36 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.33064517
-        functionName: ActivateRightDamageCollider
+      - time: 0
+        functionName: OnAttackStart
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5225807
-        functionName: DeactivateRightDamageCollider
+      - time: 0.3463936
+        functionName: ActivateLeftDamageCollider
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.86774194
+      - time: 0.45563963
+        functionName: DeactivateLeftDamageCollider
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7790323
         functionName: OnAttackEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3938267
+        functionName: PlayAirEffectLeft
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -774,7 +795,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 1
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
