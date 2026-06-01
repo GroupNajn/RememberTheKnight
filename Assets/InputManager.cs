@@ -1,5 +1,8 @@
+using Newtonsoft.Json.Linq;
+using Unity.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
@@ -15,7 +18,12 @@ public class InputManager : MonoBehaviour
     [Header("Device Detection")]
     public bool usingGamepad = false;
 
+    [Header("Settings")]
+    [SerializeField] Toggle sprintToggle;
+    public bool sprintToggleEnabled = false; // Set this to true to enable sprint toggle, false for hold-to-sprint
+
     private const string rebindKeys = "input_rebinds";
+    private const string sprintToggleKey = "sprint_toggle";
 
     private void Awake()
     {
@@ -36,6 +44,7 @@ public class InputManager : MonoBehaviour
         }
 
         LoadBindings();
+        LoadSettings();
 
     }
 
@@ -291,6 +300,22 @@ public class InputManager : MonoBehaviour
         return key;
     }
 
+    public void SetSprintToggleValue(bool enabled)
+    {
+        sprintToggleEnabled = enabled;
 
+        PlayerPrefs.SetInt(sprintToggleKey, sprintToggleEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadSettings()
+    {
+        if (PlayerPrefs.HasKey(sprintToggleKey))
+        {
+            sprintToggleEnabled = PlayerPrefs.GetInt(sprintToggleKey,0) == 1;
+
+            sprintToggle.SetIsOnWithoutNotify(sprintToggleEnabled);
+        }
+    }
 
 }

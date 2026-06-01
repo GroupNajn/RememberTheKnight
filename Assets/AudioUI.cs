@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,9 +34,13 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
         //baseMusicVolume = WorldSoundFXManager.instance.GetMusicVolume();
         //baseSFXVolume = WorldSoundFXManager.instance.GetSFXVolume();
 
-        masterVolumeSlider.value = baseMasterVolume;
-        musicVolumeSlider.value = baseMusicVolume;
-        SoundsFXVolumeSlider.value = baseSFXVolume;
+        float masterVolume = PlayerPrefs.GetFloat("MasterVolume", baseMasterVolume);
+        float musicVolume = PlayerPrefs.GetFloat("MusicVolume", baseMusicVolume);
+        float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", baseSFXVolume);
+
+        masterVolumeSlider.value = masterVolume;
+        musicVolumeSlider.value = musicVolume;
+        SoundsFXVolumeSlider.value = sfxVolume;
 
     }
 
@@ -43,18 +48,34 @@ public class AudioUI : AutoSelectFirstButtonOnEnable
     {
         masterVolText.text = $"{(int)(volume * 100)}";
         WorldSoundFXManager.instance.SetMasterVolume(volume);
+
+        PlayerPrefs.SetFloat("MasterVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void SetMusicVolume(float volume)
     {
         musicVolText.text = $"{(int)(volume * 100)}";
         WorldSoundFXManager.instance.SetMusicVolume(volume);
+
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void SetSFXVolume(float volume)
     {
         SoundsFXVolText.text = $"{(int)(volume * 100)}";
         WorldSoundFXManager.instance.SetSFXVolume(volume);
+
+        PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.Save();
+    }
+
+    public void ResetAudio()
+    {
+        masterVolumeSlider.value = baseMasterVolume;
+        musicVolumeSlider.value = baseMusicVolume;
+        SoundsFXVolumeSlider.value = baseSFXVolume;
     }
 
 }
