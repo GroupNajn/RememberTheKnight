@@ -50,17 +50,30 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void OnToggleSprint(InputValue action)
     {
-        bool usingGamepad = InputManager.Instance.usingGamepad;
+        bool sprintToggleEnabled = InputManager.Instance.sprintToggleEnabled;
 
-        if (usingGamepad) // if gamepad
+        Debug.Log($"Sprint input fired. Pressed: {action.isPressed}, Toggle mode: {sprintToggleEnabled}");
+        if (sprintToggleEnabled)
         {
-            ignordeNextInput = !ignordeNextInput; 
-            if (ignordeNextInput) // if true, ignore this input and wait for the next one to toggle sprint
-                return;
+            if (action.isPressed)
             SprintToggledOn = !SprintToggledOn;
+
         }
         else
+        {
             SprintToggledOn = action.isPressed;
+            
+        }
+
+        //if (usingGamepad) // if gamepad
+        //{
+        //    ignordeNextInput = !ignordeNextInput;
+        //    if (ignordeNextInput) // if true, ignore this input and wait for the next one to toggle sprint
+        //        return;
+        //    SprintToggledOn = !SprintToggledOn;
+        //}
+        //else
+        //    SprintToggledOn = action.isPressed;
     }
 
     //================ Combat ================

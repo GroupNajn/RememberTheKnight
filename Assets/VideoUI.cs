@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 public class VideoUI : AutoSelectFirstButtonOnEnable
 
 {
@@ -24,15 +26,28 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
     private List<Resolution> filteredResolutions = new List<Resolution>();
 
-    float lastBloomValue = 0.25f;
-    float lastMotionValue = 0.25f;
-    float lastFilmValue = 0.25f;
+    float lastBloomValue;
+    float lastMotionValue;
+    float lastFilmValue;
 
     float baseBloomValue;
     float baseMotionValue;
     float baseFilmValue;
 
     bool sliderInput = false;
+
+    private const string bloomKey = "BloomIntensity";
+    private const string motionKey = "MotionBlurIntensity";
+    private const string filmKey = "FilmGrainIntensity";
+
+    private const string bloomEnabledKey = "BloomEnabled";
+    private const string motionEnabledKey = "MotionBlurEnabled";
+    private const string filmEnabledKey = "FilmGrainEnabled";
+
+    private const string resolutionKey = "ResolutionIndex";
+    private const string fullScreenKey = "FullScreen";
+
+    bool isLoadingSettings = false;
 
     protected override void Awake()
     {
@@ -42,18 +57,48 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
     {
         uiManager = GetComponentInParent<UIManager>();
 
-        bloomSlider.value = GlobalVolumeManager.Instance.GetBloomIntensity();
-        motionSlider.value = GlobalVolumeManager.Instance.GetMotionBlurIntensity();
-        filmSlider.value = GlobalVolumeManager.Instance.GetFilmGrainIntensity();
+        isLoadingSettings = true;
+
+        SetupResolutionDropdown();
+
+        float bloomValue = PlayerPrefs.GetFloat(bloomKey, GlobalVolumeManager.Instance.GetBloomIntensity());
+        float motionValue = PlayerPrefs.GetFloat(motionKey, GlobalVolumeManager.Instance.GetMotionBlurIntensity());
+        float filmValue = PlayerPrefs.GetFloat(filmKey, GlobalVolumeManager.Instance.GetFilmGrainIntensity());
+
+        bool bloomEnabled = PlayerPrefs.GetInt(bloomEnabledKey, bloomValue > 0 ? 1 : 0) == 1;
+        bool motionEnabled = PlayerPrefs.GetInt(motionEnabledKey, motionValue > 0 ? 1 : 0) == 1;
+        bool filmEnabled = PlayerPrefs.GetInt(filmEnabledKey, filmValue > 0 ? 1 : 0) == 1;
+
+        lastBloomValue = bloomValue > 0 ? bloomValue : 0.75f;
+        lastMotionValue = motionValue > 0 ? motionValue : 0.75f;
+        lastFilmValue = filmValue > 0 ? filmValue : 0.75f;
+
+        bloomSlider.value = bloomEnabled ? bloomValue : 0;
+        motionSlider.value = motionEnabled ? motionValue : 0;
+        filmSlider.value = filmEnabled ? filmValue : 0;
+
+        SetBloomSlider(bloomSlider.value);
+        SetMotionSlider(motionSlider.value);
+        SetFilmSlider(filmSlider.value);
+
+        GlobalVolumeManager.Instance.EnableBloom(bloomEnabled);
+        GlobalVolumeManager.Instance.EnableMotionBlur(motionEnabled);
+        GlobalVolumeManager.Instance.EnableFilmGrain(filmEnabled);
 
         baseBloomValue = bloomSlider.value;
         baseMotionValue = motionSlider.value;
         baseFilmValue = filmSlider.value;
 
-        SetupResolutionDropdown();
-        fullScreenToggle.isOn = Screen.fullScreen;
+        int savedResolutionIndex = PlayerPrefs.GetInt(resolutionKey, resolutionDropdown.value);
 
+        if (savedResolutionIndex >= 0 && savedResolutionIndex < resolutionDropdown.options.Count)
+        {
+            resolutionDropdown.value = savedResolutionIndex;
+            resolutionDropdown.RefreshShownValue();
+            SetResolution(savedResolutionIndex);
+        }
 
+        isLoadingSettings = false;
     }
 
     // SLIDERS
@@ -66,6 +111,13 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
         //bloomText.color = new Color(bloomText.color.r, bloomText.color.g, bloomText.color.b, enabled ? 1f : 0.5f);
         GlobalVolumeManager.Instance.SetBloomIntensity(value);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetFloat(bloomKey, value);
+        PlayerPrefs.SetInt(bloomEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void SetMotionSlider(float value)
@@ -77,6 +129,14 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
         //motionText.color = new Color(motionText.color.r, motionText.color.g, motionText.color.b, enabled ? 1f : 0.5f);
         GlobalVolumeManager.Instance.SetMotionBlurIntensity(value);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetFloat(motionKey, value);
+        PlayerPrefs.SetInt(motionEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.Save();
+
     }
 
     public void SetFilmSlider(float value)
@@ -88,6 +148,13 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
         //filmText.color = new Color(filmText.color.r, filmText.color.g, filmText.color.b, enabled ? 1f : 0.5f);
         GlobalVolumeManager.Instance.SetFilmGrainIntensity(value);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetFloat(filmKey, value);
+        PlayerPrefs.SetInt(filmEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     // TOGGLES
@@ -111,6 +178,13 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         bloomText.color = new Color(bloomText.color.r, bloomText.color.g, bloomText.color.b, enabled ? 1f : 0.5f);
         GlobalVolumeManager.Instance.EnableBloom(enabled);
         GlobalVolumeManager.Instance.EnableLensFlare(enabled);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetInt(bloomEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.SetFloat(bloomKey, enabled ? bloomSlider.value : 0);
+        PlayerPrefs.Save();
     }
     public void SetMotionToggle()
     {
@@ -131,6 +205,14 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         motionText.color = new Color(motionText.color.r, motionText.color.g, motionText.color.b, enabled ? 1f : 0.5f);
 
         GlobalVolumeManager.Instance.EnableMotionBlur(enabled);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetInt(motionEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.SetFloat(motionKey, enabled ? motionSlider.value : 0);
+        PlayerPrefs.Save();
+
     }
     public void SetFilmToggle()
     {
@@ -151,6 +233,13 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
         filmText.color = new Color(filmText.color.r, filmText.color.g, filmText.color.b, enabled ? 1f : 0.5f);
 
         GlobalVolumeManager.Instance.EnableFilmGrain(enabled);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetInt(filmEnabledKey, enabled ? 1 : 0);
+        PlayerPrefs.SetFloat(filmKey, enabled ? filmSlider.value : 0);
+        PlayerPrefs.Save();
     }
 
 
@@ -228,14 +317,29 @@ public class VideoUI : AutoSelectFirstButtonOnEnable
 
     public void SetResolution(int resolutionIndex)
     {
+        if (resolutionIndex < 0 || resolutionIndex >= filteredResolutions.Count)
+            return;
+
         Resolution resolution = filteredResolutions[resolutionIndex];
 
-        Screen.SetResolution( resolution.width, resolution.height, Screen.fullScreenMode, resolution.refreshRateRatio);
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode, resolution.refreshRateRatio);
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetInt(resolutionKey, resolutionIndex);
+        PlayerPrefs.Save();
     }
 
     public void SetFullScreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
+
+        if (isLoadingSettings)
+            return;
+
+        PlayerPrefs.SetInt(fullScreenKey, isFullScreen ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     private double GetRefreshRate(Resolution resolution)
