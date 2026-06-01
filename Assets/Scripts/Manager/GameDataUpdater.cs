@@ -75,6 +75,7 @@ public class GameDataUpdater : MonoBehaviour
 
     public void SetSoulsCostInNextCard(CardContract contract)
     {
+        if (contract == null) return;
         switch (contract.CardFamily)
         {
             case CardFamily.Cups:
@@ -94,6 +95,8 @@ public class GameDataUpdater : MonoBehaviour
 
     public void SetSoulsDonatedSinceLastToFamily(CardContract contract, int amount)
     {
+        if (contract == null) return;
+
         switch (contract.CardFamily)
         {
             case CardFamily.Cups:
@@ -113,6 +116,7 @@ public class GameDataUpdater : MonoBehaviour
 
     public int GetSoulCostForIngameRun(CardContract contract)
     {
+        if(contract == null) return 0;
         switch (contract.CardFamily)
         {
             case CardFamily.Cups:
@@ -132,7 +136,7 @@ public class GameDataUpdater : MonoBehaviour
 
     public void SetSoulsRemaingToNextUnlock(CardContract contract, int amount)
     {
-
+        if (contract == null) return;
         switch (contract.CardFamily)
         {
             case CardFamily.Cups:
