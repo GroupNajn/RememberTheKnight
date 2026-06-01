@@ -16,6 +16,7 @@ public class BossBar : MonoBehaviour
     {
         Event_System.instance.OnSpawnBoss += ShowBossBar;
         Event_System.instance.OnBossDeath += CloseBossBar;
+        Event_System.instance.OnPlayerDeath += CloseBossBar;
     }
 
     public void BarSetup()

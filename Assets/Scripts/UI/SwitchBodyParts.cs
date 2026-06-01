@@ -3,7 +3,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-
+/// <summary>
+// This script manages the character customization.
+// This is done throuh methods that changes, save or load the current index of a list of body parts. 
+// Each body part has its own list of gameobjects, that are active or not dependig on the current index.
+// All methods with "Next" or "Prev" in their name, changes the current index of a list and when at the end of the list, it goes back to the start and vice versa.
+// The other methods are helper methods to find refrences, activate/deactivete body parts in a safe maner or save/load indexes for playerPrefs.
+/// </summary>
 public class SwitchBodyParts : MonoBehaviour
 {
     UIManager uiManager;

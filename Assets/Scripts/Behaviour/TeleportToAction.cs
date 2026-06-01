@@ -5,7 +5,6 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using System.Collections.Generic;
 using Unity.AppUI.UI;
-using UnityEditor.ShaderGraph.Internal;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Teleport To", story: "Teleports [Self] to [Transform]", category: "Action", id: "b94cfaa7f0b39bbffb23e0d05ef160fe")]

@@ -38,6 +38,11 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
         else
         {
             GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+            uiManager.OpenUIOnMenuClose();
+
             uiManager.CloseStartMenu();
         }
 

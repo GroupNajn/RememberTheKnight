@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using Unity.Behavior;
-using UnityEditor.Animations;
 using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BossVFXManager))]
@@ -20,7 +19,7 @@ public class BossUnarmedHandler : MonoBehaviour
     Transform unarmedAirOriginRight;
     Transform unarmedAirOriginLeft;
 
-    [SerializeField] AnimatorController mainAnimationController;
+    [SerializeField] RuntimeAnimatorController mainAnimationController;
     [SerializeField] AnimatorOverrideController unarmedController;
     Animator animator;
     BlackboardVariable<bool> isDisarmed;

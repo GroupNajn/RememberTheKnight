@@ -330,9 +330,6 @@ public class UIManager : MonoBehaviour
     {
         if (startMenuUI)
         {
-            UIMenuActive = false;
-            CheckUIState();
-            OpenUIOnMenuClose();
             startMenuUI.SetActive(false); // Hide the pause menu
         }
     }
