@@ -49,7 +49,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         if (CanTakeDamage && Health > 0)
         {
-            if (!hasSight.Value && !hasAggro.Value)
+            if (hasSight != null && hasAggro != null && !hasSight.Value && !hasAggro.Value)
             {
                 damageInfo.SetDamageAmount(damageInfo.DamageAmount * SneakMultiplier);
                 damageInfo.IsSneak = true;
