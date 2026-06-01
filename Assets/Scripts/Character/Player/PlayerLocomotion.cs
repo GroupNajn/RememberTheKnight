@@ -52,7 +52,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         bool sprintToggleEnabled = InputManager.Instance.sprintToggleEnabled;
 
-        Debug.Log($"Sprint input fired. Pressed: {action.isPressed}, Toggle mode: {sprintToggleEnabled}");
+        //Debug.Log($"Sprint input fired. Pressed: {action.isPressed}, Toggle mode: {sprintToggleEnabled}");
         if (sprintToggleEnabled)
         {
             if (action.isPressed)
