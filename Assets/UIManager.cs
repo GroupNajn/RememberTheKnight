@@ -8,6 +8,14 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     // Created and edited by Lukas, Wilmer, Michaëla
+
+    /// <summary>
+    /// Changed by Anton 2026-05-05
+    /// Added interactCameraHandler reference to reset the camera after closing certain UIs.
+    /// 
+    /// Changed by Anton 2026-05-22
+    /// Added cameraTransitioning boolean to prevent from opening menus while interact camera is transitioning.
+    /// </summary>
     public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;

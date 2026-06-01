@@ -9,7 +9,12 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LorePageUI : AutoSelectFirstButtonOnEnable
 {
-    //created by Anton
+    /// <summary>
+    /// Created by Anton and Henric 2026-05-17
+    /// Initially created to handle the lore page UI, which is opened when the player interacts with a lore entry in the game world.
+    /// This also opens the book UI to show lore added.
+    /// </summary>
+
     [Header("Settings")]
     [SerializeField] private RectTransform lorePageWindowRect;
     [SerializeField] private float duration = 1f;

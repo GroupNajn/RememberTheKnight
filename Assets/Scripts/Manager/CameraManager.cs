@@ -3,6 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class CameraManager : MonoBehaviour
 {
+
+    /// <summary>
+    /// Changed by Anton 2026-05-14
+    /// Added camera for world space UI, which will follow the main camera and be used to render the world space UI elements.
+    /// </summary>
     public static CameraManager Instance { get; private set; }
 
     [SerializeField] private Camera worldSpaceCamera;

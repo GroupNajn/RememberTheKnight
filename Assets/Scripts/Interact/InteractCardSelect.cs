@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Changed by Anton 2026-05-04
+    /// Added Enumerator to delay the opening of the UI until the camera transition is finished
+    /// 
+    /// Changed by Anton 2026-05-06
+    /// Added saved data to the interactable, so that a one time effect can be played the first time the player interacts, and not played again after that.
+    /// </summary>
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;

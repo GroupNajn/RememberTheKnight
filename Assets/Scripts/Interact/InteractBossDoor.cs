@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Created by Anton 2026-05-26
+    /// Handles the interaction logic for the boss door, including opening and closing animations, sound effects, and UI updates.
+    /// </summary>
     [Header("Door Settings")]
     [SerializeField] private GameObject leftDoor;
     [SerializeField] private MeshCollider leftDoorCollider;
@@ -36,7 +40,7 @@ public class InteractBossDoor : MonoBehaviour, IInteractable, IInteractableUITex
     public void Interact()
     {
         // uncoment for door to open without boss defeated
-        gameData.GameCompleted = true; 
+        //gameData.GameCompleted = true; 
 
         if (!gameData.GameCompleted)
             return;

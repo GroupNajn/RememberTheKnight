@@ -7,6 +7,11 @@ using UnityEngine.EventSystems;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    /// <summary>
+    /// Changed by Anton 2026-05-20
+    /// Added color change to button hover effect.
+    /// </summary>
+
     private TextMeshProUGUI text;
     private Color originalColor;
     private Color hoverColor = Color.white;

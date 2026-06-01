@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class InteractCameraHandler : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-05-03
+    /// Initially created to handle the camera switching when the player interacts with certain objects.
+    /// This is used by interactable objects that require a specific camera angle.
+    /// This script switches the camera to a predefined position and rotation when the player interacts with the object
+    /// And switch back to the free look camera when the interaction is finished.
+    /// 
+    /// Changed by Anton 2026-05-04
+    /// Added the players transform as a default follow target for the interact camera,
+    /// so that it will follow the player when no specific target is set.
+    /// 
+    /// Changed by Anton 2026-05-20
+    /// Added functionality to hide the player model when switching to the interact camera, 
+    /// this is done by changing the culling mask on main camera.
+    /// </summary>
+
     private Animator cameraAnimator;
 
     private Transform target;

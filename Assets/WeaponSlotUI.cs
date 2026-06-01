@@ -3,6 +3,11 @@ using UnityEngine.UI;
 
 public class WeaponSlotUI : MonoBehaviour
 {
+    /// <summary>
+    /// Changed by Anton 2026-05-18
+    /// Changed so that it uses camera space and showcases 3D objects.
+    /// </summary>
+
     [SerializeField] public WeaponData currentWeaponData;
     [SerializeField] public WeaponData lastWeaponData;
     [SerializeField] private Image weaponIcon;

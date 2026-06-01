@@ -7,6 +7,21 @@ using UnityEngine.UI;
 
 public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    /// <summary>
+    /// Created by Anton and Henric 2026-05-04
+    /// Initially created as a component to handle the individual card slots in the card shop UI, which are populated with cards that the player can purchase.
+    /// Just like the ShopBoardCardSlot, but for the UI, it also connects with the ShopBoardCardSlot to get the card data and display it in the UI.
+    /// 
+    /// Changed by Anton 2026-05-09
+    /// Added the linked board slot functionality and added visual effects for hovering and selecting cards.
+    /// 
+    /// Changed by Anton 2026-05-18
+    /// Added functionality for animations for hovering and selecting.
+    /// 
+    /// Changed by Anton 2026-05-20
+    /// Added remove functionality to remove card from the slot after purchase.
+    /// </summary>
+
     [Header("CardData information")]
     [SerializeField] public GameObject cardInfo;
     [SerializeField] private Image cardInfoImage;

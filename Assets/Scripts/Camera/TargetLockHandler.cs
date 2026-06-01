@@ -8,6 +8,21 @@ using UnityEngine.InputSystem;
 
 public class TargetLockHandler : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-03-16
+    /// Initially created to handle target lock system and switch between cameras.
+    /// 
+    /// Changed by Anton 2026-04-02
+    /// Added line of sight, distance breaks, fov view.
+    /// 
+    /// Changed by Anton 2026-04-09
+    /// Minor changes and fixes to line of sight, was buggy.
+    /// 
+    /// Changed by Anton 2026-05-21
+    /// Added a new enemy look at transform as a child on enemy
+    /// This changes the target lock on look at point.
+    /// </summary>
+
     private LayerMask enemyLayer;
     private LayerMask lineOfSightLayer;
     private Animator cameraAnimator;
@@ -143,6 +158,9 @@ public class TargetLockHandler : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// FindTarget() Searches after colliders and checks for line of sight, range and field of view after enemy colliders.
+    /// </summary>
     void FindTarget()
     {
         Collider[] hits = Physics.OverlapSphere(playerTransform.position, lockRadius, enemyLayer);
@@ -196,6 +214,10 @@ public class TargetLockHandler : MonoBehaviour
         currentTarget = bestTarget;
         AddTargets();
     }
+
+    /// <summary>
+    /// FindNewTarget() is used to find new target when moving with mouse, joystick or keybinds Q and E (initially)
+    /// </summary>
     private void FindNewTarget()
     {
         // Debug.Log("FIND NEW TARGETS CALLED");
@@ -367,6 +389,10 @@ public class TargetLockHandler : MonoBehaviour
 
         targetGroup.Targets.Clear();
     }
+
+    /// <summary>
+    /// Switches between lock on and hardlock camera using an animator and animator states.
+    /// </summary>
     private void SwitchCams()
     {
         CinemachineInputAxisController axisControllerFreeLook = freeLookCam.GetComponent<CinemachineInputAxisController>();

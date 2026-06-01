@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour, IDamageable
 {
+    /// <summary>
+    /// Changed by Anton and Theo 2026-05-11
+    /// Added functionality to handle vignette when out of stamina.
+    /// </summary>
     private PlayerCombatManager playerCombatManager;
     private PlayerWeaponManager playerWeaponManager;
     private Animator playerAnimator;

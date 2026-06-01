@@ -11,11 +11,22 @@ using System.Linq;
 public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
-    //Updated by Anton 2026-05-16
-    //Overhaul made by Anton 2026-05-17
+
+    /// <summary>
+    /// Changed by Anton 2026-05-16
+    /// Major overhaul of the book UI, 
+    /// changing the way pages are handled and added.
+    /// 
+    /// Changed by Anton 2026-05-17
+    /// More changes and overhaul, added animations for opening and closing the book, and for flipping pages.
+    /// 
+    /// Changed by Anton 2026-05-20
+    /// Added scramble text method for locked lore entries, later changed by Michaëla.
+    /// </summary>
+
     //rewriten scrambledText method and added open on lore entry by Michaëla 2026-05-30
 
-     [Header("Pages")]
+    [Header("Pages")]
     [SerializeField] private BookPageUI leftPage;
     [SerializeField] private BookPageUI rightPage;
 
@@ -257,6 +268,12 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         return builder.ToString();
     }
 
+    /// <summary>
+    /// Handles tab switching, with animations and button state management. 
+    /// Prevents tab switching while an animation is playing to avoid conflicts and ensure a smooth user experience.
+    /// Chaining animations together for smooth transitions.
+    /// </summary>
+    /// <param name="tab"></param>
     public void ChangeTab(BookTabEnum tab)
     {
         if (isAnimating)
@@ -434,6 +451,12 @@ public class BookUi : AutoSelectFirstButtonOnEnable
         movingPage.localEulerAngles = closedRotation;
     }
 
+    /// <summary>
+    /// Animations for moving book and pages, used for opening and closing the book, and for flipping pages. Can be reversed for closing animation.
+    /// Also used action callback for chaining animations together, and for enabling/disabling tab buttons at the right times.
+    /// </summary>
+    /// <param name="onComplete"></param>
+    /// <param name="reverse"></param>
     public void AnimateMove(Action onComplete = null, bool reverse = false)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookSlideEvent);

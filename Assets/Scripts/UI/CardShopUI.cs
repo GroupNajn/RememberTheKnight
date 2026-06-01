@@ -9,6 +9,18 @@ using UnityEngine.UI;
 
 public class CardShopUI : AutoSelectFirstButtonOnEnable
 {
+    /// <summary>
+    /// Created by Anton 2026-04-28
+    /// Initially created as a component to handle the card shop UI, which is opened when interacting with the card shop board.
+    /// Also uses the CardSlotShopUI component to populate the card shop slots and handle the selection of cards.
+    /// 
+    /// Changed by Anton 2026-05-09
+    /// Added the linked board slot functionality and added visual effects for hovering and selecting cards.
+    /// 
+    /// Changed by Anton 2026-05-22
+    /// Added changes to purchase button and updating in properly depending on selection of cards.
+    /// </summary>
+
     private PlayerCollection playerCollection;
     private PlayerInput playerInput;
     private UIManager uiManager;

@@ -6,6 +6,13 @@ using UnityEngine.UI;
 
 public class BossCardSelectUI : AutoSelectFirstButtonOnEnable
 {
+    /// <summary>
+    /// Created by Anton 2026-05-31
+    /// Initially created to handle the boss card selection UI, 
+    /// which is opened when the player interacts with a boss card selection board.
+    /// Uses combined ideas from Card Selection UI and Family Book UI,
+    /// </summary>
+
     private UIManager uiManager;
 
     [SerializeField] private int maxCardsSelected = 1;

@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class BallistaEnemyAttack : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-4-24
+    /// Initially created to handle the attack logic of the ballista enemy, which was previously handled in the BallistaEnemy script. 
+    /// This script handles the aiming, shooting, and cooldown logic of the ballista enemy.
+    /// This also handles the animation of the bow and arrow, as well as the attack particles.
+    /// 
+    /// Changed by Anton and Lukas 2026-05-11
+    /// Added a visual queue for the attacks.
+    /// </summary>
+
     [Header("Targets")]
     [SerializeField] private Transform target;
 

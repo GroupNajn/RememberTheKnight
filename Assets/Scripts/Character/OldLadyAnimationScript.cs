@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class OldLadyAnimationScript : MonoBehaviour
 {
+
+    /// <summary>
+    /// Created by Anton 2026-05-25
+    /// Initially created to handle the idle animations for the old lady character in the shop. 
+    /// The old lady has two states, sitting and standing, and will play different idle animations based on the state she is in. 
+    /// The script will randomly trigger idle animations at set intervals to make the character feel more alive and dynamic.
+    /// </summary>
     [SerializeField] private Animator oldLadyAnimator;
 
     [Header("Animation Settings")]
