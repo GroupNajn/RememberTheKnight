@@ -39,6 +39,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     {
         float originalMaxHealth = MaxHealth;
 
+        // Set the new max health with an exponentioal scaling based on current level number
         MaxHealth *= Mathf.Pow(healthModifierPercentagePerLevel, level);
         Health = MaxHealth;
         OnHealthChanged?.Invoke(Health, MaxHealth);

@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Updated by Lukas 2026-04-08
+    /// Calls load scene when active scene is switched
+    /// </summary>
+
     [SerializeField] int sceneToLoadIndex;
     [SerializeField] bool preLoadScene = false;
 

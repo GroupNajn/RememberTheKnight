@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class ExplodingBarrel : MonoBehaviour
 {
-    // Made by Lukas 2026-03-20
+    /// <summary>
+    /// Made by Lukas 2026-03-20
+    /// A simple method to play the explotion
+    /// </summary>
+
     Explosion explosion;
     void Awake()
     {
