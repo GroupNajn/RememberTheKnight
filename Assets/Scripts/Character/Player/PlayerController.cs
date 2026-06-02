@@ -414,6 +414,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
             playerState.SetMoveState(targetState);
         }
+        if(playerState.IsHolstering || playerState.IsHealing)
+        {
+            playerCombatManager.RegenerateStamina();
+        }
+
     }
     private void HandleVerticalMovement()
     {
