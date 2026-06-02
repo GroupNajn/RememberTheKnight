@@ -11,6 +11,7 @@ public class BossBar : MonoBehaviour
     [SerializeField] float lerpSpeed = 2f;
     public RectTransform lerpingRectTransform;
     bool barSetupComplete = false;
+    bool isHealing = false;
 
     private void Start()
     {
@@ -44,6 +45,16 @@ public class BossBar : MonoBehaviour
 
     public void OnHealthChanged(float current, float max)
     {
+        isHealing = current > bossBar.value; // Check if the health is increasing (healing) or decreasing (taking damage)
+
+        if (isHealing)
+        {
+            Vector2 targetAnchorMax = bossBar.fillRect.anchorMax;
+            targetAnchorMax.x = current / max; // Calculate the target anchorMax.x based on the current health percentage
+            lerpingRectTransform.anchorMax = targetAnchorMax;
+            return;
+        }
+
         bossBar.value = current;
         if(bossBar.value <= 0)
         {
@@ -57,7 +68,11 @@ public class BossBar : MonoBehaviour
         {
             bool lerpCondition = lerpingRectTransform.anchorMax.x > bossBar.fillRect.anchorMax.x || lerpingRectTransform.anchorMin.x < bossBar.fillRect.anchorMin.x;
 
-            if (lerpCondition)
+            if (isHealing)
+            {
+                bossBar.value = Mathf.Lerp(bossBar.value, lerpingRectTransform.anchorMax.x * bossBar.maxValue, Time.deltaTime * lerpSpeed);
+            }
+            else if (lerpCondition)
             {
                 lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, bossBar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
                 lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin, bossBar.fillRect.anchorMin, Time.deltaTime * lerpSpeed);
@@ -68,6 +83,5 @@ public class BossBar : MonoBehaviour
                 lerpingRectTransform.anchorMin = bossBar.fillRect.anchorMin;
             }
         }
-
     }
 }
