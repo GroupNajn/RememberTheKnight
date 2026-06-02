@@ -20,6 +20,7 @@ public class SwitchBodyParts : MonoBehaviour
 
     UIManager uiManager;
     private GameData gameData;
+    RotateCharacter rotateCharacter;
 
     [SerializeField] private Gender currentGender = Gender.Male;
     public enum Gender
@@ -113,6 +114,7 @@ public class SwitchBodyParts : MonoBehaviour
     {
         uiManager = FindFirstObjectByType<UIManager>();
         gameData = FindFirstObjectByType<GameData>();
+        rotateCharacter = GetComponent<RotateCharacter>();
 
         Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
@@ -556,6 +558,7 @@ public class SwitchBodyParts : MonoBehaviour
         {
             canStartGame = false;
             startGame = false;
+            rotateCharacter.enabled = true;
             Event_System.instance.OnSceneTransitionDone += OnBlackFadeDone;
         }
         //else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
@@ -580,6 +583,8 @@ public class SwitchBodyParts : MonoBehaviour
                 PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
 
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
+
+                rotateCharacter.enabled = false;
             }
             else
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
@@ -603,6 +608,8 @@ public class SwitchBodyParts : MonoBehaviour
                 PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
 
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
+
+                rotateCharacter.enabled = false;
             }
             else
                 GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
