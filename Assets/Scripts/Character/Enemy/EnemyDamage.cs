@@ -23,11 +23,12 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         get => healthField;
         set
         {
+            bool healing = value > healthField;
             healthField = value;
-            OnHealthChanged?.Invoke(Health, MaxHealth);
+            OnHealthChanged?.Invoke(Health, MaxHealth, healing);
         }
     }
-    public Action<float, float> OnHealthChanged { get; set; }
+    public Action<float, float, bool> OnHealthChanged { get; set; }
     [SerializeField, Tooltip("When unaware of player incoming damage is multiplied by this value")] public float SneakMultiplier = 1.5f;
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;

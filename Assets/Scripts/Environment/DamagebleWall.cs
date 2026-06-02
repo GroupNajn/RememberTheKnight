@@ -5,7 +5,7 @@ public class DamagebleWall : MonoBehaviour, IDamageable
 {
     [field: SerializeField] public float MaxHealth { get; set; }
     [HideInInspector] public float Health { get; set; }
-    public Action<float, float> OnHealthChanged { get; set; }
+    public Action<float, float, bool> OnHealthChanged { get; set; }
 
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;

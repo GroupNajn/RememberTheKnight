@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
 
     public float MaxHealth => playerStats.MaxHealth;
     public float Health => playerStats.CurrentHealth;
-    public Action<float, float> OnHealthChanged { get; set; }
+    public Action<float, float, bool> OnHealthChanged { get; set; }
     public Action<float, float> onStaminaChanged;
 
 
@@ -103,9 +103,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerAnimator.SetBool("IsDead", true);
     }
 
-    private void NotifyHealthChanged()
+    private void NotifyHealthChanged(bool isHealing = false)
     {
-        OnHealthChanged?.Invoke(playerStats.CurrentHealth, playerStats.MaxHealth);
+        OnHealthChanged?.Invoke(playerStats.CurrentHealth, playerStats.MaxHealth, isHealing);
     }
 
     public void NotifyDeath()
@@ -159,7 +159,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     {
         float totalHeal = amount * playerStats.currentHealModifier;
         playerStats.CurrentHealth = Mathf.Clamp(playerStats.CurrentHealth + totalHeal, 0, playerStats.MaxHealth);
-        NotifyHealthChanged();
+        NotifyHealthChanged(true);
     }
 
     /// <summary>
