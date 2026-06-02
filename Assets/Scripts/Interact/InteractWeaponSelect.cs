@@ -33,10 +33,11 @@ public class InteractWeaponSelect : MonoBehaviour, IInteractable, IInteractableU
         if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
         }
+
+        if (firstTimeEffect != null)
+            firstTimeEffect.SetActive(false);
+
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.weaponSwitchEvent, transform.position);
         weaponManager.SwitchWeapon();
     }

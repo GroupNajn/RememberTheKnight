@@ -39,10 +39,10 @@ public class InteractCardSelect : MonoBehaviour, IInteractable, IInteractableUIT
         if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
         }
+
+        if (firstTimeEffect != null)
+            firstTimeEffect.SetActive(false);
 
         playerUIManager.UIMenuActive = true;
         playerUIManager.cameraTransitioning = true;

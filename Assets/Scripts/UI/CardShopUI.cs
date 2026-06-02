@@ -102,6 +102,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                 uiSlots[i].SetCard(null);
             }
         }
+
+        UpdateUIButtons();
     }
 
     private bool CanAfford(CardData card)
@@ -277,6 +279,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
     {
         foreach (CardSlotShopUI uislot in uiSlots)
         {
+            uislot.SetCard(null);
             uislot.SetSelected(false);
             uislot.cardInfo.transform.localScale = Vector3.zero;
 
