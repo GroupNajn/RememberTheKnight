@@ -10,7 +10,7 @@ using Unity.AppUI.UI;
 [NodeDescription(name: "Teleport To", story: "Teleports [Self] to [Transform]", category: "Action", id: "b94cfaa7f0b39bbffb23e0d05ef160fe")]
 public partial class TeleportToAction : Action
 {
-    private static readonly int IsTeleportingHash = Animator.StringToHash("IsTeleporting");
+    private static readonly int CancelHash = Animator.StringToHash("Cancel");
     [SerializeReference] public BlackboardVariable<GameObject> Self;
     [SerializeReference] public BlackboardVariable<Transform> Transform;
     [SerializeReference] public BlackboardVariable<List<GameObject>> ToDisable;
@@ -29,7 +29,7 @@ public partial class TeleportToAction : Action
     {
         characterController = Self.Value.GetComponent<CharacterController>();
         animator = Self.Value.GetComponent<Animator>();
-        animator.SetBool(IsTeleportingHash, true);
+        animator.SetTrigger(CancelHash);
 
         characterController.enabled = false;
         leave = UnityEngine.Object.Instantiate(LeaveEffect.Value, Self.Value.transform.position, Quaternion.identity);
@@ -46,7 +46,6 @@ public partial class TeleportToAction : Action
         if (leave.isEmitting) return Status.Running;
         if (!enter && !isEntering)
         {
-            animator.SetBool(IsTeleportingHash, false);
             enter = UnityEngine.Object.Instantiate(EnterEffect.Value, Self.Value.transform.position, Quaternion.identity);
             enter.Play();
             isEntering = true;
