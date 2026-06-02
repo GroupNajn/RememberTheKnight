@@ -17,7 +17,16 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     // Made by Lukas and Anton B 2026-03-06
     //Edited by Michaëla 2026-05-06
     [field: SerializeField] public float MaxHealth { get; set; }
-    [HideInInspector] public float Health { get; set; }
+    private float healthField;
+    public float Health
+    {
+        get => healthField;
+        set
+        {
+            healthField = value;
+            OnHealthChanged?.Invoke(Health, MaxHealth);
+        }
+    }
     public Action<float, float> OnHealthChanged { get; set; }
     [SerializeField, Tooltip("When unaware of player incoming damage is multiplied by this value")] public float SneakMultiplier = 1.5f;
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
@@ -43,7 +52,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         // Set the new max health with an exponentioal scaling based on current level number
         MaxHealth *= Mathf.Pow(healthModifierPercentagePerLevel, level);
         Health = MaxHealth;
-        OnHealthChanged?.Invoke(Health, MaxHealth);
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
@@ -61,7 +69,6 @@ public class EnemyDamage : MonoBehaviour, IDamageable
             }
 
             Health -= damageInfo.DamageAmount;
-            OnHealthChanged?.Invoke(Health, MaxHealth);
 
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
             enemyVFX.PlayBloodSplatter(contactPoint);
@@ -78,12 +85,12 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        onDeath?.Trigger();
         EnemyLootProfile profile = gameObject.GetComponent<EnemyLootProfile>();
         Event_System.instance.OnEnemyKilledNew?.Invoke(profile, this.transform.position);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
         gameData.TotalEnemiesSlain++;
         
+        onDeath?.Trigger();
     }
 
     private void Start()
