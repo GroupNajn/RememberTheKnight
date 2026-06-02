@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUIText
 {
-    // created by Andton
+    // created by Anton
     
-    [Header("Saved Data")]
-    [SerializeField] private string interactableID;
-    [SerializeField] private GameObject firstTimeEffect;
-
     [Header("Lore")]
     [SerializeField] private LoreEntry loreEntry;
     [SerializeField] private LorePageUI lorePageUI;
@@ -23,24 +19,13 @@ public class InteractableLore : MonoBehaviour, IInteractable, IInteractableUITex
         playerUIManager = FindFirstObjectByType<UIManager>();
         loreManager = FindFirstObjectByType<LoreManager>();
         lorePageUI = FindFirstObjectByType<LorePageUI>(FindObjectsInactive.Include);
-
-        //PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
-
-        if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
-        {
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
-        }
     }
 
     public void Interact()
     {
-        if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
+        if (!PlayerPrefsSaveSystem.HasInteracted(loreEntry.id))
         {
-            PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
+            PlayerPrefsSaveSystem.SetSaveState(loreEntry.id);
         }
 
         loreManager.UnlockLore(loreEntry.id);

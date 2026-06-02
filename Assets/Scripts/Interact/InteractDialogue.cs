@@ -56,9 +56,12 @@ public class InteractDialogue : MonoBehaviour, IInteractable, IInteractableUITex
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
 
-            foreach (var obj in objectsToActivateOnInteract)
+            if (objectsToActivateOnInteract != null)
             {
-                obj.SetActive(true);
+                foreach (var obj in objectsToActivateOnInteract)
+                {
+                    obj.SetActive(true);
+                }
             }
         }
         playerUIManager.OpenDialogueUI(GetDialogue());
