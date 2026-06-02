@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    /// <summary>
+    /// Made by Lukas 2026-03-24
+    /// Randomly spawn objects or enemies at designated spawn points if aviable
+    /// 
+    /// Updated by Lukas 2026-04-24
+    /// Changed the spawning to happen when old scenes are unloaded
+    /// Added gizmo draw
+    /// 
+    /// Updated by Lukas 2026-05-17
+    /// Added random spawn chanse
+    /// </summary>
+
     // Made by Lukas 2026-03-24
     // Updated by Lukas 2026-04-24
     [SerializeField] bool isEnemySpawner = true;
@@ -21,7 +33,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        // Subscribe to the OnLoadScenes event to trigger spawning when scenes are loaded
+        // Subscribe to the OnLoadScenes event to trigger spawning when old scenes are unladed
         if (Event_System.instance)
         {
             Event_System.instance.OnLoadScenes += InitializeSpawn;
@@ -95,11 +107,8 @@ public class Spawner : MonoBehaviour
             Instantiate(spawnObjects[i], spawnPosition, spawnRotation);
         }
 
-        Debug.Log($"{name}'s isEnemySpawner: {isEnemySpawner}");
-
         if (isEnemySpawner)
         {
-            Debug.Log($"Enemies spawned by {name}");
             StartCoroutine(WaitToInvokeEnemySpawned());
         }
     }
@@ -130,7 +139,6 @@ public class Spawner : MonoBehaviour
 
         if (isEnemySpawner)
         {
-            Debug.Log($"Enemies spawned by {name}");
             StartCoroutine(WaitToInvokeEnemySpawned());
         }
     }

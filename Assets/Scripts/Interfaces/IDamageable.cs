@@ -8,7 +8,7 @@ public interface IDamageable
     public float MaxHealth { get;}
     public float Health { get; }
 
-    System.Action<float, float> OnHealthChanged { get; set; }
+    System.Action<float, float, bool> OnHealthChanged { get; set; }
 
     public bool CanTakeDamage { get; }
 

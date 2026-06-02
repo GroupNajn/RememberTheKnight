@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4289271745106441324}
   m_Layer: 0
   m_Name: Loot_Manager
-  m_TagString: Untagged
+  m_TagString: LootManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,16 +60,16 @@ MonoBehaviour:
   soulPrefab: {fileID: 0}
   amountChanceTable: []
   cardSystem: {fileID: 4221795815547489861}
-  builder: {fileID: 0}
-  multipleLootModifier: 2
+  builder: {fileID: 4698421451992963548}
+  multipleLootModifier: 1
   luckChanceScaler: 1
   maxLootAmount: 3
   soulDropModifier: 2.5
-  CommonTierUpgrade: 2
-  UncommonUpgradeTierModifier: 1.5
-  RareTierUpgradeModifier: 1
-  EpicTierUpgradeModifier: 0.5
-  LegendaryTierUpgradeModifier: 0.25
+  CommonTierUpgrade: 1
+  UncommonUpgradeTierModifier: 0.7
+  RareTierUpgradeModifier: 0.3
+  EpicTierUpgradeModifier: 0.1
+  LegendaryTierUpgradeModifier: 0.1
 --- !u!114 &6189389314983097616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,5 +224,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a22f4a6f06e42364aadda5de51600341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4698421451992963548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8782775392436236613, guid: 7dc91a6bfc2ddc9428f9ade433a4d913, type: 3}
+  m_PrefabInstance: {fileID: 4095613491516909721}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f4758d94b6b0f4588bbea96fe337dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

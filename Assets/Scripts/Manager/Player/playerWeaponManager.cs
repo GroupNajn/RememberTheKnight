@@ -1,7 +1,8 @@
+using FMODUnity;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerWeaponManager : CharacterWeaponManager
 {
@@ -12,9 +13,15 @@ public class PlayerWeaponManager : CharacterWeaponManager
     Animator playerAnimator;
     PlayerCombatManager playerCombatManager;
     PlayerStats playerStats;
+    PlayerManager playerManager;
+    PlayerStates playerStates;
 
     [SerializeField] public List<GameObject> Weapons;
+    [SerializeField] public List<GameObject> HolsterdWeapons;
     int currentWeaponIndex = 0;
+    int layerIndex;
+    AnimatorStateInfo currentState;
+
 
     float damageAmount
     {
@@ -47,14 +54,88 @@ public class PlayerWeaponManager : CharacterWeaponManager
         playerAnimator = GetComponent<Animator>();
         playerCombatManager = GetComponent<PlayerCombatManager>();
         playerStats = GetComponent<PlayerStats>();
+        playerManager = GetComponent<PlayerManager>();
+        playerStates = GetComponent<PlayerStates>();
+
 
         playerStats.baseWeaponSize = currentRightHandWeapon.transform.localScale;
+
+        HolsterEvent();
+
+        layerIndex = playerAnimator.GetLayerIndex("Holster");
+
+
+        Event_System.instance.OnLoadScenes += OnLoadScenes;
     }
+
+    private void OnLoadScenes()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName == SceneData.Instance[1] || sceneName == SceneData.Instance[1])
+        {
+            // Make sure player is always holstered when entering lobby and character select screen 
+            if (!holsterd)
+            {
+                HolsterEvent();
+            }
+        }
+    }
+
     public void OnHolster(InputValue action)
+    {
+        if (!playerStates.InActionState())
+        {
+            RuntimeManager.PlayOneShotAttached(holsterd? WorldSoundFXManager.instance.unHolsterEvent : WorldSoundFXManager.instance.holsterEvent, gameObject);
+            playerAnimator.SetTrigger("Holster");
+        }
+    }
+
+    public void HolsterEvent() // Called from animation event
     {
         holsterd = !holsterd;
 
         HolsterCheck();
+        playerStats.baseActionSpeed = currentActiveWeaponData.actionSpeed;
+        playerManager.ReApplyStats();
+        OnWeaponChanged?.Invoke(currentActiveWeaponData);
+
+        if (holsterd)
+        {
+            HolsterdWeapons[currentWeaponIndex].SetActive(true);
+        }
+        else
+        {
+            HolsterdWeapons[currentWeaponIndex].SetActive(false);
+        }
+
+
+    }
+
+    public override void HolsterCheck()
+    {
+        base.HolsterCheck();
+
+        playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
+        playerAnimator.speed = currentActiveWeaponData.actionSpeed;
+
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+
+        currentState = playerAnimator.GetCurrentAnimatorStateInfo(layerIndex); // Holster layer
+        bool inTransition = playerAnimator.IsInTransition(layerIndex);
+
+        if (currentState.IsTag("Holstering") || inTransition) // check Holstering tag
+        {
+            playerStates.SetIsHolstering(true);
+        }
+        else
+        {
+            playerStates.SetIsHolstering(false);
+        }
     }
 
     public void SwitchWeapon()
@@ -63,14 +144,14 @@ public class PlayerWeaponManager : CharacterWeaponManager
 
         if (Holsterd)
         {
-            OnHolster(null);
+            HolsterEvent();
         }
 
         currentWeaponIndex = (currentWeaponIndex + 1) % Weapons.Count;
 
         currentWeaponIndex %= Weapons.Count;
 
-        // St‰ng av alla
+        // St√§ng av alla
         foreach (var weapon in Weapons)
         {
             weapon.SetActive(false);
@@ -87,19 +168,23 @@ public class PlayerWeaponManager : CharacterWeaponManager
         rightDamageTrigger = currentWeapon.GetComponent<DamageTrigger>();
 
         playerAnimator.runtimeAnimatorController = stats.WeaponData.WeaponAnimator;
-        playerAnimator.speed = stats.WeaponData.AnimatorSpeed;
+        playerAnimator.speed = stats.WeaponData.actionSpeed;
 
         equippedWeapon = stats.WeaponData;
 
-        // s‰tter vapen storleken till base n‰r man byter vapen
+        // s√§tter vapen storleken till base n√§r man byter vapen
         //playerStats.currentWeaponSize = playerStats.baseWeaponSize;
-        //Debug.Log($"base ‰r {playerStats.currentWeaponSize}");
-        // s‰tter sedan vapnet till den sizen spelaren stats s‰ger
+        //Debug.Log($"base √§r {playerStats.currentWeaponSize}");
+        // s√§tter sedan vapnet till den sizen spelaren stats s√§ger
         currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
+
+        playerStats.baseActionSpeed = stats.WeaponData.actionSpeed;
 
         OnWeaponChanged?.Invoke(equippedWeapon);
 
-        // gÂ vidare till n‰sta fˆr n‰sta interaction
+        playerManager.ReApplyStats();
+
+        // g√• vidare till n√§sta f√∂r n√§sta interaction
     }
 
     public override void DeactivateRightDamageCollider()
@@ -139,7 +224,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
             damageInfo.SetDamageAmount((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier);
 
         else if (playerController.AttackCharged && damageInfo.IsCrit)
-             damageInfo.SetDamageAmount(((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier) * 2);
+            damageInfo.SetDamageAmount(((damageAmount + chargedDamageBonus) * playerStats.currentDamageModifier) * 2);
 
         else if (damageInfo.IsCrit)
             damageInfo.SetDamageAmount((damageAmount * playerStats.currentDamageModifier) * 2);

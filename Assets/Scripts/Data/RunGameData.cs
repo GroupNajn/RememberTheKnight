@@ -6,8 +6,12 @@ public class RunGameData : MonoBehaviour
 
     [SerializeField] int minLevelsBeforeBoss = 5;
     [SerializeField] int maxLevelsBeforeBoss = 7;
+    public bool HasSecretOneBeenPickedUp { get; set; } = false;
+    public bool HasSecretTwoBeenPickedUp { get; set; } = false;
 
-    bool hasStarted = false;
+    public string randomSpawnCardString = "HasBeenPickedUp";
+ 
+    public bool HasStarted { get; private set; } = false;
     public int LevelCounter { get; private set; } = 0;
     public int LevelsBeforeBoss { get; private set; } = 1;
 
@@ -23,18 +27,18 @@ public class RunGameData : MonoBehaviour
             Instance = this;
             Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         }
+        HasSecretOneBeenPickedUp = PlayerPrefsSaveSystem.HasUnlocked(randomSpawnCardString);
     }
 
     public void IncrementLevelCounter()
     {
-        if (hasStarted)
+        if (HasStarted)
         {
             LevelCounter++;
-            Debug.Log($"Level Counter incremented to {LevelCounter}");
         }
         else
         {
-            hasStarted = true;
+            HasStarted = true;
             LevelsBeforeBoss = Random.Range(minLevelsBeforeBoss, maxLevelsBeforeBoss + 1);
         }
     }
@@ -42,6 +46,6 @@ public class RunGameData : MonoBehaviour
     private void OnLobbyLoaded()
     {
         LevelCounter = 0;
-        hasStarted = false;
+        HasStarted = false;
     }
 }

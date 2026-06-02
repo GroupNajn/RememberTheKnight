@@ -1,4 +1,3 @@
-
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CardPickupUI : AutoSelectFirstButtonOnEnable
 {
@@ -36,6 +34,8 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
     [SerializeField] Color LegendaryColor;
 
     private UIManager uiManager;
+    private CardSystem cardSystem;
+    private GameData gameData;
     public bool isNormalScale { get; private set; }
 
 
@@ -52,9 +52,11 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         this.transform.localScale = new Vector3(0, 0, 0);
         targetScale = new Vector3(1, 1, 1);
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        gameData = GameObject.Find("GlobalData").GetComponent<GameData>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
 
@@ -78,7 +80,28 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
 
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         gameObject.SetActive(false);
+        if(cardData.cardTier == Tier.XIII && !cardData.cardName.Contains("Secret") && !cardData.cardName.Contains("Devil")) // To make sure secret cards do not get procced
+        {
+            List<CardData> courtCards = new List<CardData>();
+            courtCards.Add(cardData);
+            PlayerPrefsSaveSystem.SetSaveState(cardData.cardID);
+            collection.EquipCourtCard(courtCards);
+            cardSystem.UnlockCardFromDonation(cardData);
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+            return;
+        }
+        if(cardData.cardName.Contains("Secret"))// only secret cards. 
+        {
+            GameObject.Find("GlobalData").GetComponent<RunGameData>().HasSecretOneBeenPickedUp = true;
+
+        }
+        if (cardData.cardName.Contains("Devil"))
+        {
+            GameObject.Find("GlobalData").GetComponent<RunGameData>().HasSecretTwoBeenPickedUp = true;
+        }
         collection.PickupCard(cardData);
+        gameData.TotalCardsPickedup++;
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
     }
@@ -215,35 +238,41 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         if (cardData.healthModifier > 0)
             stats.AppendLine($"Health + {cardData.healthModifier}");
 
+        if (cardData.healRegeneraion > 0)
+            stats.AppendLine($"Health regen + {cardData.healRegeneraion}");
+
         if (cardData.staminaModifier > 0)
             stats.AppendLine($"Stamina + {cardData.staminaModifier}");
 
+        if (cardData.staminaRegeneraion > 0)
+            stats.AppendLine($"Stamina regen + {cardData.staminaRegeneraion}");
+
         if (cardData.luckModifier > 0)
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
+
+        if (cardData.luckModifier < 0)
+            stats.AppendLine($"Luck - {cardData.luckModifier}% you are unlucky, no more cards or healing charges drop");
 
         if (cardData.damageModifier > 0)
             stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");
 
         if (cardData.critChance > 0)
-            stats.AppendLine($"critical chance + {cardData.critChance}%");
-
-        if (cardData.walkSpeedModifier > 0)
-            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
-
-        if (cardData.sprintSpeedModifier > 0)
-            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
+            stats.AppendLine($"Crit chance + {cardData.critChance}%");
 
         if (cardData.dodgeSpeedModifier > 0)
-            stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
+            stats.AppendLine($"Dodge speed + {cardData.dodgeSpeedModifier}%");
 
         if (cardData.healModifier > 0)
-            stats.AppendLine($" heal multiplier + {cardData.healModifier}%");
+            stats.AppendLine($"Heal multiplier + {cardData.healModifier}%");
 
         if (cardData.knockbackModifier > 0)
-            stats.AppendLine($"resistance + {cardData.knockbackModifier}%");
+            stats.AppendLine($"Resistance + {cardData.knockbackModifier}%");
+
+        if (cardData.actionSpeedModifier > 0f)
+            stats.AppendLine($"Speed + {cardData.actionSpeedModifier * 100}%");
 
         if (cardData.weaponSize != Vector3.zero)
-            stats.AppendLine($"weapon size + {cardData.weaponSize.y * 10}");
+            stats.AppendLine($"Weapon size + {cardData.weaponSize.y * 10}");
 
         infoBoxTMP.text = stats.ToString();
     }

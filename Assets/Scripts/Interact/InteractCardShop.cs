@@ -5,6 +5,22 @@ using UnityEngine;
 
 public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Created by Anton 2026-04-28
+    /// Initially created as a component to handle the card shop interaction, which is the component that is attached to the shop board and handles the interaction with the player.
+    /// 
+    /// Changed by Anton 2026-05-04
+    /// Added Enumerator to delay the opening of the UI until the camera transition is finished,
+    /// to prevent the UI from opening before the camera has switched to the correct position.
+    /// 
+    /// Changed by Anton 2026-05-06
+    /// Added saved data to the interactable, so that a one time effect can be played the first time the player interacts, and not played again after that.
+    /// 
+    /// Changed by Anton 2026-05-20
+    /// Added logic for setting the shop as bought
+    /// so that the player can't interact with the shop after buying a card
+    /// </summary>
+
     [Header("Saved Data")]
     [SerializeField] private string interactableID;
     [SerializeField] private GameObject firstTimeEffect;
@@ -38,9 +54,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
         interactCameraHandler = FindFirstObjectByType<InteractCameraHandler>();
         stateDrivenCamera = GameObject.FindWithTag("StateDrivenCamera").GetComponent<CinemachineStateDrivenCamera>();
 
-        PlayerPrefs.DeleteAll(); // Remove this line after testing to keep player progress
-
-        if (InteractableSaveSystem.HasInteracted(interactableID))
+        if (PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             if (firstTimeEffect != null)
                 firstTimeEffect.SetActive(false);
@@ -51,15 +65,17 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
         if (hasBoughtCard)
             return;
 
-        if (!InteractableSaveSystem.HasInteracted(interactableID))
+        if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
-            InteractableSaveSystem.SetInteracted(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
+            PlayerPrefsSaveSystem.SetSaveState(interactableID);
         }
 
+        if (firstTimeEffect != null)
+            firstTimeEffect.SetActive(false);
+
         playerUIManager.UIMenuActive = true;
+        playerUIManager.cameraTransitioning = true;
+
         interactCameraHandler.InteractCamSwitch(transform, preset);
         cardShopUI.shopBoard = board;
         cardShopUI.interactCardShop = this;
@@ -77,6 +93,7 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
+        UIData.CanInteract = true;
 
         if (hasBoughtCard)
         {

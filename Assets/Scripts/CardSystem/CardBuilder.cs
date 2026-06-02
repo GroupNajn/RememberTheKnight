@@ -53,7 +53,7 @@ public class CardBuilder : MonoBehaviour
         return cardInstance;
     }
 
-    private void SetCardMaterial(CardData cardData, Card cardScript)
+    public void SetCardMaterial(CardData cardData, Card cardScript)
     {
 
         MeshRenderer frontMesh = cardScript.CardFront.GetComponent<MeshRenderer>();
@@ -101,6 +101,21 @@ public class CardBuilder : MonoBehaviour
         body.useGravity = true;
     }
 
+    private void TurnOnScriptsOnSecretCard(GameObject cardPrefab)
+    {
+        ObjectRotation objectRotation = cardPrefab.GetComponent<ObjectRotation>();
+        objectRotation.enabled = false;
+        BoxCollider collider = cardPrefab.GetComponent<BoxCollider>();
+        collider.enabled = true;
+        foreach (Light light in cardPrefab.GetComponentsInChildren<Light>(true))
+        {
+            light.enabled = true;
+            light.gameObject.SetActive(true);
+        }
+        //Light light = cardPrefab.GetComponentInChildren<Light>();
+        //light.enabled = false;
+    }
+
     public void InstatitateCard(CardData card, Vector3 spawnPos)
     {
         GameObject spawnedCard = Instantiate(cardPrefab, spawnPos + new Vector3(0, 0.5f, 0), Quaternion.identity);
@@ -109,6 +124,21 @@ public class CardBuilder : MonoBehaviour
         script.SetCardData(card);
         SetCardMaterial(card, script);
         TurnOnScriptsOnCard(spawnedCard);
+    }
+
+    public GameObject InstantiateSecretCard(CardData cardData, Transform parentTransform)
+    {
+        Quaternion rotation = Quaternion.Euler(parentTransform.rotation.eulerAngles.x, parentTransform.rotation.eulerAngles.y, parentTransform.rotation.eulerAngles.z);
+
+        GameObject cardInstance = Instantiate(cardPrefab, parentTransform.position, rotation, parentTransform);
+        Instantiate(ReturnParticleShopboard(LootManager.instance.GetRarityFromTier(cardData.cardTier)), cardInstance.transform.position, Quaternion.identity, cardInstance.transform);
+        TurnOffSpotLightsOnChildren(cardInstance);
+        Card cardScript = cardInstance.GetComponent<Card>();
+        cardScript.SetCardData(cardData);
+        SetCardMaterial(cardData, cardScript);
+        TurnOffScriptsOnCard(cardInstance);
+        TurnOnScriptsOnSecretCard(cardInstance);
+        return cardInstance;
     }
     /// <summary>
     /// Retrieves the particle system associated with the specified rarity tier.

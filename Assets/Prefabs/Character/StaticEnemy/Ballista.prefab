@@ -177,9 +177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84cf6b378effec4fbcebae8b1122cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredEnemies: []
-  requiredSouls: []
+  minRequiredEnemies: 2
+  maxRequiredEnemies: 3
   soulOffset: {x: 0, y: 2.25, z: 0}
+  bannedEnemyNames:
+  - Ballista
+  bannedEnemyChildNames:
+  - Ballista_Soul
   destroyedBallista: {fileID: 8601216506464516784, guid: 3cb19939eab813847ba5e28abb42fe3a, type: 3}
   ballistaSoul: {fileID: 2618408669981268307, guid: ad9f3e26ecc107b4aa2439d277dee436, type: 3}
   IsDestroyed: 0
@@ -291,11 +295,16 @@ MonoBehaviour:
   equippedWeapon: {fileID: 0}
   currentActiveWeaponData: {fileID: 0}
   lastActiveWeaponData: {fileID: 0}
+  rightHandUnarmedWeapon: {fileID: 0}
+  leftHandUnarmedWeapon: {fileID: 0}
   unarmedWeaponData: {fileID: 0}
   rightDamageTrigger: {fileID: 0}
   leftDamageTrigger: {fileID: 0}
+  rightUnarmedDamageTrigger: {fileID: 0}
+  leftUnarmedDamageTrigger: {fileID: 0}
   currentRightWeaponData: {fileID: 0}
   currentLeftWeaponData: {fileID: 0}
+  damageModifierPercentagePerLevel: 1.2
 --- !u!95 &2780310448697114402
 Animator:
   serializedVersion: 7

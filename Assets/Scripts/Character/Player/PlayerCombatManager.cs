@@ -34,8 +34,8 @@ public class PlayerCombatManager : MonoBehaviour
     public Dictionary<StaminaAction, float> StaminaCostBasedOnAction = new Dictionary<StaminaAction, float>()
     {
         {StaminaAction.Sprint, 5 },
-        {StaminaAction.Dodge, 10 },
-        {StaminaAction.lightAttack, 5 },
+        {StaminaAction.Dodge, 12 },
+        {StaminaAction.lightAttack, 8 },
         {StaminaAction.heavyAttack, 25 }
 
     };
@@ -146,13 +146,11 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void SetAnimationCancelebleFalse()
     {
-        Debug.Log("Animation cancelebale set to false");
         animationCanceleble = false;
     }
+
     public void SetAnimationCancelebleTrue()
     {
-        Debug.Log("Animation cancelebale set to true");
-
         animationCanceleble = true;
     }
 
@@ -179,11 +177,11 @@ public class PlayerCombatManager : MonoBehaviour
             if (currentAction == StaminaAction.Sprint)
             {
 
-                if (!CheckInCombat())  // If not in combat, sprinting doesn't drain stamina
-                {
-                    RegenerateStamina();
-                    return;
-                }
+                //if (!CheckInCombat())  // If not in combat, sprinting doesn't drain stamina
+                //{
+                //    RegenerateStamina();
+                //    return;
+                //}
                 staminaCost *= Time.deltaTime;
             }
 
@@ -192,10 +190,10 @@ public class PlayerCombatManager : MonoBehaviour
 
             staminaRegenTime = 0;
         }
-        else if (!CheckInCombat()) // If not in combat and stamina is depleted, regenerate stamina
-        {
-            RegenerateStamina();
-        }
+        //else if (!CheckInCombat()) // If not in combat and stamina is depleted, regenerate stamina
+        //{
+        //    RegenerateStamina();
+        //}
     }
 
     public void RegenerateStamina()
@@ -208,7 +206,7 @@ public class PlayerCombatManager : MonoBehaviour
 
         if (playerStats.currentStamina < playerStats.maxStamina)
         {
-            playerStats.currentStamina += playerStats.staminaRegenRate * Time.deltaTime;
+            playerStats.currentStamina += playerStats.staminaRegen * Time.deltaTime;
 
             if (playerStats.currentStamina > playerStats.maxStamina)
                 playerStats.currentStamina = playerStats.maxStamina;

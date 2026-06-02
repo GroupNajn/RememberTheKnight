@@ -1,5 +1,4 @@
 using FMODUnity;
-using System.Transactions;
 using UnityEngine;
 
 public class CharacterWeaponManager : MonoBehaviour
@@ -9,12 +8,16 @@ public class CharacterWeaponManager : MonoBehaviour
     [SerializeField] public WeaponData equippedWeapon;
 
     [SerializeField] public WeaponData currentActiveWeaponData;
-    [SerializeField] public WeaponData lastActiveWeaponData; 
+    [SerializeField] public WeaponData lastActiveWeaponData;
 
+    [SerializeField] public GameObject rightHandUnarmedWeapon;
+    [SerializeField] public GameObject leftHandUnarmedWeapon;
     [SerializeField] public WeaponData unarmedWeaponData;
 
     [HideInInspector] public DamageTrigger rightDamageTrigger;
     [HideInInspector] public DamageTrigger leftDamageTrigger;
+    [HideInInspector] public DamageTrigger rightUnarmedDamageTrigger;
+    [HideInInspector] public DamageTrigger leftUnarmedDamageTrigger;
     [HideInInspector] public WeaponData currentRightWeaponData;
     [HideInInspector] public WeaponData currentLeftWeaponData;
 
@@ -41,6 +44,16 @@ public class CharacterWeaponManager : MonoBehaviour
             leftDamageTrigger = currentLeftHandWeapon.GetComponent<DamageTrigger>();
             currentLeftWeaponData = currentLeftHandWeapon.GetComponent<WeaponStats>().WeaponData;
         }
+
+        if (rightHandUnarmedWeapon != null)
+        {
+            rightUnarmedDamageTrigger = rightHandUnarmedWeapon.GetComponent<DamageTrigger>();
+        }
+
+        if (leftHandUnarmedWeapon != null)
+        {
+            leftUnarmedDamageTrigger = leftHandUnarmedWeapon.GetComponent<DamageTrigger>();
+        }
     }
 
     public virtual void Update()
@@ -56,6 +69,9 @@ public class CharacterWeaponManager : MonoBehaviour
 
             lastActiveWeaponData = currentActiveWeaponData;
             currentActiveWeaponData = unarmedWeaponData;
+
+            leftHandUnarmedWeapon.SetActive(true);
+            rightHandUnarmedWeapon.SetActive(true);
         }
         else
         {
@@ -64,58 +80,123 @@ public class CharacterWeaponManager : MonoBehaviour
 
             currentActiveWeaponData = lastActiveWeaponData;
             lastActiveWeaponData = unarmedWeaponData;
+
+            leftHandUnarmedWeapon.SetActive(false);
+            rightHandUnarmedWeapon.SetActive(false);
         }
-
-
     }
 
     public virtual void ActivateRightDamageCollider()
     {
-        if (currentRightHandWeapon != null)
+        if (!holsterd)
         {
-           // Debug.Log($"Activating right damage collider on object {currentRightHandWeapon.name}");
-            currentRightHandWeapon.GetComponent<Collider>().enabled = true;
-            //Debug.Log(currentRightHandWeapon.GetComponent<Collider>().gameObject.name);
-            rightDamageTrigger.ResetDamage();
+            if (currentRightHandWeapon != null)
+            {
+                var rightCollider = currentRightHandWeapon.GetComponent<Collider>();
+                if (rightCollider)
+                {
+                    rightCollider.enabled = true;
+                    rightDamageTrigger.ResetDamage();
 
-           // characterSoundFXManager.PlayAttackGrunt();
-            //characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentRightWeaponData.whooshes),1.5f);
-            RuntimeManager.PlayOneShotAttached(currentActiveWeaponData.SwooshEvent, gameObject);
+                    RuntimeManager.PlayOneShotAttached(currentActiveWeaponData.SwooshEvent, gameObject);
 
-            currentActiveWeaponData = currentRightWeaponData;
+                    currentActiveWeaponData = currentRightWeaponData;
+                }
+            }
+        }
+        else
+        {
+            if (rightHandUnarmedWeapon != null)
+            {
+                var rightCollider = rightHandUnarmedWeapon.GetComponent<Collider>();
+                if (rightCollider)
+                {
+                    rightCollider.enabled = true;
+                    rightUnarmedDamageTrigger.ResetDamage();
+
+                    RuntimeManager.PlayOneShotAttached(unarmedWeaponData.SwooshEvent, gameObject);
+
+                    currentActiveWeaponData = unarmedWeaponData;
+                }
+            }
         }
     }
 
     public virtual void DeactivateRightDamageCollider()
     {
-        if (currentRightHandWeapon != null)
+        if (!holsterd)
         {
-            currentRightHandWeapon.GetComponent<Collider>().enabled = false;
-
+            if (currentRightHandWeapon != null)
+            {
+                var rightCollider = currentRightHandWeapon.GetComponent<Collider>();
+                if (rightCollider) rightCollider.enabled = false;
+            }
+        }
+        else
+        {
+            if (rightHandUnarmedWeapon != null)
+            {
+                var rightCollider = rightHandUnarmedWeapon.GetComponent<Collider>();
+                if (rightCollider) rightCollider.enabled = false;
+            }
         }
     }
 
     public virtual void ActivateLeftDamageCollider()
     {
-        if (currentLeftHandWeapon != null)
+        if (!holsterd)
         {
-            currentLeftHandWeapon.GetComponent<Collider>().enabled = true;
-            leftDamageTrigger.ResetDamage();
+            if (currentLeftHandWeapon != null)
+            {
+                var leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
+                if (leftCollider)
+                {
+                    leftCollider.enabled = true;
+                    leftDamageTrigger.ResetDamage();
 
-            //characterSoundFXManager.PlayAttackGrunt();
-            //characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes), 1.5f);
-            RuntimeManager.PlayOneShotAttached(currentActiveWeaponData.SwooshEvent, gameObject);
+                    //characterSoundFXManager.PlayAttackGrunt();
+                    //characterSoundFXManager.PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(currentLeftWeaponData.whooshes), 1.5f);
+                    RuntimeManager.PlayOneShotAttached(currentActiveWeaponData.SwooshEvent, gameObject);
 
-            currentActiveWeaponData = currentLeftWeaponData;
+                    currentActiveWeaponData = currentLeftWeaponData;
+                }
+            }
+        }
+        else
+        {
+            if (leftHandUnarmedWeapon != null)
+            {
+                var leftCollider = leftHandUnarmedWeapon.GetComponent<Collider>();
+                if (leftCollider)
+                {
+                    leftCollider.enabled = true;
+                    leftUnarmedDamageTrigger.ResetDamage();
+
+                    RuntimeManager.PlayOneShotAttached(unarmedWeaponData.SwooshEvent, gameObject);
+
+                    currentActiveWeaponData = unarmedWeaponData;
+                }
+            }
         }
     }
 
     public virtual void DeactivateLeftDamageCollider()
     {
-        if (currentLeftHandWeapon != null)
+        if (!holsterd)
         {
-            currentLeftHandWeapon.GetComponent<Collider>().enabled = false;
-
+            if (currentLeftHandWeapon != null)
+            {
+                var leftCollider = currentLeftHandWeapon.GetComponent<Collider>();
+                if (leftCollider) leftCollider.enabled = false;
+            }
+        }
+        else
+        {
+            if (leftHandUnarmedWeapon != null)
+            {
+                var leftCollider = leftHandUnarmedWeapon.GetComponent<Collider>();
+                if (leftCollider) leftCollider.enabled = false;
+            }
         }
     }
 

@@ -3,6 +3,11 @@ using UnityEngine.Rendering;
 
 public class PlayerVFX : CharacterVFX
 {
+    /// <summary>
+    /// Changed by Anton and Theo 2026-05-11
+    /// Added functionality to handle vignette when out of stamina, used in combination with playermanager and globalvolumemanager.
+    /// </summary>
+
     [Header("Vignett Settings")]
     public float VignetteMax = 0.4f;
     public float VignetteMin = 0.25f;

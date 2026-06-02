@@ -1,13 +1,25 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-
+/// <summary>
+// This script manages the character customization.
+// This is done throuh methods that changes, save or load the current index of a list of body parts. 
+// Each body part has its own list of gameobjects, that are active or not dependig on the current index.
+// All methods with "Next" or "Prev" in their name, changes the current index of a list and when at the end of the list, it goes back to the start and vice versa.
+// The other methods are helper methods to find refrences, activate/deactivete body parts in a safe maner or save/load indexes for playerPrefs.
+/// </summary>
 public class SwitchBodyParts : MonoBehaviour
 {
+    /// <summary>
+    /// Changed by Anton 2026-06-01
+    /// Added logic to save and load character customization using PlayerPrefs, 
+    /// allowing players to retain their chosen appearance across game sessions.
+    /// </summary>
+
     UIManager uiManager;
+    private GameData gameData;
 
     [SerializeField] private Gender currentGender = Gender.Male;
     public enum Gender
@@ -16,6 +28,7 @@ public class SwitchBodyParts : MonoBehaviour
         Female
     }
 
+    #region Body Parts
     [SerializeField] Transform allGenderParts;
     [SerializeField] Transform maleParts;
     [SerializeField] Transform femaleParts;
@@ -31,8 +44,8 @@ public class SwitchBodyParts : MonoBehaviour
 
     [Header("BODY")]
     [SerializeField] List<GameObject> torso = new();
-    [SerializeField] List<GameObject> leftUppperArm = new();
-    [SerializeField] List<GameObject> rightUppperArm = new();
+    [SerializeField] List<GameObject> leftUpperArm = new();
+    [SerializeField] List<GameObject> rightUpperArm = new();
     [SerializeField] List<GameObject> leftLowerArm = new();
     [SerializeField] List<GameObject> rightLowerArm = new();
     [SerializeField] List<GameObject> leftHand = new();
@@ -54,8 +67,8 @@ public class SwitchBodyParts : MonoBehaviour
     [HideInInspector] public int currentRightElbow;
 
     [HideInInspector] public int currentTorso;
-    [HideInInspector] public int currentLeftUppperArm;
-    [HideInInspector] public int currentRightUppperArm;
+    [HideInInspector] public int currentLeftUpperArm;
+    [HideInInspector] public int currentRightUpperArm;
     [HideInInspector] public int currentLeftLowerArm;
     [HideInInspector] public int currentRightLowerArm;
     [HideInInspector] public int currentLeftHand;
@@ -77,8 +90,8 @@ public class SwitchBodyParts : MonoBehaviour
     [SerializeField] public int currentSavedRightElbow;
 
     [SerializeField] private int currentSavedTorso;
-    [SerializeField] private int currentSavedLeftUppperArm;
-    [SerializeField] private int currentSavedRightUppperArm;
+    [SerializeField] private int currentSavedLeftUpperArm;
+    [SerializeField] private int currentSavedRightUpperArm;
     [SerializeField] private int currentSavedLeftLowerArm;
     [SerializeField] private int currentSavedRightLowerArm;
     [SerializeField] private int currentSavedLeftHand;
@@ -89,6 +102,7 @@ public class SwitchBodyParts : MonoBehaviour
     [SerializeField] private int currentSavedRightKnee;
     [SerializeField] private int currentSavedLeftLeg;
     [SerializeField] private int currentSavedRightLeg;
+    #endregion
 
     [HideInInspector] public bool hasSaved = false;
 
@@ -98,9 +112,25 @@ public class SwitchBodyParts : MonoBehaviour
     private void Awake()
     {
         uiManager = FindFirstObjectByType<UIManager>();
-        FindRoots();
-        RebuildParts();
+        gameData = FindFirstObjectByType<GameData>();
+
         Event_System.instance.OnLoadScenes += OnLoadScenes;
+    }
+
+    private void Start()
+    {
+        FindRoots();
+
+        if (PlayerPrefsSaveSystem.HasPlayedGame())
+            currentGender = (Gender)PlayerPrefsSaveSystem.GetSavedGender();
+
+        maleParts.gameObject.SetActive(currentGender == Gender.Male);
+        femaleParts.gameObject.SetActive(currentGender == Gender.Female);
+
+        RebuildParts();
+
+        if (PlayerPrefsSaveSystem.HasPlayedGame())
+            LoadSavedCustomization();
     }
 
     private void FindRoots()
@@ -146,8 +176,8 @@ public class SwitchBodyParts : MonoBehaviour
 
         head = GetChildren(gender.Find($"{genderPrefix}_00_Head/{genderPrefix}_Head_No_Elements"));
         torso = GetChildren(gender.Find($"{genderPrefix}_03_Torso"));
-        rightUppperArm = GetChildren(gender.Find($"{genderPrefix}_04_Arm_Upper_Right"));
-        leftUppperArm = GetChildren(gender.Find($"{genderPrefix}_05_Arm_Upper_Left"));
+        rightUpperArm = GetChildren(gender.Find($"{genderPrefix}_04_Arm_Upper_Right"));
+        leftUpperArm = GetChildren(gender.Find($"{genderPrefix}_05_Arm_Upper_Left"));
         rightLowerArm = GetChildren(gender.Find($"{genderPrefix}_06_Arm_Lower_Right"));
         leftLowerArm = GetChildren(gender.Find($"{genderPrefix}_07_Arm_Lower_Left"));
         rightHand = GetChildren(gender.Find($"{genderPrefix}_08_Hand_Right"));
@@ -175,8 +205,8 @@ public class SwitchBodyParts : MonoBehaviour
         currentLeftElbow = 0;
         currentRightElbow = 0;
         currentTorso = 0;
-        currentLeftUppperArm = 0;
-        currentRightUppperArm = 0;
+        currentLeftUpperArm = 0;
+        currentRightUpperArm = 0;
         currentLeftLowerArm = 0;
         currentRightLowerArm = 0;
         currentLeftHand = 0;
@@ -196,8 +226,8 @@ public class SwitchBodyParts : MonoBehaviour
         TryActivate(rightElbow, 0);
         TryActivate(leftElbow, 0);
         TryActivate(torso, 0);
-        TryActivate(rightUppperArm, 0);
-        TryActivate(leftUppperArm, 0);
+        TryActivate(rightUpperArm, 0);
+        TryActivate(leftUpperArm, 0);
         TryActivate(rightLowerArm, 0);
         TryActivate(leftLowerArm, 0);
         TryActivate(rightHand, 0);
@@ -209,7 +239,7 @@ public class SwitchBodyParts : MonoBehaviour
         TryActivate(leftLeg, 0);
     }
 
-    void ActivatCurrentBody()
+    void ActivateCurrentBody()
     {
         TryActivate(head, currentHead);
         TryActivate(rightShoulder, currentRightShoulder);
@@ -217,8 +247,8 @@ public class SwitchBodyParts : MonoBehaviour
         TryActivate(rightElbow, currentRightElbow);
         TryActivate(leftElbow, currentLeftElbow);
         TryActivate(torso, currentTorso);
-        TryActivate(rightUppperArm, currentRightUppperArm);
-        TryActivate(leftUppperArm, currentLeftUppperArm);
+        TryActivate(rightUpperArm, currentRightUpperArm);
+        TryActivate(leftUpperArm, currentLeftUpperArm);
         TryActivate(rightLowerArm, currentRightLowerArm);
         TryActivate(leftLowerArm, currentLeftLowerArm);
         TryActivate(rightHand, currentRightHand);
@@ -238,8 +268,8 @@ public class SwitchBodyParts : MonoBehaviour
         TryActivate(rightElbow, currentSavedRightElbow);
         TryActivate(leftElbow, currentSavedLeftElbow);
         TryActivate(torso, currentSavedTorso);
-        TryActivate(rightUppperArm, currentSavedRightUppperArm);
-        TryActivate(leftUppperArm, currentSavedLeftUppperArm);
+        TryActivate(rightUpperArm, currentSavedRightUpperArm);
+        TryActivate(leftUpperArm, currentSavedLeftUpperArm);
         TryActivate(rightLowerArm, currentSavedRightLowerArm);
         TryActivate(leftLowerArm, currentSavedLeftLowerArm);
         TryActivate(rightHand, currentSavedRightHand);
@@ -275,59 +305,102 @@ public class SwitchBodyParts : MonoBehaviour
 
         maleParts.gameObject.SetActive(currentGender == Gender.Male);
         femaleParts.gameObject.SetActive(currentGender == Gender.Female);
-        RebuildParts();
 
+        SaveBody();
+        RebuildParts();
+        LoadSavedCustomization();
     }
 
     public void SaveBody()
     {
-        currentSavedHead = currentHead;
-        currentSavedLeftShoulder = currentLeftShoulder;
-        currentSavedRightShoulder = currentRightShoulder;
-        currentSavedLeftElbow = currentLeftElbow;
-        currentSavedRightElbow = currentRightElbow;
-        currentSavedTorso = currentTorso;
-        currentSavedLeftUppperArm = currentLeftUppperArm;
-        currentSavedRightUppperArm = currentRightUppperArm;
-        currentSavedLeftLowerArm = currentLeftLowerArm;
-        currentSavedRightLowerArm = currentRightLowerArm;
-        currentSavedLeftHand = currentLeftHand;
-        currentSavedRightHand = currentRightHand;
-        currentSavedHips = currentHips;
-        currentSavedLeftKnee = currentLeftKnee;
-        currentSavedRightKnee = currentRightKnee;
-        currentSavedLeftLeg = currentLeftLeg;
-        currentSavedRightLeg = currentRightLeg;
+        //currentSavedHead = currentHead;
+        //currentSavedLeftShoulder = currentLeftShoulder;
+        //currentSavedRightShoulder = currentRightShoulder;
+        //currentSavedLeftElbow = currentLeftElbow;
+        //currentSavedRightElbow = currentRightElbow;
+        //currentSavedTorso = currentTorso;
+        //currentSavedLeftUppperArm = currentLeftUppperArm;
+        //currentSavedRightUppperArm = currentRightUppperArm;
+        //currentSavedLeftLowerArm = currentLeftLowerArm;
+        //currentSavedRightLowerArm = currentRightLowerArm;
+        //currentSavedLeftHand = currentLeftHand;
+        //currentSavedRightHand = currentRightHand;
+        //currentSavedHips = currentHips;
+        //currentSavedLeftKnee = currentLeftKnee;
+        //currentSavedRightKnee = currentRightKnee;
+        //currentSavedLeftLeg = currentLeftLeg;
+        //currentSavedRightLeg = currentRightLeg;
+
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("Head", currentHead);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightShoulder", currentRightShoulder);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftShoulder", currentLeftShoulder);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightElbow", currentRightElbow);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftElbow", currentLeftElbow);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("Torso", currentTorso);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightUpperArm", currentRightUpperArm);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftUpperArm", currentLeftUpperArm);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightLowerArm", currentRightLowerArm);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftLowerArm", currentLeftLowerArm);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightHand", currentRightHand);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftHand", currentLeftHand);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("Hips", currentHips);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightKnee", currentRightKnee);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftKnee", currentLeftKnee);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("RightLeg", currentRightLeg);
+        PlayerPrefsSaveSystem.SaveCharactedCustomization("LeftLeg", currentLeftLeg);
 
         hasSaved = true;
-
     }
 
-    public void LoadBody()
+    public void LoadSavedCustomization()
     {
         TryDeactivateCurrentBody();
 
-        currentHead = currentSavedHead;
-        currentRightShoulder = currentSavedRightShoulder;
-        currentLeftShoulder = currentSavedLeftShoulder;
-        currentRightElbow = currentSavedRightElbow;
-        currentLeftElbow = currentSavedLeftElbow;
-        currentTorso = currentSavedTorso;
-        currentRightUppperArm = currentSavedRightUppperArm;
-        currentLeftUppperArm = currentSavedLeftUppperArm;
-        currentRightLowerArm = currentSavedRightLowerArm;
-        currentLeftLowerArm = currentSavedLeftLowerArm;
-        currentRightHand = currentSavedRightHand;
-        currentLeftHand = currentSavedLeftHand;
-        currentHips = currentSavedHips;
-        currentRightKnee = currentSavedRightKnee;
-        currentLeftKnee = currentSavedLeftKnee;
-        currentRightLeg = currentSavedRightLeg;
-        currentLeftLeg = currentSavedLeftLeg;
+        currentHead = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("Head");
+        currentRightShoulder = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightShoulder");
+        currentLeftShoulder = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftShoulder");
+        currentRightElbow = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightElbow");
+        currentLeftElbow = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftElbow");
+        currentTorso = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("Torso");
+        currentRightUpperArm = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightUpperArm");
+        currentLeftUpperArm = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftUpperArm");
+        currentRightLowerArm = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightLowerArm");
+        currentLeftLowerArm = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftLowerArm");
+        currentRightHand = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightHand"    );
+        currentLeftHand = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftHand");
+        currentHips = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("Hips");
+        currentRightKnee = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightKnee");
+        currentLeftKnee = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftKnee");
+        currentRightLeg = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("RightLeg");
+        currentLeftLeg = PlayerPrefsSaveSystem.GetSavedCharacterCustomization("LeftLeg");
 
-        ActivateSavedBody();
-
+        ActivateCurrentBody();
     }
+
+    //public void LoadBody()
+    //{
+    //    TryDeactivateCurrentBody();
+
+    //    currentHead = currentSavedHead;
+    //    currentRightShoulder = currentSavedRightShoulder;
+    //    currentLeftShoulder = currentSavedLeftShoulder;
+    //    currentRightElbow = currentSavedRightElbow;
+    //    currentLeftElbow = currentSavedLeftElbow;
+    //    currentTorso = currentSavedTorso;
+    //    currentRightUpperArm = currentSavedRightUpperArm;
+    //    currentLeftUpperArm = currentSavedLeftUpperArm;
+    //    currentRightLowerArm = currentSavedRightLowerArm;
+    //    currentLeftLowerArm = currentSavedLeftLowerArm;
+    //    currentRightHand = currentSavedRightHand;
+    //    currentLeftHand = currentSavedLeftHand;
+    //    currentHips = currentSavedHips;
+    //    currentRightKnee = currentSavedRightKnee;
+    //    currentLeftKnee = currentSavedLeftKnee;
+    //    currentRightLeg = currentSavedRightLeg;
+    //    currentLeftLeg = currentSavedLeftLeg;
+
+    //    ActivateSavedBody();
+    //}
 
     public void RandomizeBody()
     {
@@ -345,9 +418,9 @@ public class SwitchBodyParts : MonoBehaviour
 
         currentTorso = UnityEngine.Random.Range(0, torso.Count);
 
-        int upperArmIndex = UnityEngine.Random.Range(0, rightUppperArm.Count);
-        currentRightUppperArm = upperArmIndex;
-        currentLeftUppperArm = upperArmIndex;
+        int upperArmIndex = UnityEngine.Random.Range(0, rightUpperArm.Count);
+        currentRightUpperArm = upperArmIndex;
+        currentLeftUpperArm = upperArmIndex;
 
         int lowerArmIndex = UnityEngine.Random.Range(0, rightLowerArm.Count);
         currentRightLowerArm = lowerArmIndex;
@@ -368,7 +441,7 @@ public class SwitchBodyParts : MonoBehaviour
         currentLeftLeg = legIndex;
 
 
-        ActivatCurrentBody();
+        ActivateCurrentBody();
     }
 
     void TryDeactivateCurrentBody()
@@ -379,8 +452,8 @@ public class SwitchBodyParts : MonoBehaviour
         TryDeactivate(leftElbow, currentLeftElbow);
         TryDeactivate(rightElbow, currentRightElbow);
         TryDeactivate(torso, currentTorso);
-        TryDeactivate(leftUppperArm, currentLeftUppperArm);
-        TryDeactivate(rightUppperArm, currentRightUppperArm);
+        TryDeactivate(leftUpperArm, currentLeftUpperArm);
+        TryDeactivate(rightUpperArm, currentRightUpperArm);
         TryDeactivate(leftLowerArm, currentLeftLowerArm);
         TryDeactivate(rightLowerArm, currentRightLowerArm);
         TryDeactivate(leftHand, currentLeftHand);
@@ -414,7 +487,7 @@ public class SwitchBodyParts : MonoBehaviour
     }
     public void NextUpperArms()
     {
-        SwitchPart(rightUppperArm, ref currentRightUppperArm, 1); SwitchPart(leftUppperArm, ref currentLeftUppperArm, 1);
+        SwitchPart(rightUpperArm, ref currentRightUpperArm, 1); SwitchPart(leftUpperArm, ref currentLeftUpperArm, 1);
     }
     public void NextLowerArms()
     {
@@ -453,8 +526,8 @@ public class SwitchBodyParts : MonoBehaviour
     }
     public void PrevUpperArms()
     {
-        SwitchPart(rightUppperArm, ref currentRightUppperArm, -1);
-        SwitchPart(leftUppperArm, ref currentLeftUppperArm, -1);
+        SwitchPart(rightUpperArm, ref currentRightUpperArm, -1);
+        SwitchPart(leftUpperArm, ref currentLeftUpperArm, -1);
     }
     public void PrevLowerArms()
     {
@@ -485,14 +558,14 @@ public class SwitchBodyParts : MonoBehaviour
             startGame = false;
             Event_System.instance.OnSceneTransitionDone += OnBlackFadeDone;
         }
-        else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
-        {
-            uiManager.UIMenuActive = false;
-            uiManager.CheckUIState();
+        //else if (SceneManager.GetActiveScene().name == SceneData.Instance[2])
+        //{
+        //    uiManager.UIMenuActive = false;
+        //    uiManager.CheckUIState();
 
-            // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
-            uiManager.OpenUIOnMenuClose();
-        }
+        //    // OPENS ALL UI THAT NEED TO SHOW DURING GAMEPLAY
+        //    uiManager.OpenUIOnMenuClose();
+        //}
     }
 
     private void OnBlackFadeDone()
@@ -501,7 +574,15 @@ public class SwitchBodyParts : MonoBehaviour
 
         if (startGame)
         {
-            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+            if (!PlayerPrefsSaveSystem.HasPlayedGame())
+            {
+                gameData.FirstTimePlaying = false;
+                PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
+
+                GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
+            }
+            else
+                GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
         }
 
         Event_System.instance.OnSceneTransitionDone -= OnBlackFadeDone;
@@ -510,18 +591,27 @@ public class SwitchBodyParts : MonoBehaviour
     public void StartGame()
     {
         uiManager.CloseCharacterSelectUI();
-
-        gameObject.SetActive(false);
+        SaveBody();
+        PlayerPrefsSaveSystem.SaveGender(currentGender);
 
         // LOAD NEXT SCENE
         if (canStartGame)
         {
-            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+            if (!PlayerPrefsSaveSystem.HasPlayedGame())
+            {
+                gameData.FirstTimePlaying = false;
+                PlayerPrefsSaveSystem.SetSaveState("HasPlayedGame");
+
+                GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[7]);
+            }
+            else
+                GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
         }
         else
         {
             startGame = true;
         }
+
     }
 
     public void OnClick()

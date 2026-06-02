@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 
-
+/// <summary>
+/// Controls projectile movement, collision detection,
+/// particle effects and destruction behaviour.
+/// </summary>
 public class Projectile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,7 +23,9 @@ public class Projectile : MonoBehaviour
     [Header("SFX")]
     public EventReference flyingEvent;
 
-
+    /// <summary>
+    /// Caches references and determines whether this projectile is an arrow.
+    /// </summary>
     private void Awake()
     {
         isArrow = this.gameObject.name.Contains("Arrow");
@@ -32,16 +37,26 @@ public class Projectile : MonoBehaviour
     {
         origin = transform.position;
 
-        if(isArrow)
+
         RuntimeManager.PlayOneShotAttached(flyingEvent, gameObject);
     }
 
+    /// <summary>
+    /// Moves the projectile along its assigned direction
+    /// until a collision occurs.
+    /// </summary>
     void Update()
     {
         if (!collided) transform.position += speed * Time.deltaTime * direction;
     }
+
+    /// <summary>
+    /// Detects valid collisions and starts the collision sequence.
+    /// </summary>
+    /// <param name="other">Collider entered by the projectile.</param>
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject == enemyWeaponManager.gameObject || other.gameObject.transform.IsChildOf(enemyWeaponManager.gameObject.transform)) return;
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
@@ -54,6 +69,10 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stops particle effects, disables collisions,
+    /// waits briefly if necessary and destroys the projectile.
+    /// </summary>
     IEnumerator Collide()
     {
         projectiles.ForEach(projectile =>

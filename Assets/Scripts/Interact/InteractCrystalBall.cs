@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUIText
 {
+    /// <summary>
+    /// Updated by Lukas 2026-04-08
+    /// Calls load scene when active scene is switched
+    /// </summary>
+
     [SerializeField] int sceneToLoadIndex;
     [SerializeField] bool preLoadScene = false;
 
@@ -24,6 +29,13 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     {
         if (sceneToLoadIndex < 0 || GlobalSceneManager.Instance.isTransitioning)
         {
+            return;
+        }
+
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract == null ||
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
+        {
+            // Add dialouge here
             return;
         }
 
@@ -59,8 +71,18 @@ public class InteractCrystalBall : MonoBehaviour, IInteractable, IInteractableUI
     public InteractableUIData GetUIData()
     {
         var UIData = new InteractableUIData();
-
-        UIData.InfoText = "Touch orb";
+         
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract == null ||
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>().playerContract.signed == CardContract.Signed.Not)
+        {
+            UIData.CanInteract = false;
+            UIData.InfoText = "Select a family";
+        }
+        else
+        {
+            UIData.CanInteract = true;
+            UIData.InfoText = "Touch orb";
+        }
 
         return UIData;
     }

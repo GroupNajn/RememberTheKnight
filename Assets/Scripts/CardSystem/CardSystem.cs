@@ -53,6 +53,12 @@ public class CardSystem : MonoBehaviour
                     unlockedCards.Add(cardData);
                     hashUnlocked.Add(cardData);
             }
+            if (PlayerPrefsSaveSystem.HasUnlockedCard(cardData.cardID))
+            {
+                unlockedCards.Add(cardData);
+                hashUnlocked.Add(cardData);
+
+            }
         }
     }
 
@@ -87,6 +93,7 @@ public class CardSystem : MonoBehaviour
 
     public void UnlockCardFromDonation(CardData card)
     {
+        if (hashUnlocked.Contains(card) || unlockedCards.Contains(card)) return;
         unlockedCards.Add(card);
         hashUnlocked.Add(card);
     }
@@ -120,6 +127,7 @@ public class CardSystem : MonoBehaviour
     {
         return hashUnlocked.Contains(card);
     }
+
 
 
     /*<summary> Method is a test method used for the GameHabitat game show.
@@ -160,10 +168,8 @@ public class CardSystem : MonoBehaviour
 
         foreach (CardData data in sortedCards.ToArray())
         {
-            Debug.Log($"Looping through sorted cards");
             if (data.cardFamily != cardContract.CardFamily || unlockedCards.Contains(data))
             {
-                Debug.Log($"Removing {data.name} from sorted cards");
                 sortedCards.Remove(data);
             }
         }

@@ -32,11 +32,15 @@ public partial class NavAgentRotateAction : Action
         else
         {
 
-            Quaternion desiredRotation = Quaternion.LookRotation(direction, Self.Value.transform.up);
+            Quaternion desiredRotation = Quaternion.LookRotation(direction, Vector3.up);
+            float angle = Quaternion.Angle(Self.Value.transform.rotation, desiredRotation);
             Self.Value.transform.rotation = Quaternion.RotateTowards(
                 Self.Value.transform.rotation,
                 desiredRotation,
-                Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value
+                Mathf.Min(
+                    Self.Value.angularSpeed * Time.deltaTime * SpeedMultiplier.Value,
+                    angle
+                )
             );
             if (Continuous.Value) return Status.Running;
 
@@ -54,7 +58,7 @@ public partial class NavAgentRotateAction : Action
 
     protected override void OnEnd()
     {
-        Self.Value.updateRotation = false;
+        Self.Value.updateRotation = true;
     }
 }
 

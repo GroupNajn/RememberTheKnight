@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,12 +7,23 @@ using UnityEngine.SceneManagement;
 
 public class GlobalSceneManager : MonoBehaviour
 {
+    /// <summary>
+    /// Made by Lukas 2026-04-10
+    /// 
+    /// Manages scene loading and transitions for the game
+    /// Asynchronous scene loading with support for pre-loading scenes in the background to reduce load times during scene switches
+    /// The starting of the asynchronous loading is mainly triggered when the screen is black 
+    ///     while showing the king card of the currently selected family but not neccisary
+    ///     
+    /// Updated by Lukas over the next 2-3 weeks
+    /// </summary>
+
     public static GlobalSceneManager Instance { get; private set; }
 
     Dictionary<string, AsyncOperation> pendingLoads = new Dictionary<string, AsyncOperation>();
     HashSet<string> loadingScenes = new HashSet<string>();
 
-    Animator transitionAnimator;
+    [SerializeField] private Animator transitionAnimator;
     bool useTransition;
     public bool isTransitioning { get; private set; } = false;
 
@@ -26,8 +38,6 @@ public class GlobalSceneManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        transitionAnimator = GameObject.FindGameObjectWithTag("BlackFade").GetComponent<Animator>();
     }
 
     private void Start()
@@ -46,6 +56,7 @@ public class GlobalSceneManager : MonoBehaviour
         StartCoroutine(LoadSceneAsync(sceneName));
     }
 
+    // Preloads a scene asynchronous in the background to lower load times when switching scenes
     IEnumerator LoadSceneAsync(string sceneName)
     {
         if (SceneManager.GetSceneByName(sceneName).isLoaded)
@@ -56,7 +67,7 @@ public class GlobalSceneManager : MonoBehaviour
         }
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        asyncLoad.allowSceneActivation = false;
+        asyncLoad.allowSceneActivation = false; // Ensures that the scene isn't activated before it should
 
         while (asyncLoad.progress < 0.9f)
         {
@@ -79,11 +90,13 @@ public class GlobalSceneManager : MonoBehaviour
         ActivateScene(sceneName);
     }
 
+    // Activates a scene and unloads the all the other scenes afterwards
     void ActivateScene(string sceneName)
     {
         Scene scene = SceneManager.GetSceneByName(sceneName);
         if (scene.isLoaded)
         {
+            // The scenes is already loaded and activated and nothing should happen, should never enter if everything is correctly done
             if (useTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, null, true));
@@ -96,6 +109,7 @@ public class GlobalSceneManager : MonoBehaviour
 
         if (pendingLoads.TryGetValue(sceneName, out AsyncOperation asyncLoad))
         {
+            // Scene is preloaded and only needs to be activated
             if (useTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, asyncLoad, true));
@@ -108,10 +122,12 @@ public class GlobalSceneManager : MonoBehaviour
 
         if (loadingScenes.Contains(sceneName))
         {
+            // Scene is being preloaded
             StartCoroutine(WaitForSceneLoad(sceneName));
             return;
         }
 
+        // Scene is not preloaded or being preloaded and needs to be loaded and activated directly, with or without trans
         if (useTransition)
         {
             StartCoroutine(TransitionToScene(sceneName, asyncLoad, false));
@@ -123,15 +139,18 @@ public class GlobalSceneManager : MonoBehaviour
 
     IEnumerator WaitForSceneLoad(string sceneName)
     {
+        // Save transition state in case it changes while waiting
         bool shouldTransition = useTransition;
 
         while (!pendingLoads.ContainsKey(sceneName))
         {
+            // Wait until scene is done preloading
             yield return null;
         }
 
-        if (!pendingLoads.TryGetValue(sceneName, out AsyncOperation asyncLoad))
+        if (pendingLoads.TryGetValue(sceneName, out AsyncOperation asyncLoad))
         {
+            // Scene is done preloading and only needs to be activated
             if (shouldTransition)
             {
                 StartCoroutine(TransitionToScene(sceneName, asyncLoad, true));
@@ -147,10 +166,12 @@ public class GlobalSceneManager : MonoBehaviour
     {
         if (isTransitioning)
         {
+            // Already transitioning, do nothing
             yield break;
         }
 
         isTransitioning = true;
+        WorldSoundFXManager.instance.musicInstance.stop(STOP_MODE.ALLOWFADEOUT);
 
         yield return StartCoroutine(FadeToBlack());
 
@@ -158,59 +179,42 @@ public class GlobalSceneManager : MonoBehaviour
 
         if (pendingAsyncOp != null)
         {
-            pendingAsyncOp.allowSceneActivation = true;
-            while (!pendingAsyncOp.isDone)
-            {
-                yield return null;
-            }
-            pendingLoads.Remove(sceneName);
-
-            while (!targetScene.isLoaded)
-            {
-                yield return null;
-            }
-
-            SceneManager.SetActiveScene(targetScene);
+            // Scene is preloaded and only needs to be activated
+            yield return StartCoroutine(ActivatePendingLoad(sceneName, pendingAsyncOp));
         }
-        else
+        else if (!targetScene.isLoaded)
         {
-            if (!targetScene.isLoaded)
+            // Scene is not loaded yet
+            if (isPreloaded)
             {
-                LoadSceneMode loadMode = SceneManager.sceneCount > 1 ? LoadSceneMode.Single : LoadSceneMode.Additive;
-
-                if (isPreloaded)
-                {
-                    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadMode);
-                    asyncLoad.allowSceneActivation = true;
-                    while (!asyncLoad.isDone)
-                    {
-                        yield return null;
-                    }
-
-                    targetScene = SceneManager.GetSceneByName(sceneName);
-                    while (!targetScene.isLoaded)
-                    {
-                        yield return null;
-                    }
-
-                    SceneManager.SetActiveScene(targetScene);
-                }
-                else
-                {
-                    SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-                }
+                // Scene is preloaded but no async operation is saved for it
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                asyncLoad.allowSceneActivation = true;
+                yield return StartCoroutine(ActivatePendingLoad(sceneName, asyncLoad));
             }
             else
             {
-                SceneManager.SetActiveScene(targetScene);
+                // Scene is not preloaded and needs to be loaded and activated by itself
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             }
         }
+        else
+        {
+            // Scene is already loaded and only needs to be activated
+            SceneManager.SetActiveScene(targetScene);
+        }
+
+        targetScene = SceneManager.GetSceneByName(sceneName); // Reset the struct reference to the scene
 
         if (SceneManager.sceneCount > 1)
         {
+            // Unload all the other scenes if there are any
             yield return StartCoroutine(UnloadOtherScenes(targetScene));
         }
 
+        yield return null;
+
+        // Scene is fully loaded, screen is still black and it's safe to preload scenes now
         Event_System.instance.OnLoadScenes.Invoke();
 
         if (sceneName == SceneData.Instance[2]) // Lobby loaded
@@ -221,21 +225,24 @@ public class GlobalSceneManager : MonoBehaviour
         try // setting parameter for FMOD
         {
             RuntimeManager.StudioSystem.setParameterByNameWithLabel("Scene", sceneName);
+            WorldSoundFXManager.instance.musicInstance.start();
+
         }
         catch
         {
             Debug.Log($"FATAL ERROR PREVENTED: No Scene in FMOD called {sceneName}");
         }
 
+        yield return null;
+        // Start fading out from black
         yield return StartCoroutine(FadeFromBlack());
 
         isTransitioning = false;
 
         Event_System.instance.OnSceneTransitionDone?.Invoke();
-
-       
     }
 
+    // Unload scenes that aren't supposed to be loaded
     IEnumerator UnloadOtherScenes(Scene activeScene)
     {
         List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
@@ -246,6 +253,7 @@ public class GlobalSceneManager : MonoBehaviour
 
         foreach (var operation in asyncOperations)
         {
+            // Activate and unload all scens without setting them as main active scene
             operation.allowSceneActivation = true;
 
             while (!operation.isDone)
@@ -254,15 +262,17 @@ public class GlobalSceneManager : MonoBehaviour
             }
         }
 
+        // Clear pending loads as all scenes have been loaded
         pendingLoads.Clear();
 
-        yield return null;
+        yield return null; // Wait until the next frame
 
         int count = SceneManager.sceneCount;
         List<Scene> scenes = new List<Scene>();
 
         for (int i = 0; i < count; i++)
         {
+            // Save a reference to all the active scenes
             scenes.Add(SceneManager.GetSceneAt(i));
         }
 
@@ -270,53 +280,50 @@ public class GlobalSceneManager : MonoBehaviour
         {
             if (scene != activeScene && scene.IsValid() && scene.isLoaded)
             {
+                // Unload every scene that isn't the desired scene, can be unloaded
                 yield return StartCoroutine(UnloadSceneAsync(scene));
             }
         }
     }
 
+    // Activate a scens that is waiting to be loaded
     IEnumerator ActivatePendingLoad(string sceneName, AsyncOperation asyncOperation)
     {
         if (asyncOperation == null)
         {
+            // Just a fail safe in case the async operation is null
             Debug.LogWarning("AsyncOperation for scene " + sceneName + " is null. Cannot activate scene.");
             yield break;
         }
 
-        if (useTransition)
-        {
-            StartCoroutine(FadeToBlack());
-            yield return null;
-            yield return new WaitForSeconds(transitionAnimator.GetCurrentAnimatorStateInfo(0).length);
-        }
-
+        // Allow the scene to be activated
         asyncOperation.allowSceneActivation = true;
 
         while (!asyncOperation.isDone)
         {
+            // Wait until the async operation is done
             yield return null;
         }
 
+        // Remove the scene from pending loads as it's done loading
         pendingLoads.Remove(sceneName);
 
         Scene scene = SceneManager.GetSceneByName(sceneName);
 
         while (!scene.isLoaded)
         {
+            // Wait until the scene is fully loaded
             yield return null;
         }
 
         if (scene.IsValid())
         {
+            // Activate the scene if it's valid
             SceneManager.SetActiveScene(scene);
-
-            if (SceneManager.sceneCount > 1)
-            {
-                yield return StartCoroutine(UnloadOtherScenes(scene));
-            }
         }
     }
 
+    // Unloads scene asynchronous
     IEnumerator UnloadSceneAsync(Scene scene)
     {
         AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(scene);
@@ -328,6 +335,7 @@ public class GlobalSceneManager : MonoBehaviour
 
         while (!asyncUnload.isDone)
         {
+            // Wait unitl the scene is fully unloaded
             yield return null;
         }
     }
@@ -336,7 +344,6 @@ public class GlobalSceneManager : MonoBehaviour
     {
         transitionAnimator.SetTrigger("FadeToBlack");
         yield return null;
-        Time.timeScale = 1.0f;
         yield return new WaitForSecondsRealtime(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
     }
 
@@ -344,7 +351,6 @@ public class GlobalSceneManager : MonoBehaviour
     {
         transitionAnimator.SetTrigger("FadeFromBlack");
         yield return null;
-        Time.timeScale = 1.0f;
         yield return new WaitForSecondsRealtime(transitionAnimator.GetCurrentAnimatorStateInfo(0).length); // Wait for the fade-out animation to complete
     }
 }

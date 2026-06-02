@@ -3,14 +3,39 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class BookUi : MonoBehaviour
+using System.Linq;
+
+/// <summary>
+/// Main controller for the in-game book interface.
+///
+/// Responsible for:
+/// - Building page data
+/// - Tab navigation
+/// - Page turning
+/// - Lore entry display
+/// - Opening/closing animations
+/// </summary>
+
+public class BookUi : AutoSelectFirstButtonOnEnable
 {
     //made by Michaëla 2026-04-19
-    //Updated by Anton 2026-05-16
-    //Overhaul made by Anton 2026-05-17
 
-    // Todo - make when pressing tab buttons keep pages on same page as now back does not work if pressed tab if pages stats has only one page.
+    /// <summary>
+    /// Changed by Anton 2026-05-16
+    /// Major overhaul of the book UI, 
+    /// changing the way pages are handled and added.
+    /// 
+    /// Changed by Anton 2026-05-17
+    /// More changes and overhaul, added animations for opening and closing the book, and for flipping pages.
+    /// 
+    /// Changed by Anton 2026-05-20
+    /// Added scramble text method for locked lore entries, later changed by Michaëla.
+    /// </summary>
+
+    //rewriten scrambledText method and added open on lore entry by Michaëla 2026-05-30
+
     [Header("Pages")]
     [SerializeField] private BookPageUI leftPage;
     [SerializeField] private BookPageUI rightPage;
@@ -31,6 +56,7 @@ public class BookUi : MonoBehaviour
     [SerializeField] private List<LoreEntry> allLoreEntries = new();
     [SerializeField] private PlayerCollection playerCollection;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerWeaponManager playerWeaponManager;
     [SerializeField] private LoreManager loreManager;
     [SerializeField] private UIManager uiManager;
 
@@ -56,6 +82,7 @@ public class BookUi : MonoBehaviour
     private List<PageData> currentPages = new();
 
     private int currentIndex = 0;
+    private LoreEntry pendingLoreEntry;
 
     public enum BookTabEnum
     {
@@ -66,12 +93,20 @@ public class BookUi : MonoBehaviour
 
     private BookTabEnum currentTab = BookTabEnum.Stats;
 
-    public void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         isAnimating = true;
 
         SetClosedInstant();
-        BaseBookSetup(playerStats);
+        BaseBookSetup();
+
+        if (pendingLoreEntry != null)
+        {
+            OpenLoreAtEntry(pendingLoreEntry);
+            pendingLoreEntry = null;
+        }
 
         DisableTabButtonsTemporarily();
         StartCoroutine(AnimateSize(() =>
@@ -81,7 +116,7 @@ public class BookUi : MonoBehaviour
                 AnimateOpen(() =>
                 {
                     isAnimating = false;
-                    Debug.Log($"isAnimating is: {false}");
+                    //Debug.Log($"isAnimating is: {false}");
                     EnableTabButtons();
                     UpdateTabButtons();
                 });
@@ -101,19 +136,26 @@ public class BookUi : MonoBehaviour
         movingPage.localEulerAngles = closedRotation;
         movingBook.localPosition = startPos;
     }
-    public void BaseBookSetup(PlayerStats stats)
+
+    /// <summary>
+    /// Builds all page collections and opens the default Stats tab.
+    /// </summary>
+    public void BaseBookSetup()
     {
-        BuildStatPages(stats);
+        BuildStatPages(playerStats, playerWeaponManager);
         BuildCardPages();
         BuildLorePages();
 
         OpenTab(BookTabEnum.Stats);
         UpdateTabButtons();
     }
-
-    public void SpecificBookSetup(PlayerStats stats, BookTabEnum tab)
+    /// <summary>
+    /// Builds all page collections and opens a specified tab.
+    /// </summary>
+    /// <param name="tab">Tab to display when opening the book.</param>
+    public void SpecificBookSetup(BookTabEnum tab)
     {
-        BuildStatPages(stats);
+        BuildStatPages(playerStats, playerWeaponManager);
         BuildCardPages();
         BuildLorePages();
 
@@ -121,22 +163,39 @@ public class BookUi : MonoBehaviour
         UpdateTabButtons();
     }
 
-    public void BuildStatPages(PlayerStats stats)
+    /// <summary>
+    /// Creates the statistics pages used by the Stats tab.
+    /// </summary>
+    /// <param name="stats">Player statistics.</param>
+    /// <param name="weaponStats">Current weapon statistics.</param>
+    public void BuildStatPages(PlayerStats stats, PlayerWeaponManager weaponStats)
     {
         statsPages.Clear();
 
         statsPages.Add(new PageData
         {
             type = PageData.PageType.Stats,
-            stats = stats
+            stats = stats,
+            weaponStats = weaponStats
+        });
+
+        statsPages.Add(new PageData
+        {
+            type = PageData.PageType.Stats,
+            stats = stats,
+            weaponStats = weaponStats
         });
     }
-
+    /// <summary>
+    /// Creates card pages from all collected and equipped cards.
+    /// Each page contains up to four cards.
+    /// </summary>
     public void BuildCardPages()
     {
         cardPages.Clear();
         List<CardData> allCards = new List<CardData>();
 
+        allCards.AddRange(playerCollection.ReturnEquippedCourtCards());
         allCards.AddRange(playerCollection.ReturnPermanentCardCollection());
         allCards.AddRange(playerCollection.ReturnTempCardCollection());
 
@@ -149,11 +208,14 @@ public class BookUi : MonoBehaviour
             });
         }
     }
-
+    /// <summary>
+    /// Generates lore pages from all available lore entries.
+    /// Locked entries are displayed as scrambled text.
+    /// </summary>
     public void BuildLorePages()
     {
         lorePages.Clear();
-        foreach (var entry in allLoreEntries) 
+        foreach (var entry in allLoreEntries)
         {
             bool unlocked = loreManager.IsLoreUnlocked(entry.id);
             var entryPages = entry.GetPages(charsPerPage);
@@ -162,36 +224,89 @@ public class BookUi : MonoBehaviour
                 lorePages.Add(new PageData
                 {
                     type = PageData.PageType.Lore,
+                    loreTitle = entry.title,
                     loreText = unlocked ? page : ScrambleText(page)
                 });
             }
         }
     }
 
-    // Helper method for scrambling text
-
+    /// <summary>
+    /// Produces a corrupted version of text for locked lore entries.
+    /// Whitespace is removed, characters are shuffled,
+    /// and random symbols are inserted.
+    /// </summary>
+    /// <param name="text">Original lore text.</param>
+    /// <returns>Scrambled text representation.</returns>
     private string ScrambleText(string text)
     {
-        char[] chars = text.ToCharArray();
+        string symbols = "@#$%&";
 
+        //Remove layout of text
+        string cleanText = new string(text.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+        char[] chars = cleanText.ToCharArray();
+
+        //heavy scrable
         for (int i = 0; i < chars.Length; i++)
         {
-            if (char.IsWhiteSpace(chars[i]))
-                continue;
-
             int randomIndex = UnityEngine.Random.Range(0, chars.Length);
-
-            while (char.IsWhiteSpace(chars[randomIndex]))
-            {
-                randomIndex = UnityEngine.Random.Range(0, chars.Length);
-            }
 
             (chars[i], chars[randomIndex]) = (chars[randomIndex], chars[i]);
         }
 
-        return new string(chars);
+        // Corrupt some letters into symbols
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (UnityEngine.Random.value < 0.1f)
+            {
+                chars[i] = (symbols[UnityEngine.Random.Range(0, symbols.Length)]);
+            }
+        }
+
+        // rebuild into block text
+        int lineLenght = 38;
+
+
+        System.Text.StringBuilder builder =
+            new System.Text.StringBuilder();
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            builder.Append(chars[i]);
+
+            // Bigger fragmented spacing
+            if (UnityEngine.Random.value < 0.12f)
+            {
+                int extraSpaces =
+                    UnityEngine.Random.Range(1, 4);
+
+                builder.Append(new string(' ', extraSpaces));
+            }
+
+            // Normal line breaks
+            if ((i + 1) % lineLenght == 0)
+            {
+                builder.Append("\n");
+
+                // Sometimes add completely blank lines
+                if (UnityEngine.Random.value < 0.28f)
+                {
+                    builder.Append("\n");
+                }
+            }
+            
+        }
+        return builder.ToString();
     }
 
+    /// <summary>
+    /// Handles tab switching, with animations and button state management. 
+    /// Prevents tab switching while an animation is playing to avoid conflicts and ensure a smooth user experience.
+    /// Chaining animations together for smooth transitions.
+    /// </summary>
+    /// <param name="tab"></param>
     public void ChangeTab(BookTabEnum tab)
     {
         if (isAnimating)
@@ -210,14 +325,19 @@ public class BookUi : MonoBehaviour
 
                 EnableTabButtons();
                 UpdateTabButtons();
+                EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
             });
         });
     }
-
-    public void OpenTab(BookTabEnum tab)
+    /// <summary>
+    /// Opens a book section and displays its pages.
+    /// </summary>
+    /// <param name="tab">Tab to display.</param>
+    /// <param name="index">Starting page index.</param>
+    public void OpenTab(BookTabEnum tab, int index = 0)
     {
         currentTab = tab;
-        currentIndex = 0;
+        currentIndex = index;
 
         switch (tab)
         {
@@ -241,7 +361,9 @@ public class BookUi : MonoBehaviour
         ShowPages();
     }
 
-    // Display current pages
+    /// <summary>
+    /// Displays the current left and right pages based on the active page index.
+    /// </summary>
     public void ShowPages()
     {
         if(currentPages == null || currentPages.Count == 0)
@@ -274,7 +396,9 @@ public class BookUi : MonoBehaviour
         }
     }
 
-    // Flip forward
+    /// <summary>
+    /// Advances the book by one spread (two pages).
+    /// </summary>
     public void NextPage()
     {
         if (currentPages == null)
@@ -288,7 +412,9 @@ public class BookUi : MonoBehaviour
         }
     }
 
-    // Flip backward
+    /// <summary>
+    /// Moves back one spread (two pages).
+    /// </summary>
     public void PrevPage()
     {
         if(currentPages == null)
@@ -302,7 +428,6 @@ public class BookUi : MonoBehaviour
 
         }
     }
-
     public void CloseBook()
     {
         uiManager.CloseBookUI();
@@ -323,6 +448,27 @@ public class BookUi : MonoBehaviour
     public void GoToLore()
     {
         ChangeTab(BookTabEnum.Lore);
+    }
+
+    public void SetPendingLoreEntry(LoreEntry entry)
+    {
+        pendingLoreEntry = entry;
+    }
+
+    /// <summary>
+    /// Opens the Lore tab at the page containing the specified lore entry.
+    /// </summary>
+    /// <param name="entry">Lore entry to display.</param>
+    public void OpenLoreAtEntry(LoreEntry entry)
+    {
+        int loreIndex = allLoreEntries.IndexOf(entry);
+
+        if (loreIndex < 0)
+            loreIndex = 0;
+
+        currentIndex = (loreIndex / 2) * 2;
+
+        OpenTab(BookTabEnum.Lore, currentIndex);
     }
     private void EnableTabButtons()
     {
@@ -354,6 +500,12 @@ public class BookUi : MonoBehaviour
         movingPage.localEulerAngles = closedRotation;
     }
 
+    /// <summary>
+    /// Animations for moving book and pages, used for opening and closing the book, and for flipping pages. Can be reversed for closing animation.
+    /// Also used action callback for chaining animations together, and for enabling/disabling tab buttons at the right times.
+    /// </summary>
+    /// <param name="onComplete"></param>
+    /// <param name="reverse"></param>
     public void AnimateMove(Action onComplete = null, bool reverse = false)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookSlideEvent);
@@ -366,6 +518,9 @@ public class BookUi : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Plays the page-opening animation.
+    /// </summary>
     public void AnimateOpen(Action onComplete = null)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookOpenEvent);
@@ -376,6 +531,9 @@ public class BookUi : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Plays the page-closing animation.
+    /// </summary>
     public void AnimateClose(Action onComplete = null)
     {
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.bookCloseEvent);
@@ -386,6 +544,11 @@ public class BookUi : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Animates the book scaling in or out using a bounce curve.
+    /// </summary>
+    /// <param name="onComplete">Callback executed when animation finishes.</param>
+    /// <param name="reverse">Whether the animation should play in reverse.</param>
     public IEnumerator AnimateSize(Action onComplete = null, bool reverse = false)
     {
         float timer = 0f;

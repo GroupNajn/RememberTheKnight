@@ -7,6 +7,16 @@ using static Unity.Collections.AllocatorManager;
 
 public class GlobalVolumeManager : MonoBehaviour
 {
+
+    /// <summary>
+    /// Created by Anton 2026-05-11
+    /// Initially created to handle the global volume and its effects, which are used for the post processing effects in the game.
+    /// These are then used by other scripts to enable and disable the effects, and also to change the intensity of the effects.
+    /// Used mainly for visual queues and video settings.
+    /// 
+    /// Changed by Anton and Theo 2026-05-11
+    /// Added functionality to handle vignette when out of stamina, used in combination with playermanager.
+    /// </summary>
     public static GlobalVolumeManager Instance { get; private set; }
 
     [SerializeField] Volume globalVolume;

@@ -21,8 +21,9 @@ public partial class NavAgentRotateAngleAction : Action
     protected override Status OnUpdate()
     {
         if (remainingDegrees <= 0) return Status.Success;
-        Self.Value.transform.Rotate(Self.Value.transform.up, Angle.Value * Time.deltaTime);
-        remainingDegrees -= Mathf.Abs(Angle.Value * Time.deltaTime);
+        float angle = Mathf.Min(Mathf.Abs(Angle.Value * Time.deltaTime), remainingDegrees);
+        Self.Value.transform.Rotate(Vector3.up, angle * Mathf.Sign(Angle.Value));
+        remainingDegrees -= angle;
         return Status.Running;
     }
 

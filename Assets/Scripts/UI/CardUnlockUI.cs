@@ -5,7 +5,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class CardUnlockUI : MonoBehaviour
+public class CardUnlockUI : AutoSelectFirstButtonOnEnable
 {
     [Header("TextMeshPros")]
     [SerializeField] TextMeshProUGUI rememberTMP;
@@ -111,9 +111,16 @@ public class CardUnlockUI : MonoBehaviour
         InteractSoulDonation donation = GameObject.FindWithTag("DonationWell").GetComponent<InteractSoulDonation>();
         gameObject.SetActive(false);
         cardSystem.UnlockCardFromDonation(cardData);
+        PlayerPrefsSaveSystem.SetSaveState(cardData.cardID);
+        if(cardData.cardTier >= Tier.X)
+        {
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+        } 
         donation.SetNextCard();
-        donation.SetNetCardCost();
-        donation.SetSoulnsDonateForNextUnlock();
+        donation.SetNextCardCost();
+        donation.SetSoulsDonatedSinceLastToFamily();
+        //donation.SetSoulnsDonateForNextUnlock();
 
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
@@ -156,8 +163,14 @@ public class CardUnlockUI : MonoBehaviour
         if (cardData.healthModifier > 0)
             stats.AppendLine($"Health + {cardData.healthModifier}");
 
+        if (cardData.healRegeneraion > 0)
+            stats.AppendLine($"Health regen + {cardData.healRegeneraion}");
+
         if (cardData.staminaModifier > 0)
             stats.AppendLine($"Stamina + {cardData.staminaModifier}");
+
+        if (cardData.staminaRegeneraion > 0)
+            stats.AppendLine($"Stamina regen + {cardData.staminaRegeneraion}");
 
         if (cardData.luckModifier > 0)
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
@@ -166,25 +179,23 @@ public class CardUnlockUI : MonoBehaviour
             stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");
 
         if (cardData.critChance > 0)
-            stats.AppendLine($"critical chance + {cardData.critChance}%");
-
-        if (cardData.walkSpeedModifier > 0)
-            stats.AppendLine($"walk speed + {cardData.walkSpeedModifier}");
-
-        if (cardData.sprintSpeedModifier > 0)
-            stats.AppendLine($"sprint speed + {cardData.sprintSpeedModifier}%");
+            stats.AppendLine($"Crit chance + {cardData.critChance}%");
 
         if (cardData.dodgeSpeedModifier > 0)
-            stats.AppendLine($"dodge speed + {cardData.dodgeSpeedModifier}%");
+            stats.AppendLine($"Dodge speed + {cardData.dodgeSpeedModifier}%");
 
         if (cardData.healModifier > 0)
-            stats.AppendLine($" heal multiplier + {cardData.healModifier}%");
+            stats.AppendLine($"Heal multiplier + {cardData.healModifier}%");
 
         if (cardData.knockbackModifier > 0)
-            stats.AppendLine($"resistance + {cardData.knockbackModifier}%");
+            stats.AppendLine($"Resistance + {cardData.knockbackModifier}%");
+
+        if (cardData.actionSpeedModifier > 0f)
+            stats.AppendLine($"Speed + {cardData.actionSpeedModifier * 100}%");
 
         if (cardData.weaponSize != Vector3.zero)
-            stats.AppendLine($"weapon size + {cardData.weaponSize.y * 10}");
+            stats.AppendLine($"Weapon size + {cardData.weaponSize.y * 10}");
+
 
         cardInfoTMP.text = stats.ToString();
     }

@@ -52,8 +52,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private Vector3 dodgeDirection;
     public float dodgeDelay = 0.1f;
 
+    [SerializeField]
     private float currentInputMagnitude = 0;
     private float currentInputMagnitudeX = 0;
+    [SerializeField]
     private float currentInputMagnitudeY = 0;
 
     private float _verticalVelocity = 0f;
@@ -75,7 +77,6 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     [SerializeField] LayerMask enemyLayer;
     [SerializeField] float slideSpeed = 1f;
     RaycastHit hit;
-    bool rayHit;
     #endregion
 
 
@@ -106,7 +107,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         }
 
         InitialChecksAndHandlers();
-        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling && playerLocomotionInput.MovementInput.magnitude == 0;
         bool isDodging = playerState.CurrentMoveState == MoveState.Dodging;
         bool isSprinting = playerState.CurrentMoveState == MoveState.Sprinting;
         bool isLockedOnAndWalking = lockHandler.IsLockedOn && playerState.CurrentMoveState == MoveState.Walking;
@@ -119,21 +120,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         {
             if (Physics.SphereCast(transform.position + _characterController.center, _characterController.radius + _characterController.skinWidth, -transform.up, out hit, _characterController.height / 2 + 1, enemyLayer))
             {
-                rayHit = true;
-
                 // Move player sideways off the enemy
                 Vector3 directionAway = transform.position - hit.collider.ClosestPoint(transform.position);
                 directionAway.y = 0;
                 directionAway.Normalize();
                 _characterController.Move(directionAway * slideSpeed * Time.deltaTime);
             }
-            else
-            {
-                rayHit = false;
-            }
         }
-
-
     }
 
     private void LateUpdate()
@@ -170,7 +163,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
             bool isbackstepLocked = lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.y <= 0 && math.abs(playerLocomotionInput.MovementInput.x) <= 0.47;
             bool isbackstepUnlocked = !lockHandler.IsLockedOn && playerLocomotionInput.MovementInput.magnitude <= 0.1f;
 
-            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked )
+            if ((isbackstepLocked || isbackstepUnlocked) && !isSprintingLocked  )
             {
                 PlayerAnimator.SetTrigger("BackStep");
                 playerState.SetMoveState(MoveState.Dodging);
@@ -229,6 +222,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleAnimationInputs(bool isIdling)
     {
+        PlayerAnimator.SetBool("IsSprinting", playerState.CurrentMoveState == MoveState.Sprinting);
 
         if (!lockHandler.IsLockedOn || playerState.CurrentMoveState == MoveState.Sprinting || lockHandler.IsLockedOn && isIdling)
         {
@@ -332,16 +326,19 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     private void CalculateInputMagnitude()
     {
         bool isDodgeingAndIdle = playerState.CurrentMoveState == MoveState.Dodging && playerLocomotionInput.MovementInput.magnitude == 0;
-        bool isIdling = playerState.CurrentMoveState == MoveState.Idling;
-        bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0;
+        bool isIdling = playerState.CurrentMoveState == MoveState.Idling || playerLocomotionInput.MovementInput.magnitude == 0;
+        bool isAttackingAndIdle = playerState.CurrentMoveState == MoveState.Attacking && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isHealingAndIdle = playerState.IsHealing && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isHolstringAndIdle = playerState.IsHolstering && playerLocomotionInput.MovementInput.magnitude == 0; 
+        bool isActionAndIdle = isDodgeingAndIdle || isAttackingAndIdle || isHealingAndIdle || isHolstringAndIdle ||isHealingAndIdle;
         //==========================X + Y=========================
 
-        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting ? 2f : 1f;
-        if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn)
+        float targetMagnitude = playerState.CurrentMoveState == MoveState.Sprinting && !playerState.IsHealing && !playerState.IsHolstering ? 2f : 1f;
+        if (playerState.CurrentMoveState == MoveState.Walking && !lockHandler.IsLockedOn )
             targetMagnitude = 1.5f;
+        
 
-
-        if (isIdling || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.magnitude == 0 || isActionAndIdle)
         {
             targetMagnitude = 0f;
         }
@@ -350,7 +347,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================X=========================
         float targetMagnitudeX = playerLocomotionInput.MovementInput.x;
 
-        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.x == 0 || isActionAndIdle)
         {
             targetMagnitudeX = 0f;
         }
@@ -359,7 +356,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         //==========================Y=========================
         float targetMagnitudeY = playerLocomotionInput.MovementInput.y;
 
-        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isAttackingAndIdle || isDodgeingAndIdle)
+        if (isIdling && playerLocomotionInput.MovementInput.y == 0 || isActionAndIdle)
         {
             targetMagnitudeY = 0f;
         }
@@ -417,6 +414,11 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
             playerState.SetMoveState(targetState);
         }
+        if(playerState.IsHolstering || playerState.IsHealing)
+        {
+            playerCombatManager.RegenerateStamina();
+        }
+
     }
     private void HandleVerticalMovement()
     {
@@ -446,6 +448,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, currentRotationSpeed * Time.deltaTime);
             }
         }
+
 
     }
 

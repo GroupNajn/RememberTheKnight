@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
+/// <summary>
+/// Handles enemy projectile spawning and aiming.
+/// Determines whether to shoot directly at a target
+/// or straight ahead if the target is outside the firing angle.
+/// </summary>
 public class ProjectileHandler : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,6 +26,11 @@ public class ProjectileHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns and launches a projectile toward the target.
+    /// If the target is outside the allowed firing cone,
+    /// the projectile is fired forward instead.
+    /// </summary>
     public void ShootProjectile()
     {
         Vector3 targetPosition;

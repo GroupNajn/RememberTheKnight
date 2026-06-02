@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 public class AutoSelectFirstButtonOnEnable : MonoBehaviour
 {
     [SerializeField] protected GameObject FirstSelectedButton;
+    [SerializeField] bool useLastSelectedButton = true;
+    GameObject lastSelectedButton;
+    public static bool IsGoingBack { get; set; }
+
     protected virtual void OnEnable()
     {
         HandleInputChanged();
@@ -29,16 +33,31 @@ public class AutoSelectFirstButtonOnEnable : MonoBehaviour
 
     private void SelectButton()
     {
-        if (FirstSelectedButton == null)
+        if (FirstSelectedButton == null || !gameObject.activeSelf)
             return;
 
-        EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
-        //lastSelected = FirstSelectedButton;
+        if (lastSelectedButton != null && IsGoingBack)
+        {
+            EventSystem.current.SetSelectedGameObject(lastSelectedButton);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(FirstSelectedButton);
+        }
+
+        IsGoingBack = false;
     }
 
     private void ClearSelection()
     {
         EventSystem.current.SetSelectedGameObject(null);
     }
-}
 
+    private void OnDisable()
+    {
+        if (EventSystem.current != null)
+        {
+            lastSelectedButton = EventSystem.current.currentSelectedGameObject;
+        }
+    }
+}

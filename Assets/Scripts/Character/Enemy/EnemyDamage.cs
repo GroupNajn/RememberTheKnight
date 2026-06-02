@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
+
 [RequireComponent(typeof(ITriggerable))]
-
-
 [RequireComponent(typeof(EnemyVFX))]
 [RequireComponent(typeof(CharacterSoundFXManager))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BehaviorGraphAgent))]
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
-    private static readonly int HasAggroHash = Animator.StringToHash("HasAggro");
-    private static readonly int HasSightHash = Animator.StringToHash("HasSight");
     private static readonly int HitHash = Animator.StringToHash("Hit");
 
     //[SerializeField] private Event_System EventSystem;
     // Made by Lukas and Anton B 2026-03-06
     //Edited by Michaëla 2026-05-06
     [field: SerializeField] public float MaxHealth { get; set; }
-    [HideInInspector] public float Health { get; set; }
-    public Action<float, float> OnHealthChanged { get; set; }
-    [SerializeField, Tooltip("When current threat is zero incoming damage is multiplied by this value")] public float SneakMultiplier = 1.3f;
+    private float healthField;
+    public float Health
+    {
+        get => healthField;
+        set
+        {
+            bool healing = value > healthField;
+            healthField = value;
+            OnHealthChanged?.Invoke(Health, MaxHealth, healing);
+        }
+    }
+    public Action<float, float, bool> OnHealthChanged { get; set; }
+    [SerializeField, Tooltip("When unaware of player incoming damage is multiplied by this value")] public float SneakMultiplier = 1.5f;
     [HideInInspector] public bool CanTakeDamage { get; set; } = true;
     private ITriggerable onDeath;
-    float damageCooldownTimer;
-    [SerializeField] float damageCooldown = 1;
 
     [SerializeField] float healthModifierPercentagePerLevel = 1.2f;
 
@@ -34,37 +39,43 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     private EnemyVFX enemyVFX;
     private CharacterSoundFXManager enemySFX;
     private Animator animator;
-    private BlackboardVariable<float> threat;
     private List<Transform> childObjects;
+    private BlackboardVariable<bool> hasSight;
+    private BlackboardVariable<bool> hasAggro;
+    private BehaviorGraphAgent behaviorGraphAgent;
+    private GameData gameData;
+
 
     public void SetHealthModifier(int level)
     {
         float originalMaxHealth = MaxHealth;
 
+        // Set the new max health with an exponentioal scaling based on current level number
         MaxHealth *= Mathf.Pow(healthModifierPercentagePerLevel, level);
         Health = MaxHealth;
-        OnHealthChanged?.Invoke(Health, MaxHealth);
-
-        Debug.Log($"Enemy {gameObject.name} health modified: {originalMaxHealth} -> {MaxHealth}");
     }
 
     public void TakeDamage(DamageInfo damageInfo, Vector3 contactPoint)
     {
-        float incomingDamage = damageInfo.DamageAmount;
         if (CanTakeDamage && Health > 0)
         {
-            if (!animator.GetBool(HasSightHash) && !animator.GetBool(HasAggroHash))
-                incomingDamage *= SneakMultiplier;
+            if (hasSight != null && hasAggro != null && !hasSight.Value && !hasAggro.Value)
+            {
+                damageInfo.SetDamageAmount(damageInfo.DamageAmount * SneakMultiplier);
+                damageInfo.IsSneak = true;
+            }
+            else
+            {
+                damageInfo.SetDamageAmount(damageInfo.DamageAmount);
+            }
 
-            Health -= incomingDamage;
-            OnHealthChanged?.Invoke(Health, MaxHealth);
+            Health -= damageInfo.DamageAmount;
 
             Event_System.instance.OnEnemyDamage?.Invoke(transform, damageInfo);
             enemyVFX.PlayBloodSplatter(contactPoint);
             enemySFX.PlayDamageGrunt();
             animator.SetTrigger(HitHash);
 
-            CanTakeDamage = false;
             if (Health <= 0)
             {
                 enemySFX.PlayDeathSoundFX();
@@ -75,28 +86,12 @@ public class EnemyDamage : MonoBehaviour, IDamageable
 
     public void Death()
     {
-        onDeath?.Trigger();
-        //Event_System.instance.OnEnemyKilled?.Invoke(this);
-
         EnemyLootProfile profile = gameObject.GetComponent<EnemyLootProfile>();
         Event_System.instance.OnEnemyKilledNew?.Invoke(profile, this.transform.position);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
-
-    }
-
-    // TO BE REMOVED OR CHANGED
-    void Update()
-    {
-        if (!CanTakeDamage)
-        {
-
-            damageCooldownTimer -= Time.deltaTime;
-            if (damageCooldownTimer <= 0)
-            {
-                CanTakeDamage = true;
-                damageCooldownTimer = damageCooldown;
-            }
-        }
+        gameData.TotalEnemiesSlain++;
+        
+        onDeath?.Trigger();
     }
 
     private void Start()
@@ -107,8 +102,9 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         onDeath = GetComponent<ITriggerable>();
         childObjects = GetComponentsInChildren<Transform>().ToList();
         animator = GetComponent<Animator>();
-        if (GetComponent<BehaviorGraphAgent>().BlackboardReference.GetVariable<float>("currentThreat", out threat)) { }
-
-
+        behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        gameData = GameObject.Find("GlobalData").GetComponent<GameData>();
+        if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Sight", out hasSight)) { }
+        if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Aggro", out hasAggro)) { }
     }
 }

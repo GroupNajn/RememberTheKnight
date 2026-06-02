@@ -58,6 +58,7 @@ public class FloatingDamageNumbers : MonoBehaviour
 
         Number_Scaler number = popup.GetComponent<Number_Scaler>();
         number.SetCritBoolean(damageInfo.IsCrit);
+        number.SetSneakBoolean(damageInfo.IsSneak);
 
         textMesh = popup.GetComponentInChildren<TextMeshProUGUI>();
         int castedInt = (int)damageInfo.DamageAmount;

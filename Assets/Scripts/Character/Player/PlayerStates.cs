@@ -11,7 +11,7 @@ public enum MoveState
     Dieing = 5,
     Attacking = 6,
     BackStepping = 7,
-    Knockedback = 8
+    Knockedback = 8,
 }
 
 public class PlayerStates : MonoBehaviour
@@ -28,6 +28,19 @@ public class PlayerStates : MonoBehaviour
     }
 
     public bool IsGrounded;
+    [field: SerializeField]
+    public bool IsHealing { get; private set; } = false;
+    [field: SerializeField]
+    public bool IsHolstering { get; private set; } = false;
+
+    public void SetIsHealing(bool isHealing)
+    {
+        IsHealing = isHealing;
+    }
+    public void SetIsHolstering(bool isHolstering)
+    {
+        IsHolstering = isHolstering;
+    }
     public void SetMoveState(MoveState playerMovementState)
     {
         if(!IsStateActionState(playerMovementState))
@@ -48,6 +61,9 @@ public class PlayerStates : MonoBehaviour
                movementState == MoveState.Dieing ||
                movementState == MoveState.Attacking ||
                movementState == MoveState.BackStepping ||
-               movementState == MoveState.Knockedback;
+               movementState == MoveState.Knockedback ||
+               IsHealing || 
+               IsHolstering;
+
     }
 }

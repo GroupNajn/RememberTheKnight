@@ -1,12 +1,9 @@
-using Unity.AppUI.UI;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 
 public class StartMenuUI : AutoSelectFirstButtonOnEnable
 {
     UIManager uiManager;
+    private GameData gameData;
     //SceneData sceneData;
     bool canUseInput = true;
 
@@ -25,13 +22,30 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
     {
 
         uiManager = GetComponentInParent<UIManager>();
+        gameData = FindFirstObjectByType<GameData>();
 
     }
+
     public void StartGame()
     {
-        // LOAD NEXT SCENE
-        GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[1]);
         canUseInput = false;
+
+        // LOAD NEXT SCENE
+        if (!PlayerPrefsSaveSystem.HasPlayedGame())
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[1]);
+        }
+        else
+        {
+            GlobalSceneManager.Instance.ActivateSceneTransition(SceneData.Instance[2]);
+
+            uiManager.UIMenuActive = false;
+            uiManager.CheckUIState();
+            uiManager.OpenUIOnMenuClose();
+
+            uiManager.CloseStartMenu();
+        }
+
     }
 
 
@@ -39,8 +53,8 @@ public class StartMenuUI : AutoSelectFirstButtonOnEnable
     {
         if (canUseInput)
         {
-            uiManager.OpenOptionMenu();
             uiManager.CloseStartMenu();
+            uiManager.OpenOptionMenu();
         }
     }
 

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BallistaProjectileHandler : MonoBehaviour
 {
+    /// <summary>
+    /// Created by Anton 2026-4-17
+    /// Initially created to handle the projectile shooting of the ballista enemy.
+    /// </summary>
     [Header("Setup")]
     [SerializeField] private Transform target;
     [SerializeField] private Transform firePoint;

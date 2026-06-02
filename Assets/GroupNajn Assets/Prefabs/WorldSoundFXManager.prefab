@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2634969065990476537}
   - component: {fileID: 1294988760804920709}
-  - component: {fileID: 2305483723512926855}
   m_Layer: 0
   m_Name: WorldSoundFXManager
   m_TagString: Untagged
@@ -47,11 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageEvent:
     Guid:
-      Data1: -741006004
-      Data2: 1217047147
-      Data3: -1666627155
-      Data4: 757506468
-    Path: event:/SFX/HitMarker/Player/PlayerHitByFist
+      Data1: -1137432193
+      Data2: 1171348526
+      Data3: 1385781903
+      Data4: -1967364064
+    Path: event:/SFX/HitMarker/Enemy/EnemyHitByBlade Light
   rollEvent:
     Guid:
       Data1: 624647155
@@ -75,11 +74,11 @@ MonoBehaviour:
     Path: event:/SFX/Drops/Cards/Card Pickup
   attackEvent:
     Guid:
-      Data1: 329178485
-      Data2: 1228425648
-      Data3: 964673977
-      Data4: 1889427912
-    Path: event:/SFX/Attacks/Enemy/Enemy Blade Attack
+      Data1: 1548457973
+      Data2: 1295311660
+      Data3: 1053082539
+      Data4: 1515383024
+    Path: event:/SFX/Attacks/Player/Player Blade Attack Light
   footStepEvent:
     Guid:
       Data1: 1087116644
@@ -143,6 +142,13 @@ MonoBehaviour:
       Data3: -388197468
       Data4: 1853328781
     Path: event:/SFX/UI/Shop/CandleBlowOut
+  ladyTalkingEvent:
+    Guid:
+      Data1: -1553646569
+      Data2: 1172749093
+      Data3: 1783018664
+      Data4: 182951758
+    Path: event:/SFX/Lady/Talking
   cardFlipEvent:
     Guid:
       Data1: 1035931787
@@ -178,34 +184,10 @@ MonoBehaviour:
       Data3: -1719395448
       Data4: -1314630456
     Path: event:/SFX/UI/Book/BookSlide
---- !u!114 &2305483723512926855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4382340745301478090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  musicEvent:
     Guid:
       Data1: 787066667
       Data2: 1279215718
       Data3: -799348801
       Data4: -1599441255
     Path: event:/Music/Music Loop
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20

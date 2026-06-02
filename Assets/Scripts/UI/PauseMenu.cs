@@ -5,25 +5,48 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : AutoSelectFirstButtonOnEnable
 {
+    /// <summary>
+    /// Made by Lukas 2026-04-02
+    /// Game is paused and menu is toggled when pressing ESC with resume button
+    /// </summary>
+
     string returnButtonDefaultText;
     [SerializeField] string returnButtonLobbyText;
-    TMP_Text returnButtonText;
+    [SerializeField] TMP_Text returnButtonText;
 
     PlayerInput playerInput;
     UIManager uiManager;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         GetText();
         returnButtonDefaultText = returnButtonText.text; // Store the default text of the return button
 
-        Event_System.instance.OnLoadScenes += OnSceneLoaded; // Can't use the lobby loaded event as the button text needs to be updated for both the lobby and other scenes
+        Event_System.instance.OnLoadScenes += OnLoadScenes; // Can't use the lobby loaded event as the button text needs to be updated for both the lobby and other scenes
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[2]) // In lobby
+        {
+            returnButtonText.text = returnButtonLobbyText; // Update the return button text for the lobby scene
+
+            // Change to call revive method in PlayerStats
+            PlayerManager playerManager = GameObject.FindWithTag("Player").GetComponent<PlayerManager>();
+            PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
+            playerStats.CurrentHealth = playerManager.MaxHealth; // Reset player's health to max
+            playerManager.Heal(playerManager.MaxHealth); // Notify health change to update UI and other systems
+        }
+        else
+        {
+            returnButtonText.text = returnButtonDefaultText; // Reset to default text for other scenes
+        }
     }
+
     void Start()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
@@ -39,7 +62,7 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
         }
     }
 
-    private void OnSceneLoaded()
+    private void OnLoadScenes()
     {
         if ( SceneManager.GetActiveScene().name == SceneData.Instance[2])
         {
@@ -71,15 +94,13 @@ public class PauseMenu : AutoSelectFirstButtonOnEnable
 
     public void OpenOptions()
     {
-        uiManager.OpenOptionMenu();
-
         uiManager.ClosePauseMenu();
         uiManager.CloseStartMenu();
 
+        uiManager.OpenOptionMenu();
 
         uiManager.CloseUIOnMenuOpen();
     }
-
 
     public void LoadLobby()
     {
