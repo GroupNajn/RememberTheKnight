@@ -52,7 +52,7 @@ public class EnemyHealthBarCanvas : MonoBehaviour
     /// <summary>
     /// Displays the health bar temporarily after damage is taken.
     /// </summary>
-    public void ShowHealthBarForDuration(float current, float max) // Used for showing the healthbar when taking damage
+    public void ShowHealthBarForDuration(float current, float max, bool isHealing = false) // Used for showing the healthbar when taking damage
     {
         if (current <= 0)
         {

@@ -43,9 +43,9 @@ public class BossBar : MonoBehaviour
         bossBar.gameObject.SetActive(false);
     }
 
-    public void OnHealthChanged(float current, float max)
+    public void OnHealthChanged(float current, float max, bool isHealing)
     {
-        isHealing = current > bossBar.value; // Check if the health is increasing (healing) or decreasing (taking damage)
+        this.isHealing = isHealing;
 
         if (isHealing)
         {

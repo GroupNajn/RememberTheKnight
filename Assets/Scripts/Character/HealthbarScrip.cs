@@ -67,10 +67,9 @@ public class HealthbarScrip : MonoBehaviour
     /// </summary>
     /// <param name="current">Current health.</param>
     /// <param name="max">Maximum health.</param>
-    void UpdateHealthBar(float current, float max) // Updates the healthbar value and max value, and shows the healthbar for a duration if it's an enemy. Also resizes the healthbar based on max health if it's the player. Destroys the healthbar gameobject when health is 0 or below.
+    void UpdateHealthBar(float current, float max, bool isHealing) // Updates the healthbar value and max value, and shows the healthbar for a duration if it's an enemy. Also resizes the healthbar based on max health if it's the player. Destroys the healthbar gameobject when health is 0 or below.
     {
-        isHealing = current > healthbar.value; // Check if the health is increasing (healing) or decreasing (taking damage)
-
+        this.isHealing = isHealing;
         if (isHealing)
         {
             Vector2 targetAnchorMax = healthbar.fillRect.anchorMax;
