@@ -44,6 +44,14 @@ public class BossCardInstantiater : MonoBehaviour
         playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         foreach (CardData cardData in cards)
         {
+            if(playerCollection.playerContract == null)
+            {
+                int rndIndex = Random.Range(0, cards.Length);
+                cardBuilder.SetCardMaterial(cards[rndIndex], cardScript);
+                cardScript.SetCardData(cards[rndIndex]);
+                return;
+
+            }
             if (cardData.cardFamily == playerCollection.playerContract.CardFamily)
             {
                 cardBuilder.SetCardMaterial(cardData, cardScript);

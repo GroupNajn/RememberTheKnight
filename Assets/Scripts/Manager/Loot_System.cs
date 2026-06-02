@@ -13,6 +13,7 @@ public class Loot_System : MonoBehaviour
     private float timeSinceLastSoulCollected = 0f;
     public float soulSoundCollectionReset = 5f; //seconds
     private bool checkForSoundReset = false;
+    private GameData gameData;
     // Dictonary used to see if a souls has been collected before, to prevent a double event invoke from,
     // same soul not to trigger double souls_collected.
     private int id = 0;
@@ -30,6 +31,7 @@ public class Loot_System : MonoBehaviour
             //Event_System.instance.OnBossDeath += EnableBossPedestal;
         }
         canvasTextScript = GameObject.Find("Soul_Canvas").GetComponent<Soul_Canvas_Text_Script>();
+        gameData = GameObject.Find("GlobalData").GetComponent<GameData>();
     }
 
     private void OnDisable()
@@ -68,6 +70,7 @@ public class Loot_System : MonoBehaviour
     public void ConsumeSouls(int souls)
     {
         currentSoulCount -= souls;
+        gameData.TotalSoulsSacrificed += souls;
         canvasTextScript.SetSoulsAmount(currentSoulCount);
     }
 
@@ -87,6 +90,7 @@ public class Loot_System : MonoBehaviour
         checkForSoundReset = true;
         timeSinceLastSoulCollected = 0f;
         soulsCollected.Add(id, loot);
+        gameData.TotalSoulsCollected++;
         id++;
 
         if (loot is Soul)

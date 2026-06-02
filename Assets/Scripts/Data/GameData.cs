@@ -17,4 +17,13 @@ public class GameData : MonoBehaviour
     [field:SerializeField] public int SoulsRemainingToNextUnlockWands  {  get; set; } = 4;
     [field:SerializeField] public int SoulsRemainingToNextUnlockPentacles  {  get; set; } = 4;
     [field:SerializeField] public int SoulsRemainingToNextUnlockSwords  {  get; set; } = 4;
+
+    [field: SerializeField] public int TotalSoulsCollected { get; set; } = 0;
+    [field: SerializeField] public int TotalSoulsSacrificed { get; set; } = 0;
+
+    [field: SerializeField] public int TotalCardsPickedup { get; set; } = 0;
+    [field: SerializeField] public int TotalEnemiesSlain { get; set; } = 0;
+    [field:SerializeField] public int TotalBossSlain { get; set; } = 0;
+    [field: SerializeField] public int TotalPlayerDeath {  get; set; } = 0;
+    
 }

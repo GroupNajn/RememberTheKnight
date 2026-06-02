@@ -45,6 +45,7 @@ public class BookPageUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loreText;
 
     private PlayerCollection playerCollection;
+    private GameData gameData;
 
     /// <summary>
     /// Configures the page based on the supplied PageData.
@@ -99,6 +100,10 @@ public class BookPageUI : MonoBehaviour
         if (stats == null) return;
 
         playerCollection = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCollection>();
+        gameData = FindAnyObjectByType<GameData>();
+
+        string stageTrev = RunGameData.Instance.HasStarted ? $"{RunGameData.Instance.LevelCounter}" : "Unknown";
+        string stageReq = RunGameData.Instance.HasStarted ? $"{RunGameData.Instance.LevelsBeforeBoss}" : "Unknown";
 
         if (IsPlayerStats)
         {
@@ -114,18 +119,18 @@ public class BookPageUI : MonoBehaviour
             $"Stamina: {stats.maxStamina}\n" +
             $"Stamina Regen: {stats.staminaRegen}\n" +
             $"Speed: {stats.currentActionSpeedModifier}\n" +
-            $"Speed bonus: {(stats.currentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
+            $"Speed Bonus: {(stats.currentActionSpeedModifier - stats.baseActionSpeed) * 100}%\n";
 
             statsTextBottomLeft.text =
             $"-DAMAGE-\n" +
             $"Light Damage: {weaponStats.currentActiveWeaponData.LightDamage}\n" +
             $"Heavy Damage: {weaponStats.currentActiveWeaponData.HeavyDamage}\n" +
-            $"Damage bonus: {(stats.currentDamageModifier - 1) * 100}%\n";
+            $"Damage Bonus: {(stats.currentDamageModifier - 1) * 100}%\n";
 
             statsTextBottomRight.text =
             $"-CHANCE-\n" +
             $"Luck: {stats.currentLuck}%\n" +
-            $"Crit chance: {stats.currentCritChance}%\n";
+            $"Critical Strike: {stats.currentCritChance}%\n";
         }
         else
         {
@@ -134,19 +139,21 @@ public class BookPageUI : MonoBehaviour
             $"Family: {(playerCollection.playerContract != null ? playerCollection.playerContract.CardFamily.ToString() : "None")}\n";
 
             statsTextTopRight.text =
-            $"-PROGRESSION-\n" +
-            $"Level: {RunGameData.Instance.LevelCounter} \n";
+            $"-STAGE-\n" +
+            $"Islands Traversed: {stageTrev} \n" +
+            $"Islands Before Boss: {stageReq} \n";
 
             statsTextBottomLeft.text =
-            $"-COMBAT-\n" +
-            $"Enemies Slain: \n" +
-            $"Bosses Slain: \n";
+            $"-COMBAT- \n" +
+            $"Player Deaths: {gameData.TotalPlayerDeath} \n" +
+            $"Enemies Slain: {gameData.TotalEnemiesSlain} \n" +
+            $"Bosses Slain: {gameData.TotalBossSlain} \n";
 
             statsTextBottomRight.text =
             $"-LOOT-\n" +
-            $"Souls Collected: \n" +
-            $"Souls Sacrificed: \n" +
-            $"Cards Collected: \n";
+            $"Souls Collected: {gameData.TotalSoulsCollected}\n" +
+            $"Souls Sacrificed: {gameData.TotalSoulsSacrificed}\n" +
+            $"Cards Picked Up: {gameData.TotalCardsPickedup}\n";
         }
     }
     /// <summary>

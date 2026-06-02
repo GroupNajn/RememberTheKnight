@@ -10,7 +10,7 @@ public class RunGameData : MonoBehaviour
 
     public string randomSpawnCardString = "HasBeenPickedUp";
  
-    bool hasStarted = false;
+    public bool HasStarted { get; private set; } = false;
     public int LevelCounter { get; private set; } = 0;
     public int LevelsBeforeBoss { get; private set; } = 1;
 
@@ -31,13 +31,13 @@ public class RunGameData : MonoBehaviour
 
     public void IncrementLevelCounter()
     {
-        if (hasStarted)
+        if (HasStarted)
         {
             LevelCounter++;
         }
         else
         {
-            hasStarted = true;
+            HasStarted = true;
             LevelsBeforeBoss = Random.Range(minLevelsBeforeBoss, maxLevelsBeforeBoss + 1);
         }
     }
@@ -45,6 +45,6 @@ public class RunGameData : MonoBehaviour
     private void OnLobbyLoaded()
     {
         LevelCounter = 0;
-        hasStarted = false;
+        HasStarted = false;
     }
 }

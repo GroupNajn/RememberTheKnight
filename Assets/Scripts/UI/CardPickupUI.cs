@@ -35,6 +35,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
 
     private UIManager uiManager;
     private CardSystem cardSystem;
+    private GameData gameData;
     public bool isNormalScale { get; private set; }
 
 
@@ -52,6 +53,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         targetScale = new Vector3(1, 1, 1);
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         cardSystem = GameObject.Find("CardSystem").GetComponent<CardSystem>();
+        gameData = GameObject.Find("GlobalData").GetComponent<GameData>();
     }
 
     protected override void OnEnable()
@@ -96,6 +98,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
             PlayerPrefsSaveSystem.SaveSecretCardPickup(runGameData.randomSpawnCardString);
         }
         collection.PickupCard(cardData);
+        gameData.TotalCardsPickedup++;
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();
     }

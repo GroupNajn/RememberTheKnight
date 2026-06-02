@@ -22,6 +22,7 @@ public class GameDataUpdater : MonoBehaviour
         StartCoroutine(AutoSave());
         SetSoulsFromFile();
         LoadBossKillCompleted();
+        LoadTotalValues();
         Event_System.instance.OnLobbyLoaded += Save;
         Event_System.instance.OnBossDeath += SaveAfterBossKill;
     }
@@ -178,6 +179,8 @@ public class GameDataUpdater : MonoBehaviour
     {
         PlayerPrefsSaveSystem.SaveBossKill("Boss_Killed");
         gameData.GameCompleted = true;
+
+        gameData.TotalBossSlain++;
     }
 
     private void Save()
@@ -200,6 +203,7 @@ public class GameDataUpdater : MonoBehaviour
             InitializeDictonaries();
             SaveDonatedSinceLastToPlayerPrefs();
             SaveSoulsRemainingToPlayerPrefs();
+            SaveTotalValues();
         }
     }
 
@@ -247,5 +251,37 @@ public class GameDataUpdater : MonoBehaviour
             gameData.FirstTimePlaying = false;
         }
     }
+
+
+  public void SaveTotalValues()
+    {
+        PlayerPrefsSaveSystem.SaveSouls("Total_Souls_Collected", gameData.TotalSoulsCollected);
+
+        PlayerPrefsSaveSystem.SaveSouls("Total_Souls_Sacrificed", gameData.TotalSoulsSacrificed);
+
+        PlayerPrefsSaveSystem.SaveSouls("Total_Enemies_Slain", gameData.TotalEnemiesSlain);
+
+        PlayerPrefsSaveSystem.SaveSouls("Total_Cards_Pickedup", gameData.TotalCardsPickedup);
+
+        PlayerPrefsSaveSystem.SaveSouls("Total_Boss_Slain", gameData.TotalBossSlain);
+
+        PlayerPrefsSaveSystem.SaveSouls("Total_Player_Death", gameData.TotalBossSlain);
+
+    }
+
+    public void LoadTotalValues()
+    {
+        gameData.TotalSoulsCollected = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Souls_Collected");
+        gameData.TotalSoulsSacrificed = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Souls_Sacrificed");
+        gameData.TotalEnemiesSlain = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Enemies_Slain");
+        gameData.TotalCardsPickedup = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Cards_Pickedup");
+        gameData.TotalBossSlain = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Boss_Slain");
+        gameData.TotalPlayerDeath = PlayerPrefsSaveSystem.GetSoulsTotalSouls("Total_Player_Death");
+
+    }
+
+   
+
+    
 
 }
