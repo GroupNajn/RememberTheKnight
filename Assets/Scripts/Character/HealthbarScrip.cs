@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,13 +18,15 @@ public class HealthbarScrip : MonoBehaviour
     private IDamageable damageable;
     [SerializeField] float lerpSpeed = 2f;
     EnemyHealthBarCanvas enemyHealthBarCanvas;
+    bool isHealing = false;
 
     void Awake() // Gets references to the healthbar, lerpingRectTransform and enemyHealthBarCanvas component
     {
-        if(isPlayer)
+        if (isPlayer)
         {
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<MonoBehaviour>();
         }
+
         enemyHealthBarCanvas = GetComponentInParent<EnemyHealthBarCanvas>();
         damageable = target.GetComponent<IDamageable>();
 
@@ -34,20 +35,24 @@ public class HealthbarScrip : MonoBehaviour
             Debug.LogError("Target does not implement IDamageable!");
             return;
         }
+
         damageable.OnHealthChanged += UpdateHealthBar;
         healthbar.maxValue = damageable.MaxHealth;
         healthbar.value = damageable.MaxHealth;
     }
 
-
     private void Update() // Lerp the healthbar fill to the target position
     {
         bool lerpCondition = lerpingRectTransform.anchorMax.x > healthbar.fillRect.anchorMax.x || lerpingRectTransform.anchorMin.x < healthbar.fillRect.anchorMin.x;
 
-        if (lerpCondition)
+        if (isHealing)
         {
-        lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, healthbar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
-        lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin, healthbar.fillRect.anchorMin, Time.deltaTime * lerpSpeed);
+            healthbar.value = Mathf.Lerp(healthbar.value, lerpingRectTransform.anchorMax.x * healthbar.maxValue, Time.deltaTime * lerpSpeed);
+        }
+        else if (lerpCondition)
+        {
+            lerpingRectTransform.anchorMax = Vector2.Lerp(lerpingRectTransform.anchorMax, healthbar.fillRect.anchorMax, Time.deltaTime * lerpSpeed);
+            lerpingRectTransform.anchorMin = Vector2.Lerp(lerpingRectTransform.anchorMin, healthbar.fillRect.anchorMin, Time.deltaTime * lerpSpeed);
         }
         else
         {
@@ -55,7 +60,6 @@ public class HealthbarScrip : MonoBehaviour
             lerpingRectTransform.anchorMin = healthbar.fillRect.anchorMin;
         }
     }
-
 
     /// <summary>
     /// Updates health values, resizes the bar when necessary,
@@ -65,13 +69,24 @@ public class HealthbarScrip : MonoBehaviour
     /// <param name="max">Maximum health.</param>
     void UpdateHealthBar(float current, float max) // Updates the healthbar value and max value, and shows the healthbar for a duration if it's an enemy. Also resizes the healthbar based on max health if it's the player. Destroys the healthbar gameobject when health is 0 or below.
     {
-        healthbar.maxValue = max;
-        healthbar.value = current; 
-        if(!isPlayer)
+        isHealing = current > healthbar.value; // Check if the health is increasing (healing) or decreasing (taking damage)
+
+        if (isHealing)
         {
-            enemyHealthBarCanvas?.ShowHealthBarForDuration(current,max);
+            Vector2 targetAnchorMax = healthbar.fillRect.anchorMax;
+            targetAnchorMax.x = current / max; // Calculate the target anchorMax.x based on the current health percentage
+            lerpingRectTransform.anchorMax = targetAnchorMax;
+            return;
         }
-        
+
+        healthbar.maxValue = max;
+        healthbar.value = current;
+
+        if (!isPlayer)
+        {
+            enemyHealthBarCanvas?.ShowHealthBarForDuration(current, max);
+        }
+
         // Resize based on max health
         if (isPlayer && healthBarTransform != null)
         {
@@ -79,12 +94,13 @@ public class HealthbarScrip : MonoBehaviour
             size.x = max * widthPerHealth;
             healthBarTransform.sizeDelta = size;
         }
+        
         if (healthbar.value <= 0) return; // this line was added to prevent the health to disappear. Remove this - 
+        
         if (current <= 0)                 // condition to destroy gameObject when health is 0 or below. 
         {
             Destroy(healthbar.gameObject);
             damageable.OnHealthChanged -= UpdateHealthBar;
         }
-        
     }
 }
