@@ -252,7 +252,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
         Heal(playerStats.MaxHealth);
         playerStats.currentHealingCharges = playerStats.startingCharges;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
-        Event_System.instance.OnResetSouls.Invoke();
+        Event_System.instance.OnResetSouls?.Invoke();
     }
 
     private void InitializePlayerBaseStats()
