@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
     {
         origin = transform.position;
 
-       
+
         RuntimeManager.PlayOneShotAttached(flyingEvent, gameObject);
     }
 
@@ -56,6 +56,7 @@ public class Projectile : MonoBehaviour
     /// <param name="other">Collider entered by the projectile.</param>
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject == enemyWeaponManager.gameObject || other.gameObject.transform.IsChildOf(enemyWeaponManager.gameObject.transform)) return;
         if (!collided && !other.gameObject.CompareTag("Projectile") && !other.gameObject.CompareTag("Enemy"))
         {
             collided = true;
