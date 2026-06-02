@@ -11,6 +11,10 @@ public partial class RegenerateHealthAction : Action
     [SerializeReference] public BlackboardVariable<EnemyDamage> Self;
     [SerializeReference] public BlackboardVariable<float> Amount;
 
+    [SerializeReference] public BlackboardVariable<float> NormalizedTarget = new(1f);
+    [SerializeReference] public BlackboardVariable<bool> Infinite = new(true);
+
+
     protected override Status OnStart()
     {
         return Status.Running;
@@ -18,8 +22,12 @@ public partial class RegenerateHealthAction : Action
 
     protected override Status OnUpdate()
     {
-        if (Self.Value.Health < Self.Value.MaxHealth) Self.Value.Health += Amount.Value * Time.deltaTime;
-        return Status.Running;
+        if (Self.Value.Health < Self.Value.MaxHealth * NormalizedTarget.Value)
+        {
+            Self.Value.Health += Amount.Value * Time.deltaTime;
+            return Status.Running;
+        }
+        else return Infinite.Value ? Status.Running : Status.Success;
     }
 
     protected override void OnEnd()
