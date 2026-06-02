@@ -61,6 +61,7 @@ public partial class TeleportToAction : Action
         isEntering = false;
         characterController.enabled = true;
         ToDisable.Value.ForEach(obj => obj.SetActive(true));
+        animator.SetTrigger(CancelHash);
         UnityEngine.Object.Destroy(leave);
         UnityEngine.Object.Destroy(enter);
     }
