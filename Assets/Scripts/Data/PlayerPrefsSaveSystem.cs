@@ -89,9 +89,12 @@ public static class PlayerPrefsSaveSystem
     public static int GetSavedSoulsDonatedSinecLast(string soulValueText)
     {
         return PlayerPrefs.GetInt(soulValueText);
-
     }
 
+    public static int GetSoulsTotalSouls(string soulsString)
+    {
+        return PlayerPrefs.GetInt(soulsString);
+    }
 
     // Saves the int value in playerprefs locally in order to keep progress.
     public static void SetSaveState(string ID)

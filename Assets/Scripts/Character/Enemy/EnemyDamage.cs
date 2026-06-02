@@ -33,6 +33,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
     private BlackboardVariable<bool> hasSight;
     private BlackboardVariable<bool> hasAggro;
     private BehaviorGraphAgent behaviorGraphAgent;
+    private GameData gameData;
 
 
     public void SetHealthModifier(int level)
@@ -81,6 +82,8 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         EnemyLootProfile profile = gameObject.GetComponent<EnemyLootProfile>();
         Event_System.instance.OnEnemyKilledNew?.Invoke(profile, this.transform.position);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
+        gameData.TotalEnemiesSlain++;
+        
     }
 
     private void Start()
@@ -92,6 +95,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         childObjects = GetComponentsInChildren<Transform>().ToList();
         animator = GetComponent<Animator>();
         behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        gameData = GameObject.Find("GlobalData").GetComponent<GameData>();
         if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Sight", out hasSight)) { }
         if (behaviorGraphAgent.BlackboardReference.GetVariable("Has Aggro", out hasAggro)) { }
     }

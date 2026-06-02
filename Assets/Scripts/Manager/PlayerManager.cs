@@ -111,6 +111,7 @@ public class PlayerManager : MonoBehaviour, IDamageable
     public void NotifyDeath()
     {
         Event_System.instance.OnPlayerDeath?.Invoke();
+        GameObject.Find("GlobalData").GetComponent<GameData>().TotalPlayerDeath++;
     }
 
     public void SetMaxHealth(float newMaxHealth)
