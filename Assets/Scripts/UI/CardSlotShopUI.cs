@@ -65,6 +65,7 @@ public class CardSlotShopUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (card == null)
         {
+            cardData = null;
             soulCostDisplay.SetActive(false);
             return;
         }
