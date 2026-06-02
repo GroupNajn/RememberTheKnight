@@ -200,7 +200,7 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
 
             CardSlotShopUI uiSlot = uiSlots.Find(slot => slot.CardData == purchasedCard);
             uiSlot?.LinkedBoardSlot?.RemoveCard();
-            uiSlot?.SetCard(null);
+            //uiSlot?.SetCard(null);
 
         }
         Event_System.instance.OnConfirmPurchase?.Invoke(purchasedCardData);
@@ -208,9 +208,9 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
         interactCardShop?.SetBought();
 
         RuntimeManager.PlayOneShot(WorldSoundFXManager.instance.shopBuyCardEvent);
+
         ResetSlots();
         uiManager.CloseCardShopUI();
-        interactCameraHandler.InteractCamReset();
 
         uiManager.OpenInventoryAfterPurchase();
     }
@@ -270,6 +270,8 @@ public class CardShopUI : AutoSelectFirstButtonOnEnable
                     uislot.LinkedBoardSlot.SetSelectedVisual(false);
                 }
             }
+
+            uislot.SetCard(null);
         }
         purchasedCardData.Clear();
         UpdateUIButtons();
