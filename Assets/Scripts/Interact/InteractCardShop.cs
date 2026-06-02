@@ -68,10 +68,10 @@ public class InteractCardShop : MonoBehaviour, IInteractable, IInteractableUITex
         if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
         }
+
+        if (firstTimeEffect != null)
+            firstTimeEffect.SetActive(false);
 
         playerUIManager.UIMenuActive = true;
         playerUIManager.cameraTransitioning = true;

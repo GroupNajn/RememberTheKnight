@@ -45,10 +45,10 @@ public class InteractFamlySelect : MonoBehaviour, IInteractable, IInteractableUI
         if (!PlayerPrefsSaveSystem.HasInteracted(interactableID))
         {
             PlayerPrefsSaveSystem.SetSaveState(interactableID);
-
-            if (firstTimeEffect != null)
-                firstTimeEffect.SetActive(false);
         }
+
+        if (firstTimeEffect != null)
+            firstTimeEffect.SetActive(false);
 
         playerUIManager.UIMenuActive = true;
         playerUIManager.cameraTransitioning = true;
