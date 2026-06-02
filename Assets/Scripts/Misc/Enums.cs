@@ -51,3 +51,9 @@ public enum CardUnlockType
     Permanent,
     Temporary
 }
+
+public enum CardSpawnTypeSecret
+{
+    Secret = 0,
+    Devil = 1
+}

@@ -6,7 +6,8 @@ public class RunGameData : MonoBehaviour
 
     [SerializeField] int minLevelsBeforeBoss = 5;
     [SerializeField] int maxLevelsBeforeBoss = 7;
-    public bool hasSecrectCardBeenPickedup { get; set; }
+    public bool HasSecretOneBeenPickedUp { get; set; } = false;
+    public bool HasSecretTwoBeenPickedUp { get; set; } = false;
 
     public string randomSpawnCardString = "HasBeenPickedUp";
  
@@ -26,7 +27,7 @@ public class RunGameData : MonoBehaviour
             Instance = this;
             Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         }
-        hasSecrectCardBeenPickedup = PlayerPrefsSaveSystem.HasUnlocked(randomSpawnCardString);
+        HasSecretOneBeenPickedUp = PlayerPrefsSaveSystem.HasUnlocked(randomSpawnCardString);
     }
 
     public void IncrementLevelCounter()

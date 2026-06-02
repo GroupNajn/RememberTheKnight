@@ -80,7 +80,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
 
         PlayerCollection collection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         gameObject.SetActive(false);
-        if(cardData.cardTier == Tier.XIII && !cardData.cardName.Contains("Secret")) // To make sure secret cards do not get procced
+        if(cardData.cardTier == Tier.XIII && !cardData.cardName.Contains("Secret") && !cardData.cardName.Contains("Devil")) // To make sure secret cards do not get procced
         {
             List<CardData> courtCards = new List<CardData>();
             courtCards.Add(cardData);
@@ -93,9 +93,12 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
         }
         if(cardData.cardName.Contains("Secret"))// only secret cards. 
         {
-            GameObject.Find("GlobalData").GetComponent<RunGameData>().hasSecrectCardBeenPickedup = true;
-            RunGameData runGameData = GameObject.Find("GlobalData").GetComponent<RunGameData>();
-            PlayerPrefsSaveSystem.SaveSecretCardPickup(runGameData.randomSpawnCardString);
+            GameObject.Find("GlobalData").GetComponent<RunGameData>().HasSecretOneBeenPickedUp = true;
+
+        }
+        if (cardData.cardName.Contains("Devil"))
+        {
+            GameObject.Find("GlobalData").GetComponent<RunGameData>().HasSecretTwoBeenPickedUp = true;
         }
         collection.PickupCard(cardData);
         gameData.TotalCardsPickedup++;
