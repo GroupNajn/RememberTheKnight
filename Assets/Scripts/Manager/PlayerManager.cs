@@ -253,6 +253,9 @@ public class PlayerManager : MonoBehaviour, IDamageable
         playerStats.currentHealingCharges = playerStats.startingCharges;
         CupCanvas.Instance.UpdateCup(playerStats.currentHealingCharges, playerStats.maxHealingCharges, playerStats.healingChargeCost);
         Event_System.instance.OnResetSouls?.Invoke();
+
+        RunGameData.Instance.HasSecretOneBeenPickedUp = false;
+        RunGameData.Instance.HasSecretTwoBeenPickedUp = false;
     }
 
     private void InitializePlayerBaseStats()

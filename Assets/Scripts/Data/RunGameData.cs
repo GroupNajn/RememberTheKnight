@@ -27,7 +27,7 @@ public class RunGameData : MonoBehaviour
             Instance = this;
             Event_System.instance.OnLobbyLoaded += OnLobbyLoaded;
         }
-        HasSecretOneBeenPickedUp = PlayerPrefsSaveSystem.HasUnlocked(randomSpawnCardString);
+        //HasSecretOneBeenPickedUp = PlayerPrefsSaveSystem.HasUnlocked(randomSpawnCardString);
     }
 
     public void IncrementLevelCounter()

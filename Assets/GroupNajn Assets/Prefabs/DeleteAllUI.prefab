@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2192180561227525080}
   - component: {fileID: 3283881707416186337}
   - component: {fileID: 7018576672472280275}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DeleteButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 6629303033406430029}
   - component: {fileID: 2996235200401242729}
   - component: {fileID: 7182117272007485648}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Warning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 5792307998676987012}
   - component: {fileID: 9070143065496293478}
   - component: {fileID: 4254554767401620333}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 6645464186791377160}
   - component: {fileID: 7856496998474313908}
   - component: {fileID: 1379909677196314655}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: QuestionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 7542334325434069200}
   - component: {fileID: 3821098409386531380}
   - component: {fileID: 3017099348654353156}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: resetText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 8201178543170692140}
   - component: {fileID: 2847548389244423465}
   - component: {fileID: 4541625084472777723}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WariningText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,7 +800,7 @@ GameObject:
   - component: {fileID: 4318607289042137819}
   - component: {fileID: 5670505281121525314}
   - component: {fileID: 4551198728384902197}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: resetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -994,7 +994,7 @@ GameObject:
   - component: {fileID: 5922255072243372992}
   - component: {fileID: 6497602067636201622}
   - component: {fileID: 5706874712348848677}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1131,7 +1131,7 @@ GameObject:
   - component: {fileID: 5831039292574920708}
   - component: {fileID: 4609166139127148058}
   - component: {fileID: 5884234230697553978}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1262,7 +1262,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1523660495264824326}
   - component: {fileID: 8000292234187267896}
-  m_Layer: 0
+  - component: {fileID: 2545849144565944809}
+  - component: {fileID: 5671036443225820300}
+  m_Layer: 5
   m_Name: DeleteAllUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1303,3 +1305,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warningUI: {fileID: 1111839393828183622}
+--- !u!114 &2545849144565944809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8972895533367504707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85039b76a7137d948b7f0c71e03f424a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirstSelectedButton: {fileID: 4522106494229741585}
+  useLastSelectedButton: 0
+--- !u!114 &5671036443225820300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8972895533367504707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e69a47012e761dc48a209e909881963e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirstSelectedButton: {fileID: 8452637509986259431}
+  useLastSelectedButton: 0
