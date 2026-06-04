@@ -14,6 +14,8 @@ public class Random_Card_Spawner : MonoBehaviour
     [SerializeField] private Transform spawnTransform;
 
     [SerializeField] private CardSpawnTypeSecret cardSpawnType;
+
+    [SerializeField] private float chanceToSpawnCard = 0.5f;
     void Start()
     {
         builder = GameObject.Find("CardSystem").GetComponent<CardBuilder>();
@@ -28,25 +30,27 @@ public class Random_Card_Spawner : MonoBehaviour
 
     public void SpawnCard()
     {
+        if (Random.value > chanceToSpawnCard)
+        {
+            return;
+        }
 
         if (!gameData.HasSecretOneBeenPickedUp && cardSpawnType == CardSpawnTypeSecret.Secret)
         {
             int index = Random.Range(0, secretCards.Count);
+
             CardData card = secretCards[index];
             builder.InstantiateSecretCard(card, spawnTransform);
             return;
-
         }
 
         if (!gameData.HasSecretTwoBeenPickedUp && cardSpawnType == CardSpawnTypeSecret.Devil)
         {
             int index = Random.Range(0, devilCards.Count);
+
             CardData card = devilCards[index];
             builder.InstantiateSecretCard(card, spawnTransform);
             return;
         }
     }
-
-
-
 }

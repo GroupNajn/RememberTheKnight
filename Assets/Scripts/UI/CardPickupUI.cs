@@ -251,7 +251,7 @@ public class CardPickupUI : AutoSelectFirstButtonOnEnable
             stats.AppendLine($"Luck + {cardData.luckModifier}%");
 
         if (cardData.luckModifier < 0)
-            stats.AppendLine($"Luck - {cardData.luckModifier}% you are unlucky, no more cards or healing charges drop");
+            stats.AppendLine($"Luck {cardData.luckModifier}% you are unlucky");
 
         if (cardData.damageModifier > 0)
             stats.AppendLine($"Damage + {cardData.damageModifier * 100}%");

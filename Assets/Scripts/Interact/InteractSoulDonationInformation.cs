@@ -30,7 +30,7 @@ public class InteractSoulDonationInformation : MonoBehaviour, IInteractable, IIn
         }
         else if(collection.playerContract.CardFamily == CardFamily.Wands)
         {
-            UIData.InfoText = $"Souls until next Wands Unlock:{data.SoulsRemainingToNextUnlockWands}";
+            UIData.InfoText = $"Souls until next Wands Unlock: {data.SoulsRemainingToNextUnlockWands}";
             if(data.SoulsRemainingToNextUnlockWands <= 0)
             {
                 UIData.InfoText = $"No Souls donated Towards Wands Family";
@@ -38,7 +38,7 @@ public class InteractSoulDonationInformation : MonoBehaviour, IInteractable, IIn
         }
         else if(collection.playerContract.CardFamily == CardFamily.Cups)
         {
-            UIData.InfoText = $"Souls until next Cups Unlock:{data.SoulsRemainingsoulToNextUnlockCups}";
+            UIData.InfoText = $"Souls until next Cups Unlock: {data.SoulsRemainingsoulToNextUnlockCups}";
             if (data.SoulsRemainingsoulToNextUnlockCups <= 0)
             {
                 UIData.InfoText = $"No Souls donated Towards Cups Family";
@@ -46,7 +46,7 @@ public class InteractSoulDonationInformation : MonoBehaviour, IInteractable, IIn
         }
         else if(collection.playerContract.CardFamily == CardFamily.Pentacles)
         {
-            UIData.InfoText = $"Souls until next Pentacles Unlock:{data.SoulsRemainingToNextUnlockPentacles}";
+            UIData.InfoText = $"Souls until next Pentacles Unlock: {data.SoulsRemainingToNextUnlockPentacles}";
             if (data.SoulsRemainingToNextUnlockPentacles <= 0)
             {
                 UIData.InfoText = $"No Souls donated Towards Pentacles Family";
@@ -54,7 +54,7 @@ public class InteractSoulDonationInformation : MonoBehaviour, IInteractable, IIn
         }
         else if(collection.playerContract.CardFamily == CardFamily.Swords)
         {
-            UIData.InfoText = $"Souls until next Swords Unlock:{data.SoulsRemainingToNextUnlockSwords}";
+            UIData.InfoText = $"Souls until next Swords Unlock: {data.SoulsRemainingToNextUnlockSwords}";
             if (data.SoulsRemainingToNextUnlockSwords <= 0)
             {
                 UIData.InfoText = $"No Souls donated Towards Swords Family";
