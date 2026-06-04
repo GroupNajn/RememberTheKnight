@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+/// <summary>
+/// Randomizes skeletons based on a weight and <see cref="EnemyPreset"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [RequireComponent(typeof(EnemyWeaponManager))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(EnemyDamage))]

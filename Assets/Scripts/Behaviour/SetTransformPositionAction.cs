@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Sets a transforms position inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "SetTransformPosition", story: "Set [Postion] in [Transform]", category: "Action", id: "fd6d9cd035fef401c5b9b030491ba22c")]
 public partial class SetTransformPositionAction : Action

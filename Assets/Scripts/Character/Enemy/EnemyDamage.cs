@@ -4,6 +4,10 @@ using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 
+/// <summary>
+/// Handles the health, death and incoming hits on enemies
+/// </summary>
+/// <remarks>Author: Everyone</remarks>
 [RequireComponent(typeof(ITriggerable))]
 [RequireComponent(typeof(EnemyVFX))]
 [RequireComponent(typeof(CharacterSoundFXManager))]
@@ -12,10 +16,6 @@ using UnityEngine;
 public class EnemyDamage : MonoBehaviour, IDamageable
 {
     private static readonly int HitHash = Animator.StringToHash("Hit");
-
-    //[SerializeField] private Event_System EventSystem;
-    // Made by Lukas and Anton B 2026-03-06
-    //Edited by Michaëla 2026-05-06
     [field: SerializeField] public float MaxHealth { get; set; }
     private float healthField;
     public float Health
@@ -90,7 +90,7 @@ public class EnemyDamage : MonoBehaviour, IDamageable
         Event_System.instance.OnEnemyKilledNew?.Invoke(profile, this.transform.position);
         childObjects.ForEach(transform => transform.gameObject.layer = 12);
         gameData.TotalEnemiesSlain++;
-        
+
         onDeath?.Trigger();
     }
 

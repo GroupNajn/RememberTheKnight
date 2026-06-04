@@ -4,6 +4,9 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// A random float in a range that can be used inside a <see cref="BehaviorGraph"/>
+/// </summary>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Randomize Float Range", story: "Sets [Value] to a value between [From] and [To]", category: "Action", id: "0c600289d93f38cb6434383736bef843")]
 public partial class RandomizeFloatRangeAction : Action

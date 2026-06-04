@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Finds the closes gameObject with a tag
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Find Target", story: "Find the nearest [Target] with tag [tagname]", category: "Action", id: "ac8eddcf9c7e6fad5e0d218a5dbaa1bc")]
 public partial class FindTargetAction : Action

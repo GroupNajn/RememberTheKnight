@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// A null check that can be used inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "None Check", story: "Sets [Boolean] if [Target] is not None", category: "Action", id: "55fc462d24169677c0b752c2f751a214")]
 public partial class NoneCheckAction : Action

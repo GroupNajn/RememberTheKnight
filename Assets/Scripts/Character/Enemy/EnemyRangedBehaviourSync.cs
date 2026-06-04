@@ -2,7 +2,13 @@ using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 
-[RequireComponent(typeof(BehaviorGraphAgent), typeof(ProjectileHandler))]
+/// <summary>
+/// This is a glue component that syncs ranged enemies <see cref="Animator"/>, <see cref="BehaviorGraphAgent"/> and <see cref="ProjectileHandler"/>.
+/// Handles the event OnCast the <see cref="Animator"/> to shoot projectiles,
+/// Makes sure the <see cref="ProjectileHandler"/> shoots the central body of the player
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
+[RequireComponent(typeof(BehaviorGraphAgent), typeof(ProjectileHandler), typeof(Animator))]
 public class EnemyRangedBehaviourSync : MonoBehaviour
 {
     private BehaviorGraphAgent behaviorAgent;
@@ -14,7 +20,6 @@ public class EnemyRangedBehaviourSync : MonoBehaviour
         projectileHandler = GetComponent<ProjectileHandler>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (behaviorAgent.BlackboardReference.GetVariable<GameObject>("Target", out var target))
@@ -33,6 +38,7 @@ public class EnemyRangedBehaviourSync : MonoBehaviour
         }
     }
 
+    // Animation event that runs when it is time to fire a projectile
     public void OnCast() { projectileHandler.ShootProjectile(); }
 
 }

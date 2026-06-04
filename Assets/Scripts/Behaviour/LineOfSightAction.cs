@@ -6,6 +6,10 @@ using Unity.Properties;
 using System.Linq;
 using System.Collections.Generic;
 
+/// <summary>
+/// Sets the TargetPosition and HasSight blackboard variables if the target is within range and viewing angle
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Line of Sight", story: "Sets [HasSight] and [TargetPosition] when [Target] is in sight", category: "Action", id: "462f441212c9758ad05609aae132293a")]
 public partial class LineOfSightAction : Action

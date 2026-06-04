@@ -1,7 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-
+/// <summary>
+/// When the bosses health reaches zero plays a particle effect and spawns a reward pedistal and then destroys the gameObject
+/// </summary>
+/// <remarks>Author: Theo Johansson and Henric Nilsson</remarks>
 public class EnemyBossDeath : MonoBehaviour, ITriggerable
 {
     [SerializeField] ParticleSystem deathParticles;

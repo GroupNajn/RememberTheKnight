@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Essantialy the same as <see cref="EnemyFleshyDeath"/> but also executes the <c>RegisterDeath</c> method on <see cref="BossAddSpawnerManager"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [RequireComponent(typeof(EnemyRagdoll))]
 public class EnemyBossAddDeath : MonoBehaviour, ITriggerable
 {

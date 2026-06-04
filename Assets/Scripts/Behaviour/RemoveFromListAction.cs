@@ -5,6 +5,9 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Removes a gameObject from a list inside a <see cref="BehaviorGraph"/>
+/// </summary>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Remove From List", story: "Removes [Object] from [List]", category: "Action", id: "a784068e9efc9807fa9d070cef50d73c")]
 public partial class RemoveFromListAction : Action

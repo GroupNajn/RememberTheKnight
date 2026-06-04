@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// A conditional guard thet checks if a transform is a child of another inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Check if child", story: "Checks if [TargetObject] is child of [ParentObject]", category: "Action/Conditional", id: "6b99b112df1e5a0125ce73a671a8ecc1")]
 public partial class CheckIfChildAction : Action

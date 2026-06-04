@@ -6,6 +6,11 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// This is the core of enemy coordination, they are placed in staggered radii around the target based on distance, the closest enemy gets the closest radius.
+/// Using <see cref="GiveAggroEvent"/> to communicate with the <see cref="BehaviorGraphAgent"/>s
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Sync Aggro Agents", story: "Aggro agents in [AggroList] are placed in atleast [Radius] around [Target]", category: "Action", id: "58dcd1cc126a5988c2d99fb9fe92bce7")]
 public partial class SyncAggroAgentsAction : Action

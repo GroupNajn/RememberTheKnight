@@ -4,9 +4,23 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
-using System.Collections;
-using System.Collections.Generic;
 
+/// <summary> 
+/// Uses the <see cref="NavMeshAgent"/> and <see cref="Animator"/> of Self to navigate to a target transforms position
+/// <list>
+/// <item>Self is the gameObject this action acts upon</item>
+/// <item>Target is the transform the gameObject should navigate to</item>
+/// <item>Priority is the avoidance priority the navMeshAgent should use during the navigation</item>
+/// <item><c>!optional</c> CircleRadius the circle radius that the agent uses in <see cref="CircleTargetAction"/></item>
+/// <item><c>!optional</c> ShouldStopAtCircleRadius toggles whether the navMeshAgent should finis its navigation if it reaches the circle radius</item>
+/// </list>
+/// </summary>
+/// <remarks>
+/// <list>
+/// <item>See <see cref="EnemyLocomotion"/></item>
+/// <item>Author: Theo Johansson</item>
+/// </list>
+/// </remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Root Motion Navigate", story: "[Self] navigates to [Target] using root motion with avoidance priotity [Priority]", category: "Action", id: "cb956d9f42fb28ab5eb2287131e6b291")]
 public partial class RootMotionNavigateAction : Action
@@ -18,33 +32,28 @@ public partial class RootMotionNavigateAction : Action
     [SerializeReference] public BlackboardVariable<int> Priority;
     [SerializeReference] public BlackboardVariable<float> CircleRadius;
     [SerializeReference] public BlackboardVariable<bool> ShouldStopAtCircleRadius = new(false);
-    [SerializeReference] public BlackboardVariable<List<string>> BreakingEmotes = new(new());
     private Animator animator;
     private NavMeshAgent navMeshAgent;
-    private CharacterController characterController;
-
+    private int initialAvoidancePriority;
     private Vector3 targetPos;
     private Vector3 lastTargetPos;
-    private float minMoveDistance;
-    private int initialAvoidancePriority;
     protected override Status OnStart()
     {
         animator = Self.Value.GetComponent<Animator>();
         navMeshAgent = Self.Value.GetComponent<NavMeshAgent>();
-        characterController = Self.Value.GetComponent<CharacterController>();
-        minMoveDistance = characterController != null ? characterController.minMoveDistance : 0.01f;
         if (navMeshAgent == null || animator == null)
         {
             return Status.Failure;
         }
 
         if (!navMeshAgent.isOnNavMesh) return Status.Failure;
-
         var dist = Vector3.Distance(Self.Value.transform.position, Target.Value.position);
         if (dist <= navMeshAgent.stoppingDistance) return Status.Success;
 
+        // allow the animator to handle the positioning and the navmesh agent to handle rotations
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = true;
+
         if (navMeshAgent.hasPath) navMeshAgent.ResetPath();
         if (ShouldStopAtCircleRadius.Value)
             targetPos = SampleCirclePoints(10);
@@ -53,6 +62,8 @@ public partial class RootMotionNavigateAction : Action
 
         navMeshAgent.SetDestination(targetPos);
         lastTargetPos = Target.Value.position;
+
+        initialAvoidancePriority = navMeshAgent.avoidancePriority;
         navMeshAgent.avoidancePriority = Priority.Value;
         return Status.Running;
     }
@@ -65,13 +76,12 @@ public partial class RootMotionNavigateAction : Action
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return Status.Success;
         if (Time.deltaTime <= 1e-5f) return Status.Running;
 
-
-
         bool shouldUpdateDestination =
             !Mathf.Approximately(lastTargetPos.x, Target.Value.position.x) ||
             !Mathf.Approximately(lastTargetPos.y, Target.Value.position.y) ||
             !Mathf.Approximately(lastTargetPos.z, Target.Value.position.z);
         lastTargetPos = Target.Value.position;
+
         if (shouldUpdateDestination)
         {
             if (ShouldStopAtCircleRadius.Value)
@@ -112,6 +122,12 @@ public partial class RootMotionNavigateAction : Action
         animator.SetFloat(YHash, 0);
     }
 
+
+    /// <summary>
+    /// Finds a point in the circle radius that is on a navmesh
+    /// </summary>
+    /// <param name="sampleDensity">At how many points should the method try for a valid position in the Cirle Radius</param>
+    /// <returns>If a point was found, returns the point, otherwise returns the agents current position</returns>
     private Vector3 SampleCirclePoints(int sampleDensity)
     {
         Vector3 dir = navMeshAgent.transform.position - Target.Value.position;

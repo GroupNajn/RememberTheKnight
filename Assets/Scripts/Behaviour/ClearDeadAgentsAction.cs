@@ -5,6 +5,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Clears a list of enemies that have been killed
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Clear Dead Agents", story: "Clears dead agents in [List]", category: "Action", id: "e243a6d71b1efd986a2614b41b2b75d7")]
 public partial class ClearDeadAgentsAction : Action

@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Increments an integer inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Increment Integer", story: "Increments [Value] by [Step]", category: "Action", id: "fc28ea9dcf0e0121de49fe818b79c196")]
 public partial class IncrementIntegerAction : Action

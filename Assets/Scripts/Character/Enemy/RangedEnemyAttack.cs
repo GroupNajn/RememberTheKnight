@@ -7,7 +7,7 @@ public class RangedEnemyAttack : MonoBehaviour
     /// Made by Lukas 2026-03-20
     /// Simple method to shoot a projectile when attacking
     /// </summary>
-    
+
     ProjectileHandler projectileHandler;
     public EventReference rangedShootEvent;
 
