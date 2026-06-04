@@ -570,7 +570,6 @@ public class UIManager : MonoBehaviour
     public void OpenCardShopUI()
     {
         CloseInteractiveUI();
-        CloseUIOnMenuOpen();
         cardShopUI.SetActive(true);
 
         cameraTransitioning = false;
@@ -580,8 +579,6 @@ public class UIManager : MonoBehaviour
 
     public void CloseCardShopUI()
     {
-        OpenUIOnMenuClose();
-
         cardShopUI.SetActive(false);
 
         UIMenuActive = false;
