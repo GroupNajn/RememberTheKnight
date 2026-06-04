@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Regenerates Health up to a thresholdd of an agent either continuosly or until that threshold is reached
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Regenerate Health", story: "[Self] regenerates [Amount] health per second", category: "Action", id: "d9518b0bb28bebf09118faa271add6eb")]
 public partial class RegenerateHealthAction : Action

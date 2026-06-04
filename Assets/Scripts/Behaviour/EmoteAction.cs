@@ -5,6 +5,15 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// Sets a trigger to execute a non damaging action in an <see cref="Animator"/> and completes when "IsEmoting" bool is set to false in the <see cref="Animator"/>
+/// </summary>
+/// <remarks>
+/// <list>
+/// <item>See <see cref="EnemyLocomotion"/></item>
+/// <item>Author: Theo Johansson</item>
+/// </list>
+/// </remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Execute Emote", story: "Executes [EmoteName] in [Self] and waits until animation is finished", category: "Action", id: "d5e1ed687b441b90bef3f1b5e43995a1")]
 public partial class EmoteAction : Action

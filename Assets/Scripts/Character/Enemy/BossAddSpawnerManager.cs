@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Uses <see cref="BossAddSpawner"/> to spawn enemies in waves upp to a maximum
+/// </summary>
+/// <remarks>
+/// <item>Used by <see cref="IntermissionPhaseAction"/></item>
+/// <item>Author: Theo Johansson</item>
+/// </remarks>
 public class BossAddSpawnerManager : MonoBehaviour
 {
     [SerializeField] List<BossAddSpawner> spawners;

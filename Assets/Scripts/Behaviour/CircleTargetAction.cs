@@ -4,9 +4,20 @@ using UnityEngine;
 using UnityEngine.AI;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
-using NUnit.Framework;
-using System.Collections.Generic;
 
+/// <summary>
+/// Uses <see cref="Animator"/> to circle around a transform and <see cref="NavMeshAgent"/> to correct the position when the agent is not at the correct radius
+/// Starts with a random direction (clockwise or counter clockwise) then switches direction if the agent collides with another agent or an obstacle
+/// <list>
+/// <item>Self is the navMeshAgent this action acts upon</item>
+/// <item>Target is the transform the agent should circle around</item>
+/// <item>CircleRadius the circle radius that the agent should rotate at</item>
+/// <item>Priority is the avoidance priority the navMeshAgent should use while circleing</item>
+/// <item>Duration is the number of seconds the agent should circle its target</item>
+/// <item><c>!optional</c> SpeedMultiplier is the factor the agents speed will be multiplied by (The speed is normalized, cannot go above 1)</item>
+/// </list>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Circle Target", story: "[Self] circles around [Target] in a radius of [CircleRadius] with avoidance priotity [Priority] for [Duration] seconds", category: "Action", id: "4208390532c834c3ccafbfbd56ecfb3c")]
 public partial class CircleTargetAction : Action
@@ -17,7 +28,6 @@ public partial class CircleTargetAction : Action
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Self;
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<float> CircleRadius;
-
     [SerializeReference] public BlackboardVariable<int> Priority;
     [SerializeReference] public BlackboardVariable<float> Duration;
     [SerializeReference] public BlackboardVariable<float> SpeedMultiplier = new(0.75f);
@@ -38,6 +48,8 @@ public partial class CircleTargetAction : Action
         animator = Self.Value.GetComponent<Animator>();
 
         lastTargetPos = Target.Value.position;
+
+        // allow the animator to handle the positioning and allow this action to handle the rotation
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
 
@@ -184,6 +196,12 @@ public partial class CircleTargetAction : Action
         navMeshAgent.updateRotation = true;
     }
 
+
+    /// <summary>
+    /// Finds a point in the circle radius that is on a navmesh
+    /// </summary>
+    /// <param name="sampleDensity">At how many points should the method try for a valid position in the Cirle Radius</param>
+    /// <returns>If a point was found, returns the point, otherwise returns the agents current position</returns>
     private Vector3 SampleCirclePoints(int sampleDensity)
     {
         Vector3 dir = navMeshAgent.transform.position - Target.Value.position;

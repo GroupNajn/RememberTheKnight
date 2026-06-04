@@ -5,6 +5,10 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// Sets the avoidance priorrity of a <see cref="NavMeshAgent"/> inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Set NavMeshAgent Priority", story: "Sets the avoidance priority of [Self] to [Value]", category: "Action", id: "b193cce9bab439d27bc3a042a1bab5ea")]
 public partial class SetNavMeshAgentPriorityAction : Action

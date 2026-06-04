@@ -5,6 +5,10 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// Stops the movmeent of an <see cref="Animator"/> using the <see cref="NavMeshAgent"/>s acceleration scaled by a BreakingMultiplier
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Stop NavMesh Agent", story: "Stops the movment of [Self]", category: "Action", id: "dc10c2beb3ef1a3683753e97e049d950")]
 public partial class StopAnimatorAction : Action

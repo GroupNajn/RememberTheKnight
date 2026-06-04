@@ -5,6 +5,15 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// Sets a trigger to execute an attack action in an <see cref="Animator"/> and completes when "IsAttacking" bool is set to false in the <see cref="Animator"/>
+/// </summary>
+/// <remarks>
+/// <list>
+/// <item>See <see cref="EnemyLocomotion"/></item>
+/// <item>Author: Theo Johansson</item>
+/// </list>
+/// </remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Execute Attack", story: "Executes [AttackName] in [Self] and waits until attack is finished", category: "Action", id: "ef1e95d1ab6c3ff8e5dc52964d0d5daf")]
 public partial class AttackAction : Action

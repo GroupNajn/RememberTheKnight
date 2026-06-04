@@ -5,6 +5,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Plays a random particle system that exists in the scene every couple seconds
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Play Random Particle System", story: "Plays a random placed particle system from [ParticleList] every [Interval] seconds", category: "Action", id: "4ffacfa404ab31833ca6e21ddbe57187")]
 public partial class PlayRandomParticleSystemAction : Action

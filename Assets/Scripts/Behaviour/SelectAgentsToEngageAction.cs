@@ -6,6 +6,16 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using System.Linq;
 
+/// <summary>
+/// This action handles which agents shoud disengage based on distance to the target
+/// Using <see cref="LostAggroEvent"/> to communicate with the <see cref="BehaviorGraphAgent"/>s
+/// </summary>
+/// <remarks>
+/// <list>
+/// <item><em>!note</em> This Action has a very confusing name due to its responsability shifting over the course of development, but changing the name breaks the serialization of the action and by extent the <see cref="BehaviorGraph"/>s that use it</item>
+/// <item>Author: Theo Johansson</item>
+/// </list>
+/// </remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Select Agents to Engage", story: "Selects up to [Count] of the closest agents to [Target] and moves them between [WaitList] and [AggroList]", category: "Action", id: "c0bba413ffd702563a49fc63381a17d6")]
 public partial class SelectAgentsToEngageAction : Action

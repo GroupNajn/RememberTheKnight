@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Gets the value of an <see cref="Animator"/> boolean inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Get Animator Boolean", story: "Gets [Name] from [Self] and saves it in [Value]", category: "Action", id: "f1b3c9452e7542549619cc369b65ee1c")]
 public partial class GetAnimatorBooleanAction : Action

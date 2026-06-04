@@ -5,6 +5,10 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
 
+/// <summary>
+/// Uses the angular speed of <see cref="NavMeshAgent"/> to rotate itself towards the direction of a target
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "NavAgent Rotate", story: "Rotates [Self] towards [Target] using angular speed", category: "Action", id: "2c68b0a3922b9749a9edad1917c6af27")]
 public partial class NavAgentRotateAction : Action

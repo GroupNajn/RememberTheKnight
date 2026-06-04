@@ -1,6 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Turns the enemy into a ragdoll when its health reaches zero, then after a timeout turns the ragdoll into a prefab
+/// </summary>
+/// <remarks>Author: Theo Johansson and Anton Bockman</remarks>
 [System.Serializable]
 [RequireComponent(typeof(EnemyRagdoll))]
 public class EnemySkeletonDeath : MonoBehaviour, ITriggerable

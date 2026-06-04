@@ -2,6 +2,10 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Enables and disables all the correct components to enable ragdolling and makes sure the weapons damage colliders are disabled
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [RequireComponent(typeof(EnemyWeaponManager))]
 [RequireComponent(typeof(Animator), typeof(BehaviorGraphAgent), typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody), typeof(CharacterController), typeof(CapsuleCollider))]
@@ -9,7 +13,6 @@ using UnityEngine.AI;
 public class EnemyRagdoll : MonoBehaviour
 
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponent<Animator>();

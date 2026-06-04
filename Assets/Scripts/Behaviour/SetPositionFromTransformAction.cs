@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Saves the position of a transform inside a vector3 blackboard variable
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Set Position From Transform", story: "Sets [Position] to [Transform] position", category: "Action", id: "c6ea43dadf1e38ba40957759251f840d")]
 public partial class SetPositionFromTransformAction : Action

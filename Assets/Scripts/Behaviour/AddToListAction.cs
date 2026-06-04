@@ -5,6 +5,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Adds a gameObject to a list inside a <see cref="BehaviorGraph"/>
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Add To List", story: "Add [Object] to [List]", category: "Action", id: "63dd8543bf7910804f67e20efe257b33")]
 public partial class AddToListAction : Action

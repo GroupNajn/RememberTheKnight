@@ -4,8 +4,11 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using System.Collections.Generic;
-using Unity.AppUI.UI;
 
+/// <summary>
+/// Teleports a target to a target location and plays particles to show the teleportation
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Teleport To", story: "Teleports [Self] to [Transform]", category: "Action", id: "b94cfaa7f0b39bbffb23e0d05ef160fe")]
 public partial class TeleportToAction : Action
@@ -31,6 +34,7 @@ public partial class TeleportToAction : Action
         animator = Self.Value.GetComponent<Animator>();
         animator.SetTrigger(CancelHash);
 
+        // when teleporting the character controller is disabled due to it does not like being translated large distances 
         characterController.enabled = false;
         leave = UnityEngine.Object.Instantiate(LeaveEffect.Value, Self.Value.transform.position, Quaternion.identity);
         leave.Play();

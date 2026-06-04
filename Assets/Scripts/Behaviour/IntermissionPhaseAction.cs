@@ -4,6 +4,10 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
+/// <summary>
+/// Spawns a number of adds using a <see cref="BossAddSpawnerManager"/> unitl all adds are killed
+/// </summary>
+/// <remarks>Author: Theo Johansson</remarks>
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Intermission Phase", story: "Spawns [Count] adds using [Spawner] succeeds when Spawner is complete", category: "Action", id: "7fe30b4982614665999dc3c5fdadbe0b")]
 public partial class IntermissionPhaseAction : Action
