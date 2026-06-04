@@ -25,7 +25,7 @@ public class WinMenu : AutoSelectFirstButtonOnEnable
         gameObject.SetActive(false);
         UIManager.Instance.UIMenuActive = false;
         UIManager.Instance.CheckUIState();
-        UIManager.Instance.CheckTimeScaleUI(true);
+        UIManager.Instance.SetTimeScale(true);
 
         Event_System.instance.OnLoadScenes -= LeaveBossLevel;
     }

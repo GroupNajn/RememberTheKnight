@@ -3,32 +3,11 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-
-/// <summary>
-/// Central manager for all user interface systems.
-///
-/// Responsible for:
-/// - Menu navigation
-/// - UI visibility management
-/// - Pausing and resuming gameplay
-/// - Cursor and input state management
-/// - Opening and closing gameplay UI windows
-/// - Scene-specific UI initialization
-///
-/// Implemented as a persistent singleton.
-/// </summary>
 public class UIManager : MonoBehaviour
 {
     // Created and edited by Lukas, Wilmer, Michaëla
-
-    /// <summary>
-    /// Changed by Anton 2026-05-05
-    /// Added interactCameraHandler reference to reset the camera after closing certain UIs.
-    /// 
-    /// Changed by Anton 2026-05-22
-    /// Added cameraTransitioning boolean to prevent from opening menus while interact camera is transitioning.
-    /// </summary>
     public static UIManager Instance { get; private set; }
 
     PlayerInput playerInput;
@@ -224,77 +203,53 @@ public class UIManager : MonoBehaviour
     /// Closes all currently active menus and restores gameplay control.
     /// Re-enables player input, gameplay UI and normal time scale.
     /// </summary>
-    public void HideActiveUI()
-    {
-        UIMenuActive = false;
-        Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-        Cursor.visible = false; // Hide the cursor when resuming
-        playerInput.enabled = true; // Enable player input when resuming
 
-        ClosePauseMenu(); // Hide the pause menu
-        CloseCardSelectUI(); // Hide the card selection UI
-        CloseFamilySelectUI(); // Hide the Family selection UI
-        CloseCardShopUI(); // Hide the Card Shop UI
-        CloseInteractiveUI(); // Hide the interact UI
-        CloseDeathScreen(); // Hide the death screen
-        CloseCharacterSelectUI(); // Hide the character select UI
-        CloseLorePageUI(); // Hide the lore page UI
-
-        CheckUIState();
-        CheckTimeScaleUI(true);
-    }
-
-    /// <summary>
-    /// Updates cursor visibility, player input and time scale
-    /// based on whether a UI menu is currently active.
-    /// </summary>
     public void CheckUIState()
     {
         if (!UIMenuActive)
         {
             Time.timeScale = 1f;
-            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor when resuming
-            Cursor.visible = false; // Hide the cursor when resuming
-            playerInput.enabled = true; // Enable player input when resuming
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            playerInput.enabled = true;
         }
         else
         {
             Time.timeScale = 0f;
 
-            playerInput.enabled = false; // Disable player input when paused
+            playerInput.enabled = false;
 
             if (InputManager.Instance.usingGamepad)
             {
-                Cursor.lockState = CursorLockMode.Locked; // Unlock the cursor when paused
-                Cursor.visible = false; // Show the cursor when paused
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.None; // Unlock the cursor when paused
-                Cursor.visible = true; // Show the cursor when paused
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
     }
-
-    public void CheckTimeScaleUI(bool timeScaleOn)
+    public void HideActiveUI()
     {
-        if (timeScaleOn)
-        {
-            Time.timeScale = 1f;
-        }
-        else
-        {
-            Time.timeScale = 0f;
-        }
-    }
+        UIMenuActive = false;
+        Time.timeScale = 1f; 
+        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.visible = false; 
+        playerInput.enabled = true; 
 
-    public void CheckTimeScaleDuringScene(int sceneIndex)
-    {
-        if (SceneManager.GetActiveScene().name == SceneData.Instance[sceneIndex])
-        {
-            CheckTimeScaleUI(true);
-        }
+        ClosePauseMenu(); 
+        CloseCardSelectUI(); 
+        CloseFamilySelectUI(); 
+        CloseCardShopUI(); 
+        CloseInteractiveUI(); 
+        CloseDeathScreen(); 
+        CloseCharacterSelectUI(); 
+        CloseLorePageUI(); 
+
+        CheckUIState();
+        SetTimeScale(true, 1f);
     }
 
     // BACK BUTTON
@@ -464,7 +419,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
-        CheckTimeScaleUI(true);
+        SetTimeScale(true, 1f);
     }
 
     public void CloseCardSelectUI()
@@ -490,7 +445,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
-        CheckTimeScaleUI(true);
+        SetTimeScale(true, 1f);
     }
 
     public void CloseBossCardSelectUI()
@@ -516,7 +471,7 @@ public class UIManager : MonoBehaviour
 
         UIMenuActive = true;
         CheckUIState();
-        CheckTimeScaleUI(true);
+        SetTimeScale(true, 1f);
     }
 
     public void CloseFamilySelectUI()
@@ -574,7 +529,7 @@ public class UIManager : MonoBehaviour
 
         cameraTransitioning = false;
         CheckUIState();
-        CheckTimeScaleUI(true);
+        SetTimeScale(true, 1f);
     }
 
     public void CloseCardShopUI()
@@ -587,10 +542,6 @@ public class UIManager : MonoBehaviour
         interactCameraHandler.InteractCamReset();
     }
 
-    /// <summary>
-    /// Opens the in-game book interface and temporarily hides
-    /// gameplay HUD elements.
-    /// </summary>
     public void OpenBookUI()
     {
         CloseInteractiveUI();
@@ -601,10 +552,6 @@ public class UIManager : MonoBehaviour
         CheckUIState();
     }
 
-    /// <summary>
-    /// Closes the book interface using its closing animation sequence,
-    /// then restores gameplay HUD elements and player controls.
-    /// </summary>
     public void CloseBookUI()
     {
         BookUi bookScript = bookUI.GetComponent<BookUi>();
@@ -840,14 +787,10 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
 
         CheckUIState();
-        CheckTimeScaleUI(true);
+        SetTimeScale(true, 1f);
 
         dialogueUI.GetComponent<DialogueUI>().StartDialogue(dialogueLines);
     }
-
-    /// <summary>
-    /// Closes the dialogue interface and restores gameplay HUD elements.
-    /// </summary>
     public void CloseDialogueUI()
     {
         OpenUIOnMenuClose();
@@ -856,7 +799,6 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
-
     public void OpenDevSecretUI()
     {
 
@@ -867,7 +809,6 @@ public class UIManager : MonoBehaviour
         UIMenuActive = true;
         CheckUIState();
     }
-
     public void CloseDevSecretUI()
     {
         OpenUIOnMenuClose();
@@ -876,12 +817,83 @@ public class UIManager : MonoBehaviour
         UIMenuActive = false;
         CheckUIState();
     }
-    
+
+    // NEW METHODS
+    public void OpenUI(GameObject UIelement)
+    {
+        UIelement.SetActive(true);
+    }
+
+    public void CloseUI(GameObject UIelement)
+    {
+        UIelement.SetActive(false);
+    }
+
+    public void ToggleUI(GameObject openUI, GameObject closeUI)
+    {
+        OpenUI(openUI);
+        CloseUI(closeUI);
+    }
+
+    public void SetUIState(bool active)
+    {
+        UIMenuActive = active;
+
+        // AS OF RN THIS WOULD DO NOTHING AND ONLY BE A DEBUGGER
+    }
+
+    public void SetCursorState(bool visible, bool locked)
+    {
+        if (InputManager.Instance.usingGamepad) // USING GAMEPAD SHOW ALWAYS HIDE AND LOCK IT
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked; 
+        }
+
+        Cursor.visible = visible;
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.Confined; // MOUSE IS LOCKED OR CONFIED TO ONE SCREEN (MAYBE CHANGE THIS TO NONE)
+    }
+
+    public void SetTimeScale(bool timeScaleOn, float timeScale)
+    {
+        if (timeScaleOn)
+        {
+            Time.timeScale = timeScale;
+        }
+        else
+        {
+            Time.timeScale = 0f;
+        }
+    }
+
+    // THINGS I DONT KNOW HOW TO REFECTOR YET
+    public void CheckTimeScaleDuringScene(int sceneIndex)
+    {
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[sceneIndex])
+        {
+            SetTimeScale(true, 1f);
+        }
+    }
+    void OnLoadScene()
+    {
+        // Close menues when the screen is black
+        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
+        {
+            CloseStartMenu();
+            //uiManager.CloseBackgroundUI();
+            UIMenuActive = false;
+
+            OpenCharacterSelectUI();
+
+            // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
+            CloseSoulUI();
+            CloseCupUI();
+        }
+    } 
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         //UIInput = GetComponentInChildren<PlayerInput>();
@@ -903,24 +915,13 @@ public class UIManager : MonoBehaviour
         gameObject.SetActive(true);
         //UIInput.enabled = true;
     }
-
-    void OnLoadScene()
+    IEnumerator DelayedAction(float delay, System.Action action)
     {
-        // Close menues when the screen is black
-        if (SceneManager.GetActiveScene().name == SceneData.Instance[1])
-        {
-            CloseStartMenu();
-            //uiManager.CloseBackgroundUI();
-            UIMenuActive = false;
-
-            OpenCharacterSelectUI();
-
-            // TURNS OFF THE SOULS CANVAS WHEN IN CHARCATER SELECT
-            CloseSoulUI();
-            CloseCupUI();
-        }
+        yield return new WaitForSeconds(delay);
+        action?.Invoke();
     }
 
+    // THIS THAT WILL GET REMOVED
     void SetCursorBasedOnDevice()
     {
         if (InputManager.Instance.usingGamepad)
@@ -938,9 +939,5 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    IEnumerator DelayedAction(float delay, System.Action action)
-    {
-        yield return new WaitForSeconds(delay);
-        action?.Invoke();
-    }
+
 }
