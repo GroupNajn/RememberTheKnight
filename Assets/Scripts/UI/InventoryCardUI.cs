@@ -123,8 +123,11 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     public void OnSelect(BaseEventData eventData)
     {
-        //ToggleInfo();
-        ToggleCardInfo();
+        if (InputManager.Instance.usingGamepad)
+        {
+            //ToggleInfo();
+            ToggleCardInfo();
+        }
     }
 
     /// <summary>
@@ -132,8 +135,11 @@ public class InventoryCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     /// </summary>
     public void OnDeselect(BaseEventData eventData)
     {
-        //ToggleInfo();
-        ToggleCardInfo();
+        if (InputManager.Instance.usingGamepad)
+        {
+            //ToggleInfo();
+            ToggleCardInfo();
+        }
     }
 
     /// <summary>
