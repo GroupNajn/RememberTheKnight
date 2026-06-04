@@ -21,16 +21,26 @@ public class PlayerWeaponManager : CharacterWeaponManager
     int currentWeaponIndex = 0;
     int layerIndex;
     AnimatorStateInfo currentState;
+    public bool TwoHanded { get; private set; } = false;
 
 
     float damageAmount
     {
         get
         {
-            if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
-                return currentActiveWeaponData.LightDamage;
+            if(TwoHanded)
+            {
+                if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
+                    return currentActiveWeaponData.ThLightDamage;
+                else return currentActiveWeaponData.ThHeavyDamage;
+            }
+            else
+            {
+                if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
+                    return currentActiveWeaponData.LightDamage;
 
-            else return currentActiveWeaponData.HeavyDamage;
+                else return currentActiveWeaponData.HeavyDamage;
+            }
         }
         set { }
     }
@@ -38,10 +48,20 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         get
         {
-            if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
-                return currentActiveWeaponData.LightChargedDamageBonus;
+            if (TwoHanded)
+            {
+                if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
+                    return currentActiveWeaponData.ThLightChargedDamageBonus;
+                else return currentActiveWeaponData.ThHeavyChargedDamage;
+            }
+            else
+            {
+                if (playerCombatManager.lastAttackAction == StaminaAction.lightAttack)
+                    return currentActiveWeaponData.LightChargedDamageBonus;
 
-            else return currentActiveWeaponData.HeavyChargedDamage;
+                else return currentActiveWeaponData.HeavyChargedDamage;
+            }
+            
         }
         set { }
     }
@@ -95,7 +115,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         holsterd = !holsterd;
 
         HolsterCheck();
-        playerStats.baseActionSpeed = currentActiveWeaponData.actionSpeed;
+        playerStats.baseActionSpeed = currentActiveWeaponData.ActionSpeed;
         playerManager.ReApplyStats();
         OnWeaponChanged?.Invoke(currentActiveWeaponData);
 
@@ -115,9 +135,28 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         base.HolsterCheck();
 
-        playerAnimator.runtimeAnimatorController = currentActiveWeaponData.WeaponAnimator;
-        playerAnimator.speed = currentActiveWeaponData.actionSpeed;
+        playerAnimator.runtimeAnimatorController = currentActiveWeaponData.OneHandedWeaponAnimator;
+        playerAnimator.speed = currentActiveWeaponData.ActionSpeed;
 
+    }
+
+    public void OnToggleTwoHand()
+    {   
+        if (currentActiveWeaponData.TwoHandedWeaponAnimator != null && !playerStates.InActionState())
+        {
+            TwoHanded = !TwoHanded;
+            //playerAnimator.SetBool("TwoHanded", TwoHanded);
+            //playerAnimator.SetTrigger("ToggleTwoHand");
+
+            GameObject currentWeapon = Weapons[currentWeaponIndex];
+
+            var stats = currentWeapon.GetComponent<WeaponStats>();
+
+            playerStats.baseActionSpeed = TwoHanded ? stats.WeaponData.ThActionSpeed : stats.WeaponData.ActionSpeed;
+            playerAnimator.runtimeAnimatorController = TwoHanded ? currentActiveWeaponData.TwoHandedWeaponAnimator : currentActiveWeaponData.OneHandedWeaponAnimator;
+            playerAnimator.speed = TwoHanded ? stats.WeaponData.ThActionSpeed : stats.WeaponData.ActionSpeed;
+            playerManager.ReApplyStats();
+        }
     }
 
     public override void Update()
@@ -142,6 +181,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
     {
         if (Weapons.Count == 0) return;
 
+        TwoHanded = false; // always set twohanded to false when switching weapon
         if (Holsterd)
         {
             HolsterEvent();
@@ -167,8 +207,8 @@ public class PlayerWeaponManager : CharacterWeaponManager
         currentRightWeaponData = stats.WeaponData;
         rightDamageTrigger = currentWeapon.GetComponent<DamageTrigger>();
 
-        playerAnimator.runtimeAnimatorController = stats.WeaponData.WeaponAnimator;
-        playerAnimator.speed = stats.WeaponData.actionSpeed;
+        playerAnimator.runtimeAnimatorController = stats.WeaponData.OneHandedWeaponAnimator;
+        playerAnimator.speed = stats.WeaponData.ActionSpeed;
 
         equippedWeapon = stats.WeaponData;
 
@@ -178,7 +218,7 @@ public class PlayerWeaponManager : CharacterWeaponManager
         // sätter sedan vapnet till den sizen spelaren stats säger
         currentRightHandWeapon.transform.localScale = playerStats.currentWeaponSize;
 
-        playerStats.baseActionSpeed = stats.WeaponData.actionSpeed;
+        playerStats.baseActionSpeed = stats.WeaponData.ActionSpeed;
 
         OnWeaponChanged?.Invoke(equippedWeapon);
 
