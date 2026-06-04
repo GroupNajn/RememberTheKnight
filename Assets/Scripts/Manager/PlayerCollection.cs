@@ -159,7 +159,6 @@ public class PlayerCollection : MonoBehaviour
     private void CleartTemporaryCardsOnPlayerDeath()
     {
         cardCollection.ClearTemporaryCards();
-        cardCollection.ClearEquipedCards();
         UpdateDisplayCollection();
     }
 
