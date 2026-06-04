@@ -121,6 +121,6 @@ public class PlayerStats : MonoBehaviour
         if (playerWeaponManager == null)
             Debug.Log("error");
 
-        baseActionSpeed = playerWeaponManager.currentActiveWeaponData.actionSpeed;
+        baseActionSpeed = playerWeaponManager.currentActiveWeaponData.ActionSpeed;
     }
 }

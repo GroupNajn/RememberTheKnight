@@ -180,6 +180,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleTwoHand"",
+                    ""type"": ""Button"",
+                    ""id"": ""00cf1a36-5d08-4851-9e02-740d84168621"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -435,6 +444,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Heal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20050771-a86c-4da1-aa8e-a50691669d1c"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleTwoHand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee2ab392-f4bd-4cd3-b72f-5f7696685e91"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleTwoHand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -672,6 +703,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerLocomotionMap_Holster = m_PlayerLocomotionMap.FindAction("Holster", throwIfNotFound: true);
         m_PlayerLocomotionMap_HeavyAttack = m_PlayerLocomotionMap.FindAction("HeavyAttack", throwIfNotFound: true);
         m_PlayerLocomotionMap_Heal = m_PlayerLocomotionMap.FindAction("Heal", throwIfNotFound: true);
+        m_PlayerLocomotionMap_ToggleTwoHand = m_PlayerLocomotionMap.FindAction("ToggleTwoHand", throwIfNotFound: true);
         // PlayerActionsMap
         m_PlayerActionsMap = asset.FindActionMap("PlayerActionsMap", throwIfNotFound: true);
         m_PlayerActionsMap_Target = m_PlayerActionsMap.FindAction("Target", throwIfNotFound: true);
@@ -774,6 +806,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Holster;
     private readonly InputAction m_PlayerLocomotionMap_HeavyAttack;
     private readonly InputAction m_PlayerLocomotionMap_Heal;
+    private readonly InputAction m_PlayerLocomotionMap_ToggleTwoHand;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerLocomotionMap".
     /// </summary>
@@ -825,6 +858,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerLocomotionMap/Heal".
         /// </summary>
         public InputAction @Heal => m_Wrapper.m_PlayerLocomotionMap_Heal;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerLocomotionMap/ToggleTwoHand".
+        /// </summary>
+        public InputAction @ToggleTwoHand => m_Wrapper.m_PlayerLocomotionMap_ToggleTwoHand;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -881,6 +918,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Heal.started += instance.OnHeal;
             @Heal.performed += instance.OnHeal;
             @Heal.canceled += instance.OnHeal;
+            @ToggleTwoHand.started += instance.OnToggleTwoHand;
+            @ToggleTwoHand.performed += instance.OnToggleTwoHand;
+            @ToggleTwoHand.canceled += instance.OnToggleTwoHand;
         }
 
         /// <summary>
@@ -922,6 +962,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Heal.started -= instance.OnHeal;
             @Heal.performed -= instance.OnHeal;
             @Heal.canceled -= instance.OnHeal;
+            @ToggleTwoHand.started -= instance.OnToggleTwoHand;
+            @ToggleTwoHand.performed -= instance.OnToggleTwoHand;
+            @ToggleTwoHand.canceled -= instance.OnToggleTwoHand;
         }
 
         /// <summary>
@@ -1294,6 +1337,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHeal(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleTwoHand" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleTwoHand(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerActionsMap" which allows adding and removing callbacks.
