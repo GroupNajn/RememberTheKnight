@@ -83,6 +83,9 @@ public class PlayerInteract : MonoBehaviour
                     {
                         IInteractableUIText interactableUI = (IInteractableUIText)interactable;
 
+                        if (interactableUI.GetUIData() == null)
+                            return;
+
                         if (!interactableUI.GetUIData().CanInteract)
                         {
                             interactableUIText = "";
