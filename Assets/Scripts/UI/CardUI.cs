@@ -22,8 +22,10 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     [SerializeField] public CardData cardData;
     [SerializeField] private Image cardImage;
+    [SerializeField] private Image infoBoxImage;
 
     [SerializeField] private GameObject infoBox;
+    [SerializeField] private GameObject outlineImage;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
     private bool alwaysShowInfo;
@@ -49,6 +51,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
 
         cardImage = GetComponent<Button>().targetGraphic as Image;
+        infoBoxImage = infoBox.GetComponent<Image>();
         // cardImage = GetComponent<Button>().targetGraphic();
 
 
@@ -88,6 +91,21 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // UIManager it is set to false to default to that, once it's state has been updated once during the game.
     // It will no longe be reset to false. 
 
+    private void OnEnable()
+    {
+        if (!IsUnlocked)
+        {
+            cardImage.color = lockedColor;
+            infoBoxImage.color = lockedColor;
+        }
+        else
+        {
+            cardImage.color = unlockedColor;
+            infoBoxImage.color = unlockedColor;
+        }
+
+        StartCoroutine(UnFlipCard());
+    }
 
     private void Update()
     {
@@ -96,32 +114,24 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             IsUnlocked = true;
         }
 
-        if (!IsUnlocked)
-        {
-            cardImage.color = lockedColor;
-        }
-        else
-        {
-            cardImage.color = unlockedColor;
-        }
+        //if (IsSelected)
+        //{
+        //    time++;
 
-        if (IsSelected)
-        {
-            time++;
+        //    float wiggle = Mathf.Sin((time + offset) * speed) * angle;
+        //    rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ + wiggle);
 
-            float wiggle = Mathf.Sin((time + offset) * speed) * angle;
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ + wiggle);
-
-        }
-        else
-        {
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ);
-        }
+        //}
+        //else
+        //{
+        //    rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ);
+        //}
     }
 
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
+        outlineImage.SetActive(selected);
     }
 
     public void SetUnlocked(bool unlockable)
@@ -184,22 +194,17 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         nameText.text = cardData.cardName;
 
-        if (IsUnlocked)
-        {
-            CheckStatsForString();
-            // infoBox.SetActive(true);
-            StartCoroutine(FlipCard());
-        }
+        CheckStatsForString();
+        // infoBox.SetActive(true);
+        StartCoroutine(FlipCard());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // infoBox.SetActive(false);
-        if (IsUnlocked)
-        {
-            StartCoroutine(UnFlipCard());
-        }
-
+        
+        StartCoroutine(UnFlipCard());
+        
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -208,12 +213,11 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         {
             nameText.text = cardData.cardName;
 
-            if (IsUnlocked)
-            {
-                CheckStatsForString();
-                // infoBox.SetActive(true);
-                StartCoroutine(FlipCard());
-            }
+            
+            CheckStatsForString();
+            // infoBox.SetActive(true);
+            StartCoroutine(FlipCard());
+            
         }
     }
 
@@ -221,10 +225,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         if (InputManager.Instance.usingGamepad)
         {
-            if (IsUnlocked)
-            {
-                StartCoroutine(UnFlipCard());
-            }
+            
+            StartCoroutine(UnFlipCard());
+            
         }
     }
 

@@ -9,6 +9,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     private DonationMoveSoul moveSoul;
     private CardContract currentContract;
     private CardContract previousContract;
+    private GameData data;
     bool NewCardUnlocked { get; set; } = false;
 
     CardData nextCard;
@@ -25,6 +26,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
     {
         lootSystem = LootManager.instance.gameObject.GetComponent<Loot_System>();
         cardSystem = LootManager.instance.gameObject.GetComponentInChildren<CardSystem>();
+        data = FindFirstObjectByType<GameData>();
         playerCollection = GameObject.Find("Player").GetComponent<PlayerCollection>();
         currentContract = playerCollection.playerContract;
         nextCard = cardSystem.GetNextCardInSelectedFamily();
@@ -80,11 +82,7 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         var UIData = new InteractableUIData();
         UIData.CanInteract = true;
 
-        if (playerCollection.playerContract != null)
-        {
-            UIData.InfoText = "Donate Souls";
-        }
-        else if (playerCollection.playerContract != null && lootSystem.currentSoulCount <= 0)
+        if (playerCollection.playerContract != null && lootSystem.currentSoulCount <= 0)
         {
             UIData.CanInteract = false;
             UIData.InfoText = "Not enough souls.";
@@ -94,6 +92,38 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
             UIData.CanInteract = false;
             UIData.InfoText = "You do not have a signed Contract";
             UIData.ErrorText = "Go to lobby to sign a contract;";
+        }
+        else if (playerCollection.playerContract.CardFamily == CardFamily.Wands)
+        {
+            UIData.InfoText = $"Donate Souls \n Souls Until Next Card Unlock: {data.SoulsRemainingToNextUnlockWands}";
+            if (data.SoulsRemainingToNextUnlockWands <= 0)
+            {
+                UIData.InfoText = $"No Souls donated Towards Wands Family";
+            }
+        }
+        else if (playerCollection.playerContract.CardFamily == CardFamily.Cups)
+        {
+            UIData.InfoText = $"Donate Souls \n Souls Until Next Card Unlock: {data.SoulsRemainingsoulToNextUnlockCups}";
+            if (data.SoulsRemainingsoulToNextUnlockCups <= 0)
+            {
+                UIData.InfoText = $"No Souls donated Towards Cups Family";
+            }
+        }
+        else if (playerCollection.playerContract.CardFamily == CardFamily.Pentacles)
+        {
+            UIData.InfoText = $"Donate Souls \n Souls Until Next Card Unlock: {data.SoulsRemainingToNextUnlockPentacles}";
+            if (data.SoulsRemainingToNextUnlockPentacles <= 0)
+            {
+                UIData.InfoText = $"No Souls donated Towards Pentacles Family";
+            }
+        }
+        else if (playerCollection.playerContract.CardFamily == CardFamily.Swords)
+        {
+            UIData.InfoText = $"Donate Souls \n Souls Until Next Card Unlock: {data.SoulsRemainingToNextUnlockSwords}";
+            if (data.SoulsRemainingToNextUnlockSwords <= 0)
+            {
+                UIData.InfoText = $"No Souls donated Towards Swords Family";
+            }
         }
 
         return UIData;
@@ -111,17 +141,18 @@ public class InteractSoulDonation : MonoBehaviour, IInteractable, IInteractableU
         }
 
 
-
         if (lootSystem.currentSoulCount > 0 && soulsDonated < soulsRequired && nextCard != null)
         {
             RuntimeManager.StudioSystem.setParameterByName("CardUnlock", (float)soulsDonated / (float)soulsRequired);
             RuntimeManager.PlayOneShotAttached(donateEvent, gameObject);
+            GameDataUpdater.instance.SetSoulsRemaingToNextUnlock(playerCollection.playerContract, 1);
 
             lootSystem.ConsumeSouls(donateAmount);
             moveSoul.InstantiateSoul();
             //SetSoulsGlobally(donateAmount);
             
             soulsDonated++;
+
             if (soulsDonated >= soulsRequired)
             {
                     NewCardUnlocked = true;
