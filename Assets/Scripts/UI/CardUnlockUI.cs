@@ -120,7 +120,7 @@ public class CardUnlockUI : AutoSelectFirstButtonOnEnable
         donation.SetNextCard();
         donation.SetNextCardCost();
         donation.SetSoulsDonatedSinceLastToFamily();
-        //donation.SetSoulnsDonateForNextUnlock();
+        GameDataUpdater.instance.SetSoulsCostInNextCard(GameObject.Find("Player").GetComponent<PlayerCollection>().playerContract);
 
         uiManager.UIMenuActive = false;
         uiManager.CheckUIState();

@@ -27,6 +27,7 @@ public class BossCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private Image cardImage;
 
     [SerializeField] private GameObject infoBox;
+    [SerializeField] private GameObject outlineImage;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI statsText;
     private TextAlignmentOptions nameAlignment = TextAlignmentOptions.Center;
@@ -83,6 +84,15 @@ public class BossCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             cardImage.sprite = cardData.cardImage;
         }
+
+        if (!IsUnlocked)
+        {
+            cardImage.color = lockedColor;
+        }
+        else
+        {
+            cardImage.color = unlockedColor;
+        }
     }
 
     // Added IsSelected = false becuase the first time the card is started via 
@@ -97,32 +107,24 @@ public class BossCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             IsUnlocked = true;
         }
 
-        if (!IsUnlocked)
-        {
-            cardImage.color = lockedColor;
-        }
-        else
-        {
-            cardImage.color = unlockedColor;
-        }
+        //if (IsSelected)
+        //{
+        //    time++;
 
-        if (IsSelected)
-        {
-            time++;
+        //    float wiggle = Mathf.Sin((time + offset) * speed) * angle;
+        //    rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ + wiggle);
 
-            float wiggle = Mathf.Sin((time + offset) * speed) * angle;
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ + wiggle);
-
-        }
-        else
-        {
-            rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ);
-        }
+        //}
+        //else
+        //{
+        //    rectTransform.localEulerAngles = new Vector3(rectTransform.localEulerAngles.x, rectTransform.localEulerAngles.y, baseRotationZ);
+        //}
     }
 
     public void SetSelected(bool selected)
     {
         IsSelected = selected;
+        outlineImage.SetActive(selected);
 
         if (selected)
         {
