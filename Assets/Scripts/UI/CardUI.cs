@@ -93,16 +93,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     private void OnEnable()
     {
-        if (!IsUnlocked)
-        {
-            cardImage.color = lockedColor;
-            infoBoxImage.color = lockedColor;
-        }
-        else
-        {
-            cardImage.color = unlockedColor;
-            infoBoxImage.color = unlockedColor;
-        }
+
 
         StartCoroutine(UnFlipCard());
     }
@@ -112,6 +103,17 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (OverrideLockState)
         {
             IsUnlocked = true;
+        }
+
+        if (!IsUnlocked)
+        {
+            cardImage.color = lockedColor;
+            infoBoxImage.color = lockedColor;
+        }
+        else
+        {
+            cardImage.color = unlockedColor;
+            infoBoxImage.color = unlockedColor;
         }
 
         //if (IsSelected)
